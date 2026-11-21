@@ -1,0 +1,4 @@
+[*.cs]
+# WHY: Test names follow Method_Scenario_ExpectedBehavior from the .NET unit testing guidance;
+#      Microsoft documents CA1707 as safe to suppress for test code.
+dotnet_diagnostic.CA1707.severity = none

@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/Doka.Tabular/Doka.Tabular.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DocumentFormat.OpenXml" />
+    <PackageReference Include="FsCheck.Xunit.v3" />
+    <PackageReference Include="Microsoft.Extensions.TimeProvider.Testing" />
+  </ItemGroup>
+
+  <!-- WHY: Topic partials stay listed under their main file in the IDE; one wildcard per partial family. -->
+  <ItemGroup>
+    <Compile Update="BehaviorTests.*.cs">
+      <DependentUpon>BehaviorTests.cs</DependentUpon>
+    </Compile>
+
+    <Compile Update="ConversionTests.*.cs">
+      <DependentUpon>ConversionTests.cs</DependentUpon>
+    </Compile>
+
+    <Compile Update="EnumTests.*.cs">
+      <DependentUpon>EnumTests.cs</DependentUpon>
+    </Compile>
+
+    <Compile Update="MapConstructionTests.*.cs">
+      <DependentUpon>MapConstructionTests.cs</DependentUpon>
+    </Compile>
+
+    <Compile Update="PipelineTests.*.cs">
+      <DependentUpon>PipelineTests.cs</DependentUpon>
+    </Compile>
+
+    <Compile Update="StructureTests.*.cs">
+      <DependentUpon>StructureTests.cs</DependentUpon>
+    </Compile>
+
+    <Compile Update="TimeTests.*.cs">
+      <DependentUpon>TimeTests.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/Doka.Tabular/Doka.Tabular.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FsCheck.Xunit.v3" />
+  </ItemGroup>
+
+  <!-- WHY: Topic partials stay listed under their main file in the IDE; one wildcard per partial family. -->
+  <ItemGroup>
+    <Compile Update="CsvTargetTests.*.cs">
+      <DependentUpon>CsvTargetTests.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+</Project>

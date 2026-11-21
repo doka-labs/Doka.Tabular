@@ -1,0 +1,52 @@
+<Project>
+
+  <!-- WHY: MSBuild stops at the nearest Directory.Build.props; tests must still inherit the root settings.
+       Packing and XML documentation stay disabled by the root defaults. -->
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+  <PropertyGroup Label="Project kind">
+    <!-- WHY: Directory.Build.props is evaluated before the project file, so the project kind cannot come from
+         a property the project sets itself. Test applications end in .Tests; helper libraries such as the
+         shared specification library do not, and must not become test projects. -->
+    <DokaTestApplication>$(MSBuildProjectName.EndsWith('.Tests'))</DokaTestApplication>
+
+    <!-- WHY: Tests use the centrally reviewed versions for transitive packages as well. Never enabled in src,
+         where pinned packages would become explicit package dependencies on pack. -->
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Executable test defaults" Condition="'$(DokaTestApplication)' == 'true'">
+    <IsTestProject>true</IsTestProject>
+    <OutputType>Exe</OutputType>
+
+    <!-- WHY: One shared testconfig.json supplies the coverage filter and format to every test application.
+         Coverlet reads only active commandLineOptions; coverage still starts only with the coverlet switch. -->
+    <TestingPlatformCommandLineArguments>$(TestingPlatformCommandLineArguments) --config-file $(MSBuildThisFileDirectory)Shared/testconfig.json</TestingPlatformCommandLineArguments>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Test helper library defaults" Condition="'$(DokaTestApplication)' != 'true'">
+    <IsTestProject>false</IsTestProject>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup Label="Shared test tooling" Condition="'$(DokaTestApplication)' == 'true'">
+    <PackageReference Include="coverlet.MTP" PrivateAssets="all" />
+    <PackageReference Include="JetBrains.Annotations" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit.runner.visualstudio" PrivateAssets="all" />
+    <PackageReference Include="xunit.v3" />
+
+    <Content Include="$(MSBuildThisFileDirectory)Shared/xunit.runner.json"
+             Link="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup Label="Shared test infrastructure" Condition="'$(DokaTestApplication)' == 'true'">
+    <!-- WHY: Each test application compiles the shared fixtures. Helper libraries do not, because a test
+         application referencing them would otherwise contain the same types twice. Database server code needs
+         container packages, so only database tests and database samples link Shared/Database explicitly. -->
+    <Compile Include="$(MSBuildThisFileDirectory)Shared/**/*.cs"
+             Exclude="$(MSBuildThisFileDirectory)Shared/Database/**"
+             Link="Infrastructure/%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
+
+</Project>

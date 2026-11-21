@@ -1,0 +1,9 @@
+{
+  "commandLineOptions": {
+    "coverlet-output-format": "cobertura",
+    "coverlet-include": [
+      "[Doka.Tabular]*",
+      "[Doka.Tabular.EntityFrameworkCore]*"
+    ]
+  }
+}

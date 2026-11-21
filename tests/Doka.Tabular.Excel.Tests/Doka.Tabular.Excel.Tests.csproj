@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/Doka.Tabular/Doka.Tabular.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DocumentFormat.OpenXml" />
+    <PackageReference Include="FsCheck.Xunit.v3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="../Doka.Tabular.Tests/Infrastructure/TestFiles.cs" Link="Infrastructure/TestFiles.cs" />
+    <Compile Include="../Doka.Tabular.Tests/Infrastructure/CheckedFormats.cs" Link="Infrastructure/CheckedFormats.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Fixtures/**" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <!-- WHY: Topic partials stay listed under their main file in the IDE; one wildcard per partial family. -->
+  <ItemGroup>
+    <Compile Update="ExcelExportTests.*.cs">
+      <DependentUpon>ExcelExportTests.cs</DependentUpon>
+    </Compile>
+
+    <Compile Update="ReferenceFileTests.*.cs">
+      <DependentUpon>ReferenceFileTests.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,42 @@
+<Project>
+
+  <!-- WHY: MSBuild stops at the nearest Directory.Build.props; shipping projects must still inherit the root settings. -->
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+  <PropertyGroup Label="Shipping project defaults">
+    <IsPackable>true</IsPackable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Trimming and native AOT">
+    <!-- WHY: Maps compile typed accessors and close generic types over the mapped types at run time. The analyzers
+         keep every such use marked, so an application that trims or publishes native AOT sees the warnings at its
+         call sites instead of failing at run time. -->
+    <IsAotCompatible>true</IsAotCompatible>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Symbols and source linkage">
+    <!-- WHY: Symbol packages need separate portable PDBs; an embedded default would leave them empty. -->
+    <DebugType>portable</DebugType>
+
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <ItemGroup Label="Production analyzers">
+    <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="all" />
+  </ItemGroup>
+
+  <!--
+    WHY: [PublicAPI] tells Rider that public members are used by applications outside the solution. The attributes
+    are conditional on JETBRAINS_ANNOTATIONS, so they are not compiled into the assemblies, and the package is not a
+    dependency of the published packages. The declared public API stays in PublicAPI.Shipped.txt and
+    PublicAPI.Unshipped.txt.
+  -->
+  <ItemGroup Label="IDE annotations">
+    <PackageReference Include="JetBrains.Annotations" PrivateAssets="all" />
+  </ItemGroup>
+
+</Project>

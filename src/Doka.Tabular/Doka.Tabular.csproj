@@ -1,0 +1,79 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>Doka.Tabular</RootNamespace>
+    <Description>Typed CSV and Excel import and export with immutable column maps, without third-party libraries.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+  </ItemGroup>
+
+  <!-- WHY: Topic partials stay listed under their main file in the IDE; one wildcard per partial family. -->
+  <ItemGroup>
+    <Compile Update="Csv/CsvFormat.*.cs">
+      <DependentUpon>CsvFormat.cs</DependentUpon>
+    </Compile>
+
+    <Compile Update="Csv/CsvRecordSource.*.cs">
+      <DependentUpon>CsvRecordSource.cs</DependentUpon>
+    </Compile>
+
+    <Compile Update="Conversion/EnumConverter.*.cs">
+      <DependentUpon>EnumConverter.cs</DependentUpon>
+    </Compile>
+
+    <Compile Update="Excel/ExcelFormat.*.cs">
+      <DependentUpon>ExcelFormat.cs</DependentUpon>
+    </Compile>
+
+    <Compile Update="Excel/ExcelPackage.*.cs">
+      <DependentUpon>ExcelPackage.cs</DependentUpon>
+    </Compile>
+
+    <Compile Update="Excel/ExcelSheetSource.*.cs">
+      <DependentUpon>ExcelSheetSource.cs</DependentUpon>
+    </Compile>
+
+    <Compile Update="Excel/ExcelSheetWriter.*.cs">
+      <DependentUpon>ExcelSheetWriter.cs</DependentUpon>
+    </Compile>
+
+    <Compile Update="Excel/WorkbookImportRun.*.cs">
+      <DependentUpon>WorkbookImportRun.cs</DependentUpon>
+    </Compile>
+
+    <Compile Update="Export/ExportPlan.*.cs">
+      <DependentUpon>ExportPlan.cs</DependentUpon>
+    </Compile>
+
+    <Compile Update="Export/ExportRun.*.cs">
+      <DependentUpon>ExportRun.cs</DependentUpon>
+    </Compile>
+
+    <Compile Update="Formats/TabularExport.*.cs">
+      <DependentUpon>TabularExport.cs</DependentUpon>
+    </Compile>
+
+    <Compile Update="Formats/TabularImport.*.cs">
+      <DependentUpon>TabularImport.cs</DependentUpon>
+    </Compile>
+
+    <Compile Update="Import/ImportEngine.*.cs">
+      <DependentUpon>ImportEngine.cs</DependentUpon>
+    </Compile>
+
+    <Compile Update="Import/ImportRun.*.cs">
+      <DependentUpon>ImportRun.cs</DependentUpon>
+    </Compile>
+
+    <Compile Update="Mapping/TabularMapBuilder.*.cs">
+      <DependentUpon>TabularMapBuilder.cs</DependentUpon>
+    </Compile>
+
+    <Compile Update="Mapping/TabularTimeColumnExtensions.*.cs">
+      <DependentUpon>TabularTimeColumnExtensions.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+</Project>
