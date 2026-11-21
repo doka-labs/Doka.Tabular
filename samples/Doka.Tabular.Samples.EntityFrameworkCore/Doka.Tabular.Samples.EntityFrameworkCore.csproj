@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/Doka.Tabular.EntityFrameworkCore/Doka.Tabular.EntityFrameworkCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Doka.EntityFrameworkCore.MySql" />
+    <PackageReference Include="Testcontainers.MariaDb" />
+  </ItemGroup>
+
+  <ItemGroup Label="Sample database">
+    <!-- WHY: The sample starts a real MariaDB server through the same container code as the database tests. -->
+    <Compile Include="../../tests/Shared/Database/*.cs" Link="Infrastructure/Database/%(Filename)%(Extension)" />
+    <Compile Include="../Shared/Database/*.cs" Link="Infrastructure/Database/%(Filename)%(Extension)" />
+    <EmbeddedResource Include="../../docker/database-images.Dockerfile" LogicalName="Tabular.TestImages" />
+  </ItemGroup>
+
+</Project>

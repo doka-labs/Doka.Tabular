@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="../../samples/Doka.Tabular.Samples.Controller/Doka.Tabular.Samples.Controller.csproj" />
+    <ProjectReference Include="../../samples/Doka.Tabular.Samples.EntityFrameworkCore/Doka.Tabular.Samples.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="../../samples/Doka.Tabular.Samples.Journals/Doka.Tabular.Samples.Journals.csproj" />
+    <ProjectReference Include="../../samples/Doka.Tabular.Samples.MinimalApi/Doka.Tabular.Samples.MinimalApi.csproj" />
+    <ProjectReference Include="../../samples/Doka.Tabular.Samples.MultiSheet/Doka.Tabular.Samples.MultiSheet.csproj" />
+    <ProjectReference Include="../../samples/Doka.Tabular.Samples.MultiTarget/Doka.Tabular.Samples.MultiTarget.csproj" />
+    <ProjectReference Include="../../samples/Doka.Tabular.Samples.NestedMaps/Doka.Tabular.Samples.NestedMaps.csproj" />
+    <ProjectReference Include="../../samples/Doka.Tabular.Samples.Sftp/Doka.Tabular.Samples.Sftp.csproj" />
+  </ItemGroup>
+
+</Project>

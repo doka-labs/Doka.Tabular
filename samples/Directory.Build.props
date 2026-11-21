@@ -1,0 +1,25 @@
+<Project>
+
+  <!-- WHY: MSBuild stops at the nearest Directory.Build.props; samples must still inherit the root settings.
+       Packing and XML documentation stay disabled by the root defaults. -->
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+  <PropertyGroup Label="Runnable sample defaults">
+    <OutputType>Exe</OutputType>
+    <IsTestProject>false</IsTestProject>
+
+    <!-- WHY: Samples use the centrally reviewed versions for transitive packages as well. -->
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+  </PropertyGroup>
+
+  <ItemGroup Label="IDE annotations">
+    <!-- WHY: Marks types that Tabular or JSON use through reflection; the attributes are not compiled in. -->
+    <PackageReference Include="JetBrains.Annotations" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup Label="Shared sample infrastructure">
+    <!-- WHY: Each sample keeps its own scenario code and project references; only the setup is shared. -->
+    <Compile Include="$(MSBuildThisFileDirectory)Shared/*.cs" Link="Infrastructure/%(Filename)%(Extension)" />
+  </ItemGroup>
+
+</Project>
