@@ -1,0 +1,19 @@
+<Project>
+
+  <!-- WHY: MSBuild stops at the nearest Directory.Build.props; benchmarks must still inherit the root settings.
+       Packing and XML documentation stay disabled by the root defaults. -->
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+  <PropertyGroup Label="Benchmark project defaults">
+    <OutputType>Exe</OutputType>
+    <IsTestProject>false</IsTestProject>
+
+    <!-- WHY: Benchmarks use the centrally reviewed versions for transitive packages as well. -->
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+  </PropertyGroup>
+
+  <ItemGroup Label="Benchmark tooling">
+    <PackageReference Include="BenchmarkDotNet" />
+  </ItemGroup>
+
+</Project>

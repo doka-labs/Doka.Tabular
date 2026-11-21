@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="../../benchmarks/Doka.Tabular.Benchmarks/Doka.Tabular.Benchmarks.csproj" />
+  </ItemGroup>
+
+</Project>
