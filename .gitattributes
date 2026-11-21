@@ -1,0 +1,14 @@
+# WHY: Normalize every text file to LF in the repository, independent of the committer's platform.
+* text=auto
+
+# WHY: Keep multiline C# raw-string values stable across checkout platforms.
+*.cs text eol=lf
+
+# WHY: CSV fixtures test exact line endings (CRLF, LF, mixed); git must never convert them.
+*.csv -text
+
+# WHY: Workbooks are ZIP or compound file containers.
+*.xlsx binary
+*.xlsm binary
+*.xlsb binary
+*.xls binary
