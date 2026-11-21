@@ -1,0 +1,66 @@
+<Solution>
+
+  <Folder Name="/config/">
+    <File Path=".editorconfig" />
+    <File Path=".gitattributes" />
+    <File Path=".gitignore" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="Doka.Tabular.sln.DotSettings" />
+    <File Path="dotnet-tools.json" />
+    <File Path="global.json" />
+    <File Path="NuGet.config" />
+  </Folder>
+
+  <Folder Name="/config/src/">
+    <File Path="src/Directory.Build.props" />
+  </Folder>
+
+  <Folder Name="/config/tests/">
+    <File Path="tests/.editorconfig" />
+    <File Path="tests/Directory.Build.props" />
+    <File Path="tests/Shared/testconfig.json" />
+    <File Path="tests/Shared/xunit.runner.json" />
+  </Folder>
+
+  <Folder Name="/config/samples/">
+    <File Path="samples/Directory.Build.props" />
+  </Folder>
+
+  <Folder Name="/config/benchmarks/">
+    <File Path="benchmarks/Directory.Build.props" />
+  </Folder>
+
+  <Folder Name="/src/">
+    <Project Path="src/Doka.Tabular/Doka.Tabular.csproj" />
+    <Project Path="src/Doka.Tabular.EntityFrameworkCore/Doka.Tabular.EntityFrameworkCore.csproj" />
+  </Folder>
+
+  <Folder Name="/tests/">
+    <Project Path="tests/Doka.Tabular.Benchmarks.Tests/Doka.Tabular.Benchmarks.Tests.csproj" />
+    <Project Path="tests/Doka.Tabular.Csv.Tests/Doka.Tabular.Csv.Tests.csproj" />
+    <Project Path="tests/Doka.Tabular.EntityFrameworkCore.MySql.Tests/Doka.Tabular.EntityFrameworkCore.MySql.Tests.csproj" />
+    <Project Path="tests/Doka.Tabular.EntityFrameworkCore.PostgreSql.Tests/Doka.Tabular.EntityFrameworkCore.PostgreSql.Tests.csproj" />
+    <Project Path="tests/Doka.Tabular.EntityFrameworkCore.Specification/Doka.Tabular.EntityFrameworkCore.Specification.csproj" />
+    <Project Path="tests/Doka.Tabular.EntityFrameworkCore.Tests/Doka.Tabular.EntityFrameworkCore.Tests.csproj" />
+    <Project Path="tests/Doka.Tabular.Excel.Tests/Doka.Tabular.Excel.Tests.csproj" />
+    <Project Path="tests/Doka.Tabular.Samples.Tests/Doka.Tabular.Samples.Tests.csproj" />
+    <Project Path="tests/Doka.Tabular.Tests/Doka.Tabular.Tests.csproj" />
+  </Folder>
+
+  <Folder Name="/samples/">
+    <Project Path="samples/Doka.Tabular.Samples.Controller/Doka.Tabular.Samples.Controller.csproj" />
+    <Project Path="samples/Doka.Tabular.Samples.EntityFrameworkCore/Doka.Tabular.Samples.EntityFrameworkCore.csproj" />
+    <Project Path="samples/Doka.Tabular.Samples.Journals/Doka.Tabular.Samples.Journals.csproj" />
+    <Project Path="samples/Doka.Tabular.Samples.MinimalApi/Doka.Tabular.Samples.MinimalApi.csproj" />
+    <Project Path="samples/Doka.Tabular.Samples.MultiSheet/Doka.Tabular.Samples.MultiSheet.csproj" />
+    <Project Path="samples/Doka.Tabular.Samples.MultiTarget/Doka.Tabular.Samples.MultiTarget.csproj" />
+    <Project Path="samples/Doka.Tabular.Samples.NestedMaps/Doka.Tabular.Samples.NestedMaps.csproj" />
+    <Project Path="samples/Doka.Tabular.Samples.Sftp/Doka.Tabular.Samples.Sftp.csproj" />
+  </Folder>
+
+  <Folder Name="/benchmarks/">
+    <Project Path="benchmarks/Doka.Tabular.Benchmarks/Doka.Tabular.Benchmarks.csproj" />
+  </Folder>
+
+</Solution>
