@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="../Doka.Tabular.EntityFrameworkCore.Specification/Doka.Tabular.EntityFrameworkCore.Specification.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Doka.EntityFrameworkCore.MySql" />
+    <PackageReference Include="Testcontainers.MariaDb" />
+    <PackageReference Include="Testcontainers.MySql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="../Shared/Database/DatabaseImages.cs" Link="Infrastructure/DatabaseImages.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="../../docker/database-images.Dockerfile" LogicalName="Tabular.TestImages" />
+  </ItemGroup>
+
+</Project>

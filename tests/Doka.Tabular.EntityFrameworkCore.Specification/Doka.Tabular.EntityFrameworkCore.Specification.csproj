@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/Doka.Tabular.EntityFrameworkCore/Doka.Tabular.EntityFrameworkCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Extensions.TimeProvider.Testing" />
+    <PackageReference Include="xunit.v3.assert" />
+    <PackageReference Include="xunit.v3.extensibility.core" />
+  </ItemGroup>
+
+  <!-- WHY: The specification is a helper library without the shared sources of the test applications; it links the
+       one helper its cases use, which stays internal, so it does not clash with the copy of each application. -->
+  <ItemGroup>
+    <Compile Include="../Shared/Meeting.cs" Link="Infrastructure/Meeting.cs" />
+  </ItemGroup>
+
+  <!-- WHY: Topic partials stay listed under their main file in the IDE; one wildcard per partial family. -->
+  <ItemGroup>
+    <Compile Update="Cases/ImportSpecification.*.cs">
+      <DependentUpon>ImportSpecification.cs</DependentUpon>
+    </Compile>
+
+    <Compile Update="Cases/JournalSpecification.*.cs">
+      <DependentUpon>JournalSpecification.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+</Project>

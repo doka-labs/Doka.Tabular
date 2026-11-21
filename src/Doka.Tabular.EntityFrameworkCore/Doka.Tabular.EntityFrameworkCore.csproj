@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>Doka.Tabular.EntityFrameworkCore</RootNamespace>
+    <Description>EF Core insert, upsert, lookup and journals for Doka.Tabular imports and exports.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../Doka.Tabular/Doka.Tabular.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" />
+  </ItemGroup>
+
+  <!-- WHY: Topic partials stay listed under their main file in the IDE; one wildcard per partial family. -->
+  <ItemGroup>
+    <Compile Update="Journals/ImportJournalRun.*.cs">
+      <DependentUpon>ImportJournalRun.cs</DependentUpon>
+    </Compile>
+
+    <Compile Update="Journals/TabularJournal.*.cs">
+      <DependentUpon>TabularJournal.cs</DependentUpon>
+    </Compile>
+
+    <Compile Update="Writing/WriteSession.*.cs">
+      <DependentUpon>WriteSession.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+</Project>
