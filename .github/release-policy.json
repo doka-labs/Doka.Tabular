@@ -15,6 +15,7 @@
     "frameworkPackages": [
       "Microsoft.EntityFrameworkCore",
       "Microsoft.EntityFrameworkCore.*",
+      "Microsoft.Extensions.*",
       "Npgsql.EntityFrameworkCore.PostgreSQL",
       "Doka.EntityFrameworkCore.MySql"
     ],

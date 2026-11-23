@@ -93,6 +93,9 @@ updates:
       - dependency-name: "Microsoft.EntityFrameworkCore.*"
         update-types:
           - version-update:semver-major
+      - dependency-name: "Microsoft.Extensions.*"
+        update-types:
+          - version-update:semver-major
       - dependency-name: "Npgsql.EntityFrameworkCore.PostgreSQL"
         update-types:
           - version-update:semver-major
