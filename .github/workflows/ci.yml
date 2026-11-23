@@ -194,10 +194,11 @@ jobs:
       skippable: '["lint", "policy", "style", "tests", "mysql"]'
 
   # WHY: The release qualification later accepts the tested merge tree of a pull request only with this
-  # attestation; it requires the gate job of this run to have succeeded.
+  # attestation; it requires the gate job of this run to have succeeded. always() keeps a documentation-only
+  # pull request attested: without it, the skipped jobs before the gate would skip this job too.
   attest:
     needs: required
-    if: github.event_name == 'pull_request'
+    if: always() && github.event_name == 'pull_request' && needs.required.result == 'success'
     permissions:
       contents: read
       actions: read
