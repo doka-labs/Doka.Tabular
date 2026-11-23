@@ -1,0 +1,37 @@
+name: Dependency Audit
+run-name: ${{ inputs.maintenance && format('maintenance {0}', inputs.schedule-correlation) || 'Dependency Audit' }}
+
+# Audits every project for known vulnerabilities every night on main, and on
+# every other active release line when the release-lines coordinator
+# dispatches it.
+
+on:
+  schedule:
+    - cron: "35 4 * * *"
+  workflow_dispatch:
+    inputs:
+      maintenance:
+        type: boolean
+        default: false
+      schedule-correlation:
+        type: string
+        default: ""
+      schedule-source-sha:
+        type: string
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  guard:
+    uses: doka-labs/workflows/.github/workflows/release-line-guard.yml@f36413843a207028b92d9ee39d122e3a37c2955e # v0.1.0
+    with:
+      maintenance: ${{ inputs.maintenance || false }}
+      schedule-correlation: ${{ inputs.schedule-correlation || '' }}
+      schedule-source-sha: ${{ inputs.schedule-source-sha || '' }}
+
+  dependency-audit:
+    needs: guard
+    if: needs.guard.outputs.proceed == 'true'
+    uses: doka-labs/workflows/.github/workflows/dependency-audit.yml@f36413843a207028b92d9ee39d122e3a37c2955e # v0.1.0

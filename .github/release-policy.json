@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "revision": "2026-11-23.1",
+  "repository": "doka-labs/Doka.Tabular",
+  "authorityRef": "refs/heads/main",
+  "release": {
+    "workflowPath": ".github/workflows/release-candidate.yml",
+    "environment": "nuget",
+    "packages": [
+      "Doka.Tabular",
+      "Doka.Tabular.EntityFrameworkCore"
+    ]
+  },
+  "toolchain": {
+    "frameworkPackages": [
+      "Microsoft.EntityFrameworkCore",
+      "Microsoft.EntityFrameworkCore.*",
+      "Npgsql.EntityFrameworkCore.PostgreSQL",
+      "Doka.EntityFrameworkCore.MySql"
+    ],
+    "majorCeilingPackages": [],
+    "coherentGroups": [
+      [
+        "Microsoft.EntityFrameworkCore",
+        "Microsoft.EntityFrameworkCore.*"
+      ]
+    ],
+    "lockfiles": [
+      "src/*/packages.lock.json",
+      "tests/*/packages.lock.json",
+      "samples/*/packages.lock.json",
+      "benchmarks/*/packages.lock.json"
+    ],
+    "expectedLockfiles": 20,
+    "versionPrefix": null,
+    "coupling": "independent"
+  },
+  "lines": [
+    {
+      "sourceRef": "refs/heads/main",
+      "role": "main",
+      "packageMajor": 1,
+      "channel": "stable-and-prerelease",
+      "upstreamStage": "ga",
+      "state": "active"
+    }
+  ],
+  "workloads": [
+    {
+      "id": "audit",
+      "workflow": ".github/workflows/dependency-audit.yml",
+      "requiredJobs": [
+        "dependency-audit / Audit"
+      ],
+      "timeoutMinutes": 60
+    }
+  ],
+  "qualification": {
+    "gates": [
+      {
+        "name": "required / Required",
+        "kind": "protected-check",
+        "workflow": ".github/workflows/ci.yml"
+      }
+    ],
+    "testResults": {
+      "skips": []
+    }
+  }
+}

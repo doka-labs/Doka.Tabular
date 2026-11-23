@@ -1,0 +1,21 @@
+name: Release Lines
+
+# Starts the nightly audit on every active release line other than main and
+# verifies each run.
+
+on:
+  schedule:
+    - cron: "35 4 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    permissions:
+      contents: read
+      actions: write
+    uses: doka-labs/workflows/.github/workflows/release-lines-coordinator.yml@f36413843a207028b92d9ee39d122e3a37c2955e # v0.1.0
+    with:
+      workload: audit

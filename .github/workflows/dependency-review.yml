@@ -1,0 +1,19 @@
+name: Dependency Review
+
+# Reviews the dependency delta of every pull request. It is a workflow of its
+# own because it runs only for pull requests, while the CI gate also judges
+# pushes to main.
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  dependency-review:
+    uses: doka-labs/workflows/.github/workflows/dependency-review.yml@f36413843a207028b92d9ee39d122e3a37c2955e # v0.1.0

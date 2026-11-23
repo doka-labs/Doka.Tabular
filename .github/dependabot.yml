@@ -1,0 +1,101 @@
+# Generated from .github/dependabot-template.yml and .github/release-policy.json by
+# doka-labs/workflows; edit those files instead.
+version: 2
+updates:
+  - package-ecosystem: docker
+    target-branch: main
+    # WHY: The database images in docker/database-images.Dockerfile are digest-pinned, so a fixed image
+    # reaches the tests only through a proposed new digest. Each engine line is a deliberate test target;
+    # only patches within a line are proposed.
+    directory: /docker
+    schedule:
+      interval: monthly
+      time: "06:00"
+      timezone: Europe/Berlin
+    groups:
+      database-images:
+        patterns:
+          - "*"
+    ignore:
+      - dependency-name: mariadb
+        update-types:
+          - version-update:semver-major
+          - version-update:semver-minor
+      - dependency-name: mysql
+        update-types:
+          - version-update:semver-major
+          - version-update:semver-minor
+      - dependency-name: postgres
+        update-types:
+          - version-update:semver-major
+          - version-update:semver-minor
+    open-pull-requests-limit: 1
+    commit-message:
+      prefix: chore
+      include: scope
+  - package-ecosystem: github-actions
+    target-branch: main
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: Europe/Berlin
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+    open-pull-requests-limit: 1
+    commit-message:
+      prefix: chore
+      include: scope
+  - package-ecosystem: dotnet-sdk
+    target-branch: main
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: Europe/Berlin
+    open-pull-requests-limit: 1
+    commit-message:
+      prefix: chore
+      include: scope
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - version-update:semver-major
+  - package-ecosystem: nuget
+    target-branch: main
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: Europe/Berlin
+    groups:
+      nuget-dependencies:
+        patterns:
+          - "*"
+        # WHY: A major upgrade needs its own compatibility decision.
+        update-types:
+          - minor
+          - patch
+    # WHY: Allow the routine group alongside an independent major proposal.
+    open-pull-requests-limit: 2
+    commit-message:
+      prefix: chore
+      include: scope
+    ignore:
+      - dependency-name: "Microsoft.EntityFrameworkCore"
+        update-types:
+          - version-update:semver-major
+      - dependency-name: "Microsoft.EntityFrameworkCore.*"
+        update-types:
+          - version-update:semver-major
+      - dependency-name: "Npgsql.EntityFrameworkCore.PostgreSQL"
+        update-types:
+          - version-update:semver-major
+      - dependency-name: "Doka.EntityFrameworkCore.MySql"
+        update-types:
+          - version-update:semver-major

@@ -1,0 +1,17 @@
+name: Pull Request
+
+# Assigns the author of a new or reopened pull request.
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+
+permissions: {}
+
+jobs:
+  assign:
+    permissions:
+      pull-requests: write
+    uses: doka-labs/workflows/.github/workflows/pr-assign.yml@f36413843a207028b92d9ee39d122e3a37c2955e # v0.1.0

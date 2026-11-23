@@ -1,0 +1,4 @@
+# Public keys that may sign a release tag of this repository. git verify-tag
+# checks a tag signature against this file; GitHub verifies it independently.
+# The principal is the GitHub noreply address that the release tags carry.
+54367198+kdominic89@users.noreply.github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICK6W+ALjvxGqc5EdVxYgiaAzRCIc13SJIL7UAuGj1B1

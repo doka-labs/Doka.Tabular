@@ -1,0 +1,147 @@
+name: CI
+
+# Checks every pull request and every push to main with the shared Doka Labs
+# workflows and this repository's test matrix. A documentation-only pull
+# request skips the heavy jobs; the required gate judges all of them.
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+# WHY: A new push to the same pull request or branch makes the running checks obsolete.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  scope:
+    uses: doka-labs/workflows/.github/workflows/change-scope.yml@f36413843a207028b92d9ee39d122e3a37c2955e # v0.1.0
+
+  lint:
+    needs: scope
+    if: needs.scope.outputs.scope == 'full'
+    uses: doka-labs/workflows/.github/workflows/workflow-lint.yml@f36413843a207028b92d9ee39d122e3a37c2955e # v0.1.0
+
+  policy:
+    needs: scope
+    if: needs.scope.outputs.scope == 'full'
+    uses: doka-labs/workflows/.github/workflows/release-policy-check.yml@f36413843a207028b92d9ee39d122e3a37c2955e # v0.1.0
+
+  style:
+    needs: scope
+    if: needs.scope.outputs.scope == 'full'
+    uses: doka-labs/workflows/.github/workflows/code-style.yml@f36413843a207028b92d9ee39d122e3a37c2955e # v0.1.0
+    with:
+      solution: Doka.Tabular.slnx
+
+  tests:
+    name: Tests
+    needs: scope
+    if: needs.scope.outputs.scope == 'full'
+    runs-on: ubuntu-26.04
+    # WHY: A bound against hangs; the database rows start their server in a container first.
+    timeout-minutes: 30
+    strategy:
+      # WHY: Every project and engine reports its own result instead of stopping at the first failure.
+      fail-fast: false
+      matrix:
+        # WHY: One test project per process, and the MySQL tests once per engine stage of
+        # docker/database-images.Dockerfile, selected through DOKA_TABULAR_MYSQL_TARGET.
+        include:
+          - project: Doka.Tabular.Tests
+            target: ""
+            artifact: core
+          - project: Doka.Tabular.Csv.Tests
+            target: ""
+            artifact: csv
+          - project: Doka.Tabular.Excel.Tests
+            target: ""
+            artifact: excel
+          - project: Doka.Tabular.EntityFrameworkCore.Tests
+            target: ""
+            artifact: entityframeworkcore
+          - project: Doka.Tabular.EntityFrameworkCore.PostgreSql.Tests
+            target: ""
+            artifact: entityframeworkcore-postgresql
+          - project: Doka.Tabular.Samples.Tests
+            target: ""
+            artifact: samples
+          - project: Doka.Tabular.Benchmarks.Tests
+            target: ""
+            artifact: benchmarks
+          - project: Doka.Tabular.EntityFrameworkCore.MySql.Tests
+            target: "mariadb1011"
+            artifact: entityframeworkcore-mysql-mariadb1011
+          - project: Doka.Tabular.EntityFrameworkCore.MySql.Tests
+            target: "mariadb114"
+            artifact: entityframeworkcore-mysql-mariadb114
+          - project: Doka.Tabular.EntityFrameworkCore.MySql.Tests
+            target: "mariadb118"
+            artifact: entityframeworkcore-mysql-mariadb118
+          - project: Doka.Tabular.EntityFrameworkCore.MySql.Tests
+            target: "mariadb123"
+            artifact: entityframeworkcore-mysql-mariadb123
+          - project: Doka.Tabular.EntityFrameworkCore.MySql.Tests
+            target: "mysql84"
+            artifact: entityframeworkcore-mysql-mysql84
+          - project: Doka.Tabular.EntityFrameworkCore.MySql.Tests
+            target: "mysql97"
+            artifact: entityframeworkcore-mysql-mysql97
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up the .NET SDK of global.json
+        uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
+        with:
+          global-json-file: global.json
+
+      - name: Restore the locked dependency graph
+        run: dotnet restore Doka.Tabular.slnx --locked-mode
+
+      # WHY: Coverage starts only with the coverlet switch; tests/Shared/testconfig.json sets its format and filter.
+      # The report gets a fixed name so the upload names one file.
+      - name: Run the tests with coverage
+        env:
+          PROJECT: ${{ matrix.project }}
+          DOKA_TABULAR_MYSQL_TARGET: ${{ matrix.target }}
+        run: |
+          dotnet test --project "tests/$PROJECT" --configuration Release --no-restore \
+            --results-directory "$RUNNER_TEMP/results" -- --coverlet
+          mv "$RUNNER_TEMP"/results/coverage.cobertura.*.xml "$RUNNER_TEMP/coverage.cobertura.xml"
+
+      - name: Upload the coverage report
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: coverage-${{ matrix.artifact }}
+          path: ${{ runner.temp }}/coverage.cobertura.xml
+          if-no-files-found: error
+
+  required:
+    needs: [scope, lint, policy, style, tests]
+    if: always()
+    uses: doka-labs/workflows/.github/workflows/required-gate.yml@f36413843a207028b92d9ee39d122e3a37c2955e # v0.1.0
+    with:
+      results: ${{ toJSON(needs) }}
+      scope: ${{ needs.scope.outputs.scope }}
+      skippable: '["lint", "policy", "style", "tests"]'
+
+  # WHY: The release qualification later accepts the tested merge tree of a pull request only with this
+  # attestation; it requires the gate job of this run to have succeeded.
+  attest:
+    needs: required
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+      actions: read
+      id-token: write
+      attestations: write
+    uses: doka-labs/workflows/.github/workflows/release-pr-attestation.yml@f36413843a207028b92d9ee39d122e3a37c2955e # v0.1.0
