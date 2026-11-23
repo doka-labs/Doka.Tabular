@@ -447,7 +447,7 @@
         "dependencies": {
           "Doka.EntityFrameworkCore.MySql": "[10.7.0, )",
           "Doka.Tabular.EntityFrameworkCore": "[1.0.0, )",
-          "Microsoft.Extensions.TimeProvider.Testing": "[10.11.0, )",
+          "Microsoft.Extensions.TimeProvider.Testing": "[10.11.1, )",
           "Testcontainers.MariaDb": "[4.17.0, )"
         }
       },
@@ -519,9 +519,9 @@
       },
       "Microsoft.Extensions.TimeProvider.Testing": {
         "type": "CentralTransitive",
-        "requested": "[10.11.0, )",
-        "resolved": "10.11.0",
-        "contentHash": "DTivKZ2Du0dJideTTa6vPj/eXKNRu+RxtjBX7NOOUXHBtHx1ehbE+lM+j3/5M3wU6BqzcZqEEyR4+FnPKs2rTA=="
+        "requested": "[10.11.1, )",
+        "resolved": "10.11.1",
+        "contentHash": "+ao8Sj5oSSANi3rM1JN0u/76bTE61Afxb2idMhlLjB84Z/bFArnUQeRrXOqzqaqj8bxqPQQUKXwv3jai+IN+GA=="
       },
       "Testcontainers.MariaDb": {
         "type": "CentralTransitive",
