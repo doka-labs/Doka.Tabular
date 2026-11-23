@@ -1,5 +1,6 @@
 # Doka.Tabular
 
+[![CI](https://github.com/doka-labs/Doka.Tabular/actions/workflows/ci.yml/badge.svg)](https://github.com/doka-labs/Doka.Tabular/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 Typed CSV and Excel import and export for .NET 10, with optional EF Core targets
