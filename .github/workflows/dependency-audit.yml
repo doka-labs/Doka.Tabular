@@ -25,7 +25,7 @@ permissions:
 
 jobs:
   guard:
-    uses: doka-labs/workflows/.github/workflows/release-line-guard.yml@a596aa23387b467c9b6f3206ca7582f5a8d30a21 # v0.1.1
+    uses: doka-labs/workflows/.github/workflows/release-line-guard.yml@67433b1335bdbc11a0d67f27573a3e0ed009fdb9 # v0.2.0
     with:
       maintenance: ${{ inputs.maintenance || false }}
       schedule-correlation: ${{ inputs.schedule-correlation || '' }}
@@ -34,4 +34,4 @@ jobs:
   dependency-audit:
     needs: guard
     if: needs.guard.outputs.proceed == 'true'
-    uses: doka-labs/workflows/.github/workflows/dependency-audit.yml@a596aa23387b467c9b6f3206ca7582f5a8d30a21 # v0.1.1
+    uses: doka-labs/workflows/.github/workflows/dependency-audit.yml@67433b1335bdbc11a0d67f27573a3e0ed009fdb9 # v0.2.0
