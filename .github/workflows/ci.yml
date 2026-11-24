@@ -20,24 +20,28 @@ concurrency:
 
 jobs:
   scope:
-    uses: doka-labs/workflows/.github/workflows/change-scope.yml@a596aa23387b467c9b6f3206ca7582f5a8d30a21 # v0.1.1
+    uses: doka-labs/workflows/.github/workflows/change-scope.yml@67433b1335bdbc11a0d67f27573a3e0ed009fdb9 # v0.2.0
 
   lint:
     needs: scope
     if: needs.scope.outputs.scope == 'full'
-    uses: doka-labs/workflows/.github/workflows/workflow-lint.yml@a596aa23387b467c9b6f3206ca7582f5a8d30a21 # v0.1.1
+    uses: doka-labs/workflows/.github/workflows/workflow-lint.yml@67433b1335bdbc11a0d67f27573a3e0ed009fdb9 # v0.2.0
 
   policy:
     needs: scope
     if: needs.scope.outputs.scope == 'full'
-    uses: doka-labs/workflows/.github/workflows/release-policy-check.yml@a596aa23387b467c9b6f3206ca7582f5a8d30a21 # v0.1.1
+    uses: doka-labs/workflows/.github/workflows/release-policy-check.yml@67433b1335bdbc11a0d67f27573a3e0ed009fdb9 # v0.2.0
 
   style:
     needs: scope
     if: needs.scope.outputs.scope == 'full'
-    uses: doka-labs/workflows/.github/workflows/code-style.yml@a596aa23387b467c9b6f3206ca7582f5a8d30a21 # v0.1.1
+    uses: doka-labs/workflows/.github/workflows/code-style.yml@67433b1335bdbc11a0d67f27573a3e0ed009fdb9 # v0.2.0
     with:
       solution: Doka.Tabular.slnx
+
+  # WHY: Decision records are documentation, so the check runs for docs pull requests too and is not skippable.
+  decision-records:
+    uses: doka-labs/workflows/.github/workflows/decision-records.yml@67433b1335bdbc11a0d67f27573a3e0ed009fdb9 # v0.2.0
 
   tests:
     name: Test ${{ matrix.name }}
@@ -191,14 +195,14 @@ jobs:
     permissions:
       contents: read
       actions: read
-    uses: doka-labs/workflows/.github/workflows/coverage-gate.yml@a596aa23387b467c9b6f3206ca7582f5a8d30a21 # v0.1.1
+    uses: doka-labs/workflows/.github/workflows/coverage-gate.yml@67433b1335bdbc11a0d67f27573a3e0ed009fdb9 # v0.2.0
     with:
       reports-pattern: coverage-*
 
   required:
-    needs: [scope, lint, policy, style, tests, mysql, coverage]
+    needs: [scope, lint, policy, style, decision-records, tests, mysql, coverage]
     if: always()
-    uses: doka-labs/workflows/.github/workflows/required-gate.yml@a596aa23387b467c9b6f3206ca7582f5a8d30a21 # v0.1.1
+    uses: doka-labs/workflows/.github/workflows/required-gate.yml@67433b1335bdbc11a0d67f27573a3e0ed009fdb9 # v0.2.0
     with:
       results: ${{ toJSON(needs) }}
       scope: ${{ needs.scope.outputs.scope }}
@@ -215,4 +219,4 @@ jobs:
       actions: read
       id-token: write
       attestations: write
-    uses: doka-labs/workflows/.github/workflows/release-pr-attestation.yml@a596aa23387b467c9b6f3206ca7582f5a8d30a21 # v0.1.1
+    uses: doka-labs/workflows/.github/workflows/release-pr-attestation.yml@67433b1335bdbc11a0d67f27573a3e0ed009fdb9 # v0.2.0
