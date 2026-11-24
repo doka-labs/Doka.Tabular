@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "evidenceMaxAgeSeconds": null,
+  "assemblies": [
+    {
+      "name": "Doka.Tabular",
+      "minimumLinePercent": 90,
+      "minimumBranchPercent": 85
+    },
+    {
+      "name": "Doka.Tabular.EntityFrameworkCore",
+      "minimumLinePercent": 92,
+      "minimumBranchPercent": 81
+    }
+  ],
+  "criticalClasses": []
+}

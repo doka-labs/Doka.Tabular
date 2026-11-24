@@ -20,22 +20,22 @@ concurrency:
 
 jobs:
   scope:
-    uses: doka-labs/workflows/.github/workflows/change-scope.yml@f36413843a207028b92d9ee39d122e3a37c2955e # v0.1.0
+    uses: doka-labs/workflows/.github/workflows/change-scope.yml@a596aa23387b467c9b6f3206ca7582f5a8d30a21 # v0.1.1
 
   lint:
     needs: scope
     if: needs.scope.outputs.scope == 'full'
-    uses: doka-labs/workflows/.github/workflows/workflow-lint.yml@f36413843a207028b92d9ee39d122e3a37c2955e # v0.1.0
+    uses: doka-labs/workflows/.github/workflows/workflow-lint.yml@a596aa23387b467c9b6f3206ca7582f5a8d30a21 # v0.1.1
 
   policy:
     needs: scope
     if: needs.scope.outputs.scope == 'full'
-    uses: doka-labs/workflows/.github/workflows/release-policy-check.yml@f36413843a207028b92d9ee39d122e3a37c2955e # v0.1.0
+    uses: doka-labs/workflows/.github/workflows/release-policy-check.yml@a596aa23387b467c9b6f3206ca7582f5a8d30a21 # v0.1.1
 
   style:
     needs: scope
     if: needs.scope.outputs.scope == 'full'
-    uses: doka-labs/workflows/.github/workflows/code-style.yml@f36413843a207028b92d9ee39d122e3a37c2955e # v0.1.0
+    uses: doka-labs/workflows/.github/workflows/code-style.yml@a596aa23387b467c9b6f3206ca7582f5a8d30a21 # v0.1.1
     with:
       solution: Doka.Tabular.slnx
 
@@ -184,14 +184,25 @@ jobs:
           path: ${{ runner.temp }}/coverage.cobertura.xml
           if-no-files-found: error
 
+  # WHY: The gate merges the reports of every test job of this run, so it waits for all of them.
+  coverage:
+    needs: [scope, tests, mysql]
+    if: needs.scope.outputs.scope == 'full'
+    permissions:
+      contents: read
+      actions: read
+    uses: doka-labs/workflows/.github/workflows/coverage-gate.yml@a596aa23387b467c9b6f3206ca7582f5a8d30a21 # v0.1.1
+    with:
+      reports-pattern: coverage-*
+
   required:
-    needs: [scope, lint, policy, style, tests, mysql]
+    needs: [scope, lint, policy, style, tests, mysql, coverage]
     if: always()
-    uses: doka-labs/workflows/.github/workflows/required-gate.yml@f36413843a207028b92d9ee39d122e3a37c2955e # v0.1.0
+    uses: doka-labs/workflows/.github/workflows/required-gate.yml@a596aa23387b467c9b6f3206ca7582f5a8d30a21 # v0.1.1
     with:
       results: ${{ toJSON(needs) }}
       scope: ${{ needs.scope.outputs.scope }}
-      skippable: '["lint", "policy", "style", "tests", "mysql"]'
+      skippable: '["lint", "policy", "style", "tests", "mysql", "coverage"]'
 
   # WHY: The release qualification later accepts the tested merge tree of a pull request only with this
   # attestation; it requires the gate job of this run to have succeeded. always() keeps a documentation-only
@@ -204,4 +215,4 @@ jobs:
       actions: read
       id-token: write
       attestations: write
-    uses: doka-labs/workflows/.github/workflows/release-pr-attestation.yml@f36413843a207028b92d9ee39d122e3a37c2955e # v0.1.0
+    uses: doka-labs/workflows/.github/workflows/release-pr-attestation.yml@a596aa23387b467c9b6f3206ca7582f5a8d30a21 # v0.1.1
