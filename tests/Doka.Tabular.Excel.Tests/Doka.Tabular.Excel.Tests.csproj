@@ -12,6 +12,10 @@
   <ItemGroup>
     <Compile Include="../Doka.Tabular.Tests/Infrastructure/TestFiles.cs" Link="Infrastructure/TestFiles.cs" />
     <Compile Include="../Doka.Tabular.Tests/Infrastructure/CheckedFormats.cs" Link="Infrastructure/CheckedFormats.cs" />
+    <Compile Include="../Doka.Tabular.Tests/Infrastructure/ExportCalls.cs" Link="Infrastructure/ExportCalls.cs" />
+    <Compile Include="../Doka.Tabular.Tests/Infrastructure/ImportCalls.cs" Link="Infrastructure/ImportCalls.cs" />
+    <Compile Include="../Doka.Tabular.Tests/Infrastructure/OverloadSurface.cs" Link="Infrastructure/OverloadSurface.cs" />
+    <Compile Include="../Doka.Tabular.Tests/Infrastructure/Residents.cs" Link="Infrastructure/Residents.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,6 +28,12 @@
       <DependentUpon>ExcelExportTests.cs</DependentUpon>
     </Compile>
 
+    <Compile Update="ExcelOverloadTests.*.cs">
+      <DependentUpon>ExcelOverloadTests.cs</DependentUpon>
+    </Compile>
+    <Compile Update="ExcelWorkbookOverloadTests.*.cs">
+      <DependentUpon>ExcelWorkbookOverloadTests.cs</DependentUpon>
+    </Compile>
     <Compile Update="ReferenceFileTests.*.cs">
       <DependentUpon>ReferenceFileTests.cs</DependentUpon>
     </Compile>

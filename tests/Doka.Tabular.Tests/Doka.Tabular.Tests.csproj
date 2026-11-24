@@ -36,6 +36,9 @@
       <DependentUpon>StructureTests.cs</DependentUpon>
     </Compile>
 
+    <Compile Update="TabularOverloadTests.*.cs">
+      <DependentUpon>TabularOverloadTests.cs</DependentUpon>
+    </Compile>
     <Compile Update="TimeTests.*.cs">
       <DependentUpon>TimeTests.cs</DependentUpon>
     </Compile>
