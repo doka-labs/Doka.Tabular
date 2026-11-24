@@ -8,8 +8,18 @@
     <PackageReference Include="FsCheck.Xunit.v3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Include="../Doka.Tabular.Tests/Infrastructure/ExportCalls.cs" Link="Infrastructure/ExportCalls.cs" />
+    <Compile Include="../Doka.Tabular.Tests/Infrastructure/ImportCalls.cs" Link="Infrastructure/ImportCalls.cs" />
+    <Compile Include="../Doka.Tabular.Tests/Infrastructure/OverloadSurface.cs" Link="Infrastructure/OverloadSurface.cs" />
+    <Compile Include="../Doka.Tabular.Tests/Infrastructure/Residents.cs" Link="Infrastructure/Residents.cs" />
+  </ItemGroup>
+
   <!-- WHY: Topic partials stay listed under their main file in the IDE; one wildcard per partial family. -->
   <ItemGroup>
+    <Compile Update="CsvOverloadTests.*.cs">
+      <DependentUpon>CsvOverloadTests.cs</DependentUpon>
+    </Compile>
     <Compile Update="CsvTargetTests.*.cs">
       <DependentUpon>CsvTargetTests.cs</DependentUpon>
     </Compile>

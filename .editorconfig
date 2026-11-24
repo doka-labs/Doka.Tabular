@@ -98,6 +98,17 @@ dotnet_diagnostic.IDE0063.severity = suggestion
 dotnet_diagnostic.IDE0090.severity = suggestion
 dotnet_diagnostic.IDE0290.severity = none
 
+# Logging uses [LoggerMessage] with constant templates everywhere, not only on
+# hot paths.
+dotnet_diagnostic.CA1848.severity = warning
+dotnet_diagnostic.CA2254.severity = warning
+
+# Insecure deserialization and XML processing rules are off by default.
+dotnet_diagnostic.CA2326.severity = warning
+dotnet_diagnostic.CA2327.severity = warning
+dotnet_diagnostic.CA3075.severity = warning
+dotnet_diagnostic.CA3077.severity = warning
+
 # --- File Structure And Imports ----------------------------------------------
 # Imports are typically centralized in project-level Imports.cs files.
 dotnet_sort_system_directives_first = true
