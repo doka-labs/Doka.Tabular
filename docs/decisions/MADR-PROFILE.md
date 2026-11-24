@@ -57,10 +57,10 @@ doka-profile-version: "1.0"
 ---
 ```
 
-- Every key occurs exactly once. Further flat keys may follow the thirteen
-  keys. They add information and never repeat or change the meaning of a key
-  or section of this profile or of MADR 4.0.0. Keys are not nested. The title
-  appears in the H1, not in the metadata.
+- Every key occurs exactly once. Further keys may follow the thirteen keys.
+  They add information and never repeat or change the meaning of a key or
+  section of this profile or of MADR 4.0.0. Each of the thirteen keys is
+  written on one line. The title appears in the H1, not in the metadata.
 - `id`, `status`, `date`, `scope`, `madr-version`, and `doka-profile-version`
   are non-empty scalar values. `madr-version` is `"4.0.0"` and
   `doka-profile-version` is `"1.0"`.
@@ -70,9 +70,10 @@ doka-profile-version: "1.0"
 - The participant and relationship keys are single-line lists of unique
   entries. `decision-makers` names the actually accountable people and is
   never empty. `consulted` names actually consulted people and stays empty
-  otherwise. `informed` is always exactly `["@doka-labs/core-maintainers"]`;
-  it names the intended audience and proves neither agreement nor a completed
-  notification.
+  otherwise. `informed` names the intended audience and proves neither
+  agreement nor a completed notification. Repositories of doka-labs name
+  `"@doka-labs/core-maintainers"`; another project names its own audience or
+  leaves the list empty.
 - Relationship lists contain only record IDs and may be empty.
 - The metadata block is the only source of current metadata. Status, date, and
   scope are not repeated as a labeled block in the body.
@@ -109,7 +110,9 @@ not count.
   with a title that matches an entry of `Considered Options`.
 - Each option and `Consequences` contain at least one `Good, because ...` and
   one `Bad, because ...` entry. `Neutral, because ...` entries are allowed.
-  Reasons name concrete effects on the decision drivers.
+  The entries may stand under headings of the record's own below the section,
+  such as one per kind of consequence. Reasons name concrete effects on the
+  decision drivers.
 - `Confirmation` describes reproducible checks with expected results and the
   relevant negative and boundary cases. Planned checks and checks already
   performed stay distinguishable. For trigger-dependent implementation it is
@@ -161,8 +164,9 @@ changes as dated list entries:
 - YYYY-MM-DD: Rationale, review, or another evidenced event.
 ```
 
-- The first entry uses the recording phrase shown above; its date is the
-  recording date. The date of the last entry equals `date`.
+- The first entry reads `Decision recorded with status <status>.` with the
+  status the decision had when it was recorded; its date is the recording
+  date. The date of the last entry equals `date`.
 - All dates are valid and never decrease. Status changes use the shown phrase
   exactly; further reasons may get their own dated entries. The chain of
   status changes is complete and ends at the current metadata status.
@@ -186,12 +190,24 @@ changes as dated list entries:
 ## Sources and references
 
 - External claims are checked against suitable primary sources. External URLs
-  appear only under `Sources`, each with title, direct address, primary-source
-  marker, and the actual retrieval date:
+  appear only under `Sources`, each with title, address, primary-source
+  marker, and the actual retrieval date. A link is written inline or by
+  reference; both forms may be used in one record:
 
   ```text
   - [MADR 4.0.0 full template](https://github.com/adr/madr/blob/4.0.0/template/adr-template.md) (primary source; retrieved 2026-11-17)
+  - [MADR 4.0.0 full template][madr-template] (primary source; retrieved 2026-11-17)
+
+  [madr-template]: https://github.com/adr/madr/blob/4.0.0/template/adr-template.md
   ```
+
+- A label is defined exactly once and every definition is used. A definition
+  that carries an external URL stands under `Sources` and belongs to an entry
+  there. Text outside `Sources` may cite a source by its label; the URL itself
+  still appears only under `Sources`.
+- After the retrieval date an entry may say in words what the source shows
+  and what it does not. It names no further URL; a second source gets an
+  entry of its own.
 
 - Versioned contracts use correspondingly versioned sources. The retrieval date
   is the date the claim was checked and is distinct from the recording date. A
@@ -208,7 +224,8 @@ changes as dated list entries:
   `Implementation References` as resolvable relative repository links.
 - Every record is understandable and verifiable from this repository alone.
   Repository references use relative paths that resolve inside the repository.
-  The only external references are publicly reachable primary sources.
+  The only external references are publicly reachable primary sources. An
+  external URL uses HTTPS, names a host, and carries no credentials.
 
 ## Upstream basis
 
