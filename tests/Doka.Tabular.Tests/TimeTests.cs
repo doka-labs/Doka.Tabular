@@ -163,6 +163,34 @@ public sealed partial class TimeTests
     }
 
     [Fact]
+    public async Task DateTime_WithANegativeOffset_IsReadAsUtc()
+    {
+        // Act
+        var report = await ReadAsync<DateTime>("2024-04-01T14:30:00-05:30", null, null, null);
+
+        // Assert
+        var value = ValueOf(report);
+        Assert.Equal((new DateTime(2024, 4, 1, 20, 0, 0), DateTimeKind.Utc), (value, value.Kind));
+    }
+
+    [Fact]
+    public async Task DateTimeOffset_WithANegativeOffset_KeepsTheOffsetOfTheText()
+    {
+        // Act
+        var report = await ReadAsync<DateTimeOffset>("2024-04-01T14:30:00-05:30", null, null, null);
+
+        // Assert
+        Assert.Equal(new DateTimeOffset(2024,
+                4,
+                1,
+                14,
+                30,
+                0,
+                new TimeSpan(-5, -30, 0)),
+            ValueOf(report));
+    }
+
+    [Fact]
     public async Task DateTimeOffset_KeepsTheOffsetOfTheText()
     {
         // Act

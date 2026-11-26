@@ -1,1 +1,305 @@
 #nullable enable
+Doka.Tabular.EntityFrameworkCore.ExportDeletionOptions
+Doka.Tabular.EntityFrameworkCore.ExportDeletionOptions.<Clone>$() -> Doka.Tabular.EntityFrameworkCore.ExportDeletionOptions!
+Doka.Tabular.EntityFrameworkCore.ExportDeletionOptions.AllowUnfinished.get -> bool
+Doka.Tabular.EntityFrameworkCore.ExportDeletionOptions.AllowUnfinished.init -> void
+Doka.Tabular.EntityFrameworkCore.ExportDeletionOptions.Equals(Doka.Tabular.EntityFrameworkCore.ExportDeletionOptions? other) -> bool
+Doka.Tabular.EntityFrameworkCore.ExportDeletionOptions.ExportDeletionOptions() -> void
+Doka.Tabular.EntityFrameworkCore.ImportClaimState
+Doka.Tabular.EntityFrameworkCore.ImportClaimState.Imported = 1 -> Doka.Tabular.EntityFrameworkCore.ImportClaimState
+Doka.Tabular.EntityFrameworkCore.ImportClaimState.Released = 3 -> Doka.Tabular.EntityFrameworkCore.ImportClaimState
+Doka.Tabular.EntityFrameworkCore.ImportClaimState.Running = 0 -> Doka.Tabular.EntityFrameworkCore.ImportClaimState
+Doka.Tabular.EntityFrameworkCore.ImportClaimState.Unresolved = 2 -> Doka.Tabular.EntityFrameworkCore.ImportClaimState
+Doka.Tabular.EntityFrameworkCore.ImportDuplicateBehavior
+Doka.Tabular.EntityFrameworkCore.ImportDuplicateBehavior.Reject = 1 -> Doka.Tabular.EntityFrameworkCore.ImportDuplicateBehavior
+Doka.Tabular.EntityFrameworkCore.ImportDuplicateBehavior.Skip = 0 -> Doka.Tabular.EntityFrameworkCore.ImportDuplicateBehavior
+Doka.Tabular.EntityFrameworkCore.ImportRecoveryResult
+Doka.Tabular.EntityFrameworkCore.ImportRecoveryResult.State.get -> Doka.Tabular.EntityFrameworkCore.ImportRecoveryState?
+Doka.Tabular.EntityFrameworkCore.ImportRecoveryState
+Doka.Tabular.EntityFrameworkCore.ImportRecoveryState.Imported = 1 -> Doka.Tabular.EntityFrameworkCore.ImportRecoveryState
+Doka.Tabular.EntityFrameworkCore.ImportRecoveryState.InProgress = 2 -> Doka.Tabular.EntityFrameworkCore.ImportRecoveryState
+Doka.Tabular.EntityFrameworkCore.ImportRecoveryState.NoChanges = 0 -> Doka.Tabular.EntityFrameworkCore.ImportRecoveryState
+Doka.Tabular.EntityFrameworkCore.ImportRecoveryState.Unresolved = 3 -> Doka.Tabular.EntityFrameworkCore.ImportRecoveryState
+Doka.Tabular.EntityFrameworkCore.ImportResolution
+Doka.Tabular.EntityFrameworkCore.ImportResolution.<Clone>$() -> Doka.Tabular.EntityFrameworkCore.ImportResolution!
+Doka.Tabular.EntityFrameworkCore.ImportResolution.Equals(Doka.Tabular.EntityFrameworkCore.ImportResolution? other) -> bool
+Doka.Tabular.EntityFrameworkCore.ImportResolution.ImportResolution() -> void
+Doka.Tabular.EntityFrameworkCore.ImportResolution.Outcome.get -> Doka.Tabular.EntityFrameworkCore.ImportResolutionOutcome
+Doka.Tabular.EntityFrameworkCore.ImportResolution.Outcome.init -> void
+Doka.Tabular.EntityFrameworkCore.ImportResolution.Reason.get -> string!
+Doka.Tabular.EntityFrameworkCore.ImportResolution.Reason.init -> void
+Doka.Tabular.EntityFrameworkCore.ImportResolutionOutcome
+Doka.Tabular.EntityFrameworkCore.ImportResolutionOutcome.Imported = 1 -> Doka.Tabular.EntityFrameworkCore.ImportResolutionOutcome
+Doka.Tabular.EntityFrameworkCore.ImportResolutionOutcome.NoChanges = 0 -> Doka.Tabular.EntityFrameworkCore.ImportResolutionOutcome
+Doka.Tabular.EntityFrameworkCore.JournalCallStatus
+Doka.Tabular.EntityFrameworkCore.JournalCallStatus.Canceled = 4 -> Doka.Tabular.EntityFrameworkCore.JournalCallStatus
+Doka.Tabular.EntityFrameworkCore.JournalCallStatus.Conflict = 2 -> Doka.Tabular.EntityFrameworkCore.JournalCallStatus
+Doka.Tabular.EntityFrameworkCore.JournalCallStatus.Failed = 3 -> Doka.Tabular.EntityFrameworkCore.JournalCallStatus
+Doka.Tabular.EntityFrameworkCore.JournalCallStatus.NotFound = 1 -> Doka.Tabular.EntityFrameworkCore.JournalCallStatus
+Doka.Tabular.EntityFrameworkCore.JournalCallStatus.Succeeded = 0 -> Doka.Tabular.EntityFrameworkCore.JournalCallStatus
+Doka.Tabular.EntityFrameworkCore.JournalName
+Doka.Tabular.EntityFrameworkCore.JournalName.Equals(Doka.Tabular.EntityFrameworkCore.JournalName? other) -> bool
+Doka.Tabular.EntityFrameworkCore.JournalName.Value.get -> string!
+Doka.Tabular.EntityFrameworkCore.JournalScope
+Doka.Tabular.EntityFrameworkCore.JournalScope.Equals(Doka.Tabular.EntityFrameworkCore.JournalScope? other) -> bool
+Doka.Tabular.EntityFrameworkCore.JournalScope.Value.get -> string!
+Doka.Tabular.EntityFrameworkCore.TabularDatabase
+Doka.Tabular.EntityFrameworkCore.TabularDatabase<TContext>
+Doka.Tabular.EntityFrameworkCore.TabularDatabase<TContext>.PrepareInsert<TDto, TEntity>(System.Func<TContext!, Microsoft.EntityFrameworkCore.DbSet<TEntity!>!>! set, System.Func<TDto, Doka.Tabular.EntityFrameworkCore.TabularTargetValues!, TEntity!>! create, Doka.Tabular.EntityFrameworkCore.TabularMatch<TDto, TEntity!>? match = null, System.Action<Doka.Tabular.EntityFrameworkCore.TabularWriteErrors!>? errors = null) -> Doka.Tabular.EntityFrameworkCore.TabularWriteTarget<TDto, TEntity!>!
+Doka.Tabular.EntityFrameworkCore.TabularDatabase<TContext>.PrepareInsert<TDto, TEntity>(System.Func<TContext!, Microsoft.EntityFrameworkCore.DbSet<TEntity!>!>! set, System.Func<TDto, TEntity!>! create, Doka.Tabular.EntityFrameworkCore.TabularMatch<TDto, TEntity!>? match = null, System.Action<Doka.Tabular.EntityFrameworkCore.TabularWriteErrors!>? errors = null) -> Doka.Tabular.EntityFrameworkCore.TabularWriteTarget<TDto, TEntity!>!
+Doka.Tabular.EntityFrameworkCore.TabularDatabase<TContext>.PrepareInsert<TEntity>(System.Func<TContext!, Microsoft.EntityFrameworkCore.DbSet<TEntity!>!>! set, Doka.Tabular.EntityFrameworkCore.TabularMatch<TEntity!, TEntity!>? match = null, System.Action<Doka.Tabular.EntityFrameworkCore.TabularWriteErrors!>? errors = null) -> Doka.Tabular.EntityFrameworkCore.TabularWriteTarget<TEntity!, TEntity!>!
+Doka.Tabular.EntityFrameworkCore.TabularDatabase<TContext>.PrepareLookup<TDto, TEntity>(System.Func<TContext!, Microsoft.EntityFrameworkCore.DbSet<TEntity!>!>! set, Doka.Tabular.EntityFrameworkCore.TabularMatch<TDto, TEntity!>! match) -> Doka.Tabular.EntityFrameworkCore.TabularLookupTarget<TDto, TEntity!>!
+Doka.Tabular.EntityFrameworkCore.TabularDatabase<TContext>.PrepareUpsert<TDto, TEntity>(System.Func<TContext!, Microsoft.EntityFrameworkCore.DbSet<TEntity!>!>! set, Doka.Tabular.EntityFrameworkCore.TabularMatch<TDto, TEntity!>! match, System.Func<TDto, Doka.Tabular.EntityFrameworkCore.TabularTargetValues!, TEntity!>! create, System.Action<TEntity!, TDto>! update, System.Action<Doka.Tabular.EntityFrameworkCore.TabularWriteErrors!>? errors = null) -> Doka.Tabular.EntityFrameworkCore.TabularWriteTarget<TDto, TEntity!>!
+Doka.Tabular.EntityFrameworkCore.TabularDatabase<TContext>.PrepareUpsert<TDto, TEntity>(System.Func<TContext!, Microsoft.EntityFrameworkCore.DbSet<TEntity!>!>! set, Doka.Tabular.EntityFrameworkCore.TabularMatch<TDto, TEntity!>! match, System.Func<TDto, TEntity!>! create, System.Action<TEntity!, TDto>! update, System.Action<Doka.Tabular.EntityFrameworkCore.TabularWriteErrors!>? errors = null) -> Doka.Tabular.EntityFrameworkCore.TabularWriteTarget<TDto, TEntity!>!
+Doka.Tabular.EntityFrameworkCore.TabularDatabase<TContext>.PrepareUpsert<TEntity>(System.Func<TContext!, Microsoft.EntityFrameworkCore.DbSet<TEntity!>!>! set, Doka.Tabular.EntityFrameworkCore.TabularMatch<TEntity!, TEntity!>! match, System.Action<TEntity!, TEntity!>! update, System.Action<Doka.Tabular.EntityFrameworkCore.TabularWriteErrors!>? errors = null) -> Doka.Tabular.EntityFrameworkCore.TabularWriteTarget<TEntity!, TEntity!>!
+Doka.Tabular.EntityFrameworkCore.TabularDestination
+Doka.Tabular.EntityFrameworkCore.TabularDestinationBuilder
+Doka.Tabular.EntityFrameworkCore.TabularDestinationBuilder.Bind<T>(Doka.Tabular.TabularRole<T>! role, Doka.Tabular.EntityFrameworkCore.TabularLookupTarget<T>! target) -> Doka.Tabular.EntityFrameworkCore.TabularDestinationBuilder!
+Doka.Tabular.EntityFrameworkCore.TabularDestinationBuilder.Bind<T>(Doka.Tabular.TabularRole<T>! role, Doka.Tabular.EntityFrameworkCore.TabularWriteTarget<T>! target) -> Doka.Tabular.EntityFrameworkCore.TabularDestinationBuilder!
+Doka.Tabular.EntityFrameworkCore.TabularDestinationBuilder.Build() -> Doka.Tabular.EntityFrameworkCore.TabularRowDestination!
+Doka.Tabular.EntityFrameworkCore.TabularExportCompleted
+Doka.Tabular.EntityFrameworkCore.TabularExportCompleted.ExportId.get -> System.Guid
+Doka.Tabular.EntityFrameworkCore.TabularExportCompleted.FileId.get -> System.Guid?
+Doka.Tabular.EntityFrameworkCore.TabularExportCompleted.IsComplete.get -> bool
+Doka.Tabular.EntityFrameworkCore.TabularExportCompleted.IsReadyForDownload.get -> bool
+Doka.Tabular.EntityFrameworkCore.TabularExportCompleted.JournalEntryId.get -> System.Guid
+Doka.Tabular.EntityFrameworkCore.TabularExportCompleted.OmittedErrorCount.get -> long
+Doka.Tabular.EntityFrameworkCore.TabularExportCompleted.OperationId.get -> System.Guid
+Doka.Tabular.EntityFrameworkCore.TabularExportCompleted.Scope.get -> Doka.Tabular.EntityFrameworkCore.JournalScope!
+Doka.Tabular.EntityFrameworkCore.TabularExportCompleted.Status.get -> Doka.Tabular.ReportStatus
+Doka.Tabular.EntityFrameworkCore.TabularExportCompleted.TotalErrorCount.get -> long
+Doka.Tabular.EntityFrameworkCore.TabularExportLog
+Doka.Tabular.EntityFrameworkCore.TabularExportLog.ByteSize.get -> long?
+Doka.Tabular.EntityFrameworkCore.TabularExportLog.CompletedAt.get -> System.DateTimeOffset?
+Doka.Tabular.EntityFrameworkCore.TabularExportLog.DeletedAt.get -> System.DateTimeOffset?
+Doka.Tabular.EntityFrameworkCore.TabularExportLog.DurationMilliseconds.get -> long?
+Doka.Tabular.EntityFrameworkCore.TabularExportLog.ExpiresAt.get -> System.DateTimeOffset?
+Doka.Tabular.EntityFrameworkCore.TabularExportLog.FileId.get -> System.Guid?
+Doka.Tabular.EntityFrameworkCore.TabularExportLog.FileName.get -> string!
+Doka.Tabular.EntityFrameworkCore.TabularExportLog.Format.get -> Doka.Tabular.TabularType
+Doka.Tabular.EntityFrameworkCore.TabularExportLog.Hash.get -> Doka.Tabular.Sha256Hash?
+Doka.Tabular.EntityFrameworkCore.TabularExportLog.Id.get -> System.Guid
+Doka.Tabular.EntityFrameworkCore.TabularExportLog.OperationId.get -> System.Guid
+Doka.Tabular.EntityFrameworkCore.TabularExportLog.ReadyAt.get -> System.DateTimeOffset?
+Doka.Tabular.EntityFrameworkCore.TabularExportLog.Scope.get -> Doka.Tabular.EntityFrameworkCore.JournalScope!
+Doka.Tabular.EntityFrameworkCore.TabularExportLog.StartedAt.get -> System.DateTimeOffset
+Doka.Tabular.EntityFrameworkCore.TabularExportLog.Status.get -> Doka.Tabular.EntityFrameworkCore.TabularExportLogStatus
+Doka.Tabular.EntityFrameworkCore.TabularExportLogOptions
+Doka.Tabular.EntityFrameworkCore.TabularExportLogOptions.<Clone>$() -> Doka.Tabular.EntityFrameworkCore.TabularExportLogOptions!
+Doka.Tabular.EntityFrameworkCore.TabularExportLogOptions.CompletionTimeout.get -> System.TimeSpan
+Doka.Tabular.EntityFrameworkCore.TabularExportLogOptions.CompletionTimeout.init -> void
+Doka.Tabular.EntityFrameworkCore.TabularExportLogOptions.Equals(Doka.Tabular.EntityFrameworkCore.TabularExportLogOptions? other) -> bool
+Doka.Tabular.EntityFrameworkCore.TabularExportLogOptions.OnCompletedAsync.get -> System.Func<Doka.Tabular.EntityFrameworkCore.TabularExportCompleted!, System.Threading.CancellationToken, System.Threading.Tasks.Task!>?
+Doka.Tabular.EntityFrameworkCore.TabularExportLogOptions.OnCompletedAsync.init -> void
+Doka.Tabular.EntityFrameworkCore.TabularExportLogOptions.Scope.get -> Doka.Tabular.EntityFrameworkCore.JournalScope!
+Doka.Tabular.EntityFrameworkCore.TabularExportLogOptions.Scope.init -> void
+Doka.Tabular.EntityFrameworkCore.TabularExportLogOptions.TabularExportLogOptions() -> void
+Doka.Tabular.EntityFrameworkCore.TabularExportLogStatus
+Doka.Tabular.EntityFrameworkCore.TabularExportLogStatus.Canceled = 4 -> Doka.Tabular.EntityFrameworkCore.TabularExportLogStatus
+Doka.Tabular.EntityFrameworkCore.TabularExportLogStatus.Deleted = 5 -> Doka.Tabular.EntityFrameworkCore.TabularExportLogStatus
+Doka.Tabular.EntityFrameworkCore.TabularExportLogStatus.Failed = 3 -> Doka.Tabular.EntityFrameworkCore.TabularExportLogStatus
+Doka.Tabular.EntityFrameworkCore.TabularExportLogStatus.Generating = 0 -> Doka.Tabular.EntityFrameworkCore.TabularExportLogStatus
+Doka.Tabular.EntityFrameworkCore.TabularExportLogStatus.Ready = 2 -> Doka.Tabular.EntityFrameworkCore.TabularExportLogStatus
+Doka.Tabular.EntityFrameworkCore.TabularExportLogStatus.Storing = 1 -> Doka.Tabular.EntityFrameworkCore.TabularExportLogStatus
+Doka.Tabular.EntityFrameworkCore.TabularFileTargetExtensions
+Doka.Tabular.EntityFrameworkCore.TabularImportClaim
+Doka.Tabular.EntityFrameworkCore.TabularImportClaim.CurrentImportId.get -> System.Guid
+Doka.Tabular.EntityFrameworkCore.TabularImportClaim.Hash.get -> Doka.Tabular.Sha256Hash!
+Doka.Tabular.EntityFrameworkCore.TabularImportClaim.Scope.get -> string!
+Doka.Tabular.EntityFrameworkCore.TabularImportClaim.State.get -> Doka.Tabular.EntityFrameworkCore.ImportClaimState
+Doka.Tabular.EntityFrameworkCore.TabularImportClaim.UpdatedAt.get -> System.DateTimeOffset
+Doka.Tabular.EntityFrameworkCore.TabularImportCompleted
+Doka.Tabular.EntityFrameworkCore.TabularImportCompleted.Decision.get -> Doka.Tabular.ImportJournalDecision
+Doka.Tabular.EntityFrameworkCore.TabularImportCompleted.IsComplete.get -> bool
+Doka.Tabular.EntityFrameworkCore.TabularImportCompleted.JournalEntryId.get -> System.Guid
+Doka.Tabular.EntityFrameworkCore.TabularImportCompleted.OmittedErrorCount.get -> long
+Doka.Tabular.EntityFrameworkCore.TabularImportCompleted.OperationId.get -> System.Guid
+Doka.Tabular.EntityFrameworkCore.TabularImportCompleted.RowsImported.get -> long
+Doka.Tabular.EntityFrameworkCore.TabularImportCompleted.RowsRead.get -> long
+Doka.Tabular.EntityFrameworkCore.TabularImportCompleted.RowsRejected.get -> long
+Doka.Tabular.EntityFrameworkCore.TabularImportCompleted.RowsSkipped.get -> long
+Doka.Tabular.EntityFrameworkCore.TabularImportCompleted.RowsUncertain.get -> long
+Doka.Tabular.EntityFrameworkCore.TabularImportCompleted.Scope.get -> Doka.Tabular.EntityFrameworkCore.JournalScope!
+Doka.Tabular.EntityFrameworkCore.TabularImportCompleted.Status.get -> Doka.Tabular.ReportStatus
+Doka.Tabular.EntityFrameworkCore.TabularImportCompleted.TotalErrorCount.get -> long
+Doka.Tabular.EntityFrameworkCore.TabularImportLog
+Doka.Tabular.EntityFrameworkCore.TabularImportLog.ByteSize.get -> long?
+Doka.Tabular.EntityFrameworkCore.TabularImportLog.CompletedAt.get -> System.DateTimeOffset?
+Doka.Tabular.EntityFrameworkCore.TabularImportLog.Decision.get -> Doka.Tabular.ImportJournalDecision
+Doka.Tabular.EntityFrameworkCore.TabularImportLog.DurationMilliseconds.get -> long?
+Doka.Tabular.EntityFrameworkCore.TabularImportLog.FileId.get -> System.Guid?
+Doka.Tabular.EntityFrameworkCore.TabularImportLog.FileName.get -> string?
+Doka.Tabular.EntityFrameworkCore.TabularImportLog.Hash.get -> Doka.Tabular.Sha256Hash?
+Doka.Tabular.EntityFrameworkCore.TabularImportLog.Id.get -> System.Guid
+Doka.Tabular.EntityFrameworkCore.TabularImportLog.ImportedAt.get -> System.DateTimeOffset?
+Doka.Tabular.EntityFrameworkCore.TabularImportLog.OperationId.get -> System.Guid
+Doka.Tabular.EntityFrameworkCore.TabularImportLog.ResolutionOutcome.get -> Doka.Tabular.EntityFrameworkCore.ImportResolutionOutcome?
+Doka.Tabular.EntityFrameworkCore.TabularImportLog.ResolutionReason.get -> string?
+Doka.Tabular.EntityFrameworkCore.TabularImportLog.ResolvedAt.get -> System.DateTimeOffset?
+Doka.Tabular.EntityFrameworkCore.TabularImportLog.RowsImported.get -> long
+Doka.Tabular.EntityFrameworkCore.TabularImportLog.RowsRead.get -> long
+Doka.Tabular.EntityFrameworkCore.TabularImportLog.RowsRejected.get -> long
+Doka.Tabular.EntityFrameworkCore.TabularImportLog.RowsSkipped.get -> long
+Doka.Tabular.EntityFrameworkCore.TabularImportLog.RowsUncertain.get -> long
+Doka.Tabular.EntityFrameworkCore.TabularImportLog.Scope.get -> Doka.Tabular.EntityFrameworkCore.JournalScope!
+Doka.Tabular.EntityFrameworkCore.TabularImportLog.StartedAt.get -> System.DateTimeOffset
+Doka.Tabular.EntityFrameworkCore.TabularImportLog.Status.get -> Doka.Tabular.ReportStatus?
+Doka.Tabular.EntityFrameworkCore.TabularImportLog.TotalErrorCount.get -> long
+Doka.Tabular.EntityFrameworkCore.TabularImportLogOptions
+Doka.Tabular.EntityFrameworkCore.TabularImportLogOptions.<Clone>$() -> Doka.Tabular.EntityFrameworkCore.TabularImportLogOptions!
+Doka.Tabular.EntityFrameworkCore.TabularImportLogOptions.CompletionTimeout.get -> System.TimeSpan
+Doka.Tabular.EntityFrameworkCore.TabularImportLogOptions.CompletionTimeout.init -> void
+Doka.Tabular.EntityFrameworkCore.TabularImportLogOptions.DuplicateBehavior.get -> Doka.Tabular.EntityFrameworkCore.ImportDuplicateBehavior
+Doka.Tabular.EntityFrameworkCore.TabularImportLogOptions.DuplicateBehavior.init -> void
+Doka.Tabular.EntityFrameworkCore.TabularImportLogOptions.Equals(Doka.Tabular.EntityFrameworkCore.TabularImportLogOptions? other) -> bool
+Doka.Tabular.EntityFrameworkCore.TabularImportLogOptions.FileId.get -> System.Guid?
+Doka.Tabular.EntityFrameworkCore.TabularImportLogOptions.FileId.init -> void
+Doka.Tabular.EntityFrameworkCore.TabularImportLogOptions.FileName.get -> string?
+Doka.Tabular.EntityFrameworkCore.TabularImportLogOptions.FileName.init -> void
+Doka.Tabular.EntityFrameworkCore.TabularImportLogOptions.OnCompletedAsync.get -> System.Func<Doka.Tabular.EntityFrameworkCore.TabularImportCompleted!, System.Threading.CancellationToken, System.Threading.Tasks.Task!>?
+Doka.Tabular.EntityFrameworkCore.TabularImportLogOptions.OnCompletedAsync.init -> void
+Doka.Tabular.EntityFrameworkCore.TabularImportLogOptions.Scope.get -> Doka.Tabular.EntityFrameworkCore.JournalScope!
+Doka.Tabular.EntityFrameworkCore.TabularImportLogOptions.Scope.init -> void
+Doka.Tabular.EntityFrameworkCore.TabularImportLogOptions.TabularImportLogOptions() -> void
+Doka.Tabular.EntityFrameworkCore.TabularJournal
+Doka.Tabular.EntityFrameworkCore.TabularJournal.DeleteExpiredExportsAsync(Doka.Tabular.ITabularFileStore! store, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.EntityFrameworkCore.TabularJournalResult!>!
+Doka.Tabular.EntityFrameworkCore.TabularJournal.DeleteExportAsync(System.Guid exportId, Doka.Tabular.ITabularFileStore! store, Doka.Tabular.EntityFrameworkCore.ExportDeletionOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.EntityFrameworkCore.TabularJournalResult!>!
+Doka.Tabular.EntityFrameworkCore.TabularJournal.DeleteExportAsync(System.Guid exportId, Doka.Tabular.ITabularFileStore! store, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.EntityFrameworkCore.TabularJournalResult!>!
+Doka.Tabular.EntityFrameworkCore.TabularJournal.DeleteExportLogsAsync(System.DateTimeOffset completedBefore, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.EntityFrameworkCore.TabularJournalResult!>!
+Doka.Tabular.EntityFrameworkCore.TabularJournal.DeleteImportLogsAsync(System.DateTimeOffset completedBefore, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.EntityFrameworkCore.TabularJournalResult!>!
+Doka.Tabular.EntityFrameworkCore.TabularJournal.QueryExports(Microsoft.EntityFrameworkCore.DbContext! context) -> System.Linq.IQueryable<Doka.Tabular.EntityFrameworkCore.TabularExportLog!>!
+Doka.Tabular.EntityFrameworkCore.TabularJournal.QueryImportClaims(Microsoft.EntityFrameworkCore.DbContext! context) -> System.Linq.IQueryable<Doka.Tabular.EntityFrameworkCore.TabularImportClaim!>!
+Doka.Tabular.EntityFrameworkCore.TabularJournal.QueryImports(Microsoft.EntityFrameworkCore.DbContext! context) -> System.Linq.IQueryable<Doka.Tabular.EntityFrameworkCore.TabularImportLog!>!
+Doka.Tabular.EntityFrameworkCore.TabularJournal.RecoverImportAsync(System.Guid importId, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.EntityFrameworkCore.ImportRecoveryResult!>!
+Doka.Tabular.EntityFrameworkCore.TabularJournal.ResolveImportAsync(System.Guid importId, Doka.Tabular.EntityFrameworkCore.ImportResolution! resolution, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.EntityFrameworkCore.TabularJournalResult!>!
+Doka.Tabular.EntityFrameworkCore.TabularJournal.WithOptions(Doka.Tabular.EntityFrameworkCore.TabularJournalOptions! options) -> Doka.Tabular.EntityFrameworkCore.TabularJournal!
+Doka.Tabular.EntityFrameworkCore.TabularJournalModelExtensions
+Doka.Tabular.EntityFrameworkCore.TabularJournalModelExtensions.extension(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder!)
+Doka.Tabular.EntityFrameworkCore.TabularJournalModelExtensions.extension(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder!).UseTabularJournal(System.Action<Doka.Tabular.EntityFrameworkCore.TabularJournalSettings!>? configure = null) -> Microsoft.EntityFrameworkCore.DbContextOptionsBuilder!
+Doka.Tabular.EntityFrameworkCore.TabularJournalModelExtensions.extension(Microsoft.EntityFrameworkCore.ModelBuilder!)
+Doka.Tabular.EntityFrameworkCore.TabularJournalModelExtensions.extension(Microsoft.EntityFrameworkCore.ModelBuilder!).AddTabularExportJournal(Doka.Tabular.EntityFrameworkCore.JournalName! name, System.Action<Doka.Tabular.EntityFrameworkCore.TabularJournalTables!>? configure = null) -> Microsoft.EntityFrameworkCore.ModelBuilder!
+Doka.Tabular.EntityFrameworkCore.TabularJournalModelExtensions.extension(Microsoft.EntityFrameworkCore.ModelBuilder!).AddTabularImportJournal(Doka.Tabular.EntityFrameworkCore.JournalName! name, System.Action<Doka.Tabular.EntityFrameworkCore.TabularJournalTables!>? configure = null) -> Microsoft.EntityFrameworkCore.ModelBuilder!
+Doka.Tabular.EntityFrameworkCore.TabularJournalModelExtensions.extension<TContext>(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder<TContext!>!)
+Doka.Tabular.EntityFrameworkCore.TabularJournalModelExtensions.extension<TContext>(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder<TContext!>!).UseTabularJournal(System.Action<Doka.Tabular.EntityFrameworkCore.TabularJournalSettings!>? configure = null) -> Microsoft.EntityFrameworkCore.DbContextOptionsBuilder<TContext!>!
+Doka.Tabular.EntityFrameworkCore.TabularJournalOptions
+Doka.Tabular.EntityFrameworkCore.TabularJournalOptions.<Clone>$() -> Doka.Tabular.EntityFrameworkCore.TabularJournalOptions!
+Doka.Tabular.EntityFrameworkCore.TabularJournalOptions.Diagnostics.get -> Doka.Tabular.TabularDiagnosticsOptions!
+Doka.Tabular.EntityFrameworkCore.TabularJournalOptions.Diagnostics.init -> void
+Doka.Tabular.EntityFrameworkCore.TabularJournalOptions.Equals(Doka.Tabular.EntityFrameworkCore.TabularJournalOptions? other) -> bool
+Doka.Tabular.EntityFrameworkCore.TabularJournalOptions.TabularJournalOptions() -> void
+Doka.Tabular.EntityFrameworkCore.TabularJournalOptions.TimeProvider.get -> System.TimeProvider!
+Doka.Tabular.EntityFrameworkCore.TabularJournalOptions.TimeProvider.init -> void
+Doka.Tabular.EntityFrameworkCore.TabularJournalResult
+Doka.Tabular.EntityFrameworkCore.TabularJournalResult.Count.get -> long
+Doka.Tabular.EntityFrameworkCore.TabularJournalResult.Error.get -> Doka.Tabular.TabularError?
+Doka.Tabular.EntityFrameworkCore.TabularJournalResult.Status.get -> Doka.Tabular.EntityFrameworkCore.JournalCallStatus
+Doka.Tabular.EntityFrameworkCore.TabularJournalSettings
+Doka.Tabular.EntityFrameworkCore.TabularJournalSettings.ExportEnabled.get -> bool
+Doka.Tabular.EntityFrameworkCore.TabularJournalSettings.ExportEnabled.set -> void
+Doka.Tabular.EntityFrameworkCore.TabularJournalSettings.IgnoreScopeCase.get -> bool
+Doka.Tabular.EntityFrameworkCore.TabularJournalSettings.IgnoreScopeCase.set -> void
+Doka.Tabular.EntityFrameworkCore.TabularJournalSettings.ImportEnabled.get -> bool
+Doka.Tabular.EntityFrameworkCore.TabularJournalSettings.ImportEnabled.set -> void
+Doka.Tabular.EntityFrameworkCore.TabularJournalSettings.TablePrefix.get -> string!
+Doka.Tabular.EntityFrameworkCore.TabularJournalSettings.TablePrefix.set -> void
+Doka.Tabular.EntityFrameworkCore.TabularJournalSettings.TabularJournalSettings() -> void
+Doka.Tabular.EntityFrameworkCore.TabularJournalTables
+Doka.Tabular.EntityFrameworkCore.TabularJournalTables.IgnoreScopeCase.get -> bool
+Doka.Tabular.EntityFrameworkCore.TabularJournalTables.IgnoreScopeCase.set -> void
+Doka.Tabular.EntityFrameworkCore.TabularJournalTables.TablePrefix.get -> string!
+Doka.Tabular.EntityFrameworkCore.TabularJournalTables.TablePrefix.set -> void
+Doka.Tabular.EntityFrameworkCore.TabularJournalTables.TabularJournalTables() -> void
+Doka.Tabular.EntityFrameworkCore.TabularLookupTarget<TDto, TEntity>
+Doka.Tabular.EntityFrameworkCore.TabularLookupTarget<TDto, TEntity>.Value<TValue>(Doka.Tabular.TabularRole<TDto>! role, System.Linq.Expressions.Expression<System.Func<TEntity!, TValue>!>! value) -> Doka.Tabular.EntityFrameworkCore.TabularTargetValue<TValue>!
+Doka.Tabular.EntityFrameworkCore.TabularLookupTarget<TDto>
+Doka.Tabular.EntityFrameworkCore.TabularLookupTarget<TDto>.WithImportLog(Doka.Tabular.EntityFrameworkCore.TabularJournal! journal, Doka.Tabular.EntityFrameworkCore.TabularImportLogOptions! options) -> Doka.Tabular.EntityFrameworkCore.TabularLookupTarget<TDto>!
+Doka.Tabular.EntityFrameworkCore.TabularLookupTarget<TDto>.WithOptions(Doka.Tabular.EntityFrameworkCore.TabularWriteOptions! options) -> Doka.Tabular.EntityFrameworkCore.TabularLookupTarget<TDto>!
+Doka.Tabular.EntityFrameworkCore.TabularMatch
+Doka.Tabular.EntityFrameworkCore.TabularMatch<TDto, TEntity>
+Doka.Tabular.EntityFrameworkCore.TabularMatch<TDto, TEntity>.SourceKey.get -> Doka.Tabular.TabularSourceKey<TDto>!
+Doka.Tabular.EntityFrameworkCore.TabularMatchBuilder<TDto, TEntity>
+Doka.Tabular.EntityFrameworkCore.TabularMatchBuilder<TDto, TEntity>.Build() -> Doka.Tabular.EntityFrameworkCore.TabularMatch<TDto, TEntity!>!
+Doka.Tabular.EntityFrameworkCore.TabularMatchBuilder<TDto, TEntity>.Part<TDtoValue, TValue>(System.Linq.Expressions.Expression<System.Func<TDto, TDtoValue>!>! dto, System.Linq.Expressions.Expression<System.Func<TEntity!, TValue>!>! entity, Doka.Tabular.EntityFrameworkCore.TabularTargetValue<TValue>! valueFrom, System.Collections.Generic.IEqualityComparer<TValue>? comparer = null) -> Doka.Tabular.EntityFrameworkCore.TabularMatchBuilder<TDto, TEntity!>!
+Doka.Tabular.EntityFrameworkCore.TabularMatchBuilder<TDto, TEntity>.Part<TValue>(System.Linq.Expressions.Expression<System.Func<TDto, TValue>!>! dto, System.Linq.Expressions.Expression<System.Func<TEntity!, TValue>!>! entity, System.Collections.Generic.IEqualityComparer<TValue>? comparer = null) -> Doka.Tabular.EntityFrameworkCore.TabularMatchBuilder<TDto, TEntity!>!
+Doka.Tabular.EntityFrameworkCore.TabularMatchBuilder<TDto, TEntity>.UseUniqueKey() -> Doka.Tabular.EntityFrameworkCore.TabularMatchBuilder<TDto, TEntity!>!
+Doka.Tabular.EntityFrameworkCore.TabularRowDestination
+Doka.Tabular.EntityFrameworkCore.TabularRowDestination.WithImportLog(Doka.Tabular.EntityFrameworkCore.TabularJournal! journal, Doka.Tabular.EntityFrameworkCore.TabularImportLogOptions! options) -> Doka.Tabular.EntityFrameworkCore.TabularRowDestination!
+Doka.Tabular.EntityFrameworkCore.TabularRowDestination.WithOptions(Doka.Tabular.EntityFrameworkCore.TabularWriteOptions! options) -> Doka.Tabular.EntityFrameworkCore.TabularRowDestination!
+Doka.Tabular.EntityFrameworkCore.TabularTargetValue
+Doka.Tabular.EntityFrameworkCore.TabularTargetValue<TValue>
+Doka.Tabular.EntityFrameworkCore.TabularTargetValues
+Doka.Tabular.EntityFrameworkCore.TabularTargetValues.Get<TValue>(Doka.Tabular.EntityFrameworkCore.TabularTargetValue<TValue>! value) -> TValue
+Doka.Tabular.EntityFrameworkCore.TabularWriteErrors
+Doka.Tabular.EntityFrameworkCore.TabularWriteErrors.Database(System.Func<System.Exception!, Doka.Tabular.TabularErrorCode?>! map) -> Doka.Tabular.EntityFrameworkCore.TabularWriteErrors!
+Doka.Tabular.EntityFrameworkCore.TabularWriteErrors.Expect<TException>(Doka.Tabular.TabularErrorCode! code) -> Doka.Tabular.EntityFrameworkCore.TabularWriteErrors!
+Doka.Tabular.EntityFrameworkCore.TabularWriteOptions
+Doka.Tabular.EntityFrameworkCore.TabularWriteOptions.<Clone>$() -> Doka.Tabular.EntityFrameworkCore.TabularWriteOptions!
+Doka.Tabular.EntityFrameworkCore.TabularWriteOptions.CommitGroupSize.get -> int
+Doka.Tabular.EntityFrameworkCore.TabularWriteOptions.CommitGroupSize.init -> void
+Doka.Tabular.EntityFrameworkCore.TabularWriteOptions.Equals(Doka.Tabular.EntityFrameworkCore.TabularWriteOptions? other) -> bool
+Doka.Tabular.EntityFrameworkCore.TabularWriteOptions.IsolationLevel.get -> System.Data.IsolationLevel?
+Doka.Tabular.EntityFrameworkCore.TabularWriteOptions.IsolationLevel.init -> void
+Doka.Tabular.EntityFrameworkCore.TabularWriteOptions.JoinExistingTransaction.get -> bool
+Doka.Tabular.EntityFrameworkCore.TabularWriteOptions.JoinExistingTransaction.init -> void
+Doka.Tabular.EntityFrameworkCore.TabularWriteOptions.ReturnItems.get -> bool
+Doka.Tabular.EntityFrameworkCore.TabularWriteOptions.ReturnItems.init -> void
+Doka.Tabular.EntityFrameworkCore.TabularWriteOptions.TabularWriteOptions() -> void
+Doka.Tabular.EntityFrameworkCore.TabularWriteOptions.TransactionPerSheet.get -> bool
+Doka.Tabular.EntityFrameworkCore.TabularWriteOptions.TransactionPerSheet.init -> void
+Doka.Tabular.EntityFrameworkCore.TabularWriteTarget<TDto, TEntity>
+Doka.Tabular.EntityFrameworkCore.TabularWriteTarget<TDto, TEntity>.Value<TValue>(Doka.Tabular.TabularRole<TDto>! role, System.Linq.Expressions.Expression<System.Func<TEntity!, TValue>!>! value) -> Doka.Tabular.EntityFrameworkCore.TabularTargetValue<TValue>!
+Doka.Tabular.EntityFrameworkCore.TabularWriteTarget<TDto>
+Doka.Tabular.EntityFrameworkCore.TabularWriteTarget<TDto>.WithImportLog(Doka.Tabular.EntityFrameworkCore.TabularJournal! journal, Doka.Tabular.EntityFrameworkCore.TabularImportLogOptions! options) -> Doka.Tabular.EntityFrameworkCore.TabularWriteTarget<TDto>!
+Doka.Tabular.EntityFrameworkCore.TabularWriteTarget<TDto>.WithOptions(Doka.Tabular.EntityFrameworkCore.TabularWriteOptions! options) -> Doka.Tabular.EntityFrameworkCore.TabularWriteTarget<TDto>!
+override Doka.Tabular.EntityFrameworkCore.ExportDeletionOptions.Equals(object? obj) -> bool
+override Doka.Tabular.EntityFrameworkCore.ExportDeletionOptions.GetHashCode() -> int
+override Doka.Tabular.EntityFrameworkCore.ExportDeletionOptions.ToString() -> string!
+override Doka.Tabular.EntityFrameworkCore.ImportResolution.Equals(object? obj) -> bool
+override Doka.Tabular.EntityFrameworkCore.ImportResolution.GetHashCode() -> int
+override Doka.Tabular.EntityFrameworkCore.ImportResolution.ToString() -> string!
+override Doka.Tabular.EntityFrameworkCore.JournalName.Equals(object? obj) -> bool
+override Doka.Tabular.EntityFrameworkCore.JournalName.GetHashCode() -> int
+override Doka.Tabular.EntityFrameworkCore.JournalName.ToString() -> string!
+override Doka.Tabular.EntityFrameworkCore.JournalScope.Equals(object? obj) -> bool
+override Doka.Tabular.EntityFrameworkCore.JournalScope.GetHashCode() -> int
+override Doka.Tabular.EntityFrameworkCore.JournalScope.ToString() -> string!
+override Doka.Tabular.EntityFrameworkCore.TabularExportLogOptions.Equals(object? obj) -> bool
+override Doka.Tabular.EntityFrameworkCore.TabularExportLogOptions.GetHashCode() -> int
+override Doka.Tabular.EntityFrameworkCore.TabularExportLogOptions.ToString() -> string!
+override Doka.Tabular.EntityFrameworkCore.TabularImportLogOptions.Equals(object? obj) -> bool
+override Doka.Tabular.EntityFrameworkCore.TabularImportLogOptions.GetHashCode() -> int
+override Doka.Tabular.EntityFrameworkCore.TabularImportLogOptions.ToString() -> string!
+override Doka.Tabular.EntityFrameworkCore.TabularJournalOptions.Equals(object? obj) -> bool
+override Doka.Tabular.EntityFrameworkCore.TabularJournalOptions.GetHashCode() -> int
+override Doka.Tabular.EntityFrameworkCore.TabularJournalOptions.ToString() -> string!
+override Doka.Tabular.EntityFrameworkCore.TabularWriteOptions.Equals(object? obj) -> bool
+override Doka.Tabular.EntityFrameworkCore.TabularWriteOptions.GetHashCode() -> int
+override Doka.Tabular.EntityFrameworkCore.TabularWriteOptions.ToString() -> string!
+static Doka.Tabular.EntityFrameworkCore.ExportDeletionOptions.operator !=(Doka.Tabular.EntityFrameworkCore.ExportDeletionOptions? left, Doka.Tabular.EntityFrameworkCore.ExportDeletionOptions? right) -> bool
+static Doka.Tabular.EntityFrameworkCore.ExportDeletionOptions.operator ==(Doka.Tabular.EntityFrameworkCore.ExportDeletionOptions? left, Doka.Tabular.EntityFrameworkCore.ExportDeletionOptions? right) -> bool
+static Doka.Tabular.EntityFrameworkCore.ImportResolution.operator !=(Doka.Tabular.EntityFrameworkCore.ImportResolution? left, Doka.Tabular.EntityFrameworkCore.ImportResolution? right) -> bool
+static Doka.Tabular.EntityFrameworkCore.ImportResolution.operator ==(Doka.Tabular.EntityFrameworkCore.ImportResolution? left, Doka.Tabular.EntityFrameworkCore.ImportResolution? right) -> bool
+static Doka.Tabular.EntityFrameworkCore.JournalName.Create(string! value) -> Doka.Tabular.EntityFrameworkCore.JournalName!
+static Doka.Tabular.EntityFrameworkCore.JournalName.Default.get -> Doka.Tabular.EntityFrameworkCore.JournalName!
+static Doka.Tabular.EntityFrameworkCore.JournalScope.Create(string! value) -> Doka.Tabular.EntityFrameworkCore.JournalScope!
+static Doka.Tabular.EntityFrameworkCore.JournalScope.operator !=(Doka.Tabular.EntityFrameworkCore.JournalScope? left, Doka.Tabular.EntityFrameworkCore.JournalScope? right) -> bool
+static Doka.Tabular.EntityFrameworkCore.JournalScope.operator ==(Doka.Tabular.EntityFrameworkCore.JournalScope? left, Doka.Tabular.EntityFrameworkCore.JournalScope? right) -> bool
+static Doka.Tabular.EntityFrameworkCore.TabularDatabase.ForContext<TContext>(TContext! context) -> Doka.Tabular.EntityFrameworkCore.TabularDatabase<TContext!>!
+static Doka.Tabular.EntityFrameworkCore.TabularDatabase.ForFactory<TContext>(Microsoft.EntityFrameworkCore.IDbContextFactory<TContext!>! factory) -> Doka.Tabular.EntityFrameworkCore.TabularDatabase<TContext!>!
+static Doka.Tabular.EntityFrameworkCore.TabularDestination.For(Doka.Tabular.RowMap! map) -> Doka.Tabular.EntityFrameworkCore.TabularDestinationBuilder!
+static Doka.Tabular.EntityFrameworkCore.TabularExportLogOptions.operator !=(Doka.Tabular.EntityFrameworkCore.TabularExportLogOptions? left, Doka.Tabular.EntityFrameworkCore.TabularExportLogOptions? right) -> bool
+static Doka.Tabular.EntityFrameworkCore.TabularExportLogOptions.operator ==(Doka.Tabular.EntityFrameworkCore.TabularExportLogOptions? left, Doka.Tabular.EntityFrameworkCore.TabularExportLogOptions? right) -> bool
+static Doka.Tabular.EntityFrameworkCore.TabularFileTargetExtensions.WithExportLog(this Doka.Tabular.TabularFileTarget! target, Doka.Tabular.EntityFrameworkCore.TabularJournal! journal, Doka.Tabular.EntityFrameworkCore.TabularExportLogOptions! options) -> Doka.Tabular.TabularFileTarget!
+static Doka.Tabular.EntityFrameworkCore.TabularImportLogOptions.operator !=(Doka.Tabular.EntityFrameworkCore.TabularImportLogOptions? left, Doka.Tabular.EntityFrameworkCore.TabularImportLogOptions? right) -> bool
+static Doka.Tabular.EntityFrameworkCore.TabularImportLogOptions.operator ==(Doka.Tabular.EntityFrameworkCore.TabularImportLogOptions? left, Doka.Tabular.EntityFrameworkCore.TabularImportLogOptions? right) -> bool
+static Doka.Tabular.EntityFrameworkCore.TabularJournal.ForFactory<TContext>(Microsoft.EntityFrameworkCore.IDbContextFactory<TContext!>! factory, Doka.Tabular.EntityFrameworkCore.JournalName? journalName = null) -> Doka.Tabular.EntityFrameworkCore.TabularJournal!
+static Doka.Tabular.EntityFrameworkCore.TabularJournal.ForFactory<TContext>(System.Func<System.Threading.CancellationToken, System.Threading.Tasks.Task<TContext!>!>! factory, Doka.Tabular.EntityFrameworkCore.JournalName? journalName = null) -> Doka.Tabular.EntityFrameworkCore.TabularJournal!
+static Doka.Tabular.EntityFrameworkCore.TabularJournalModelExtensions.AddTabularExportJournal(this Microsoft.EntityFrameworkCore.ModelBuilder! modelBuilder, Doka.Tabular.EntityFrameworkCore.JournalName! name, System.Action<Doka.Tabular.EntityFrameworkCore.TabularJournalTables!>? configure = null) -> Microsoft.EntityFrameworkCore.ModelBuilder!
+static Doka.Tabular.EntityFrameworkCore.TabularJournalModelExtensions.AddTabularImportJournal(this Microsoft.EntityFrameworkCore.ModelBuilder! modelBuilder, Doka.Tabular.EntityFrameworkCore.JournalName! name, System.Action<Doka.Tabular.EntityFrameworkCore.TabularJournalTables!>? configure = null) -> Microsoft.EntityFrameworkCore.ModelBuilder!
+static Doka.Tabular.EntityFrameworkCore.TabularJournalModelExtensions.UseTabularJournal(this Microsoft.EntityFrameworkCore.DbContextOptionsBuilder! options, System.Action<Doka.Tabular.EntityFrameworkCore.TabularJournalSettings!>? configure = null) -> Microsoft.EntityFrameworkCore.DbContextOptionsBuilder!
+static Doka.Tabular.EntityFrameworkCore.TabularJournalModelExtensions.UseTabularJournal<TContext>(this Microsoft.EntityFrameworkCore.DbContextOptionsBuilder<TContext!>! options, System.Action<Doka.Tabular.EntityFrameworkCore.TabularJournalSettings!>? configure = null) -> Microsoft.EntityFrameworkCore.DbContextOptionsBuilder<TContext!>!
+static Doka.Tabular.EntityFrameworkCore.TabularJournalOptions.operator !=(Doka.Tabular.EntityFrameworkCore.TabularJournalOptions? left, Doka.Tabular.EntityFrameworkCore.TabularJournalOptions? right) -> bool
+static Doka.Tabular.EntityFrameworkCore.TabularJournalOptions.operator ==(Doka.Tabular.EntityFrameworkCore.TabularJournalOptions? left, Doka.Tabular.EntityFrameworkCore.TabularJournalOptions? right) -> bool
+static Doka.Tabular.EntityFrameworkCore.TabularMatch.For<TDto, TEntity>(Doka.Tabular.TabularMap<TDto>! map) -> Doka.Tabular.EntityFrameworkCore.TabularMatchBuilder<TDto, TEntity!>!
+static Doka.Tabular.EntityFrameworkCore.TabularWriteOptions.operator !=(Doka.Tabular.EntityFrameworkCore.TabularWriteOptions? left, Doka.Tabular.EntityFrameworkCore.TabularWriteOptions? right) -> bool
+static Doka.Tabular.EntityFrameworkCore.TabularWriteOptions.operator ==(Doka.Tabular.EntityFrameworkCore.TabularWriteOptions? left, Doka.Tabular.EntityFrameworkCore.TabularWriteOptions? right) -> bool

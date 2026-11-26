@@ -1,1 +1,1312 @@
 #nullable enable
+Doka.Tabular.AmbiguousTimeResolution
+Doka.Tabular.AmbiguousTimeResolution.Earlier = 0 -> Doka.Tabular.AmbiguousTimeResolution
+Doka.Tabular.AmbiguousTimeResolution.Later = 1 -> Doka.Tabular.AmbiguousTimeResolution
+Doka.Tabular.BufferedExportResult
+Doka.Tabular.BufferedExportResult.Deconstruct(out Doka.Tabular.ExportReport! report, out System.IO.Stream? file) -> void
+Doka.Tabular.BufferedExportResult.File.get -> System.IO.Stream?
+Doka.Tabular.BufferedExportResult.Report.get -> Doka.Tabular.ExportReport!
+Doka.Tabular.ColumnBinding
+Doka.Tabular.ColumnBinding.ByHeaderName = 2 -> Doka.Tabular.ColumnBinding
+Doka.Tabular.ColumnBinding.ByIndex = 0 -> Doka.Tabular.ColumnBinding
+Doka.Tabular.ColumnBinding.ByIndexWithHeader = 1 -> Doka.Tabular.ColumnBinding
+Doka.Tabular.ColumnKey
+Doka.Tabular.ColumnKey.Equals(Doka.Tabular.ColumnKey? other) -> bool
+Doka.Tabular.ColumnKey.Value.get -> string!
+Doka.Tabular.ColumnKeyJsonConverter
+Doka.Tabular.ColumnKeyJsonConverter.ColumnKeyJsonConverter() -> void
+Doka.Tabular.Csv.CsvExportOptions
+Doka.Tabular.Csv.CsvExportOptions.<Clone>$() -> Doka.Tabular.Csv.CsvExportOptions!
+Doka.Tabular.Csv.CsvExportOptions.ColumnKeys.get -> System.Collections.Generic.IReadOnlyList<Doka.Tabular.ColumnKey!>?
+Doka.Tabular.Csv.CsvExportOptions.ColumnKeys.init -> void
+Doka.Tabular.Csv.CsvExportOptions.CsvExportOptions() -> void
+Doka.Tabular.Csv.CsvExportOptions.Culture.get -> System.Globalization.CultureInfo?
+Doka.Tabular.Csv.CsvExportOptions.Culture.init -> void
+Doka.Tabular.Csv.CsvExportOptions.Delimiter.get -> char?
+Doka.Tabular.Csv.CsvExportOptions.Delimiter.init -> void
+Doka.Tabular.Csv.CsvExportOptions.Encoding.get -> System.Text.Encoding?
+Doka.Tabular.Csv.CsvExportOptions.Encoding.init -> void
+Doka.Tabular.Csv.CsvExportOptions.Equals(Doka.Tabular.Csv.CsvExportOptions? other) -> bool
+Doka.Tabular.Csv.CsvExportOptions.MaxErrorDetails.get -> int?
+Doka.Tabular.Csv.CsvExportOptions.MaxErrorDetails.init -> void
+Doka.Tabular.Csv.CsvExportOptions.MissingTranslation.get -> Doka.Tabular.MissingTranslationBehavior?
+Doka.Tabular.Csv.CsvExportOptions.MissingTranslation.init -> void
+Doka.Tabular.Csv.CsvExportOptions.Translations.get -> System.Collections.Generic.IReadOnlyDictionary<string!, string!>?
+Doka.Tabular.Csv.CsvExportOptions.Translations.init -> void
+Doka.Tabular.Csv.CsvExportOptions.WriteBom.get -> bool?
+Doka.Tabular.Csv.CsvExportOptions.WriteBom.init -> void
+Doka.Tabular.Csv.CsvExportOptions.WriteHeader.get -> bool?
+Doka.Tabular.Csv.CsvExportOptions.WriteHeader.init -> void
+Doka.Tabular.Csv.CsvFormat
+Doka.Tabular.Csv.CsvFormat.CsvFormat(Doka.Tabular.Csv.CsvFormatOptions! options) -> void
+Doka.Tabular.Csv.CsvFormat.ExportAsync(System.Collections.Generic.IAsyncEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, Doka.Tabular.Csv.CsvExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync(System.Collections.Generic.IAsyncEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, Doka.Tabular.TabularFileTarget! target, Doka.Tabular.Csv.CsvExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync(System.Collections.Generic.IAsyncEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, Doka.Tabular.TabularFileTarget! target, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync(System.Collections.Generic.IAsyncEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, System.IO.Stream! target, Doka.Tabular.Csv.CsvExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync(System.Collections.Generic.IAsyncEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, System.IO.Stream! target, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync(System.Collections.Generic.IAsyncEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync(System.Collections.Generic.IAsyncEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, string! path, Doka.Tabular.Csv.CsvExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync(System.Collections.Generic.IAsyncEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, string! path, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync(System.Collections.Generic.IEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, Doka.Tabular.Csv.CsvExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync(System.Collections.Generic.IEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, Doka.Tabular.TabularFileTarget! target, Doka.Tabular.Csv.CsvExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync(System.Collections.Generic.IEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, Doka.Tabular.TabularFileTarget! target, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync(System.Collections.Generic.IEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, System.IO.Stream! target, Doka.Tabular.Csv.CsvExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync(System.Collections.Generic.IEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, System.IO.Stream! target, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync(System.Collections.Generic.IEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync(System.Collections.Generic.IEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, string! path, Doka.Tabular.Csv.CsvExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync(System.Collections.Generic.IEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, string! path, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, Doka.Tabular.Csv.CsvExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, Doka.Tabular.TabularFileTarget! target, Doka.Tabular.Csv.CsvExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, Doka.Tabular.TabularFileTarget! target, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, System.IO.Stream! target, Doka.Tabular.Csv.CsvExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, System.IO.Stream! target, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, string! path, Doka.Tabular.Csv.CsvExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, string! path, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.Csv.CsvExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.TabularFileTarget! target, Doka.Tabular.Csv.CsvExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.TabularFileTarget! target, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, System.IO.Stream! target, Doka.Tabular.Csv.CsvExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, System.IO.Stream! target, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, string! path, Doka.Tabular.Csv.CsvExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, string! path, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, Doka.Tabular.Csv.CsvExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, Doka.Tabular.TabularFileTarget! target, Doka.Tabular.Csv.CsvExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, Doka.Tabular.TabularFileTarget! target, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, System.IO.Stream! target, Doka.Tabular.Csv.CsvExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, System.IO.Stream! target, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, string! path, Doka.Tabular.Csv.CsvExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, string! path, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.Csv.CsvExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.TabularFileTarget! target, Doka.Tabular.Csv.CsvExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.TabularFileTarget! target, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, System.IO.Stream! target, Doka.Tabular.Csv.CsvExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, System.IO.Stream! target, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, string! path, Doka.Tabular.Csv.CsvExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, string! path, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.RowExportMap<T>! map, Doka.Tabular.Csv.CsvExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.RowExportMap<T>! map, Doka.Tabular.TabularFileTarget! target, Doka.Tabular.Csv.CsvExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.RowExportMap<T>! map, Doka.Tabular.TabularFileTarget! target, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.RowExportMap<T>! map, System.IO.Stream! target, Doka.Tabular.Csv.CsvExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.RowExportMap<T>! map, System.IO.Stream! target, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.RowExportMap<T>! map, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.RowExportMap<T>! map, string! path, Doka.Tabular.Csv.CsvExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.RowExportMap<T>! map, string! path, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.Csv.CsvExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.TabularFileTarget! target, Doka.Tabular.Csv.CsvExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.TabularFileTarget! target, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.TabularMap<T>! map, System.IO.Stream! target, Doka.Tabular.Csv.CsvExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.TabularMap<T>! map, System.IO.Stream! target, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.TabularMap<T>! map, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.TabularMap<T>! map, string! path, Doka.Tabular.Csv.CsvExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.TabularMap<T>! map, string! path, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Csv.CsvFormat.ImportAsync(System.IO.Stream! source, Doka.Tabular.RowMap! map, Doka.Tabular.Csv.CsvImportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<Doka.Tabular.TabularRow!>!>!
+Doka.Tabular.Csv.CsvFormat.ImportAsync(System.IO.Stream! source, Doka.Tabular.RowMap! map, Doka.Tabular.TabularImportDestination<Doka.Tabular.TabularRow!>! destination, Doka.Tabular.Csv.CsvImportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<Doka.Tabular.TabularRow!>!>!
+Doka.Tabular.Csv.CsvFormat.ImportAsync(System.IO.Stream! source, Doka.Tabular.RowMap! map, Doka.Tabular.TabularImportDestination<Doka.Tabular.TabularRow!>! destination, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<Doka.Tabular.TabularRow!>!>!
+Doka.Tabular.Csv.CsvFormat.ImportAsync(System.IO.Stream! source, Doka.Tabular.RowMap! map, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<Doka.Tabular.TabularRow!>!>!
+Doka.Tabular.Csv.CsvFormat.ImportAsync(string! path, Doka.Tabular.RowMap! map, Doka.Tabular.Csv.CsvImportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<Doka.Tabular.TabularRow!>!>!
+Doka.Tabular.Csv.CsvFormat.ImportAsync(string! path, Doka.Tabular.RowMap! map, Doka.Tabular.TabularImportDestination<Doka.Tabular.TabularRow!>! destination, Doka.Tabular.Csv.CsvImportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<Doka.Tabular.TabularRow!>!>!
+Doka.Tabular.Csv.CsvFormat.ImportAsync(string! path, Doka.Tabular.RowMap! map, Doka.Tabular.TabularImportDestination<Doka.Tabular.TabularRow!>! destination, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<Doka.Tabular.TabularRow!>!>!
+Doka.Tabular.Csv.CsvFormat.ImportAsync(string! path, Doka.Tabular.RowMap! map, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<Doka.Tabular.TabularRow!>!>!
+Doka.Tabular.Csv.CsvFormat.ImportAsync<T>(System.IO.Stream! source, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.Csv.CsvImportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<T>!>!
+Doka.Tabular.Csv.CsvFormat.ImportAsync<T>(System.IO.Stream! source, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.TabularImportDestination<T>! destination, Doka.Tabular.Csv.CsvImportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<T>!>!
+Doka.Tabular.Csv.CsvFormat.ImportAsync<T>(System.IO.Stream! source, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.TabularImportDestination<T>! destination, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<T>!>!
+Doka.Tabular.Csv.CsvFormat.ImportAsync<T>(System.IO.Stream! source, Doka.Tabular.TabularMap<T>! map, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<T>!>!
+Doka.Tabular.Csv.CsvFormat.ImportAsync<T>(string! path, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.Csv.CsvImportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<T>!>!
+Doka.Tabular.Csv.CsvFormat.ImportAsync<T>(string! path, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.TabularImportDestination<T>! destination, Doka.Tabular.Csv.CsvImportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<T>!>!
+Doka.Tabular.Csv.CsvFormat.ImportAsync<T>(string! path, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.TabularImportDestination<T>! destination, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<T>!>!
+Doka.Tabular.Csv.CsvFormat.ImportAsync<T>(string! path, Doka.Tabular.TabularMap<T>! map, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<T>!>!
+Doka.Tabular.Csv.CsvFormatOptions
+Doka.Tabular.Csv.CsvFormatOptions.<Clone>$() -> Doka.Tabular.Csv.CsvFormatOptions!
+Doka.Tabular.Csv.CsvFormatOptions.AllowSpill.get -> bool
+Doka.Tabular.Csv.CsvFormatOptions.AllowSpill.init -> void
+Doka.Tabular.Csv.CsvFormatOptions.CsvFormatOptions() -> void
+Doka.Tabular.Csv.CsvFormatOptions.Diagnostics.get -> Doka.Tabular.TabularDiagnosticsOptions?
+Doka.Tabular.Csv.CsvFormatOptions.Diagnostics.init -> void
+Doka.Tabular.Csv.CsvFormatOptions.Equals(Doka.Tabular.Csv.CsvFormatOptions? other) -> bool
+Doka.Tabular.Csv.CsvFormatOptions.Export.get -> Doka.Tabular.Csv.CsvExportOptions?
+Doka.Tabular.Csv.CsvFormatOptions.Export.init -> void
+Doka.Tabular.Csv.CsvFormatOptions.Import.get -> Doka.Tabular.Csv.CsvImportOptions?
+Doka.Tabular.Csv.CsvFormatOptions.Import.init -> void
+Doka.Tabular.Csv.CsvFormatOptions.ImportBufferBytes.get -> long
+Doka.Tabular.Csv.CsvFormatOptions.ImportBufferBytes.init -> void
+Doka.Tabular.Csv.CsvFormatOptions.MaxFieldCharacters.get -> long?
+Doka.Tabular.Csv.CsvFormatOptions.MaxFieldCharacters.init -> void
+Doka.Tabular.Csv.CsvFormatOptions.MaxInputBytes.get -> long?
+Doka.Tabular.Csv.CsvFormatOptions.MaxInputBytes.init -> void
+Doka.Tabular.Csv.CsvFormatOptions.MaxTemporaryBytes.get -> long?
+Doka.Tabular.Csv.CsvFormatOptions.MaxTemporaryBytes.init -> void
+Doka.Tabular.Csv.CsvFormatOptions.OutputBufferBytes.get -> long
+Doka.Tabular.Csv.CsvFormatOptions.OutputBufferBytes.init -> void
+Doka.Tabular.Csv.CsvFormatOptions.TemporaryDirectory.get -> string?
+Doka.Tabular.Csv.CsvFormatOptions.TemporaryDirectory.init -> void
+Doka.Tabular.Csv.CsvFormatOptions.TimeProvider.get -> System.TimeProvider?
+Doka.Tabular.Csv.CsvFormatOptions.TimeProvider.init -> void
+Doka.Tabular.Csv.CsvImportOptions
+Doka.Tabular.Csv.CsvImportOptions.<Clone>$() -> Doka.Tabular.Csv.CsvImportOptions!
+Doka.Tabular.Csv.CsvImportOptions.AllowLineBreaksInFields.get -> bool?
+Doka.Tabular.Csv.CsvImportOptions.AllowLineBreaksInFields.init -> void
+Doka.Tabular.Csv.CsvImportOptions.Binding.get -> Doka.Tabular.ColumnBinding?
+Doka.Tabular.Csv.CsvImportOptions.Binding.init -> void
+Doka.Tabular.Csv.CsvImportOptions.CsvImportOptions() -> void
+Doka.Tabular.Csv.CsvImportOptions.Culture.get -> System.Globalization.CultureInfo?
+Doka.Tabular.Csv.CsvImportOptions.Culture.init -> void
+Doka.Tabular.Csv.CsvImportOptions.Delimiter.get -> char?
+Doka.Tabular.Csv.CsvImportOptions.Delimiter.init -> void
+Doka.Tabular.Csv.CsvImportOptions.EmptyLinesAsRecords.get -> bool?
+Doka.Tabular.Csv.CsvImportOptions.EmptyLinesAsRecords.init -> void
+Doka.Tabular.Csv.CsvImportOptions.Encoding.get -> System.Text.Encoding?
+Doka.Tabular.Csv.CsvImportOptions.Encoding.init -> void
+Doka.Tabular.Csv.CsvImportOptions.Equals(Doka.Tabular.Csv.CsvImportOptions? other) -> bool
+Doka.Tabular.Csv.CsvImportOptions.MaxErrorDetails.get -> int?
+Doka.Tabular.Csv.CsvImportOptions.MaxErrorDetails.init -> void
+Doka.Tabular.Csv.CsvImportOptions.MissingTranslation.get -> Doka.Tabular.MissingTranslationBehavior?
+Doka.Tabular.Csv.CsvImportOptions.MissingTranslation.init -> void
+Doka.Tabular.Csv.CsvImportOptions.NormalizeHeader.get -> System.Func<string!, string!>?
+Doka.Tabular.Csv.CsvImportOptions.NormalizeHeader.init -> void
+Doka.Tabular.Csv.CsvImportOptions.RequireCrLf.get -> bool?
+Doka.Tabular.Csv.CsvImportOptions.RequireCrLf.init -> void
+Doka.Tabular.Csv.CsvImportOptions.SourceKey.get -> Doka.Tabular.TabularSourceKey?
+Doka.Tabular.Csv.CsvImportOptions.SourceKey.init -> void
+Doka.Tabular.Csv.CsvImportOptions.Strategy.get -> Doka.Tabular.ImportStrategy?
+Doka.Tabular.Csv.CsvImportOptions.Strategy.init -> void
+Doka.Tabular.Csv.CsvImportOptions.Translations.get -> System.Collections.Generic.IReadOnlyDictionary<string!, string!>?
+Doka.Tabular.Csv.CsvImportOptions.Translations.init -> void
+Doka.Tabular.Csv.CsvImportOptions.TrimFields.get -> bool?
+Doka.Tabular.Csv.CsvImportOptions.TrimFields.init -> void
+Doka.Tabular.Excel.ExcelColor
+Doka.Tabular.Excel.ExcelColor.Equals(Doka.Tabular.Excel.ExcelColor? other) -> bool
+Doka.Tabular.Excel.ExcelColor.Hex.get -> string!
+Doka.Tabular.Excel.ExcelColumnLayout
+Doka.Tabular.Excel.ExcelColumnLayout.<Clone>$() -> Doka.Tabular.Excel.ExcelColumnLayout!
+Doka.Tabular.Excel.ExcelColumnLayout.Equals(Doka.Tabular.Excel.ExcelColumnLayout? other) -> bool
+Doka.Tabular.Excel.ExcelColumnLayout.ExcelColumnLayout() -> void
+Doka.Tabular.Excel.ExcelColumnLayout.HorizontalAlignment.get -> Doka.Tabular.Excel.ExcelHorizontalAlignment?
+Doka.Tabular.Excel.ExcelColumnLayout.HorizontalAlignment.init -> void
+Doka.Tabular.Excel.ExcelColumnLayout.Width.get -> double?
+Doka.Tabular.Excel.ExcelColumnLayout.Width.init -> void
+Doka.Tabular.Excel.ExcelExport
+Doka.Tabular.Excel.ExcelExportBuilder
+Doka.Tabular.Excel.ExcelExportBuilder.Add<T>(Doka.Tabular.TabularSheetName! name, System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.Excel.ExcelSheetExportOptions? options = null) -> Doka.Tabular.Excel.ExcelExportBuilder!
+Doka.Tabular.Excel.ExcelExportBuilder.Add<T>(Doka.Tabular.TabularSheetName! name, System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.Excel.ExcelSheetExportOptions? options = null) -> Doka.Tabular.Excel.ExcelExportBuilder!
+Doka.Tabular.Excel.ExcelExportBuilder.Add<T>(Doka.Tabular.TabularSheetName! name, System.Linq.IQueryable<T>! rows, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.Excel.ExcelSheetExportOptions? options = null) -> Doka.Tabular.Excel.ExcelExportBuilder!
+Doka.Tabular.Excel.ExcelExportBuilder.Build() -> Doka.Tabular.Excel.ExcelWorkbookExport!
+Doka.Tabular.Excel.ExcelExportOptions
+Doka.Tabular.Excel.ExcelExportOptions.<Clone>$() -> Doka.Tabular.Excel.ExcelExportOptions!
+Doka.Tabular.Excel.ExcelExportOptions.ColumnKeys.get -> System.Collections.Generic.IReadOnlyList<Doka.Tabular.ColumnKey!>?
+Doka.Tabular.Excel.ExcelExportOptions.ColumnKeys.init -> void
+Doka.Tabular.Excel.ExcelExportOptions.Culture.get -> System.Globalization.CultureInfo?
+Doka.Tabular.Excel.ExcelExportOptions.Culture.init -> void
+Doka.Tabular.Excel.ExcelExportOptions.Equals(Doka.Tabular.Excel.ExcelExportOptions? other) -> bool
+Doka.Tabular.Excel.ExcelExportOptions.ExcelExportOptions() -> void
+Doka.Tabular.Excel.ExcelExportOptions.Layout.get -> Doka.Tabular.Excel.ExcelLayoutOptions?
+Doka.Tabular.Excel.ExcelExportOptions.Layout.init -> void
+Doka.Tabular.Excel.ExcelExportOptions.MaxErrorDetails.get -> int?
+Doka.Tabular.Excel.ExcelExportOptions.MaxErrorDetails.init -> void
+Doka.Tabular.Excel.ExcelExportOptions.MissingTranslation.get -> Doka.Tabular.MissingTranslationBehavior?
+Doka.Tabular.Excel.ExcelExportOptions.MissingTranslation.init -> void
+Doka.Tabular.Excel.ExcelExportOptions.SheetName.get -> Doka.Tabular.TabularSheetName?
+Doka.Tabular.Excel.ExcelExportOptions.SheetName.init -> void
+Doka.Tabular.Excel.ExcelExportOptions.Translations.get -> System.Collections.Generic.IReadOnlyDictionary<string!, string!>?
+Doka.Tabular.Excel.ExcelExportOptions.Translations.init -> void
+Doka.Tabular.Excel.ExcelExportOptions.WriteHeader.get -> bool?
+Doka.Tabular.Excel.ExcelExportOptions.WriteHeader.init -> void
+Doka.Tabular.Excel.ExcelFormat
+Doka.Tabular.Excel.ExcelFormat.ExcelFormat(Doka.Tabular.Excel.ExcelFormatOptions! options) -> void
+Doka.Tabular.Excel.ExcelFormat.ExportAsync(Doka.Tabular.Excel.ExcelWorkbookExport! sheets, Doka.Tabular.Excel.ExcelWorkbookExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync(Doka.Tabular.Excel.ExcelWorkbookExport! sheets, Doka.Tabular.TabularFileTarget! target, Doka.Tabular.Excel.ExcelWorkbookExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync(Doka.Tabular.Excel.ExcelWorkbookExport! sheets, Doka.Tabular.TabularFileTarget! target, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync(Doka.Tabular.Excel.ExcelWorkbookExport! sheets, System.IO.Stream! target, Doka.Tabular.Excel.ExcelWorkbookExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync(Doka.Tabular.Excel.ExcelWorkbookExport! sheets, System.IO.Stream! target, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync(Doka.Tabular.Excel.ExcelWorkbookExport! sheets, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync(Doka.Tabular.Excel.ExcelWorkbookExport! sheets, string! path, Doka.Tabular.Excel.ExcelWorkbookExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync(Doka.Tabular.Excel.ExcelWorkbookExport! sheets, string! path, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync(System.Collections.Generic.IAsyncEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, Doka.Tabular.Excel.ExcelExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync(System.Collections.Generic.IAsyncEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, Doka.Tabular.TabularFileTarget! target, Doka.Tabular.Excel.ExcelExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync(System.Collections.Generic.IAsyncEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, Doka.Tabular.TabularFileTarget! target, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync(System.Collections.Generic.IAsyncEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, System.IO.Stream! target, Doka.Tabular.Excel.ExcelExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync(System.Collections.Generic.IAsyncEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, System.IO.Stream! target, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync(System.Collections.Generic.IAsyncEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync(System.Collections.Generic.IAsyncEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, string! path, Doka.Tabular.Excel.ExcelExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync(System.Collections.Generic.IAsyncEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, string! path, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync(System.Collections.Generic.IEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, Doka.Tabular.Excel.ExcelExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync(System.Collections.Generic.IEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, Doka.Tabular.TabularFileTarget! target, Doka.Tabular.Excel.ExcelExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync(System.Collections.Generic.IEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, Doka.Tabular.TabularFileTarget! target, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync(System.Collections.Generic.IEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, System.IO.Stream! target, Doka.Tabular.Excel.ExcelExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync(System.Collections.Generic.IEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, System.IO.Stream! target, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync(System.Collections.Generic.IEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync(System.Collections.Generic.IEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, string! path, Doka.Tabular.Excel.ExcelExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync(System.Collections.Generic.IEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, string! path, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, Doka.Tabular.Excel.ExcelExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, Doka.Tabular.TabularFileTarget! target, Doka.Tabular.Excel.ExcelExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, Doka.Tabular.TabularFileTarget! target, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, System.IO.Stream! target, Doka.Tabular.Excel.ExcelExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, System.IO.Stream! target, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, string! path, Doka.Tabular.Excel.ExcelExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, string! path, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.Excel.ExcelExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.TabularFileTarget! target, Doka.Tabular.Excel.ExcelExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.TabularFileTarget! target, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, System.IO.Stream! target, Doka.Tabular.Excel.ExcelExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, System.IO.Stream! target, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, string! path, Doka.Tabular.Excel.ExcelExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, string! path, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, Doka.Tabular.Excel.ExcelExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, Doka.Tabular.TabularFileTarget! target, Doka.Tabular.Excel.ExcelExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, Doka.Tabular.TabularFileTarget! target, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, System.IO.Stream! target, Doka.Tabular.Excel.ExcelExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, System.IO.Stream! target, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, string! path, Doka.Tabular.Excel.ExcelExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, string! path, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.Excel.ExcelExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.TabularFileTarget! target, Doka.Tabular.Excel.ExcelExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.TabularFileTarget! target, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, System.IO.Stream! target, Doka.Tabular.Excel.ExcelExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, System.IO.Stream! target, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, string! path, Doka.Tabular.Excel.ExcelExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, string! path, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.RowExportMap<T>! map, Doka.Tabular.Excel.ExcelExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.RowExportMap<T>! map, Doka.Tabular.TabularFileTarget! target, Doka.Tabular.Excel.ExcelExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.RowExportMap<T>! map, Doka.Tabular.TabularFileTarget! target, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.RowExportMap<T>! map, System.IO.Stream! target, Doka.Tabular.Excel.ExcelExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.RowExportMap<T>! map, System.IO.Stream! target, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.RowExportMap<T>! map, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.RowExportMap<T>! map, string! path, Doka.Tabular.Excel.ExcelExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.RowExportMap<T>! map, string! path, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.Excel.ExcelExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.TabularFileTarget! target, Doka.Tabular.Excel.ExcelExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.TabularFileTarget! target, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.TabularMap<T>! map, System.IO.Stream! target, Doka.Tabular.Excel.ExcelExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.TabularMap<T>! map, System.IO.Stream! target, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.TabularMap<T>! map, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.TabularMap<T>! map, string! path, Doka.Tabular.Excel.ExcelExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.TabularMap<T>! map, string! path, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ImportAsync(System.IO.Stream! source, Doka.Tabular.Excel.ExcelWorkbookImport! sheets, Doka.Tabular.Excel.ExcelWorkbookImportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.Excel.ExcelWorkbookImportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ImportAsync(System.IO.Stream! source, Doka.Tabular.Excel.ExcelWorkbookImport! sheets, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.Excel.ExcelWorkbookImportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ImportAsync(System.IO.Stream! source, Doka.Tabular.RowMap! map, Doka.Tabular.Excel.ExcelImportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<Doka.Tabular.TabularRow!>!>!
+Doka.Tabular.Excel.ExcelFormat.ImportAsync(System.IO.Stream! source, Doka.Tabular.RowMap! map, Doka.Tabular.TabularImportDestination<Doka.Tabular.TabularRow!>! destination, Doka.Tabular.Excel.ExcelImportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<Doka.Tabular.TabularRow!>!>!
+Doka.Tabular.Excel.ExcelFormat.ImportAsync(System.IO.Stream! source, Doka.Tabular.RowMap! map, Doka.Tabular.TabularImportDestination<Doka.Tabular.TabularRow!>! destination, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<Doka.Tabular.TabularRow!>!>!
+Doka.Tabular.Excel.ExcelFormat.ImportAsync(System.IO.Stream! source, Doka.Tabular.RowMap! map, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<Doka.Tabular.TabularRow!>!>!
+Doka.Tabular.Excel.ExcelFormat.ImportAsync(string! path, Doka.Tabular.Excel.ExcelWorkbookImport! sheets, Doka.Tabular.Excel.ExcelWorkbookImportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.Excel.ExcelWorkbookImportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ImportAsync(string! path, Doka.Tabular.Excel.ExcelWorkbookImport! sheets, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.Excel.ExcelWorkbookImportReport!>!
+Doka.Tabular.Excel.ExcelFormat.ImportAsync(string! path, Doka.Tabular.RowMap! map, Doka.Tabular.Excel.ExcelImportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<Doka.Tabular.TabularRow!>!>!
+Doka.Tabular.Excel.ExcelFormat.ImportAsync(string! path, Doka.Tabular.RowMap! map, Doka.Tabular.TabularImportDestination<Doka.Tabular.TabularRow!>! destination, Doka.Tabular.Excel.ExcelImportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<Doka.Tabular.TabularRow!>!>!
+Doka.Tabular.Excel.ExcelFormat.ImportAsync(string! path, Doka.Tabular.RowMap! map, Doka.Tabular.TabularImportDestination<Doka.Tabular.TabularRow!>! destination, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<Doka.Tabular.TabularRow!>!>!
+Doka.Tabular.Excel.ExcelFormat.ImportAsync(string! path, Doka.Tabular.RowMap! map, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<Doka.Tabular.TabularRow!>!>!
+Doka.Tabular.Excel.ExcelFormat.ImportAsync<T>(System.IO.Stream! source, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.Excel.ExcelImportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<T>!>!
+Doka.Tabular.Excel.ExcelFormat.ImportAsync<T>(System.IO.Stream! source, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.TabularImportDestination<T>! destination, Doka.Tabular.Excel.ExcelImportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<T>!>!
+Doka.Tabular.Excel.ExcelFormat.ImportAsync<T>(System.IO.Stream! source, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.TabularImportDestination<T>! destination, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<T>!>!
+Doka.Tabular.Excel.ExcelFormat.ImportAsync<T>(System.IO.Stream! source, Doka.Tabular.TabularMap<T>! map, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<T>!>!
+Doka.Tabular.Excel.ExcelFormat.ImportAsync<T>(string! path, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.Excel.ExcelImportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<T>!>!
+Doka.Tabular.Excel.ExcelFormat.ImportAsync<T>(string! path, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.TabularImportDestination<T>! destination, Doka.Tabular.Excel.ExcelImportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<T>!>!
+Doka.Tabular.Excel.ExcelFormat.ImportAsync<T>(string! path, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.TabularImportDestination<T>! destination, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<T>!>!
+Doka.Tabular.Excel.ExcelFormat.ImportAsync<T>(string! path, Doka.Tabular.TabularMap<T>! map, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<T>!>!
+Doka.Tabular.Excel.ExcelFormatOptions
+Doka.Tabular.Excel.ExcelFormatOptions.<Clone>$() -> Doka.Tabular.Excel.ExcelFormatOptions!
+Doka.Tabular.Excel.ExcelFormatOptions.AllowSpill.get -> bool
+Doka.Tabular.Excel.ExcelFormatOptions.AllowSpill.init -> void
+Doka.Tabular.Excel.ExcelFormatOptions.Diagnostics.get -> Doka.Tabular.TabularDiagnosticsOptions?
+Doka.Tabular.Excel.ExcelFormatOptions.Diagnostics.init -> void
+Doka.Tabular.Excel.ExcelFormatOptions.Equals(Doka.Tabular.Excel.ExcelFormatOptions? other) -> bool
+Doka.Tabular.Excel.ExcelFormatOptions.ExcelFormatOptions() -> void
+Doka.Tabular.Excel.ExcelFormatOptions.Export.get -> Doka.Tabular.Excel.ExcelExportOptions?
+Doka.Tabular.Excel.ExcelFormatOptions.Export.init -> void
+Doka.Tabular.Excel.ExcelFormatOptions.Import.get -> Doka.Tabular.Excel.ExcelImportOptions?
+Doka.Tabular.Excel.ExcelFormatOptions.Import.init -> void
+Doka.Tabular.Excel.ExcelFormatOptions.ImportBufferBytes.get -> long
+Doka.Tabular.Excel.ExcelFormatOptions.ImportBufferBytes.init -> void
+Doka.Tabular.Excel.ExcelFormatOptions.MaxExpandedBytes.get -> long?
+Doka.Tabular.Excel.ExcelFormatOptions.MaxExpandedBytes.init -> void
+Doka.Tabular.Excel.ExcelFormatOptions.MaxFieldCharacters.get -> long?
+Doka.Tabular.Excel.ExcelFormatOptions.MaxFieldCharacters.init -> void
+Doka.Tabular.Excel.ExcelFormatOptions.MaxInputBytes.get -> long?
+Doka.Tabular.Excel.ExcelFormatOptions.MaxInputBytes.init -> void
+Doka.Tabular.Excel.ExcelFormatOptions.MaxTemporaryBytes.get -> long?
+Doka.Tabular.Excel.ExcelFormatOptions.MaxTemporaryBytes.init -> void
+Doka.Tabular.Excel.ExcelFormatOptions.OutputBufferBytes.get -> long
+Doka.Tabular.Excel.ExcelFormatOptions.OutputBufferBytes.init -> void
+Doka.Tabular.Excel.ExcelFormatOptions.TemporaryDirectory.get -> string?
+Doka.Tabular.Excel.ExcelFormatOptions.TemporaryDirectory.init -> void
+Doka.Tabular.Excel.ExcelFormatOptions.TimeProvider.get -> System.TimeProvider?
+Doka.Tabular.Excel.ExcelFormatOptions.TimeProvider.init -> void
+Doka.Tabular.Excel.ExcelHeaderFeature
+Doka.Tabular.Excel.ExcelHeaderFeature.Auto = 0 -> Doka.Tabular.Excel.ExcelHeaderFeature
+Doka.Tabular.Excel.ExcelHeaderFeature.Disabled = 2 -> Doka.Tabular.Excel.ExcelHeaderFeature
+Doka.Tabular.Excel.ExcelHeaderFeature.Enabled = 1 -> Doka.Tabular.Excel.ExcelHeaderFeature
+Doka.Tabular.Excel.ExcelHorizontalAlignment
+Doka.Tabular.Excel.ExcelHorizontalAlignment.Center = 1 -> Doka.Tabular.Excel.ExcelHorizontalAlignment
+Doka.Tabular.Excel.ExcelHorizontalAlignment.Left = 0 -> Doka.Tabular.Excel.ExcelHorizontalAlignment
+Doka.Tabular.Excel.ExcelHorizontalAlignment.Right = 2 -> Doka.Tabular.Excel.ExcelHorizontalAlignment
+Doka.Tabular.Excel.ExcelImport
+Doka.Tabular.Excel.ExcelImportBuilder
+Doka.Tabular.Excel.ExcelImportBuilder.Add(Doka.Tabular.TabularSheetName! name, Doka.Tabular.RowMap! map, Doka.Tabular.Excel.ExcelSheetImportOptions? options = null) -> Doka.Tabular.Excel.ExcelImportSheet<Doka.Tabular.TabularRow!>!
+Doka.Tabular.Excel.ExcelImportBuilder.Add(Doka.Tabular.TabularSheetName! name, Doka.Tabular.RowMap! map, Doka.Tabular.TabularImportDestination<Doka.Tabular.TabularRow!>! destination, Doka.Tabular.Excel.ExcelSheetImportOptions? options = null) -> Doka.Tabular.Excel.ExcelImportSheet<Doka.Tabular.TabularRow!>!
+Doka.Tabular.Excel.ExcelImportBuilder.Add<T>(Doka.Tabular.TabularSheetName! name, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.Excel.ExcelSheetImportOptions? options = null) -> Doka.Tabular.Excel.ExcelImportSheet<T>!
+Doka.Tabular.Excel.ExcelImportBuilder.Add<T>(Doka.Tabular.TabularSheetName! name, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.TabularImportDestination<T>! destination, Doka.Tabular.Excel.ExcelSheetImportOptions? options = null) -> Doka.Tabular.Excel.ExcelImportSheet<T>!
+Doka.Tabular.Excel.ExcelImportBuilder.Build() -> Doka.Tabular.Excel.ExcelWorkbookImport!
+Doka.Tabular.Excel.ExcelImportOptions
+Doka.Tabular.Excel.ExcelImportOptions.<Clone>$() -> Doka.Tabular.Excel.ExcelImportOptions!
+Doka.Tabular.Excel.ExcelImportOptions.Binding.get -> Doka.Tabular.ColumnBinding?
+Doka.Tabular.Excel.ExcelImportOptions.Binding.init -> void
+Doka.Tabular.Excel.ExcelImportOptions.Culture.get -> System.Globalization.CultureInfo?
+Doka.Tabular.Excel.ExcelImportOptions.Culture.init -> void
+Doka.Tabular.Excel.ExcelImportOptions.EndRow.get -> int?
+Doka.Tabular.Excel.ExcelImportOptions.EndRow.init -> void
+Doka.Tabular.Excel.ExcelImportOptions.Equals(Doka.Tabular.Excel.ExcelImportOptions? other) -> bool
+Doka.Tabular.Excel.ExcelImportOptions.ExcelImportOptions() -> void
+Doka.Tabular.Excel.ExcelImportOptions.ExpectedVariant.get -> Doka.Tabular.Excel.ExcelVariant?
+Doka.Tabular.Excel.ExcelImportOptions.ExpectedVariant.init -> void
+Doka.Tabular.Excel.ExcelImportOptions.MaxErrorDetails.get -> int?
+Doka.Tabular.Excel.ExcelImportOptions.MaxErrorDetails.init -> void
+Doka.Tabular.Excel.ExcelImportOptions.MissingTranslation.get -> Doka.Tabular.MissingTranslationBehavior?
+Doka.Tabular.Excel.ExcelImportOptions.MissingTranslation.init -> void
+Doka.Tabular.Excel.ExcelImportOptions.NormalizeHeader.get -> System.Func<string!, string!>?
+Doka.Tabular.Excel.ExcelImportOptions.NormalizeHeader.init -> void
+Doka.Tabular.Excel.ExcelImportOptions.SheetName.get -> Doka.Tabular.TabularSheetName?
+Doka.Tabular.Excel.ExcelImportOptions.SheetName.init -> void
+Doka.Tabular.Excel.ExcelImportOptions.SourceKey.get -> Doka.Tabular.TabularSourceKey?
+Doka.Tabular.Excel.ExcelImportOptions.SourceKey.init -> void
+Doka.Tabular.Excel.ExcelImportOptions.StartRow.get -> int?
+Doka.Tabular.Excel.ExcelImportOptions.StartRow.init -> void
+Doka.Tabular.Excel.ExcelImportOptions.Strategy.get -> Doka.Tabular.ImportStrategy?
+Doka.Tabular.Excel.ExcelImportOptions.Strategy.init -> void
+Doka.Tabular.Excel.ExcelImportOptions.Translations.get -> System.Collections.Generic.IReadOnlyDictionary<string!, string!>?
+Doka.Tabular.Excel.ExcelImportOptions.Translations.init -> void
+Doka.Tabular.Excel.ExcelImportOptions.TrimFields.get -> bool?
+Doka.Tabular.Excel.ExcelImportOptions.TrimFields.init -> void
+Doka.Tabular.Excel.ExcelImportOptions.VisibleRowsOnly.get -> bool?
+Doka.Tabular.Excel.ExcelImportOptions.VisibleRowsOnly.init -> void
+Doka.Tabular.Excel.ExcelImportSheet<T>
+Doka.Tabular.Excel.ExcelImportSheet<T>.Name.get -> Doka.Tabular.TabularSheetName!
+Doka.Tabular.Excel.ExcelLayoutMode
+Doka.Tabular.Excel.ExcelLayoutMode.Range = 0 -> Doka.Tabular.Excel.ExcelLayoutMode
+Doka.Tabular.Excel.ExcelLayoutMode.Table = 1 -> Doka.Tabular.Excel.ExcelLayoutMode
+Doka.Tabular.Excel.ExcelLayoutOptions
+Doka.Tabular.Excel.ExcelLayoutOptions.<Clone>$() -> Doka.Tabular.Excel.ExcelLayoutOptions!
+Doka.Tabular.Excel.ExcelLayoutOptions.BandedRows.get -> bool?
+Doka.Tabular.Excel.ExcelLayoutOptions.BandedRows.init -> void
+Doka.Tabular.Excel.ExcelLayoutOptions.Columns.get -> System.Collections.Generic.IReadOnlyDictionary<Doka.Tabular.ColumnKey!, Doka.Tabular.Excel.ExcelColumnLayout!>?
+Doka.Tabular.Excel.ExcelLayoutOptions.Columns.init -> void
+Doka.Tabular.Excel.ExcelLayoutOptions.Equals(Doka.Tabular.Excel.ExcelLayoutOptions? other) -> bool
+Doka.Tabular.Excel.ExcelLayoutOptions.ExcelLayoutOptions() -> void
+Doka.Tabular.Excel.ExcelLayoutOptions.Filter.get -> Doka.Tabular.Excel.ExcelHeaderFeature
+Doka.Tabular.Excel.ExcelLayoutOptions.Filter.init -> void
+Doka.Tabular.Excel.ExcelLayoutOptions.FreezeHeader.get -> Doka.Tabular.Excel.ExcelHeaderFeature
+Doka.Tabular.Excel.ExcelLayoutOptions.FreezeHeader.init -> void
+Doka.Tabular.Excel.ExcelLayoutOptions.FrozenColumns.get -> int
+Doka.Tabular.Excel.ExcelLayoutOptions.FrozenColumns.init -> void
+Doka.Tabular.Excel.ExcelLayoutOptions.HeaderBold.get -> bool?
+Doka.Tabular.Excel.ExcelLayoutOptions.HeaderBold.init -> void
+Doka.Tabular.Excel.ExcelLayoutOptions.HeaderFill.get -> Doka.Tabular.Excel.ExcelColor?
+Doka.Tabular.Excel.ExcelLayoutOptions.HeaderFill.init -> void
+Doka.Tabular.Excel.ExcelLayoutOptions.HeaderFontColor.get -> Doka.Tabular.Excel.ExcelColor?
+Doka.Tabular.Excel.ExcelLayoutOptions.HeaderFontColor.init -> void
+Doka.Tabular.Excel.ExcelLayoutOptions.HeaderHeight.get -> double?
+Doka.Tabular.Excel.ExcelLayoutOptions.HeaderHeight.init -> void
+Doka.Tabular.Excel.ExcelLayoutOptions.HeaderVerticalAlignment.get -> Doka.Tabular.Excel.ExcelVerticalAlignment?
+Doka.Tabular.Excel.ExcelLayoutOptions.HeaderVerticalAlignment.init -> void
+Doka.Tabular.Excel.ExcelLayoutOptions.MaximumAutoWidth.get -> double
+Doka.Tabular.Excel.ExcelLayoutOptions.MaximumAutoWidth.init -> void
+Doka.Tabular.Excel.ExcelLayoutOptions.Mode.get -> Doka.Tabular.Excel.ExcelLayoutMode
+Doka.Tabular.Excel.ExcelLayoutOptions.Mode.init -> void
+Doka.Tabular.Excel.ExcelLayoutOptions.StartColumn.get -> int
+Doka.Tabular.Excel.ExcelLayoutOptions.StartColumn.init -> void
+Doka.Tabular.Excel.ExcelLayoutOptions.StartRow.get -> int
+Doka.Tabular.Excel.ExcelLayoutOptions.StartRow.init -> void
+Doka.Tabular.Excel.ExcelLayoutOptions.TableName.get -> Doka.Tabular.Excel.ExcelTableName?
+Doka.Tabular.Excel.ExcelLayoutOptions.TableName.init -> void
+Doka.Tabular.Excel.ExcelLayoutOptions.TableStyle.get -> Doka.Tabular.Excel.ExcelTableStyle?
+Doka.Tabular.Excel.ExcelLayoutOptions.TableStyle.init -> void
+Doka.Tabular.Excel.ExcelSheetExportOptions
+Doka.Tabular.Excel.ExcelSheetExportOptions.<Clone>$() -> Doka.Tabular.Excel.ExcelSheetExportOptions!
+Doka.Tabular.Excel.ExcelSheetExportOptions.ColumnKeys.get -> System.Collections.Generic.IReadOnlyList<Doka.Tabular.ColumnKey!>?
+Doka.Tabular.Excel.ExcelSheetExportOptions.ColumnKeys.init -> void
+Doka.Tabular.Excel.ExcelSheetExportOptions.Culture.get -> System.Globalization.CultureInfo?
+Doka.Tabular.Excel.ExcelSheetExportOptions.Culture.init -> void
+Doka.Tabular.Excel.ExcelSheetExportOptions.Equals(Doka.Tabular.Excel.ExcelSheetExportOptions? other) -> bool
+Doka.Tabular.Excel.ExcelSheetExportOptions.ExcelSheetExportOptions() -> void
+Doka.Tabular.Excel.ExcelSheetExportOptions.Layout.get -> Doka.Tabular.Excel.ExcelLayoutOptions?
+Doka.Tabular.Excel.ExcelSheetExportOptions.Layout.init -> void
+Doka.Tabular.Excel.ExcelSheetExportOptions.Translations.get -> System.Collections.Generic.IReadOnlyDictionary<string!, string!>?
+Doka.Tabular.Excel.ExcelSheetExportOptions.Translations.init -> void
+Doka.Tabular.Excel.ExcelSheetExportOptions.WriteHeader.get -> bool?
+Doka.Tabular.Excel.ExcelSheetExportOptions.WriteHeader.init -> void
+Doka.Tabular.Excel.ExcelSheetImportOptions
+Doka.Tabular.Excel.ExcelSheetImportOptions.<Clone>$() -> Doka.Tabular.Excel.ExcelSheetImportOptions!
+Doka.Tabular.Excel.ExcelSheetImportOptions.Binding.get -> Doka.Tabular.ColumnBinding?
+Doka.Tabular.Excel.ExcelSheetImportOptions.Binding.init -> void
+Doka.Tabular.Excel.ExcelSheetImportOptions.Culture.get -> System.Globalization.CultureInfo?
+Doka.Tabular.Excel.ExcelSheetImportOptions.Culture.init -> void
+Doka.Tabular.Excel.ExcelSheetImportOptions.EndRow.get -> int?
+Doka.Tabular.Excel.ExcelSheetImportOptions.EndRow.init -> void
+Doka.Tabular.Excel.ExcelSheetImportOptions.Equals(Doka.Tabular.Excel.ExcelSheetImportOptions? other) -> bool
+Doka.Tabular.Excel.ExcelSheetImportOptions.ExcelSheetImportOptions() -> void
+Doka.Tabular.Excel.ExcelSheetImportOptions.SourceKey.get -> Doka.Tabular.TabularSourceKey?
+Doka.Tabular.Excel.ExcelSheetImportOptions.SourceKey.init -> void
+Doka.Tabular.Excel.ExcelSheetImportOptions.StartRow.get -> int?
+Doka.Tabular.Excel.ExcelSheetImportOptions.StartRow.init -> void
+Doka.Tabular.Excel.ExcelSheetImportOptions.Translations.get -> System.Collections.Generic.IReadOnlyDictionary<string!, string!>?
+Doka.Tabular.Excel.ExcelSheetImportOptions.Translations.init -> void
+Doka.Tabular.Excel.ExcelSheetImportOptions.TrimFields.get -> bool?
+Doka.Tabular.Excel.ExcelSheetImportOptions.TrimFields.init -> void
+Doka.Tabular.Excel.ExcelSheetImportOptions.VisibleRowsOnly.get -> bool?
+Doka.Tabular.Excel.ExcelSheetImportOptions.VisibleRowsOnly.init -> void
+Doka.Tabular.Excel.ExcelTableName
+Doka.Tabular.Excel.ExcelTableName.Equals(Doka.Tabular.Excel.ExcelTableName? other) -> bool
+Doka.Tabular.Excel.ExcelTableName.Value.get -> string!
+Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Dark1 = 50 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Dark10 = 59 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Dark11 = 60 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Dark2 = 51 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Dark3 = 52 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Dark4 = 53 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Dark5 = 54 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Dark6 = 55 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Dark7 = 56 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Dark8 = 57 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Dark9 = 58 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Light1 = 1 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Light10 = 10 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Light11 = 11 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Light12 = 12 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Light13 = 13 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Light14 = 14 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Light15 = 15 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Light16 = 16 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Light17 = 17 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Light18 = 18 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Light19 = 19 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Light2 = 2 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Light20 = 20 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Light21 = 21 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Light3 = 3 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Light4 = 4 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Light5 = 5 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Light6 = 6 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Light7 = 7 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Light8 = 8 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Light9 = 9 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Medium1 = 22 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Medium10 = 31 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Medium11 = 32 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Medium12 = 33 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Medium13 = 34 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Medium14 = 35 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Medium15 = 36 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Medium16 = 37 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Medium17 = 38 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Medium18 = 39 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Medium19 = 40 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Medium2 = 23 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Medium20 = 41 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Medium21 = 42 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Medium22 = 43 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Medium23 = 44 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Medium24 = 45 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Medium25 = 46 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Medium26 = 47 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Medium27 = 48 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Medium28 = 49 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Medium3 = 24 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Medium4 = 25 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Medium5 = 26 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Medium6 = 27 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Medium7 = 28 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Medium8 = 29 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.Medium9 = 30 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelTableStyle.None = 0 -> Doka.Tabular.Excel.ExcelTableStyle
+Doka.Tabular.Excel.ExcelVariant
+Doka.Tabular.Excel.ExcelVariant.Xlsm = 1 -> Doka.Tabular.Excel.ExcelVariant
+Doka.Tabular.Excel.ExcelVariant.Xlsx = 0 -> Doka.Tabular.Excel.ExcelVariant
+Doka.Tabular.Excel.ExcelVerticalAlignment
+Doka.Tabular.Excel.ExcelVerticalAlignment.Bottom = 2 -> Doka.Tabular.Excel.ExcelVerticalAlignment
+Doka.Tabular.Excel.ExcelVerticalAlignment.Center = 1 -> Doka.Tabular.Excel.ExcelVerticalAlignment
+Doka.Tabular.Excel.ExcelVerticalAlignment.Top = 0 -> Doka.Tabular.Excel.ExcelVerticalAlignment
+Doka.Tabular.Excel.ExcelWorkbookExport
+Doka.Tabular.Excel.ExcelWorkbookExportOptions
+Doka.Tabular.Excel.ExcelWorkbookExportOptions.<Clone>$() -> Doka.Tabular.Excel.ExcelWorkbookExportOptions!
+Doka.Tabular.Excel.ExcelWorkbookExportOptions.Culture.get -> System.Globalization.CultureInfo?
+Doka.Tabular.Excel.ExcelWorkbookExportOptions.Culture.init -> void
+Doka.Tabular.Excel.ExcelWorkbookExportOptions.Equals(Doka.Tabular.Excel.ExcelWorkbookExportOptions? other) -> bool
+Doka.Tabular.Excel.ExcelWorkbookExportOptions.ExcelWorkbookExportOptions() -> void
+Doka.Tabular.Excel.ExcelWorkbookExportOptions.Layout.get -> Doka.Tabular.Excel.ExcelLayoutOptions?
+Doka.Tabular.Excel.ExcelWorkbookExportOptions.Layout.init -> void
+Doka.Tabular.Excel.ExcelWorkbookExportOptions.MaxErrorDetails.get -> int?
+Doka.Tabular.Excel.ExcelWorkbookExportOptions.MaxErrorDetails.init -> void
+Doka.Tabular.Excel.ExcelWorkbookExportOptions.MissingTranslation.get -> Doka.Tabular.MissingTranslationBehavior?
+Doka.Tabular.Excel.ExcelWorkbookExportOptions.MissingTranslation.init -> void
+Doka.Tabular.Excel.ExcelWorkbookExportOptions.Translations.get -> System.Collections.Generic.IReadOnlyDictionary<string!, string!>?
+Doka.Tabular.Excel.ExcelWorkbookExportOptions.Translations.init -> void
+Doka.Tabular.Excel.ExcelWorkbookExportOptions.WriteHeader.get -> bool?
+Doka.Tabular.Excel.ExcelWorkbookExportOptions.WriteHeader.init -> void
+Doka.Tabular.Excel.ExcelWorkbookImport
+Doka.Tabular.Excel.ExcelWorkbookImportOptions
+Doka.Tabular.Excel.ExcelWorkbookImportOptions.<Clone>$() -> Doka.Tabular.Excel.ExcelWorkbookImportOptions!
+Doka.Tabular.Excel.ExcelWorkbookImportOptions.Binding.get -> Doka.Tabular.ColumnBinding?
+Doka.Tabular.Excel.ExcelWorkbookImportOptions.Binding.init -> void
+Doka.Tabular.Excel.ExcelWorkbookImportOptions.Culture.get -> System.Globalization.CultureInfo?
+Doka.Tabular.Excel.ExcelWorkbookImportOptions.Culture.init -> void
+Doka.Tabular.Excel.ExcelWorkbookImportOptions.Equals(Doka.Tabular.Excel.ExcelWorkbookImportOptions? other) -> bool
+Doka.Tabular.Excel.ExcelWorkbookImportOptions.ExcelWorkbookImportOptions() -> void
+Doka.Tabular.Excel.ExcelWorkbookImportOptions.ExpectedVariant.get -> Doka.Tabular.Excel.ExcelVariant?
+Doka.Tabular.Excel.ExcelWorkbookImportOptions.ExpectedVariant.init -> void
+Doka.Tabular.Excel.ExcelWorkbookImportOptions.MaxErrorDetails.get -> int?
+Doka.Tabular.Excel.ExcelWorkbookImportOptions.MaxErrorDetails.init -> void
+Doka.Tabular.Excel.ExcelWorkbookImportOptions.MissingTranslation.get -> Doka.Tabular.MissingTranslationBehavior?
+Doka.Tabular.Excel.ExcelWorkbookImportOptions.MissingTranslation.init -> void
+Doka.Tabular.Excel.ExcelWorkbookImportOptions.NormalizeHeader.get -> System.Func<string!, string!>?
+Doka.Tabular.Excel.ExcelWorkbookImportOptions.NormalizeHeader.init -> void
+Doka.Tabular.Excel.ExcelWorkbookImportOptions.Strategy.get -> Doka.Tabular.ImportStrategy?
+Doka.Tabular.Excel.ExcelWorkbookImportOptions.Strategy.init -> void
+Doka.Tabular.Excel.ExcelWorkbookImportOptions.Translations.get -> System.Collections.Generic.IReadOnlyDictionary<string!, string!>?
+Doka.Tabular.Excel.ExcelWorkbookImportOptions.Translations.init -> void
+Doka.Tabular.Excel.ExcelWorkbookImportOptions.TrimFields.get -> bool?
+Doka.Tabular.Excel.ExcelWorkbookImportOptions.TrimFields.init -> void
+Doka.Tabular.Excel.ExcelWorkbookImportReport
+Doka.Tabular.Excel.ExcelWorkbookImportReport.Diagnostics.get -> Doka.Tabular.TabularReportDiagnostics!
+Doka.Tabular.Excel.ExcelWorkbookImportReport.Errors.get -> System.Collections.Generic.IReadOnlyList<Doka.Tabular.TabularError!>!
+Doka.Tabular.Excel.ExcelWorkbookImportReport.FatalError.get -> Doka.Tabular.TabularError?
+Doka.Tabular.Excel.ExcelWorkbookImportReport.Get<T>(Doka.Tabular.Excel.ExcelImportSheet<T>! sheet) -> Doka.Tabular.ImportReport<T>!
+Doka.Tabular.Excel.ExcelWorkbookImportReport.IsComplete.get -> bool
+Doka.Tabular.Excel.ExcelWorkbookImportReport.Journal.get -> Doka.Tabular.ImportJournalResult?
+Doka.Tabular.Excel.ExcelWorkbookImportReport.OmittedErrorCount.get -> long
+Doka.Tabular.Excel.ExcelWorkbookImportReport.RowsImported.get -> long
+Doka.Tabular.Excel.ExcelWorkbookImportReport.RowsPendingCommit.get -> long
+Doka.Tabular.Excel.ExcelWorkbookImportReport.RowsRead.get -> long
+Doka.Tabular.Excel.ExcelWorkbookImportReport.RowsRejected.get -> long
+Doka.Tabular.Excel.ExcelWorkbookImportReport.RowsSkipped.get -> long
+Doka.Tabular.Excel.ExcelWorkbookImportReport.RowsUncertain.get -> long
+Doka.Tabular.Excel.ExcelWorkbookImportReport.Status.get -> Doka.Tabular.ReportStatus
+Doka.Tabular.Excel.ExcelWorkbookImportReport.TotalErrorCount.get -> long
+Doka.Tabular.ExcelDurationUnit
+Doka.Tabular.ExcelDurationUnit.Days = 0 -> Doka.Tabular.ExcelDurationUnit
+Doka.Tabular.ExcelDurationUnit.Hours = 1 -> Doka.Tabular.ExcelDurationUnit
+Doka.Tabular.ExcelDurationUnit.Milliseconds = 4 -> Doka.Tabular.ExcelDurationUnit
+Doka.Tabular.ExcelDurationUnit.Minutes = 2 -> Doka.Tabular.ExcelDurationUnit
+Doka.Tabular.ExcelDurationUnit.Seconds = 3 -> Doka.Tabular.ExcelDurationUnit
+Doka.Tabular.ExcelDurationUnit.Ticks = 5 -> Doka.Tabular.ExcelDurationUnit
+Doka.Tabular.ExportReport
+Doka.Tabular.ExportReport.Diagnostics.get -> Doka.Tabular.TabularReportDiagnostics!
+Doka.Tabular.ExportReport.Errors.get -> System.Collections.Generic.IReadOnlyList<Doka.Tabular.TabularError!>!
+Doka.Tabular.ExportReport.FatalError.get -> Doka.Tabular.TabularError?
+Doka.Tabular.ExportReport.FileId.get -> System.Guid?
+Doka.Tabular.ExportReport.IsComplete.get -> bool
+Doka.Tabular.ExportReport.OmittedErrorCount.get -> long
+Doka.Tabular.ExportReport.PathOutput.get -> Doka.Tabular.PathOutputState?
+Doka.Tabular.ExportReport.RowsRead.get -> long
+Doka.Tabular.ExportReport.RowsWritten.get -> long
+Doka.Tabular.ExportReport.Status.get -> Doka.Tabular.ReportStatus
+Doka.Tabular.ExportReport.StreamOutput.get -> Doka.Tabular.StreamOutputState?
+Doka.Tabular.ExportReport.TotalErrorCount.get -> long
+Doka.Tabular.ITabularFileStore
+Doka.Tabular.ITabularFileStore.DeleteAsync(System.Guid exportId, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task!
+Doka.Tabular.ITabularFileStore.SaveAsync(Doka.Tabular.TabularFileWriteRequest! request, System.IO.Stream! content, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.TabularStoredFile!>!
+Doka.Tabular.ImportJournalDecision
+Doka.Tabular.ImportJournalDecision.Processed = 0 -> Doka.Tabular.ImportJournalDecision
+Doka.Tabular.ImportJournalDecision.RejectedDuplicate = 2 -> Doka.Tabular.ImportJournalDecision
+Doka.Tabular.ImportJournalDecision.Running = 3 -> Doka.Tabular.ImportJournalDecision
+Doka.Tabular.ImportJournalDecision.Skipped = 1 -> Doka.Tabular.ImportJournalDecision
+Doka.Tabular.ImportJournalResult
+Doka.Tabular.ImportJournalResult.Decision.get -> Doka.Tabular.ImportJournalDecision
+Doka.Tabular.ImportJournalResult.EntryId.get -> System.Guid
+Doka.Tabular.ImportJournalResult.ExistingImportId.get -> System.Guid?
+Doka.Tabular.ImportReport<T>
+Doka.Tabular.ImportReport<T>.Diagnostics.get -> Doka.Tabular.TabularReportDiagnostics!
+Doka.Tabular.ImportReport<T>.Errors.get -> System.Collections.Generic.IReadOnlyList<Doka.Tabular.TabularError!>!
+Doka.Tabular.ImportReport<T>.FatalError.get -> Doka.Tabular.TabularError?
+Doka.Tabular.ImportReport<T>.IsComplete.get -> bool
+Doka.Tabular.ImportReport<T>.Items.get -> System.Collections.Generic.IReadOnlyList<T>?
+Doka.Tabular.ImportReport<T>.Journal.get -> Doka.Tabular.ImportJournalResult?
+Doka.Tabular.ImportReport<T>.OmittedErrorCount.get -> long
+Doka.Tabular.ImportReport<T>.RowsImported.get -> long
+Doka.Tabular.ImportReport<T>.RowsPendingCommit.get -> long
+Doka.Tabular.ImportReport<T>.RowsRead.get -> long
+Doka.Tabular.ImportReport<T>.RowsRejected.get -> long
+Doka.Tabular.ImportReport<T>.RowsSkipped.get -> long
+Doka.Tabular.ImportReport<T>.RowsUncertain.get -> long
+Doka.Tabular.ImportReport<T>.Status.get -> Doka.Tabular.ReportStatus
+Doka.Tabular.ImportReport<T>.TotalErrorCount.get -> long
+Doka.Tabular.ImportStrategy
+Doka.Tabular.ImportStrategy.Partial = 1 -> Doka.Tabular.ImportStrategy
+Doka.Tabular.ImportStrategy.Strict = 0 -> Doka.Tabular.ImportStrategy
+Doka.Tabular.MissingTranslationBehavior
+Doka.Tabular.MissingTranslationBehavior.Error = 0 -> Doka.Tabular.MissingTranslationBehavior
+Doka.Tabular.MissingTranslationBehavior.UseFixedText = 1 -> Doka.Tabular.MissingTranslationBehavior
+Doka.Tabular.NumberTextStyle
+Doka.Tabular.NumberTextStyle.Currency = 2 -> Doka.Tabular.NumberTextStyle
+Doka.Tabular.NumberTextStyle.Percent = 1 -> Doka.Tabular.NumberTextStyle
+Doka.Tabular.NumberTextStyle.Plain = 0 -> Doka.Tabular.NumberTextStyle
+Doka.Tabular.PathOutputState
+Doka.Tabular.PathOutputState.NotPublished = 0 -> Doka.Tabular.PathOutputState
+Doka.Tabular.PathOutputState.Published = 1 -> Doka.Tabular.PathOutputState
+Doka.Tabular.PathOutputState.Unknown = 2 -> Doka.Tabular.PathOutputState
+Doka.Tabular.ReportStatus
+Doka.Tabular.ReportStatus.Canceled = 3 -> Doka.Tabular.ReportStatus
+Doka.Tabular.ReportStatus.CompletedWithErrors = 1 -> Doka.Tabular.ReportStatus
+Doka.Tabular.ReportStatus.Failed = 2 -> Doka.Tabular.ReportStatus
+Doka.Tabular.ReportStatus.NotStarted = 4 -> Doka.Tabular.ReportStatus
+Doka.Tabular.ReportStatus.Succeeded = 0 -> Doka.Tabular.ReportStatus
+Doka.Tabular.RowExportMap<TSource>
+Doka.Tabular.RowExportMapBuilder<TSource>
+Doka.Tabular.RowExportMapBuilder<TSource>.Bind<T>(Doka.Tabular.TabularRole<T>! role, System.Linq.Expressions.Expression<System.Func<TSource, T>!>! property) -> Doka.Tabular.RowExportMapBuilder<TSource>!
+Doka.Tabular.RowExportMapBuilder<TSource>.Build() -> Doka.Tabular.RowExportMap<TSource>!
+Doka.Tabular.RowMap
+Doka.Tabular.RowMap.From<TSource>() -> Doka.Tabular.RowExportMapBuilder<TSource>!
+Doka.Tabular.RowMapBuilder
+Doka.Tabular.RowMapBuilder.Add<T>(Doka.Tabular.TabularMap<T>! map, System.Action<Doka.Tabular.TabularEmbeddingBuilder<T>!>? configure = null) -> Doka.Tabular.TabularRole<T>!
+Doka.Tabular.RowMapBuilder.Build() -> Doka.Tabular.RowMap!
+Doka.Tabular.Sha256Hash
+Doka.Tabular.Sha256Hash.Equals(Doka.Tabular.Sha256Hash? other) -> bool
+Doka.Tabular.Sha256Hash.Value.get -> string!
+Doka.Tabular.StreamOutputState
+Doka.Tabular.StreamOutputState.Complete = 2 -> Doka.Tabular.StreamOutputState
+Doka.Tabular.StreamOutputState.NotWritten = 0 -> Doka.Tabular.StreamOutputState
+Doka.Tabular.StreamOutputState.Partial = 1 -> Doka.Tabular.StreamOutputState
+Doka.Tabular.StreamOutputState.Unknown = 3 -> Doka.Tabular.StreamOutputState
+Doka.Tabular.TabularBaseTypeBuilder<TBase>
+Doka.Tabular.TabularBooleanColumnExtensions
+Doka.Tabular.TabularBooleanColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<bool, TBuilder!>!)
+Doka.Tabular.TabularBooleanColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<bool, TBuilder!>!).FalseText(string! text) -> TBuilder!
+Doka.Tabular.TabularBooleanColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<bool, TBuilder!>!).TranslationKeys(string! trueKey, string! falseKey) -> TBuilder!
+Doka.Tabular.TabularBooleanColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<bool, TBuilder!>!).TrueText(string! text) -> TBuilder!
+Doka.Tabular.TabularBooleanColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<bool?, TBuilder!>!)
+Doka.Tabular.TabularBooleanColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<bool?, TBuilder!>!).FalseText(string! text) -> TBuilder!
+Doka.Tabular.TabularBooleanColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<bool?, TBuilder!>!).TranslationKeys(string! trueKey, string! falseKey) -> TBuilder!
+Doka.Tabular.TabularBooleanColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<bool?, TBuilder!>!).TrueText(string! text) -> TBuilder!
+Doka.Tabular.TabularColumnBuilder<TValue>
+Doka.Tabular.TabularColumnBuilder<TValue>.ExcelAsText() -> Doka.Tabular.TabularColumnBuilder<TValue>!
+Doka.Tabular.TabularColumnBuilder<TValue>.ExportOnly() -> Doka.Tabular.TabularColumnBuilder<TValue>!
+Doka.Tabular.TabularColumnBuilder<TValue>.Header(string! text) -> Doka.Tabular.TabularColumnBuilder<TValue>!
+Doka.Tabular.TabularColumnBuilder<TValue>.HeaderTranslationKey(string! key) -> Doka.Tabular.TabularColumnBuilder<TValue>!
+Doka.Tabular.TabularColumnBuilder<TValue>.ImportOnly() -> Doka.Tabular.TabularColumnBuilder<TValue>!
+Doka.Tabular.TabularColumnBuilder<TValue>.IncludeSourceValue() -> Doka.Tabular.TabularColumnBuilder<TValue>!
+Doka.Tabular.TabularColumnBuilder<TValue>.OptionalHeader() -> Doka.Tabular.TabularColumnBuilder<TValue>!
+Doka.Tabular.TabularColumnBuilder<TValue>.RejectFormulas() -> Doka.Tabular.TabularColumnBuilder<TValue>!
+Doka.Tabular.TabularComposeField<TPart>
+Doka.Tabular.TabularComposeFields
+Doka.Tabular.TabularComposeFields.Field<TPart>(int index, Doka.Tabular.ColumnKey! key, System.Action<Doka.Tabular.TabularColumnBuilder<TPart>!>? configure = null) -> Doka.Tabular.TabularComposeField<TPart>!
+Doka.Tabular.TabularConfigurationException
+Doka.Tabular.TabularConfigurationException.Errors.get -> System.Collections.Generic.IReadOnlyList<Doka.Tabular.TabularError!>!
+Doka.Tabular.TabularConfigurationException.TabularConfigurationException(System.Collections.Generic.IReadOnlyList<Doka.Tabular.TabularError!>! errors) -> void
+Doka.Tabular.TabularConversionColumnExtensions
+Doka.Tabular.TabularDiagnostics
+Doka.Tabular.TabularDiagnosticsOptions
+Doka.Tabular.TabularDiagnosticsOptions.<Clone>$() -> Doka.Tabular.TabularDiagnosticsOptions!
+Doka.Tabular.TabularDiagnosticsOptions.Equals(Doka.Tabular.TabularDiagnosticsOptions? other) -> bool
+Doka.Tabular.TabularDiagnosticsOptions.LoggerFactory.get -> Microsoft.Extensions.Logging.ILoggerFactory?
+Doka.Tabular.TabularDiagnosticsOptions.LoggerFactory.init -> void
+Doka.Tabular.TabularDiagnosticsOptions.TabularDiagnosticsOptions() -> void
+Doka.Tabular.TabularEmbeddingBuilder<TNested>
+Doka.Tabular.TabularEmbeddingBuilder<TNested>.ExportKey<TValue>(System.Linq.Expressions.Expression<System.Func<TNested, TValue>!>! field, Doka.Tabular.ColumnKey! key) -> Doka.Tabular.TabularEmbeddingBuilder<TNested>!
+Doka.Tabular.TabularEmbeddingBuilder<TNested>.Header<TValue>(System.Linq.Expressions.Expression<System.Func<TNested, TValue>!>! field, string! header) -> Doka.Tabular.TabularEmbeddingBuilder<TNested>!
+Doka.Tabular.TabularEmbeddingBuilder<TNested>.HeaderPrefix(string! prefix) -> Doka.Tabular.TabularEmbeddingBuilder<TNested>!
+Doka.Tabular.TabularEmbeddingBuilder<TNested>.HeaderPrefixTranslationKey(string! key) -> Doka.Tabular.TabularEmbeddingBuilder<TNested>!
+Doka.Tabular.TabularEmbeddingBuilder<TNested>.ImportOnly() -> Doka.Tabular.TabularEmbeddingBuilder<TNested>!
+Doka.Tabular.TabularEmbeddingBuilder<TNested>.KeyPrefix(Doka.Tabular.ColumnKey! prefix) -> Doka.Tabular.TabularEmbeddingBuilder<TNested>!
+Doka.Tabular.TabularEmbeddingBuilder<TNested>.StartIndex(int startIndex) -> Doka.Tabular.TabularEmbeddingBuilder<TNested>!
+Doka.Tabular.TabularEnumColumnExtensions
+Doka.Tabular.TabularEnumColumnExtensions.extension<TEnum, TBuilder>(Doka.Tabular.TabularValueBuilder<TEnum, TBuilder!>!)
+Doka.Tabular.TabularEnumColumnExtensions.extension<TEnum, TBuilder>(Doka.Tabular.TabularValueBuilder<TEnum, TBuilder!>!).AllowNumericInput() -> TBuilder!
+Doka.Tabular.TabularEnumColumnExtensions.extension<TEnum, TBuilder>(Doka.Tabular.TabularValueBuilder<TEnum, TBuilder!>!).ExportAlias(string! memberName) -> TBuilder!
+Doka.Tabular.TabularEnumColumnExtensions.extension<TEnum, TBuilder>(Doka.Tabular.TabularValueBuilder<TEnum, TBuilder!>!).ExportAsNumber() -> TBuilder!
+Doka.Tabular.TabularEnumColumnExtensions.extension<TEnum, TBuilder>(Doka.Tabular.TabularValueBuilder<TEnum, TBuilder!>!).ExportMemberName() -> TBuilder!
+Doka.Tabular.TabularEnumColumnExtensions.extension<TEnum, TBuilder>(Doka.Tabular.TabularValueBuilder<TEnum, TBuilder!>!).FlagsSeparator(char separator) -> TBuilder!
+Doka.Tabular.TabularEnumColumnExtensions.extension<TEnum, TBuilder>(Doka.Tabular.TabularValueBuilder<TEnum, TBuilder!>!).TranslationKeys(System.Func<TEnum, string!>! keySelector) -> TBuilder!
+Doka.Tabular.TabularEnumColumnExtensions.extension<TEnum, TBuilder>(Doka.Tabular.TabularValueBuilder<TEnum?, TBuilder!>!)
+Doka.Tabular.TabularEnumColumnExtensions.extension<TEnum, TBuilder>(Doka.Tabular.TabularValueBuilder<TEnum?, TBuilder!>!).AllowNumericInput() -> TBuilder!
+Doka.Tabular.TabularEnumColumnExtensions.extension<TEnum, TBuilder>(Doka.Tabular.TabularValueBuilder<TEnum?, TBuilder!>!).ExportAlias(string! memberName) -> TBuilder!
+Doka.Tabular.TabularEnumColumnExtensions.extension<TEnum, TBuilder>(Doka.Tabular.TabularValueBuilder<TEnum?, TBuilder!>!).ExportAsNumber() -> TBuilder!
+Doka.Tabular.TabularEnumColumnExtensions.extension<TEnum, TBuilder>(Doka.Tabular.TabularValueBuilder<TEnum?, TBuilder!>!).ExportMemberName() -> TBuilder!
+Doka.Tabular.TabularEnumColumnExtensions.extension<TEnum, TBuilder>(Doka.Tabular.TabularValueBuilder<TEnum?, TBuilder!>!).FlagsSeparator(char separator) -> TBuilder!
+Doka.Tabular.TabularEnumColumnExtensions.extension<TEnum, TBuilder>(Doka.Tabular.TabularValueBuilder<TEnum?, TBuilder!>!).TranslationKeys(System.Func<TEnum, string!>! keySelector) -> TBuilder!
+Doka.Tabular.TabularError
+Doka.Tabular.TabularError.Code.get -> Doka.Tabular.TabularErrorCode!
+Doka.Tabular.TabularError.Kind.get -> Doka.Tabular.TabularErrorKind
+Doka.Tabular.TabularError.Location.get -> Doka.Tabular.TabularErrorLocation!
+Doka.Tabular.TabularError.Message.get -> string!
+Doka.Tabular.TabularError.RelatedLocations.get -> System.Collections.Generic.IReadOnlyList<Doka.Tabular.TabularErrorLocation!>!
+Doka.Tabular.TabularError.SourceValue.get -> string?
+Doka.Tabular.TabularErrorCode
+Doka.Tabular.TabularErrorCode.Equals(Doka.Tabular.TabularErrorCode? other) -> bool
+Doka.Tabular.TabularErrorCode.Value.get -> string!
+Doka.Tabular.TabularErrorCodeJsonConverter
+Doka.Tabular.TabularErrorCodeJsonConverter.TabularErrorCodeJsonConverter() -> void
+Doka.Tabular.TabularErrorCodes
+Doka.Tabular.TabularErrorCodes.Callback
+Doka.Tabular.TabularErrorCodes.Configuration
+Doka.Tabular.TabularErrorCodes.Conversion
+Doka.Tabular.TabularErrorCodes.Io
+Doka.Tabular.TabularErrorCodes.Key
+Doka.Tabular.TabularErrorCodes.Lookup
+Doka.Tabular.TabularErrorCodes.Parsing
+Doka.Tabular.TabularErrorCodes.Persistence
+Doka.Tabular.TabularErrorCodes.Resource
+Doka.Tabular.TabularErrorCodes.Schema
+Doka.Tabular.TabularErrorCodes.Translation
+Doka.Tabular.TabularErrorCodes.Validation
+Doka.Tabular.TabularErrorKind
+Doka.Tabular.TabularErrorKind.Configuration = 0 -> Doka.Tabular.TabularErrorKind
+Doka.Tabular.TabularErrorKind.Data = 1 -> Doka.Tabular.TabularErrorKind
+Doka.Tabular.TabularErrorKind.Technical = 2 -> Doka.Tabular.TabularErrorKind
+Doka.Tabular.TabularErrorLocation
+Doka.Tabular.TabularErrorLocation.ColumnIndex.get -> int?
+Doka.Tabular.TabularErrorLocation.ColumnIndex.init -> void
+Doka.Tabular.TabularErrorLocation.ColumnKey.get -> Doka.Tabular.ColumnKey?
+Doka.Tabular.TabularErrorLocation.ColumnKey.init -> void
+Doka.Tabular.TabularErrorLocation.ExpectedHeader.get -> string?
+Doka.Tabular.TabularErrorLocation.ExpectedHeader.init -> void
+Doka.Tabular.TabularErrorLocation.Header.get -> string?
+Doka.Tabular.TabularErrorLocation.Header.init -> void
+Doka.Tabular.TabularErrorLocation.PropertyPath.get -> Doka.Tabular.TabularPropertyPath?
+Doka.Tabular.TabularErrorLocation.PropertyPath.init -> void
+Doka.Tabular.TabularErrorLocation.RecordNumber.get -> long?
+Doka.Tabular.TabularErrorLocation.RecordNumber.init -> void
+Doka.Tabular.TabularErrorLocation.RowNumber.get -> long?
+Doka.Tabular.TabularErrorLocation.RowNumber.init -> void
+Doka.Tabular.TabularErrorLocation.SheetName.get -> Doka.Tabular.TabularSheetName?
+Doka.Tabular.TabularErrorLocation.SheetName.init -> void
+Doka.Tabular.TabularErrorLocation.TabularErrorLocation() -> void
+Doka.Tabular.TabularExport
+Doka.Tabular.TabularExport.ExportAsync(System.Collections.Generic.IAsyncEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, Doka.Tabular.TabularFileTarget! target, Doka.Tabular.TabularType type, Doka.Tabular.TabularExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync(System.Collections.Generic.IAsyncEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, Doka.Tabular.TabularFileTarget! target, Doka.Tabular.TabularType type, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync(System.Collections.Generic.IAsyncEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, Doka.Tabular.TabularType type, Doka.Tabular.TabularExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.TabularExport.ExportAsync(System.Collections.Generic.IAsyncEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, Doka.Tabular.TabularType type, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.TabularExport.ExportAsync(System.Collections.Generic.IAsyncEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, System.IO.Stream! target, Doka.Tabular.TabularType type, Doka.Tabular.TabularExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync(System.Collections.Generic.IAsyncEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, System.IO.Stream! target, Doka.Tabular.TabularType type, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync(System.Collections.Generic.IAsyncEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, string! path, Doka.Tabular.TabularType type, Doka.Tabular.TabularExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync(System.Collections.Generic.IAsyncEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, string! path, Doka.Tabular.TabularType type, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync(System.Collections.Generic.IEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, Doka.Tabular.TabularFileTarget! target, Doka.Tabular.TabularType type, Doka.Tabular.TabularExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync(System.Collections.Generic.IEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, Doka.Tabular.TabularFileTarget! target, Doka.Tabular.TabularType type, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync(System.Collections.Generic.IEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, Doka.Tabular.TabularType type, Doka.Tabular.TabularExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.TabularExport.ExportAsync(System.Collections.Generic.IEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, Doka.Tabular.TabularType type, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.TabularExport.ExportAsync(System.Collections.Generic.IEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, System.IO.Stream! target, Doka.Tabular.TabularType type, Doka.Tabular.TabularExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync(System.Collections.Generic.IEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, System.IO.Stream! target, Doka.Tabular.TabularType type, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync(System.Collections.Generic.IEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, string! path, Doka.Tabular.TabularType type, Doka.Tabular.TabularExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync(System.Collections.Generic.IEnumerable<Doka.Tabular.TabularRow!>! rows, Doka.Tabular.RowMap! map, string! path, Doka.Tabular.TabularType type, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, Doka.Tabular.TabularFileTarget! target, Doka.Tabular.TabularType type, Doka.Tabular.TabularExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, Doka.Tabular.TabularFileTarget! target, Doka.Tabular.TabularType type, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, Doka.Tabular.TabularType type, Doka.Tabular.TabularExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, Doka.Tabular.TabularType type, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, System.IO.Stream! target, Doka.Tabular.TabularType type, Doka.Tabular.TabularExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, System.IO.Stream! target, Doka.Tabular.TabularType type, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, string! path, Doka.Tabular.TabularType type, Doka.Tabular.TabularExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, string! path, Doka.Tabular.TabularType type, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.TabularFileTarget! target, Doka.Tabular.TabularType type, Doka.Tabular.TabularExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.TabularFileTarget! target, Doka.Tabular.TabularType type, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.TabularType type, Doka.Tabular.TabularExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.TabularType type, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, System.IO.Stream! target, Doka.Tabular.TabularType type, Doka.Tabular.TabularExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, System.IO.Stream! target, Doka.Tabular.TabularType type, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, string! path, Doka.Tabular.TabularType type, Doka.Tabular.TabularExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Collections.Generic.IAsyncEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, string! path, Doka.Tabular.TabularType type, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, Doka.Tabular.TabularFileTarget! target, Doka.Tabular.TabularType type, Doka.Tabular.TabularExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, Doka.Tabular.TabularFileTarget! target, Doka.Tabular.TabularType type, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, Doka.Tabular.TabularType type, Doka.Tabular.TabularExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, Doka.Tabular.TabularType type, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, System.IO.Stream! target, Doka.Tabular.TabularType type, Doka.Tabular.TabularExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, System.IO.Stream! target, Doka.Tabular.TabularType type, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, string! path, Doka.Tabular.TabularType type, Doka.Tabular.TabularExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.RowExportMap<T>! map, string! path, Doka.Tabular.TabularType type, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.TabularFileTarget! target, Doka.Tabular.TabularType type, Doka.Tabular.TabularExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.TabularFileTarget! target, Doka.Tabular.TabularType type, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.TabularType type, Doka.Tabular.TabularExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.TabularType type, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, System.IO.Stream! target, Doka.Tabular.TabularType type, Doka.Tabular.TabularExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, System.IO.Stream! target, Doka.Tabular.TabularType type, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, string! path, Doka.Tabular.TabularType type, Doka.Tabular.TabularExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Collections.Generic.IEnumerable<T>! rows, Doka.Tabular.TabularMap<T>! map, string! path, Doka.Tabular.TabularType type, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.RowExportMap<T>! map, Doka.Tabular.TabularFileTarget! target, Doka.Tabular.TabularType type, Doka.Tabular.TabularExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.RowExportMap<T>! map, Doka.Tabular.TabularFileTarget! target, Doka.Tabular.TabularType type, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.RowExportMap<T>! map, Doka.Tabular.TabularType type, Doka.Tabular.TabularExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.RowExportMap<T>! map, Doka.Tabular.TabularType type, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.RowExportMap<T>! map, System.IO.Stream! target, Doka.Tabular.TabularType type, Doka.Tabular.TabularExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.RowExportMap<T>! map, System.IO.Stream! target, Doka.Tabular.TabularType type, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.RowExportMap<T>! map, string! path, Doka.Tabular.TabularType type, Doka.Tabular.TabularExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.RowExportMap<T>! map, string! path, Doka.Tabular.TabularType type, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.TabularFileTarget! target, Doka.Tabular.TabularType type, Doka.Tabular.TabularExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.TabularFileTarget! target, Doka.Tabular.TabularType type, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.TabularType type, Doka.Tabular.TabularExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.TabularType type, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.BufferedExportResult!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.TabularMap<T>! map, System.IO.Stream! target, Doka.Tabular.TabularType type, Doka.Tabular.TabularExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.TabularMap<T>! map, System.IO.Stream! target, Doka.Tabular.TabularType type, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.TabularMap<T>! map, string! path, Doka.Tabular.TabularType type, Doka.Tabular.TabularExportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.ExportAsync<T>(System.Linq.IQueryable<T>! rows, Doka.Tabular.TabularMap<T>! map, string! path, Doka.Tabular.TabularType type, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ExportReport!>!
+Doka.Tabular.TabularExport.TabularExport(Doka.Tabular.Csv.CsvFormat! csv) -> void
+Doka.Tabular.TabularExport.TabularExport(Doka.Tabular.Csv.CsvFormat! csv, Doka.Tabular.Excel.ExcelFormat! excel) -> void
+Doka.Tabular.TabularExport.TabularExport(Doka.Tabular.Excel.ExcelFormat! excel) -> void
+Doka.Tabular.TabularExportOptions
+Doka.Tabular.TabularExportOptions.<Clone>$() -> Doka.Tabular.TabularExportOptions!
+Doka.Tabular.TabularExportOptions.ColumnKeys.get -> System.Collections.Generic.IReadOnlyList<Doka.Tabular.ColumnKey!>?
+Doka.Tabular.TabularExportOptions.ColumnKeys.init -> void
+Doka.Tabular.TabularExportOptions.Csv.get -> Doka.Tabular.Csv.CsvExportOptions?
+Doka.Tabular.TabularExportOptions.Csv.init -> void
+Doka.Tabular.TabularExportOptions.Culture.get -> System.Globalization.CultureInfo?
+Doka.Tabular.TabularExportOptions.Culture.init -> void
+Doka.Tabular.TabularExportOptions.Equals(Doka.Tabular.TabularExportOptions? other) -> bool
+Doka.Tabular.TabularExportOptions.Excel.get -> Doka.Tabular.Excel.ExcelExportOptions?
+Doka.Tabular.TabularExportOptions.Excel.init -> void
+Doka.Tabular.TabularExportOptions.MaxErrorDetails.get -> int?
+Doka.Tabular.TabularExportOptions.MaxErrorDetails.init -> void
+Doka.Tabular.TabularExportOptions.MissingTranslation.get -> Doka.Tabular.MissingTranslationBehavior?
+Doka.Tabular.TabularExportOptions.MissingTranslation.init -> void
+Doka.Tabular.TabularExportOptions.TabularExportOptions() -> void
+Doka.Tabular.TabularExportOptions.Translations.get -> System.Collections.Generic.IReadOnlyDictionary<string!, string!>?
+Doka.Tabular.TabularExportOptions.Translations.init -> void
+Doka.Tabular.TabularExportOptions.WriteHeader.get -> bool?
+Doka.Tabular.TabularExportOptions.WriteHeader.init -> void
+Doka.Tabular.TabularField<T, TValue>
+Doka.Tabular.TabularFields<T>
+Doka.Tabular.TabularFields<T>.Of<TValue>(System.Linq.Expressions.Expression<System.Func<T, TValue>!>! property) -> Doka.Tabular.TabularField<T, TValue>!
+Doka.Tabular.TabularFileTarget
+Doka.Tabular.TabularFileTarget.WithRetention(System.TimeSpan duration) -> Doka.Tabular.TabularFileTarget!
+Doka.Tabular.TabularFileWriteRequest
+Doka.Tabular.TabularFileWriteRequest.ByteSize.get -> long
+Doka.Tabular.TabularFileWriteRequest.ContentType.get -> string!
+Doka.Tabular.TabularFileWriteRequest.ExportId.get -> System.Guid
+Doka.Tabular.TabularFileWriteRequest.FileName.get -> string!
+Doka.Tabular.TabularFileWriteRequest.Sha256.get -> Doka.Tabular.Sha256Hash!
+Doka.Tabular.TabularGuidColumnExtensions
+Doka.Tabular.TabularGuidColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.Guid, TBuilder!>!)
+Doka.Tabular.TabularGuidColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.Guid, TBuilder!>!).AcceptGuidFormats(string! formats) -> TBuilder!
+Doka.Tabular.TabularGuidColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.Guid, TBuilder!>!).GuidExportFormat(string! format) -> TBuilder!
+Doka.Tabular.TabularGuidColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.Guid?, TBuilder!>!)
+Doka.Tabular.TabularGuidColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.Guid?, TBuilder!>!).AcceptGuidFormats(string! formats) -> TBuilder!
+Doka.Tabular.TabularGuidColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.Guid?, TBuilder!>!).GuidExportFormat(string! format) -> TBuilder!
+Doka.Tabular.TabularImport
+Doka.Tabular.TabularImport.ImportAsync(System.IO.Stream! source, Doka.Tabular.TabularType type, Doka.Tabular.RowMap! map, Doka.Tabular.TabularImportDestination<Doka.Tabular.TabularRow!>! destination, Doka.Tabular.TabularImportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<Doka.Tabular.TabularRow!>!>!
+Doka.Tabular.TabularImport.ImportAsync(System.IO.Stream! source, Doka.Tabular.TabularType type, Doka.Tabular.RowMap! map, Doka.Tabular.TabularImportDestination<Doka.Tabular.TabularRow!>! destination, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<Doka.Tabular.TabularRow!>!>!
+Doka.Tabular.TabularImport.ImportAsync(System.IO.Stream! source, Doka.Tabular.TabularType type, Doka.Tabular.RowMap! map, Doka.Tabular.TabularImportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<Doka.Tabular.TabularRow!>!>!
+Doka.Tabular.TabularImport.ImportAsync(System.IO.Stream! source, Doka.Tabular.TabularType type, Doka.Tabular.RowMap! map, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<Doka.Tabular.TabularRow!>!>!
+Doka.Tabular.TabularImport.ImportAsync(string! path, Doka.Tabular.TabularType type, Doka.Tabular.RowMap! map, Doka.Tabular.TabularImportDestination<Doka.Tabular.TabularRow!>! destination, Doka.Tabular.TabularImportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<Doka.Tabular.TabularRow!>!>!
+Doka.Tabular.TabularImport.ImportAsync(string! path, Doka.Tabular.TabularType type, Doka.Tabular.RowMap! map, Doka.Tabular.TabularImportDestination<Doka.Tabular.TabularRow!>! destination, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<Doka.Tabular.TabularRow!>!>!
+Doka.Tabular.TabularImport.ImportAsync(string! path, Doka.Tabular.TabularType type, Doka.Tabular.RowMap! map, Doka.Tabular.TabularImportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<Doka.Tabular.TabularRow!>!>!
+Doka.Tabular.TabularImport.ImportAsync(string! path, Doka.Tabular.TabularType type, Doka.Tabular.RowMap! map, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<Doka.Tabular.TabularRow!>!>!
+Doka.Tabular.TabularImport.ImportAsync<T>(System.IO.Stream! source, Doka.Tabular.TabularType type, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.TabularImportDestination<T>! destination, Doka.Tabular.TabularImportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<T>!>!
+Doka.Tabular.TabularImport.ImportAsync<T>(System.IO.Stream! source, Doka.Tabular.TabularType type, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.TabularImportDestination<T>! destination, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<T>!>!
+Doka.Tabular.TabularImport.ImportAsync<T>(System.IO.Stream! source, Doka.Tabular.TabularType type, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.TabularImportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<T>!>!
+Doka.Tabular.TabularImport.ImportAsync<T>(System.IO.Stream! source, Doka.Tabular.TabularType type, Doka.Tabular.TabularMap<T>! map, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<T>!>!
+Doka.Tabular.TabularImport.ImportAsync<T>(string! path, Doka.Tabular.TabularType type, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.TabularImportDestination<T>! destination, Doka.Tabular.TabularImportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<T>!>!
+Doka.Tabular.TabularImport.ImportAsync<T>(string! path, Doka.Tabular.TabularType type, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.TabularImportDestination<T>! destination, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<T>!>!
+Doka.Tabular.TabularImport.ImportAsync<T>(string! path, Doka.Tabular.TabularType type, Doka.Tabular.TabularMap<T>! map, Doka.Tabular.TabularImportOptions! options, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<T>!>!
+Doka.Tabular.TabularImport.ImportAsync<T>(string! path, Doka.Tabular.TabularType type, Doka.Tabular.TabularMap<T>! map, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Doka.Tabular.ImportReport<T>!>!
+Doka.Tabular.TabularImport.TabularImport(Doka.Tabular.Csv.CsvFormat! csv) -> void
+Doka.Tabular.TabularImport.TabularImport(Doka.Tabular.Csv.CsvFormat! csv, Doka.Tabular.Excel.ExcelFormat! excel) -> void
+Doka.Tabular.TabularImport.TabularImport(Doka.Tabular.Excel.ExcelFormat! excel) -> void
+Doka.Tabular.TabularImportDestination<T>
+Doka.Tabular.TabularImportOptions
+Doka.Tabular.TabularImportOptions.<Clone>$() -> Doka.Tabular.TabularImportOptions!
+Doka.Tabular.TabularImportOptions.Binding.get -> Doka.Tabular.ColumnBinding?
+Doka.Tabular.TabularImportOptions.Binding.init -> void
+Doka.Tabular.TabularImportOptions.Csv.get -> Doka.Tabular.Csv.CsvImportOptions?
+Doka.Tabular.TabularImportOptions.Csv.init -> void
+Doka.Tabular.TabularImportOptions.Culture.get -> System.Globalization.CultureInfo?
+Doka.Tabular.TabularImportOptions.Culture.init -> void
+Doka.Tabular.TabularImportOptions.Equals(Doka.Tabular.TabularImportOptions? other) -> bool
+Doka.Tabular.TabularImportOptions.Excel.get -> Doka.Tabular.Excel.ExcelImportOptions?
+Doka.Tabular.TabularImportOptions.Excel.init -> void
+Doka.Tabular.TabularImportOptions.MaxErrorDetails.get -> int?
+Doka.Tabular.TabularImportOptions.MaxErrorDetails.init -> void
+Doka.Tabular.TabularImportOptions.MissingTranslation.get -> Doka.Tabular.MissingTranslationBehavior?
+Doka.Tabular.TabularImportOptions.MissingTranslation.init -> void
+Doka.Tabular.TabularImportOptions.NormalizeHeader.get -> System.Func<string!, string!>?
+Doka.Tabular.TabularImportOptions.NormalizeHeader.init -> void
+Doka.Tabular.TabularImportOptions.SourceKey.get -> Doka.Tabular.TabularSourceKey?
+Doka.Tabular.TabularImportOptions.SourceKey.init -> void
+Doka.Tabular.TabularImportOptions.Strategy.get -> Doka.Tabular.ImportStrategy?
+Doka.Tabular.TabularImportOptions.Strategy.init -> void
+Doka.Tabular.TabularImportOptions.TabularImportOptions() -> void
+Doka.Tabular.TabularImportOptions.Translations.get -> System.Collections.Generic.IReadOnlyDictionary<string!, string!>?
+Doka.Tabular.TabularImportOptions.Translations.init -> void
+Doka.Tabular.TabularImportOptions.TrimFields.get -> bool?
+Doka.Tabular.TabularImportOptions.TrimFields.init -> void
+Doka.Tabular.TabularLogEvents
+Doka.Tabular.TabularMap
+Doka.Tabular.TabularMap<T>
+Doka.Tabular.TabularMap<T>.Key<TKey>(System.Linq.Expressions.Expression<System.Func<T, TKey>!>! property, System.Collections.Generic.IEqualityComparer<TKey>? comparer = null) -> Doka.Tabular.TabularSourceKey<T>!
+Doka.Tabular.TabularMapBuilder<T>
+Doka.Tabular.TabularMapBuilder<T>.Build() -> Doka.Tabular.TabularMap<T>!
+Doka.Tabular.TabularMapBuilder<T>.Column<TValue>(System.Linq.Expressions.Expression<System.Func<T, TValue>!>! property, int index, Doka.Tabular.ColumnKey? key = null, System.Action<Doka.Tabular.TabularColumnBuilder<TValue>!>? configure = null) -> Doka.Tabular.TabularMapBuilder<T>!
+Doka.Tabular.TabularMapBuilder<T>.Compose<TValue, T1, T2, T3, T4>(System.Linq.Expressions.Expression<System.Func<T, TValue>!>! property, System.Func<Doka.Tabular.TabularComposeFields!, Doka.Tabular.TabularComposeField<T1>!>! part1, System.Func<Doka.Tabular.TabularComposeFields!, Doka.Tabular.TabularComposeField<T2>!>! part2, System.Func<Doka.Tabular.TabularComposeFields!, Doka.Tabular.TabularComposeField<T3>!>! part3, System.Func<Doka.Tabular.TabularComposeFields!, Doka.Tabular.TabularComposeField<T4>!>! part4, System.Func<T1, T2, T3, T4, TValue>! read, System.Func<TValue, (T1, T2, T3, T4)>! write) -> Doka.Tabular.TabularMapBuilder<T>!
+Doka.Tabular.TabularMapBuilder<T>.Compose<TValue, T1, T2, T3>(System.Linq.Expressions.Expression<System.Func<T, TValue>!>! property, System.Func<Doka.Tabular.TabularComposeFields!, Doka.Tabular.TabularComposeField<T1>!>! part1, System.Func<Doka.Tabular.TabularComposeFields!, Doka.Tabular.TabularComposeField<T2>!>! part2, System.Func<Doka.Tabular.TabularComposeFields!, Doka.Tabular.TabularComposeField<T3>!>! part3, System.Func<T1, T2, T3, TValue>! read, System.Func<TValue, (T1, T2, T3)>! write) -> Doka.Tabular.TabularMapBuilder<T>!
+Doka.Tabular.TabularMapBuilder<T>.Compose<TValue, T1, T2>(System.Linq.Expressions.Expression<System.Func<T, TValue>!>! property, System.Func<Doka.Tabular.TabularComposeFields!, Doka.Tabular.TabularComposeField<T1>!>! part1, System.Func<Doka.Tabular.TabularComposeFields!, Doka.Tabular.TabularComposeField<T2>!>! part2, System.Func<T1, T2, TValue>! read, System.Func<TValue, (T1, T2)>! write) -> Doka.Tabular.TabularMapBuilder<T>!
+Doka.Tabular.TabularMapBuilder<T>.Expect<TException>(Doka.Tabular.TabularErrorCode! code) -> Doka.Tabular.TabularMapBuilder<T>!
+Doka.Tabular.TabularMapBuilder<T>.Nested<TNested>(System.Linq.Expressions.Expression<System.Func<T, TNested?>!>! property, Doka.Tabular.TabularMap<TNested>! map, System.Action<Doka.Tabular.TabularEmbeddingBuilder<TNested>!>? configure = null) -> Doka.Tabular.TabularMapBuilder<T>!
+Doka.Tabular.TabularMapBuilder<T>.UseFactory(System.Func<Doka.Tabular.TabularFields<T>!, System.Func<Doka.Tabular.TabularValues<T>!, T>!>! factory) -> Doka.Tabular.TabularMapBuilder<T>!
+Doka.Tabular.TabularMapBuilder<T>.Validate<T1, T2, T3, T4, T5, T6, T7, T8>(System.Linq.Expressions.Expression<System.Func<T, T1>!>! field1, System.Linq.Expressions.Expression<System.Func<T, T2>!>! field2, System.Linq.Expressions.Expression<System.Func<T, T3>!>! field3, System.Linq.Expressions.Expression<System.Func<T, T4>!>! field4, System.Linq.Expressions.Expression<System.Func<T, T5>!>! field5, System.Linq.Expressions.Expression<System.Func<T, T6>!>! field6, System.Linq.Expressions.Expression<System.Func<T, T7>!>! field7, System.Linq.Expressions.Expression<System.Func<T, T8>!>! field8, System.Func<T1, T2, T3, T4, T5, T6, T7, T8, bool>! rule, Doka.Tabular.TabularErrorCode? code = null, bool alsoOnExport = false) -> Doka.Tabular.TabularMapBuilder<T>!
+Doka.Tabular.TabularMapBuilder<T>.Validate<T1, T2, T3, T4, T5, T6, T7>(System.Linq.Expressions.Expression<System.Func<T, T1>!>! field1, System.Linq.Expressions.Expression<System.Func<T, T2>!>! field2, System.Linq.Expressions.Expression<System.Func<T, T3>!>! field3, System.Linq.Expressions.Expression<System.Func<T, T4>!>! field4, System.Linq.Expressions.Expression<System.Func<T, T5>!>! field5, System.Linq.Expressions.Expression<System.Func<T, T6>!>! field6, System.Linq.Expressions.Expression<System.Func<T, T7>!>! field7, System.Func<T1, T2, T3, T4, T5, T6, T7, bool>! rule, Doka.Tabular.TabularErrorCode? code = null, bool alsoOnExport = false) -> Doka.Tabular.TabularMapBuilder<T>!
+Doka.Tabular.TabularMapBuilder<T>.Validate<T1, T2, T3, T4, T5, T6>(System.Linq.Expressions.Expression<System.Func<T, T1>!>! field1, System.Linq.Expressions.Expression<System.Func<T, T2>!>! field2, System.Linq.Expressions.Expression<System.Func<T, T3>!>! field3, System.Linq.Expressions.Expression<System.Func<T, T4>!>! field4, System.Linq.Expressions.Expression<System.Func<T, T5>!>! field5, System.Linq.Expressions.Expression<System.Func<T, T6>!>! field6, System.Func<T1, T2, T3, T4, T5, T6, bool>! rule, Doka.Tabular.TabularErrorCode? code = null, bool alsoOnExport = false) -> Doka.Tabular.TabularMapBuilder<T>!
+Doka.Tabular.TabularMapBuilder<T>.Validate<T1, T2, T3, T4, T5>(System.Linq.Expressions.Expression<System.Func<T, T1>!>! field1, System.Linq.Expressions.Expression<System.Func<T, T2>!>! field2, System.Linq.Expressions.Expression<System.Func<T, T3>!>! field3, System.Linq.Expressions.Expression<System.Func<T, T4>!>! field4, System.Linq.Expressions.Expression<System.Func<T, T5>!>! field5, System.Func<T1, T2, T3, T4, T5, bool>! rule, Doka.Tabular.TabularErrorCode? code = null, bool alsoOnExport = false) -> Doka.Tabular.TabularMapBuilder<T>!
+Doka.Tabular.TabularMapBuilder<T>.Validate<T1, T2, T3, T4>(System.Linq.Expressions.Expression<System.Func<T, T1>!>! field1, System.Linq.Expressions.Expression<System.Func<T, T2>!>! field2, System.Linq.Expressions.Expression<System.Func<T, T3>!>! field3, System.Linq.Expressions.Expression<System.Func<T, T4>!>! field4, System.Func<T1, T2, T3, T4, bool>! rule, Doka.Tabular.TabularErrorCode? code = null, bool alsoOnExport = false) -> Doka.Tabular.TabularMapBuilder<T>!
+Doka.Tabular.TabularMapBuilder<T>.Validate<T1, T2, T3>(System.Linq.Expressions.Expression<System.Func<T, T1>!>! field1, System.Linq.Expressions.Expression<System.Func<T, T2>!>! field2, System.Linq.Expressions.Expression<System.Func<T, T3>!>! field3, System.Func<T1, T2, T3, bool>! rule, Doka.Tabular.TabularErrorCode? code = null, bool alsoOnExport = false) -> Doka.Tabular.TabularMapBuilder<T>!
+Doka.Tabular.TabularMapBuilder<T>.Validate<T1, T2>(System.Linq.Expressions.Expression<System.Func<T, T1>!>! field1, System.Linq.Expressions.Expression<System.Func<T, T2>!>! field2, System.Func<T1, T2, bool>! rule, Doka.Tabular.TabularErrorCode? code = null, bool alsoOnExport = false) -> Doka.Tabular.TabularMapBuilder<T>!
+Doka.Tabular.TabularNumberColumnExtensions
+Doka.Tabular.TabularNumberColumnExtensions.extension<TNumber, TBuilder>(Doka.Tabular.TabularValueBuilder<TNumber, TBuilder!>!)
+Doka.Tabular.TabularNumberColumnExtensions.extension<TNumber, TBuilder>(Doka.Tabular.TabularValueBuilder<TNumber, TBuilder!>!).AllowDecimalPoint() -> TBuilder!
+Doka.Tabular.TabularNumberColumnExtensions.extension<TNumber, TBuilder>(Doka.Tabular.TabularValueBuilder<TNumber, TBuilder!>!).AllowExponent() -> TBuilder!
+Doka.Tabular.TabularNumberColumnExtensions.extension<TNumber, TBuilder>(Doka.Tabular.TabularValueBuilder<TNumber, TBuilder!>!).ExportFormat(string! format) -> TBuilder!
+Doka.Tabular.TabularNumberColumnExtensions.extension<TNumber, TBuilder>(Doka.Tabular.TabularValueBuilder<TNumber, TBuilder!>!).NonFiniteValues() -> TBuilder!
+Doka.Tabular.TabularNumberColumnExtensions.extension<TNumber, TBuilder>(Doka.Tabular.TabularValueBuilder<TNumber, TBuilder!>!).Rounding(int decimals, System.MidpointRounding mode = System.MidpointRounding.ToEven) -> TBuilder!
+Doka.Tabular.TabularNumberColumnExtensions.extension<TNumber, TBuilder>(Doka.Tabular.TabularValueBuilder<TNumber, TBuilder!>!).SignificantDigitsRounding(int digits, System.MidpointRounding mode = System.MidpointRounding.ToEven) -> TBuilder!
+Doka.Tabular.TabularNumberColumnExtensions.extension<TNumber, TBuilder>(Doka.Tabular.TabularValueBuilder<TNumber, TBuilder!>!).TextStyle(Doka.Tabular.NumberTextStyle style) -> TBuilder!
+Doka.Tabular.TabularNumberColumnExtensions.extension<TNumber, TBuilder>(Doka.Tabular.TabularValueBuilder<TNumber?, TBuilder!>!)
+Doka.Tabular.TabularNumberColumnExtensions.extension<TNumber, TBuilder>(Doka.Tabular.TabularValueBuilder<TNumber?, TBuilder!>!).AllowDecimalPoint() -> TBuilder!
+Doka.Tabular.TabularNumberColumnExtensions.extension<TNumber, TBuilder>(Doka.Tabular.TabularValueBuilder<TNumber?, TBuilder!>!).AllowExponent() -> TBuilder!
+Doka.Tabular.TabularNumberColumnExtensions.extension<TNumber, TBuilder>(Doka.Tabular.TabularValueBuilder<TNumber?, TBuilder!>!).ExportFormat(string! format) -> TBuilder!
+Doka.Tabular.TabularNumberColumnExtensions.extension<TNumber, TBuilder>(Doka.Tabular.TabularValueBuilder<TNumber?, TBuilder!>!).NonFiniteValues() -> TBuilder!
+Doka.Tabular.TabularNumberColumnExtensions.extension<TNumber, TBuilder>(Doka.Tabular.TabularValueBuilder<TNumber?, TBuilder!>!).Rounding(int decimals, System.MidpointRounding mode = System.MidpointRounding.ToEven) -> TBuilder!
+Doka.Tabular.TabularNumberColumnExtensions.extension<TNumber, TBuilder>(Doka.Tabular.TabularValueBuilder<TNumber?, TBuilder!>!).SignificantDigitsRounding(int digits, System.MidpointRounding mode = System.MidpointRounding.ToEven) -> TBuilder!
+Doka.Tabular.TabularNumberColumnExtensions.extension<TNumber, TBuilder>(Doka.Tabular.TabularValueBuilder<TNumber?, TBuilder!>!).TextStyle(Doka.Tabular.NumberTextStyle style) -> TBuilder!
+Doka.Tabular.TabularPropertyPath
+Doka.Tabular.TabularPropertyPath.Equals(Doka.Tabular.TabularPropertyPath? other) -> bool
+Doka.Tabular.TabularPropertyPath.Value.get -> string!
+Doka.Tabular.TabularPropertyPathJsonConverter
+Doka.Tabular.TabularPropertyPathJsonConverter.TabularPropertyPathJsonConverter() -> void
+Doka.Tabular.TabularReportDiagnostics
+Doka.Tabular.TabularReportDiagnostics.OperationId.get -> System.Guid
+Doka.Tabular.TabularRole<T>
+Doka.Tabular.TabularRow
+Doka.Tabular.TabularRow.Get<T>(Doka.Tabular.TabularRole<T>! role) -> T
+Doka.Tabular.TabularRow.Items.get -> System.Collections.Generic.IReadOnlyList<object!>!
+Doka.Tabular.TabularSheetName
+Doka.Tabular.TabularSheetName.Equals(Doka.Tabular.TabularSheetName? other) -> bool
+Doka.Tabular.TabularSheetName.Value.get -> string!
+Doka.Tabular.TabularSheetNameJsonConverter
+Doka.Tabular.TabularSheetNameJsonConverter.TabularSheetNameJsonConverter() -> void
+Doka.Tabular.TabularSourceKey
+Doka.Tabular.TabularSourceKey<T>
+Doka.Tabular.TabularStoredFile
+Doka.Tabular.TabularStoredFile.ByteSize.get -> long
+Doka.Tabular.TabularStoredFile.ExportId.get -> System.Guid
+Doka.Tabular.TabularStoredFile.FileId.get -> System.Guid
+Doka.Tabular.TabularStoredFile.Sha256.get -> Doka.Tabular.Sha256Hash!
+Doka.Tabular.TabularStoredFile.TabularStoredFile(System.Guid exportId, System.Guid fileId, long byteSize, Doka.Tabular.Sha256Hash! sha256) -> void
+Doka.Tabular.TabularTextColumnExtensions
+Doka.Tabular.TabularTimeColumnExtensions
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.DateOnly, TBuilder!>!)
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.DateOnly, TBuilder!>!).AllowExcelSerialNumbers() -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.DateOnly, TBuilder!>!).Format(string! format) -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.DateOnly, TBuilder!>!).Rounding(System.TimeSpan step, System.MidpointRounding mode = System.MidpointRounding.ToEven) -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.DateOnly?, TBuilder!>!)
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.DateOnly?, TBuilder!>!).AllowExcelSerialNumbers() -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.DateOnly?, TBuilder!>!).Format(string! format) -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.DateOnly?, TBuilder!>!).Rounding(System.TimeSpan step, System.MidpointRounding mode = System.MidpointRounding.ToEven) -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.DateTime, TBuilder!>!)
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.DateTime, TBuilder!>!).AllowExcelSerialNumbers() -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.DateTime, TBuilder!>!).ExcelAsUtc() -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.DateTime, TBuilder!>!).FileTimeZone(System.TimeZoneInfo! timeZone) -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.DateTime, TBuilder!>!).Format(string! format) -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.DateTime, TBuilder!>!).ResolveAmbiguousTime(Doka.Tabular.AmbiguousTimeResolution resolution) -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.DateTime, TBuilder!>!).Rounding(System.TimeSpan step, System.MidpointRounding mode = System.MidpointRounding.ToEven) -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.DateTime, TBuilder!>!).ShiftInvalidTime() -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.DateTime?, TBuilder!>!)
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.DateTime?, TBuilder!>!).AllowExcelSerialNumbers() -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.DateTime?, TBuilder!>!).ExcelAsUtc() -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.DateTime?, TBuilder!>!).FileTimeZone(System.TimeZoneInfo! timeZone) -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.DateTime?, TBuilder!>!).Format(string! format) -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.DateTime?, TBuilder!>!).ResolveAmbiguousTime(Doka.Tabular.AmbiguousTimeResolution resolution) -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.DateTime?, TBuilder!>!).Rounding(System.TimeSpan step, System.MidpointRounding mode = System.MidpointRounding.ToEven) -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.DateTime?, TBuilder!>!).ShiftInvalidTime() -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.DateTimeOffset, TBuilder!>!)
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.DateTimeOffset, TBuilder!>!).FileTimeZone(System.TimeZoneInfo! timeZone) -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.DateTimeOffset, TBuilder!>!).Format(string! format) -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.DateTimeOffset, TBuilder!>!).ResolveAmbiguousTime(Doka.Tabular.AmbiguousTimeResolution resolution) -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.DateTimeOffset, TBuilder!>!).Rounding(System.TimeSpan step, System.MidpointRounding mode = System.MidpointRounding.ToEven) -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.DateTimeOffset, TBuilder!>!).ShiftInvalidTime() -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.DateTimeOffset?, TBuilder!>!)
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.DateTimeOffset?, TBuilder!>!).FileTimeZone(System.TimeZoneInfo! timeZone) -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.DateTimeOffset?, TBuilder!>!).Format(string! format) -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.DateTimeOffset?, TBuilder!>!).ResolveAmbiguousTime(Doka.Tabular.AmbiguousTimeResolution resolution) -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.DateTimeOffset?, TBuilder!>!).Rounding(System.TimeSpan step, System.MidpointRounding mode = System.MidpointRounding.ToEven) -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.DateTimeOffset?, TBuilder!>!).ShiftInvalidTime() -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.TimeOnly, TBuilder!>!)
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.TimeOnly, TBuilder!>!).AllowExcelSerialNumbers() -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.TimeOnly, TBuilder!>!).Format(string! format) -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.TimeOnly, TBuilder!>!).Rounding(System.TimeSpan step, System.MidpointRounding mode = System.MidpointRounding.ToEven) -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.TimeOnly?, TBuilder!>!)
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.TimeOnly?, TBuilder!>!).AllowExcelSerialNumbers() -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.TimeOnly?, TBuilder!>!).Format(string! format) -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.TimeOnly?, TBuilder!>!).Rounding(System.TimeSpan step, System.MidpointRounding mode = System.MidpointRounding.ToEven) -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.TimeSpan, TBuilder!>!)
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.TimeSpan, TBuilder!>!).ExcelDuration(Doka.Tabular.ExcelDurationUnit unit) -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.TimeSpan, TBuilder!>!).Format(string! format) -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.TimeSpan, TBuilder!>!).Rounding(System.TimeSpan step, System.MidpointRounding mode = System.MidpointRounding.ToEven) -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.TimeSpan?, TBuilder!>!)
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.TimeSpan?, TBuilder!>!).ExcelDuration(Doka.Tabular.ExcelDurationUnit unit) -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.TimeSpan?, TBuilder!>!).Format(string! format) -> TBuilder!
+Doka.Tabular.TabularTimeColumnExtensions.extension<TBuilder>(Doka.Tabular.TabularValueBuilder<System.TimeSpan?, TBuilder!>!).Rounding(System.TimeSpan step, System.MidpointRounding mode = System.MidpointRounding.ToEven) -> TBuilder!
+Doka.Tabular.TabularType
+Doka.Tabular.TabularType.Csv = 0 -> Doka.Tabular.TabularType
+Doka.Tabular.TabularType.Excel = 1 -> Doka.Tabular.TabularType
+Doka.Tabular.TabularTypeExtensions
+Doka.Tabular.TabularTypeExtensions.extension(Doka.Tabular.TabularType)
+Doka.Tabular.TabularTypeExtensions.extension(Doka.Tabular.TabularType).ContentType.get -> string!
+Doka.Tabular.TabularTypeExtensions.extension(Doka.Tabular.TabularType).FileExtension.get -> string!
+Doka.Tabular.TabularValueBuilder<TValue, TBuilder>
+Doka.Tabular.TabularValueBuilder<TValue, TBuilder>.Culture(System.Globalization.CultureInfo! culture) -> TBuilder!
+Doka.Tabular.TabularValueBuilder<TValue, TBuilder>.EmptyTranslationKey(string! key) -> TBuilder!
+Doka.Tabular.TabularValueBuilder<TValue, TBuilder>.ExcelNumberFormat(string! formatCode) -> TBuilder!
+Doka.Tabular.TabularValueBuilder<TValue, TBuilder>.MaskExceptFirst(int visibleCount, char maskChar) -> TBuilder!
+Doka.Tabular.TabularValueBuilder<TValue, TBuilder>.MaskExceptLast(int visibleCount, char maskChar) -> TBuilder!
+Doka.Tabular.TabularValueBuilder<TValue, TBuilder>.NullText(string! text) -> TBuilder!
+Doka.Tabular.TabularValueBuilder<TValue, TBuilder>.Required() -> TBuilder!
+Doka.Tabular.TabularValueBuilder<TValue, TBuilder>.Trim(bool enabled = true) -> TBuilder!
+Doka.Tabular.TabularValueBuilder<TValue, TBuilder>.Validate(System.Func<TValue, bool>! rule, Doka.Tabular.TabularErrorCode? code = null, bool alsoOnExport = false) -> TBuilder!
+Doka.Tabular.TabularValues<T>
+Doka.Tabular.TabularValues<T>.Get<TValue>(Doka.Tabular.TabularField<T, TValue>! field) -> TValue
+const Doka.Tabular.TabularDiagnostics.ActivitySourceName = "Doka.Tabular" -> string!
+override Doka.Tabular.ColumnKey.Equals(object? obj) -> bool
+override Doka.Tabular.ColumnKey.GetHashCode() -> int
+override Doka.Tabular.ColumnKey.ToString() -> string!
+override Doka.Tabular.ColumnKeyJsonConverter.Read(ref System.Text.Json.Utf8JsonReader reader, System.Type! typeToConvert, System.Text.Json.JsonSerializerOptions! options) -> Doka.Tabular.ColumnKey!
+override Doka.Tabular.ColumnKeyJsonConverter.ReadAsPropertyName(ref System.Text.Json.Utf8JsonReader reader, System.Type! typeToConvert, System.Text.Json.JsonSerializerOptions! options) -> Doka.Tabular.ColumnKey!
+override Doka.Tabular.ColumnKeyJsonConverter.Write(System.Text.Json.Utf8JsonWriter! writer, Doka.Tabular.ColumnKey! value, System.Text.Json.JsonSerializerOptions! options) -> void
+override Doka.Tabular.ColumnKeyJsonConverter.WriteAsPropertyName(System.Text.Json.Utf8JsonWriter! writer, Doka.Tabular.ColumnKey! value, System.Text.Json.JsonSerializerOptions! options) -> void
+override Doka.Tabular.Csv.CsvExportOptions.Equals(object? obj) -> bool
+override Doka.Tabular.Csv.CsvExportOptions.GetHashCode() -> int
+override Doka.Tabular.Csv.CsvExportOptions.ToString() -> string!
+override Doka.Tabular.Csv.CsvFormatOptions.Equals(object? obj) -> bool
+override Doka.Tabular.Csv.CsvFormatOptions.GetHashCode() -> int
+override Doka.Tabular.Csv.CsvFormatOptions.ToString() -> string!
+override Doka.Tabular.Csv.CsvImportOptions.Equals(object? obj) -> bool
+override Doka.Tabular.Csv.CsvImportOptions.GetHashCode() -> int
+override Doka.Tabular.Csv.CsvImportOptions.ToString() -> string!
+override Doka.Tabular.Excel.ExcelColor.Equals(object? obj) -> bool
+override Doka.Tabular.Excel.ExcelColor.GetHashCode() -> int
+override Doka.Tabular.Excel.ExcelColor.ToString() -> string!
+override Doka.Tabular.Excel.ExcelColumnLayout.Equals(object? obj) -> bool
+override Doka.Tabular.Excel.ExcelColumnLayout.GetHashCode() -> int
+override Doka.Tabular.Excel.ExcelColumnLayout.ToString() -> string!
+override Doka.Tabular.Excel.ExcelExportOptions.Equals(object? obj) -> bool
+override Doka.Tabular.Excel.ExcelExportOptions.GetHashCode() -> int
+override Doka.Tabular.Excel.ExcelExportOptions.ToString() -> string!
+override Doka.Tabular.Excel.ExcelFormatOptions.Equals(object? obj) -> bool
+override Doka.Tabular.Excel.ExcelFormatOptions.GetHashCode() -> int
+override Doka.Tabular.Excel.ExcelFormatOptions.ToString() -> string!
+override Doka.Tabular.Excel.ExcelImportOptions.Equals(object? obj) -> bool
+override Doka.Tabular.Excel.ExcelImportOptions.GetHashCode() -> int
+override Doka.Tabular.Excel.ExcelImportOptions.ToString() -> string!
+override Doka.Tabular.Excel.ExcelLayoutOptions.Equals(object? obj) -> bool
+override Doka.Tabular.Excel.ExcelLayoutOptions.GetHashCode() -> int
+override Doka.Tabular.Excel.ExcelLayoutOptions.ToString() -> string!
+override Doka.Tabular.Excel.ExcelSheetExportOptions.Equals(object? obj) -> bool
+override Doka.Tabular.Excel.ExcelSheetExportOptions.GetHashCode() -> int
+override Doka.Tabular.Excel.ExcelSheetExportOptions.ToString() -> string!
+override Doka.Tabular.Excel.ExcelSheetImportOptions.Equals(object? obj) -> bool
+override Doka.Tabular.Excel.ExcelSheetImportOptions.GetHashCode() -> int
+override Doka.Tabular.Excel.ExcelSheetImportOptions.ToString() -> string!
+override Doka.Tabular.Excel.ExcelTableName.Equals(object? obj) -> bool
+override Doka.Tabular.Excel.ExcelTableName.GetHashCode() -> int
+override Doka.Tabular.Excel.ExcelTableName.ToString() -> string!
+override Doka.Tabular.Excel.ExcelWorkbookExportOptions.Equals(object? obj) -> bool
+override Doka.Tabular.Excel.ExcelWorkbookExportOptions.GetHashCode() -> int
+override Doka.Tabular.Excel.ExcelWorkbookExportOptions.ToString() -> string!
+override Doka.Tabular.Excel.ExcelWorkbookImportOptions.Equals(object? obj) -> bool
+override Doka.Tabular.Excel.ExcelWorkbookImportOptions.GetHashCode() -> int
+override Doka.Tabular.Excel.ExcelWorkbookImportOptions.ToString() -> string!
+override Doka.Tabular.Sha256Hash.Equals(object? obj) -> bool
+override Doka.Tabular.Sha256Hash.GetHashCode() -> int
+override Doka.Tabular.Sha256Hash.ToString() -> string!
+override Doka.Tabular.TabularDiagnosticsOptions.Equals(object? obj) -> bool
+override Doka.Tabular.TabularDiagnosticsOptions.GetHashCode() -> int
+override Doka.Tabular.TabularDiagnosticsOptions.ToString() -> string!
+override Doka.Tabular.TabularErrorCode.Equals(object? obj) -> bool
+override Doka.Tabular.TabularErrorCode.GetHashCode() -> int
+override Doka.Tabular.TabularErrorCode.ToString() -> string!
+override Doka.Tabular.TabularErrorCodeJsonConverter.Read(ref System.Text.Json.Utf8JsonReader reader, System.Type! typeToConvert, System.Text.Json.JsonSerializerOptions! options) -> Doka.Tabular.TabularErrorCode!
+override Doka.Tabular.TabularErrorCodeJsonConverter.Write(System.Text.Json.Utf8JsonWriter! writer, Doka.Tabular.TabularErrorCode! value, System.Text.Json.JsonSerializerOptions! options) -> void
+override Doka.Tabular.TabularExportOptions.Equals(object? obj) -> bool
+override Doka.Tabular.TabularExportOptions.GetHashCode() -> int
+override Doka.Tabular.TabularExportOptions.ToString() -> string!
+override Doka.Tabular.TabularImportOptions.Equals(object? obj) -> bool
+override Doka.Tabular.TabularImportOptions.GetHashCode() -> int
+override Doka.Tabular.TabularImportOptions.ToString() -> string!
+override Doka.Tabular.TabularPropertyPath.Equals(object? obj) -> bool
+override Doka.Tabular.TabularPropertyPath.GetHashCode() -> int
+override Doka.Tabular.TabularPropertyPath.ToString() -> string!
+override Doka.Tabular.TabularPropertyPathJsonConverter.Read(ref System.Text.Json.Utf8JsonReader reader, System.Type! typeToConvert, System.Text.Json.JsonSerializerOptions! options) -> Doka.Tabular.TabularPropertyPath!
+override Doka.Tabular.TabularPropertyPathJsonConverter.Write(System.Text.Json.Utf8JsonWriter! writer, Doka.Tabular.TabularPropertyPath! value, System.Text.Json.JsonSerializerOptions! options) -> void
+override Doka.Tabular.TabularSheetName.Equals(object? obj) -> bool
+override Doka.Tabular.TabularSheetName.GetHashCode() -> int
+override Doka.Tabular.TabularSheetName.ToString() -> string!
+override Doka.Tabular.TabularSheetNameJsonConverter.Read(ref System.Text.Json.Utf8JsonReader reader, System.Type! typeToConvert, System.Text.Json.JsonSerializerOptions! options) -> Doka.Tabular.TabularSheetName!
+override Doka.Tabular.TabularSheetNameJsonConverter.Write(System.Text.Json.Utf8JsonWriter! writer, Doka.Tabular.TabularSheetName! value, System.Text.Json.JsonSerializerOptions! options) -> void
+static Doka.Tabular.ColumnKey.Create(string! value) -> Doka.Tabular.ColumnKey!
+static Doka.Tabular.ColumnKey.operator !=(Doka.Tabular.ColumnKey? left, Doka.Tabular.ColumnKey? right) -> bool
+static Doka.Tabular.ColumnKey.operator ==(Doka.Tabular.ColumnKey? left, Doka.Tabular.ColumnKey? right) -> bool
+static Doka.Tabular.Csv.CsvExportOptions.operator !=(Doka.Tabular.Csv.CsvExportOptions? left, Doka.Tabular.Csv.CsvExportOptions? right) -> bool
+static Doka.Tabular.Csv.CsvExportOptions.operator ==(Doka.Tabular.Csv.CsvExportOptions? left, Doka.Tabular.Csv.CsvExportOptions? right) -> bool
+static Doka.Tabular.Csv.CsvFormatOptions.operator !=(Doka.Tabular.Csv.CsvFormatOptions? left, Doka.Tabular.Csv.CsvFormatOptions? right) -> bool
+static Doka.Tabular.Csv.CsvFormatOptions.operator ==(Doka.Tabular.Csv.CsvFormatOptions? left, Doka.Tabular.Csv.CsvFormatOptions? right) -> bool
+static Doka.Tabular.Csv.CsvImportOptions.operator !=(Doka.Tabular.Csv.CsvImportOptions? left, Doka.Tabular.Csv.CsvImportOptions? right) -> bool
+static Doka.Tabular.Csv.CsvImportOptions.operator ==(Doka.Tabular.Csv.CsvImportOptions? left, Doka.Tabular.Csv.CsvImportOptions? right) -> bool
+static Doka.Tabular.Excel.ExcelColor.Create(string! value) -> Doka.Tabular.Excel.ExcelColor!
+static Doka.Tabular.Excel.ExcelColumnLayout.operator !=(Doka.Tabular.Excel.ExcelColumnLayout? left, Doka.Tabular.Excel.ExcelColumnLayout? right) -> bool
+static Doka.Tabular.Excel.ExcelColumnLayout.operator ==(Doka.Tabular.Excel.ExcelColumnLayout? left, Doka.Tabular.Excel.ExcelColumnLayout? right) -> bool
+static Doka.Tabular.Excel.ExcelExport.Create() -> Doka.Tabular.Excel.ExcelExportBuilder!
+static Doka.Tabular.Excel.ExcelExportOptions.operator !=(Doka.Tabular.Excel.ExcelExportOptions? left, Doka.Tabular.Excel.ExcelExportOptions? right) -> bool
+static Doka.Tabular.Excel.ExcelExportOptions.operator ==(Doka.Tabular.Excel.ExcelExportOptions? left, Doka.Tabular.Excel.ExcelExportOptions? right) -> bool
+static Doka.Tabular.Excel.ExcelFormatOptions.operator !=(Doka.Tabular.Excel.ExcelFormatOptions? left, Doka.Tabular.Excel.ExcelFormatOptions? right) -> bool
+static Doka.Tabular.Excel.ExcelFormatOptions.operator ==(Doka.Tabular.Excel.ExcelFormatOptions? left, Doka.Tabular.Excel.ExcelFormatOptions? right) -> bool
+static Doka.Tabular.Excel.ExcelImport.Create() -> Doka.Tabular.Excel.ExcelImportBuilder!
+static Doka.Tabular.Excel.ExcelImportOptions.operator !=(Doka.Tabular.Excel.ExcelImportOptions? left, Doka.Tabular.Excel.ExcelImportOptions? right) -> bool
+static Doka.Tabular.Excel.ExcelImportOptions.operator ==(Doka.Tabular.Excel.ExcelImportOptions? left, Doka.Tabular.Excel.ExcelImportOptions? right) -> bool
+static Doka.Tabular.Excel.ExcelLayoutOptions.operator !=(Doka.Tabular.Excel.ExcelLayoutOptions? left, Doka.Tabular.Excel.ExcelLayoutOptions? right) -> bool
+static Doka.Tabular.Excel.ExcelLayoutOptions.operator ==(Doka.Tabular.Excel.ExcelLayoutOptions? left, Doka.Tabular.Excel.ExcelLayoutOptions? right) -> bool
+static Doka.Tabular.Excel.ExcelSheetExportOptions.operator !=(Doka.Tabular.Excel.ExcelSheetExportOptions? left, Doka.Tabular.Excel.ExcelSheetExportOptions? right) -> bool
+static Doka.Tabular.Excel.ExcelSheetExportOptions.operator ==(Doka.Tabular.Excel.ExcelSheetExportOptions? left, Doka.Tabular.Excel.ExcelSheetExportOptions? right) -> bool
+static Doka.Tabular.Excel.ExcelSheetImportOptions.operator !=(Doka.Tabular.Excel.ExcelSheetImportOptions? left, Doka.Tabular.Excel.ExcelSheetImportOptions? right) -> bool
+static Doka.Tabular.Excel.ExcelSheetImportOptions.operator ==(Doka.Tabular.Excel.ExcelSheetImportOptions? left, Doka.Tabular.Excel.ExcelSheetImportOptions? right) -> bool
+static Doka.Tabular.Excel.ExcelTableName.Create(string! value) -> Doka.Tabular.Excel.ExcelTableName!
+static Doka.Tabular.Excel.ExcelWorkbookExportOptions.operator !=(Doka.Tabular.Excel.ExcelWorkbookExportOptions? left, Doka.Tabular.Excel.ExcelWorkbookExportOptions? right) -> bool
+static Doka.Tabular.Excel.ExcelWorkbookExportOptions.operator ==(Doka.Tabular.Excel.ExcelWorkbookExportOptions? left, Doka.Tabular.Excel.ExcelWorkbookExportOptions? right) -> bool
+static Doka.Tabular.Excel.ExcelWorkbookImportOptions.operator !=(Doka.Tabular.Excel.ExcelWorkbookImportOptions? left, Doka.Tabular.Excel.ExcelWorkbookImportOptions? right) -> bool
+static Doka.Tabular.Excel.ExcelWorkbookImportOptions.operator ==(Doka.Tabular.Excel.ExcelWorkbookImportOptions? left, Doka.Tabular.Excel.ExcelWorkbookImportOptions? right) -> bool
+static Doka.Tabular.RowMap.Create() -> Doka.Tabular.RowMapBuilder!
+static Doka.Tabular.Sha256Hash.FromBytes(System.ReadOnlySpan<byte> digest) -> Doka.Tabular.Sha256Hash!
+static Doka.Tabular.Sha256Hash.Parse(string! value) -> Doka.Tabular.Sha256Hash!
+static Doka.Tabular.TabularBooleanColumnExtensions.FalseText<TBuilder>(this Doka.Tabular.TabularValueBuilder<bool, TBuilder!>! builder, string! text) -> TBuilder!
+static Doka.Tabular.TabularBooleanColumnExtensions.FalseText<TBuilder>(this Doka.Tabular.TabularValueBuilder<bool?, TBuilder!>! builder, string! text) -> TBuilder!
+static Doka.Tabular.TabularBooleanColumnExtensions.TranslationKeys<TBuilder>(this Doka.Tabular.TabularValueBuilder<bool, TBuilder!>! builder, string! trueKey, string! falseKey) -> TBuilder!
+static Doka.Tabular.TabularBooleanColumnExtensions.TranslationKeys<TBuilder>(this Doka.Tabular.TabularValueBuilder<bool?, TBuilder!>! builder, string! trueKey, string! falseKey) -> TBuilder!
+static Doka.Tabular.TabularBooleanColumnExtensions.TrueText<TBuilder>(this Doka.Tabular.TabularValueBuilder<bool, TBuilder!>! builder, string! text) -> TBuilder!
+static Doka.Tabular.TabularBooleanColumnExtensions.TrueText<TBuilder>(this Doka.Tabular.TabularValueBuilder<bool?, TBuilder!>! builder, string! text) -> TBuilder!
+static Doka.Tabular.TabularConversionColumnExtensions.Convert<TBase, TCustom>(this Doka.Tabular.TabularColumnBuilder<TCustom>! builder, System.Func<TBase, TCustom>! read, System.Func<TCustom, TBase>! write, System.Action<Doka.Tabular.TabularBaseTypeBuilder<TBase>!>? configure = null) -> Doka.Tabular.TabularColumnBuilder<TCustom>!
+static Doka.Tabular.TabularDiagnosticsOptions.operator !=(Doka.Tabular.TabularDiagnosticsOptions? left, Doka.Tabular.TabularDiagnosticsOptions? right) -> bool
+static Doka.Tabular.TabularDiagnosticsOptions.operator ==(Doka.Tabular.TabularDiagnosticsOptions? left, Doka.Tabular.TabularDiagnosticsOptions? right) -> bool
+static Doka.Tabular.TabularEnumColumnExtensions.AllowNumericInput<TEnum, TBuilder>(this Doka.Tabular.TabularValueBuilder<TEnum, TBuilder!>! builder) -> TBuilder!
+static Doka.Tabular.TabularEnumColumnExtensions.AllowNumericInput<TEnum, TBuilder>(this Doka.Tabular.TabularValueBuilder<TEnum?, TBuilder!>! builder) -> TBuilder!
+static Doka.Tabular.TabularEnumColumnExtensions.ExportAlias<TEnum, TBuilder>(this Doka.Tabular.TabularValueBuilder<TEnum, TBuilder!>! builder, string! memberName) -> TBuilder!
+static Doka.Tabular.TabularEnumColumnExtensions.ExportAlias<TEnum, TBuilder>(this Doka.Tabular.TabularValueBuilder<TEnum?, TBuilder!>! builder, string! memberName) -> TBuilder!
+static Doka.Tabular.TabularEnumColumnExtensions.ExportAsNumber<TEnum, TBuilder>(this Doka.Tabular.TabularValueBuilder<TEnum, TBuilder!>! builder) -> TBuilder!
+static Doka.Tabular.TabularEnumColumnExtensions.ExportAsNumber<TEnum, TBuilder>(this Doka.Tabular.TabularValueBuilder<TEnum?, TBuilder!>! builder) -> TBuilder!
+static Doka.Tabular.TabularEnumColumnExtensions.ExportMemberName<TEnum, TBuilder>(this Doka.Tabular.TabularValueBuilder<TEnum, TBuilder!>! builder) -> TBuilder!
+static Doka.Tabular.TabularEnumColumnExtensions.ExportMemberName<TEnum, TBuilder>(this Doka.Tabular.TabularValueBuilder<TEnum?, TBuilder!>! builder) -> TBuilder!
+static Doka.Tabular.TabularEnumColumnExtensions.FlagsSeparator<TEnum, TBuilder>(this Doka.Tabular.TabularValueBuilder<TEnum, TBuilder!>! builder, char separator) -> TBuilder!
+static Doka.Tabular.TabularEnumColumnExtensions.FlagsSeparator<TEnum, TBuilder>(this Doka.Tabular.TabularValueBuilder<TEnum?, TBuilder!>! builder, char separator) -> TBuilder!
+static Doka.Tabular.TabularEnumColumnExtensions.TranslationKeys<TEnum, TBuilder>(this Doka.Tabular.TabularValueBuilder<TEnum, TBuilder!>! builder, System.Func<TEnum, string!>! keySelector) -> TBuilder!
+static Doka.Tabular.TabularEnumColumnExtensions.TranslationKeys<TEnum, TBuilder>(this Doka.Tabular.TabularValueBuilder<TEnum?, TBuilder!>! builder, System.Func<TEnum, string!>! keySelector) -> TBuilder!
+static Doka.Tabular.TabularErrorCode.Create(string! value) -> Doka.Tabular.TabularErrorCode!
+static Doka.Tabular.TabularErrorCode.operator !=(Doka.Tabular.TabularErrorCode? left, Doka.Tabular.TabularErrorCode? right) -> bool
+static Doka.Tabular.TabularErrorCode.operator ==(Doka.Tabular.TabularErrorCode? left, Doka.Tabular.TabularErrorCode? right) -> bool
+static Doka.Tabular.TabularErrorCodes.All.get -> System.Collections.Generic.IReadOnlyList<Doka.Tabular.TabularErrorCode!>!
+static Doka.Tabular.TabularErrorCodes.Callback.Failed.get -> Doka.Tabular.TabularErrorCode!
+static Doka.Tabular.TabularErrorCodes.Callback.InvalidResult.get -> Doka.Tabular.TabularErrorCode!
+static Doka.Tabular.TabularErrorCodes.Configuration.Invalid.get -> Doka.Tabular.TabularErrorCode!
+static Doka.Tabular.TabularErrorCodes.Conversion.InvalidFormat.get -> Doka.Tabular.TabularErrorCode!
+static Doka.Tabular.TabularErrorCodes.Conversion.MissingRepresentation.get -> Doka.Tabular.TabularErrorCode!
+static Doka.Tabular.TabularErrorCodes.Conversion.MissingValue.get -> Doka.Tabular.TabularErrorCode!
+static Doka.Tabular.TabularErrorCodes.Conversion.OutOfRange.get -> Doka.Tabular.TabularErrorCode!
+static Doka.Tabular.TabularErrorCodes.Conversion.PrecisionLoss.get -> Doka.Tabular.TabularErrorCode!
+static Doka.Tabular.TabularErrorCodes.Conversion.UnsupportedValue.get -> Doka.Tabular.TabularErrorCode!
+static Doka.Tabular.TabularErrorCodes.Io.Failed.get -> Doka.Tabular.TabularErrorCode!
+static Doka.Tabular.TabularErrorCodes.Key.Duplicate.get -> Doka.Tabular.TabularErrorCode!
+static Doka.Tabular.TabularErrorCodes.Key.Incomplete.get -> Doka.Tabular.TabularErrorCode!
+static Doka.Tabular.TabularErrorCodes.Lookup.NotFound.get -> Doka.Tabular.TabularErrorCode!
+static Doka.Tabular.TabularErrorCodes.Lookup.NotUnique.get -> Doka.Tabular.TabularErrorCode!
+static Doka.Tabular.TabularErrorCodes.Parsing.InvalidEncoding.get -> Doka.Tabular.TabularErrorCode!
+static Doka.Tabular.TabularErrorCodes.Parsing.InvalidSyntax.get -> Doka.Tabular.TabularErrorCode!
+static Doka.Tabular.TabularErrorCodes.Persistence.CommitUnknown.get -> Doka.Tabular.TabularErrorCode!
+static Doka.Tabular.TabularErrorCodes.Persistence.Conflict.get -> Doka.Tabular.TabularErrorCode!
+static Doka.Tabular.TabularErrorCodes.Persistence.ContextRestoreFailed.get -> Doka.Tabular.TabularErrorCode!
+static Doka.Tabular.TabularErrorCodes.Persistence.OperationFailed.get -> Doka.Tabular.TabularErrorCode!
+static Doka.Tabular.TabularErrorCodes.Persistence.RollbackUnknown.get -> Doka.Tabular.TabularErrorCode!
+static Doka.Tabular.TabularErrorCodes.Persistence.WriteFailed.get -> Doka.Tabular.TabularErrorCode!
+static Doka.Tabular.TabularErrorCodes.Resource.LimitExceeded.get -> Doka.Tabular.TabularErrorCode!
+static Doka.Tabular.TabularErrorCodes.Schema.AmbiguousColumn.get -> Doka.Tabular.TabularErrorCode!
+static Doka.Tabular.TabularErrorCodes.Schema.AmbiguousSheet.get -> Doka.Tabular.TabularErrorCode!
+static Doka.Tabular.TabularErrorCodes.Schema.FormatMismatch.get -> Doka.Tabular.TabularErrorCode!
+static Doka.Tabular.TabularErrorCodes.Schema.LimitExceeded.get -> Doka.Tabular.TabularErrorCode!
+static Doka.Tabular.TabularErrorCodes.Schema.MissingColumn.get -> Doka.Tabular.TabularErrorCode!
+static Doka.Tabular.TabularErrorCodes.Schema.MissingSheet.get -> Doka.Tabular.TabularErrorCode!
+static Doka.Tabular.TabularErrorCodes.Schema.UnsupportedFormat.get -> Doka.Tabular.TabularErrorCode!
+static Doka.Tabular.TabularErrorCodes.Translation.Missing.get -> Doka.Tabular.TabularErrorCode!
+static Doka.Tabular.TabularErrorCodes.Validation.Failed.get -> Doka.Tabular.TabularErrorCode!
+static Doka.Tabular.TabularErrorLocation.None.get -> Doka.Tabular.TabularErrorLocation!
+static Doka.Tabular.TabularExportOptions.operator !=(Doka.Tabular.TabularExportOptions? left, Doka.Tabular.TabularExportOptions? right) -> bool
+static Doka.Tabular.TabularExportOptions.operator ==(Doka.Tabular.TabularExportOptions? left, Doka.Tabular.TabularExportOptions? right) -> bool
+static Doka.Tabular.TabularFileTarget.To(Doka.Tabular.ITabularFileStore! store, string! fileName) -> Doka.Tabular.TabularFileTarget!
+static Doka.Tabular.TabularGuidColumnExtensions.AcceptGuidFormats<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.Guid, TBuilder!>! builder, string! formats) -> TBuilder!
+static Doka.Tabular.TabularGuidColumnExtensions.AcceptGuidFormats<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.Guid?, TBuilder!>! builder, string! formats) -> TBuilder!
+static Doka.Tabular.TabularGuidColumnExtensions.GuidExportFormat<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.Guid, TBuilder!>! builder, string! format) -> TBuilder!
+static Doka.Tabular.TabularGuidColumnExtensions.GuidExportFormat<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.Guid?, TBuilder!>! builder, string! format) -> TBuilder!
+static Doka.Tabular.TabularImportOptions.operator !=(Doka.Tabular.TabularImportOptions? left, Doka.Tabular.TabularImportOptions? right) -> bool
+static Doka.Tabular.TabularImportOptions.operator ==(Doka.Tabular.TabularImportOptions? left, Doka.Tabular.TabularImportOptions? right) -> bool
+static Doka.Tabular.TabularLogEvents.CleanupFailed.get -> Microsoft.Extensions.Logging.EventId
+static Doka.Tabular.TabularLogEvents.CompletionFailed.get -> Microsoft.Extensions.Logging.EventId
+static Doka.Tabular.TabularLogEvents.JournalUpdateFailed.get -> Microsoft.Extensions.Logging.EventId
+static Doka.Tabular.TabularLogEvents.OperationCompleted.get -> Microsoft.Extensions.Logging.EventId
+static Doka.Tabular.TabularLogEvents.OperationFailed.get -> Microsoft.Extensions.Logging.EventId
+static Doka.Tabular.TabularLogEvents.OperationStarted.get -> Microsoft.Extensions.Logging.EventId
+static Doka.Tabular.TabularLogEvents.PersistenceUncertain.get -> Microsoft.Extensions.Logging.EventId
+static Doka.Tabular.TabularMap.For<T>() -> Doka.Tabular.TabularMapBuilder<T>!
+static Doka.Tabular.TabularNumberColumnExtensions.AllowDecimalPoint<TNumber, TBuilder>(this Doka.Tabular.TabularValueBuilder<TNumber, TBuilder!>! builder) -> TBuilder!
+static Doka.Tabular.TabularNumberColumnExtensions.AllowDecimalPoint<TNumber, TBuilder>(this Doka.Tabular.TabularValueBuilder<TNumber?, TBuilder!>! builder) -> TBuilder!
+static Doka.Tabular.TabularNumberColumnExtensions.AllowExponent<TNumber, TBuilder>(this Doka.Tabular.TabularValueBuilder<TNumber, TBuilder!>! builder) -> TBuilder!
+static Doka.Tabular.TabularNumberColumnExtensions.AllowExponent<TNumber, TBuilder>(this Doka.Tabular.TabularValueBuilder<TNumber?, TBuilder!>! builder) -> TBuilder!
+static Doka.Tabular.TabularNumberColumnExtensions.ExportFormat<TNumber, TBuilder>(this Doka.Tabular.TabularValueBuilder<TNumber, TBuilder!>! builder, string! format) -> TBuilder!
+static Doka.Tabular.TabularNumberColumnExtensions.ExportFormat<TNumber, TBuilder>(this Doka.Tabular.TabularValueBuilder<TNumber?, TBuilder!>! builder, string! format) -> TBuilder!
+static Doka.Tabular.TabularNumberColumnExtensions.NonFiniteValues<TNumber, TBuilder>(this Doka.Tabular.TabularValueBuilder<TNumber, TBuilder!>! builder) -> TBuilder!
+static Doka.Tabular.TabularNumberColumnExtensions.NonFiniteValues<TNumber, TBuilder>(this Doka.Tabular.TabularValueBuilder<TNumber?, TBuilder!>! builder) -> TBuilder!
+static Doka.Tabular.TabularNumberColumnExtensions.Rounding<TNumber, TBuilder>(this Doka.Tabular.TabularValueBuilder<TNumber, TBuilder!>! builder, int decimals, System.MidpointRounding mode = System.MidpointRounding.ToEven) -> TBuilder!
+static Doka.Tabular.TabularNumberColumnExtensions.Rounding<TNumber, TBuilder>(this Doka.Tabular.TabularValueBuilder<TNumber?, TBuilder!>! builder, int decimals, System.MidpointRounding mode = System.MidpointRounding.ToEven) -> TBuilder!
+static Doka.Tabular.TabularNumberColumnExtensions.SignificantDigitsRounding<TNumber, TBuilder>(this Doka.Tabular.TabularValueBuilder<TNumber, TBuilder!>! builder, int digits, System.MidpointRounding mode = System.MidpointRounding.ToEven) -> TBuilder!
+static Doka.Tabular.TabularNumberColumnExtensions.SignificantDigitsRounding<TNumber, TBuilder>(this Doka.Tabular.TabularValueBuilder<TNumber?, TBuilder!>! builder, int digits, System.MidpointRounding mode = System.MidpointRounding.ToEven) -> TBuilder!
+static Doka.Tabular.TabularNumberColumnExtensions.TextStyle<TNumber, TBuilder>(this Doka.Tabular.TabularValueBuilder<TNumber, TBuilder!>! builder, Doka.Tabular.NumberTextStyle style) -> TBuilder!
+static Doka.Tabular.TabularNumberColumnExtensions.TextStyle<TNumber, TBuilder>(this Doka.Tabular.TabularValueBuilder<TNumber?, TBuilder!>! builder, Doka.Tabular.NumberTextStyle style) -> TBuilder!
+static Doka.Tabular.TabularSheetName.Create(string! value) -> Doka.Tabular.TabularSheetName!
+static Doka.Tabular.TabularSheetName.operator !=(Doka.Tabular.TabularSheetName? left, Doka.Tabular.TabularSheetName? right) -> bool
+static Doka.Tabular.TabularSheetName.operator ==(Doka.Tabular.TabularSheetName? left, Doka.Tabular.TabularSheetName? right) -> bool
+static Doka.Tabular.TabularTextColumnExtensions.EmptyStringAsNull<TBuilder>(this Doka.Tabular.TabularValueBuilder<string?, TBuilder!>! builder) -> TBuilder!
+static Doka.Tabular.TabularTextColumnExtensions.PadLeft<TText, TBuilder>(this Doka.Tabular.TabularValueBuilder<TText, TBuilder!>! builder, int totalWidth, char paddingChar) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.AllowExcelSerialNumbers<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.DateOnly, TBuilder!>! builder) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.AllowExcelSerialNumbers<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.DateOnly?, TBuilder!>! builder) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.AllowExcelSerialNumbers<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.DateTime, TBuilder!>! builder) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.AllowExcelSerialNumbers<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.DateTime?, TBuilder!>! builder) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.AllowExcelSerialNumbers<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.TimeOnly, TBuilder!>! builder) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.AllowExcelSerialNumbers<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.TimeOnly?, TBuilder!>! builder) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.ExcelAsUtc<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.DateTime, TBuilder!>! builder) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.ExcelAsUtc<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.DateTime?, TBuilder!>! builder) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.ExcelDuration<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.TimeSpan, TBuilder!>! builder, Doka.Tabular.ExcelDurationUnit unit) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.ExcelDuration<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.TimeSpan?, TBuilder!>! builder, Doka.Tabular.ExcelDurationUnit unit) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.FileTimeZone<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.DateTime, TBuilder!>! builder, System.TimeZoneInfo! timeZone) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.FileTimeZone<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.DateTime?, TBuilder!>! builder, System.TimeZoneInfo! timeZone) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.FileTimeZone<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.DateTimeOffset, TBuilder!>! builder, System.TimeZoneInfo! timeZone) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.FileTimeZone<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.DateTimeOffset?, TBuilder!>! builder, System.TimeZoneInfo! timeZone) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.Format<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.DateOnly, TBuilder!>! builder, string! format) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.Format<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.DateOnly?, TBuilder!>! builder, string! format) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.Format<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.DateTime, TBuilder!>! builder, string! format) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.Format<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.DateTime?, TBuilder!>! builder, string! format) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.Format<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.DateTimeOffset, TBuilder!>! builder, string! format) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.Format<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.DateTimeOffset?, TBuilder!>! builder, string! format) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.Format<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.TimeOnly, TBuilder!>! builder, string! format) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.Format<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.TimeOnly?, TBuilder!>! builder, string! format) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.Format<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.TimeSpan, TBuilder!>! builder, string! format) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.Format<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.TimeSpan?, TBuilder!>! builder, string! format) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.ResolveAmbiguousTime<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.DateTime, TBuilder!>! builder, Doka.Tabular.AmbiguousTimeResolution resolution) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.ResolveAmbiguousTime<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.DateTime?, TBuilder!>! builder, Doka.Tabular.AmbiguousTimeResolution resolution) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.ResolveAmbiguousTime<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.DateTimeOffset, TBuilder!>! builder, Doka.Tabular.AmbiguousTimeResolution resolution) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.ResolveAmbiguousTime<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.DateTimeOffset?, TBuilder!>! builder, Doka.Tabular.AmbiguousTimeResolution resolution) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.Rounding<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.DateOnly, TBuilder!>! builder, System.TimeSpan step, System.MidpointRounding mode = System.MidpointRounding.ToEven) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.Rounding<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.DateOnly?, TBuilder!>! builder, System.TimeSpan step, System.MidpointRounding mode = System.MidpointRounding.ToEven) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.Rounding<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.DateTime, TBuilder!>! builder, System.TimeSpan step, System.MidpointRounding mode = System.MidpointRounding.ToEven) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.Rounding<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.DateTime?, TBuilder!>! builder, System.TimeSpan step, System.MidpointRounding mode = System.MidpointRounding.ToEven) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.Rounding<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.DateTimeOffset, TBuilder!>! builder, System.TimeSpan step, System.MidpointRounding mode = System.MidpointRounding.ToEven) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.Rounding<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.DateTimeOffset?, TBuilder!>! builder, System.TimeSpan step, System.MidpointRounding mode = System.MidpointRounding.ToEven) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.Rounding<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.TimeOnly, TBuilder!>! builder, System.TimeSpan step, System.MidpointRounding mode = System.MidpointRounding.ToEven) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.Rounding<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.TimeOnly?, TBuilder!>! builder, System.TimeSpan step, System.MidpointRounding mode = System.MidpointRounding.ToEven) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.Rounding<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.TimeSpan, TBuilder!>! builder, System.TimeSpan step, System.MidpointRounding mode = System.MidpointRounding.ToEven) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.Rounding<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.TimeSpan?, TBuilder!>! builder, System.TimeSpan step, System.MidpointRounding mode = System.MidpointRounding.ToEven) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.ShiftInvalidTime<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.DateTime, TBuilder!>! builder) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.ShiftInvalidTime<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.DateTime?, TBuilder!>! builder) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.ShiftInvalidTime<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.DateTimeOffset, TBuilder!>! builder) -> TBuilder!
+static Doka.Tabular.TabularTimeColumnExtensions.ShiftInvalidTime<TBuilder>(this Doka.Tabular.TabularValueBuilder<System.DateTimeOffset?, TBuilder!>! builder) -> TBuilder!
+static Doka.Tabular.TabularTypeExtensions.get_ContentType(Doka.Tabular.TabularType type) -> string!
+static Doka.Tabular.TabularTypeExtensions.get_FileExtension(Doka.Tabular.TabularType type) -> string!

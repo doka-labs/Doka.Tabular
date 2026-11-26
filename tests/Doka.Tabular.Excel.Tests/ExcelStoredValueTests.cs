@@ -19,6 +19,17 @@ public sealed class ExcelStoredValueTests
 
     private static ExcelImportOptions Partial => new() { Strategy = ImportStrategy.Partial };
 
+    private static async Task<string> EntryText(
+        ZipArchive archive,
+        string name
+    )
+    {
+        var entry = Assert.IsType<ZipArchiveEntry>(archive.GetEntry(name));
+        using var reader = new StreamReader(await entry.OpenAsync(Token));
+
+        return await reader.ReadToEndAsync(Token);
+    }
+
     [Fact]
     public async Task Date1904_IsKeptWhenAnExtensionRepeatsWorkbookPr()
     {
@@ -215,6 +226,70 @@ public sealed class ExcelStoredValueTests
         var entry = Assert.IsType<ZipArchiveEntry>(archive.GetEntry("xl/styles.xml"));
         using var reader = new StreamReader(await entry.OpenAsync(Token));
         Assert.Contains("_x005F_x0041_", await reader.ReadToEndAsync(Token), StringComparison.Ordinal);
+    }
+
+    [Theory]
+    [InlineData(null, "yyyy-mm-dd")]
+    [InlineData("dd.mm.yyyy", "dd.mm.yyyy")]
+    public async Task DateOnly_IsADateSerialInItsFormatOrTheIsoDefaultThatReadsBack(
+        string? numberFormat,
+        string written
+    )
+    {
+        // Arrange
+        var map = TabularMap
+            .For<OneDate>()
+            .Column(x => x.Value,
+                index: 0,
+                configure: c =>
+                {
+                    if (numberFormat is not null)
+                    {
+                        c.ExcelNumberFormat(numberFormat);
+                    }
+                })
+            .Build();
+
+        var file = new MemoryStream();
+
+        // Act
+        // WHY: The stored serial must read back to the date, so export and reimport form one action.
+        var report = await s_format.ExportAsync(new[] { new OneDate(new DateOnly(2024, 4, 1)) }, map, file, Token);
+        file.Position = 0;
+        var back = await s_format.ImportAsync(file, map, Partial, Token);
+
+        // Assert
+        Assert.Equal(ReportStatus.Succeeded, report.Status);
+        file.Position = 0;
+        await using var archive = await ZipArchive.CreateAsync(file, ZipArchiveMode.Read, true, null, Token);
+        Assert.Contains($"formatCode=\"{written}\"",
+            await EntryText(archive, "xl/styles.xml"),
+            StringComparison.Ordinal);
+
+        Assert.Contains("<v>45383</v>", await EntryText(archive, "xl/worksheets/sheet1.xml"), StringComparison.Ordinal);
+        Assert.Equal([new OneDate(new DateOnly(2024, 4, 1))], back.Items);
+    }
+
+    [Fact]
+    public async Task DateOnly_WithANumberFormatWithoutADate_IsAFieldError()
+    {
+        // Arrange
+        var map = TabularMap
+            .For<OneDate>()
+            .Column(x => x.Value, index: 0, configure: c => c.ExcelNumberFormat("0"))
+            .Build();
+
+        // Act
+        var report = await s_format.ExportAsync(new[] { new OneDate(new DateOnly(2024, 4, 1)) },
+            map,
+            new MemoryStream(),
+            Token);
+
+        // Assert
+        Assert.Equal(ReportStatus.Failed, report.Status);
+        Assert.Equal(TabularErrorCodes.Conversion.PrecisionLoss,
+            Assert.Single(report.Errors)
+                .Code);
     }
 
     [Fact]

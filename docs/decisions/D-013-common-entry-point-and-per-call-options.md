@@ -91,7 +91,7 @@ and `FileExtension`. Overloads for `IQueryable<T>`, `IAsyncEnumerable<T>`, and
 - [TabularImport.cs](../../src/Doka.Tabular/Formats/TabularImport.cs) and its topic partials `TabularImport.*.cs`
 - [TabularExport.cs](../../src/Doka.Tabular/Formats/TabularExport.cs) and its topic partials `TabularExport.*.cs`
 - [TabularOptions.cs](../../src/Doka.Tabular/Formats/TabularOptions.cs)
-- [TabularType.cs](../../src/Doka.Tabular/Formats/TabularType.cs)
+- [TabularType.cs](../../src/Doka.Tabular/Primitives/TabularType.cs)
 
 ### Sources
 

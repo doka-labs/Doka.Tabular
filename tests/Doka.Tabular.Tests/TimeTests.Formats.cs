@@ -181,16 +181,19 @@ public sealed partial class TimeTests
     }
 
     [Theory]
-    [InlineData(false)]
-    [InlineData(true)]
+    [InlineData(false, "+14:59")]
+    [InlineData(true, "+14:59")]
+    [InlineData(false, "-14:59")]
+    [InlineData(true, "-14:59")]
     public async Task OffsetBeyondFourteenHours_IsAFieldError(
-        bool withOffset
+        bool withOffset,
+        string offset
     )
     {
         // Act
         var status = withOffset
-            ? (await ReadAsync<DateTimeOffset>("2024-04-01T14:30:00+14:59", null, null, null)).Status
-            : (await ReadAsync<DateTime>("2024-04-01T14:30:00+14:59", null, null, null)).Status;
+            ? (await ReadAsync<DateTimeOffset>($"2024-04-01T14:30:00{offset}", null, null, null)).Status
+            : (await ReadAsync<DateTime>($"2024-04-01T14:30:00{offset}", null, null, null)).Status;
 
         // Assert
         Assert.Equal(ReportStatus.Failed, status);

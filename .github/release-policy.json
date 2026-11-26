@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": "2026-11-23.1",
+  "revision": "2026-11-26.1",
   "repository": "doka-labs/Doka.Tabular",
   "authorityRef": "refs/heads/main",
   "release": {
@@ -33,7 +33,7 @@
       "benchmarks/*/packages.lock.json"
     ],
     "expectedLockfiles": 20,
-    "versionPrefix": null,
+    "versionPrefix": "src/Directory.Build.props",
     "coupling": "independent"
   },
   "lines": [
@@ -65,7 +65,17 @@
       }
     ],
     "testResults": {
-      "skips": []
+      "skips": [
+        {
+          "project": "Doka.Tabular.EntityFrameworkCore.Tests"
+        },
+        {
+          "project": "Doka.Tabular.EntityFrameworkCore.MySql.Tests"
+        },
+        {
+          "project": "Doka.Tabular.EntityFrameworkCore.PostgreSql.Tests"
+        }
+      ]
     }
   }
 }

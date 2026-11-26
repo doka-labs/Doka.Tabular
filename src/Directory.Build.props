@@ -8,6 +8,47 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
+  <PropertyGroup Label="Package versioning">
+    <!-- WHY: The reviewed version of the next release; .github/release-policy.json requires its major to match the
+         release line. A local pack is marked -dev so that it never looks like a release; the release run passes
+         Version and PackageVersion of the candidate. -->
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <PackageVersion Condition="'$(PackageVersion)' == ''">$(VersionPrefix)-dev</PackageVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Package metadata">
+    <Authors>Dominic Kalkbrenner</Authors>
+    <Company>Doka Labs</Company>
+    <Copyright>Copyright (c) 2026 Dominic Kalkbrenner</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>csv;excel;xlsx;import;export;tabular</PackageTags>
+    <RepositoryUrl>https://github.com/doka-labs/Doka.Tabular</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>$(RepositoryUrl)</PackageProjectUrl>
+
+    <!-- WHY: The changes of a version are listed once, in its GitHub release. -->
+    <PackageReleaseNotes>$(RepositoryUrl)/releases/tag/v$(Version)</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Package validation and reproducibility">
+    <!-- WHY: Checks the assemblies of a package against each other at pack time. A baseline against the published
+         API follows with the first stable version, because before it no stable package exists to compare with.
+         https://learn.microsoft.com/dotnet/fundamentals/apicompat/package-validation/overview -->
+    <EnablePackageValidation>true</EnablePackageValidation>
+
+    <!-- WHY: Under SDK 10 every file in a package otherwise carries the time of the pack, so the same commit would
+         pack to different bytes. 946684800 is 2000-01-01T00:00:00Z.
+         https://learn.microsoft.com/nuget/reference/msbuild-targets -->
+    <DeterministicTimestamp>946684800</DeterministicTimestamp>
+  </PropertyGroup>
+
+  <ItemGroup Label="Package documentation">
+    <None Include="$(MSBuildThisFileDirectory)../LICENSE" Pack="true" PackagePath="/" Visible="false" />
+    <None Include="$(MSBuildProjectDirectory)/README.md" Pack="true" PackagePath="/" />
+  </ItemGroup>
+
   <PropertyGroup Label="Trimming and native AOT">
     <!-- WHY: Maps compile typed accessors and close generic types over the mapped types at run time. The analyzers
          keep every such use marked, so an application that trims or publishes native AOT sees the warnings at its

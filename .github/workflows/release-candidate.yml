@@ -1,0 +1,117 @@
+name: Release Candidate
+
+# Releases a version from the head of a release line: preflight, the test
+# matrix and the packages of this repository, qualification, the candidate as
+# a draft release, and after the signed tag and the approval in the nuget
+# environment the publication to nuget.org and the API reference site.
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Package version, for example 1.0.0-rc.1.
+        type: string
+        required: true
+      qualification-only:
+        description: Qualify without creating a candidate, for example on a prepared line.
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  preflight:
+    permissions:
+      contents: write
+      attestations: read
+    uses: doka-labs/workflows/.github/workflows/release-preflight.yml@a3c0c35f11f1b657c09233ef02609cf75af1a1ba # v0.5.0
+    with:
+      version: ${{ inputs.version }}
+      qualification-only: ${{ inputs.qualification-only }}
+
+  tests:
+    needs: preflight
+    if: needs.preflight.outputs.resume == 'false'
+    uses: $/.github/workflows/tests.yml
+
+  pack:
+    needs: preflight
+    if: needs.preflight.outputs.resume == 'false'
+    uses: $/.github/workflows/pack.yml
+    with:
+      version: ${{ inputs.version }}
+
+  qualification:
+    needs: [preflight, tests, pack]
+    if: needs.preflight.outputs.resume == 'false'
+    permissions:
+      contents: read
+      actions: read
+      id-token: write
+      attestations: write
+    uses: doka-labs/workflows/.github/workflows/release-qualification.yml@a3c0c35f11f1b657c09233ef02609cf75af1a1ba # v0.5.0
+    with:
+      version: ${{ inputs.version }}
+      qualification-only: ${{ inputs.qualification-only }}
+      test-results-pattern: test-results-*
+
+  candidate:
+    needs: [preflight, qualification]
+    if: needs.preflight.outputs.resume == 'false' && !inputs.qualification-only
+    permissions:
+      contents: write
+      actions: read
+      id-token: write
+      attestations: write
+    uses: doka-labs/workflows/.github/workflows/release-candidate.yml@a3c0c35f11f1b657c09233ef02609cf75af1a1ba # v0.5.0
+    with:
+      version: ${{ inputs.version }}
+      packages-artifact: packages
+
+  # WHY: nuget.org Trusted Publishing accepts only a token whose job_workflow_ref names this file, so the publish
+  # job is defined here and calls the shared action instead of a shared workflow.
+  # https://github.com/NuGet/NuGetGallery/blob/main/src/NuGetGallery.Services/Authentication/Federated/GitHubTokenPolicyValidator.cs
+  publish:
+    needs: [preflight, candidate]
+    if: ${{ !cancelled() && !inputs.qualification-only && (needs.candidate.result == 'success' || needs.preflight.outputs.resume == 'true') }}
+    # WHY: contents write lists the draft and publishes the release; id-token signs the admission and obtains the
+    # NuGet credential through Trusted Publishing; attestations write stores the admission. actions read is the
+    # repository permission of "GET /repos/{owner}/{repo}/environments/{environment_name}" and of its deployment
+    # branch policies, which the environment check reads.
+    # https://learn.microsoft.com/nuget/nuget-org/trusted-publishing
+    # https://docs.github.com/en/rest/authentication/permissions-required-for-github-apps
+    permissions:
+      contents: write
+      actions: read
+      id-token: write
+      attestations: write
+    # WHY: The environment is release.environment of .github/release-policy.json and of the nuget.org policy; its
+    # reviewers approve the publication, and the action requires it in the job's environment claim.
+    environment: nuget
+    # WHY: Publications of one repository run one after another and are never cancelled midway; queue: max keeps
+    # up to 100 waiting. https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#jobsjob_idconcurrency
+    concurrency:
+      group: ${{ github.repository }}-publication
+      cancel-in-progress: false
+      queue: max
+    runs-on: ubuntu-26.04
+    # WHY: Successful publish jobs of the other Doka Labs repositories took up to 60.1 minutes, and the NuGet readback
+    # alone may wait one hour.
+    timeout-minutes: 180
+    steps:
+      - name: Publish the approved candidate
+        uses: doka-labs/workflows/.github/actions/release-publish@a3c0c35f11f1b657c09233ef02609cf75af1a1ba # v0.5.0
+        with:
+          tag: ${{ needs.preflight.outputs.tag }}
+          nuget-user: ${{ secrets.NUGET_USER }}
+
+  api-reference:
+    needs: [preflight, publish]
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    uses: doka-labs/workflows/.github/workflows/api-reference.yml@a3c0c35f11f1b657c09233ef02609cf75af1a1ba # v0.5.0
+    with:
+      tag: ${{ needs.preflight.outputs.tag }}

@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: If you use this software, please cite it as below.
+title: Doka.Tabular
+authors:
+  - given-names: Dominic
+    family-names: Kalkbrenner
+version: 1.0.0-rc.1
+date-released: 2026-11-26
+license: MIT
+repository-code: https://github.com/doka-labs/Doka.Tabular

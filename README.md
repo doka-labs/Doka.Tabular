@@ -16,17 +16,17 @@ and journals.
 
 ## Contents
 
-- [When to Consider](#when-to-consider)
+- [When to consider](#when-to-consider)
 - [Status](#status)
 - [Packages](#packages)
 - [Requirements](#requirements)
 - [Installation](#installation)
-- [Quick Start](#quick-start)
+- [Quick start](#quick-start)
 - [Documentation](#documentation)
-- [Community and Support](#community-and-support)
+- [Community and support](#community-and-support)
 - [License](#license)
 
-## When to Consider
+## When to consider
 
 Consider Doka.Tabular when an application exchanges records with people or
 other systems through CSV and Excel files and needs:
@@ -55,10 +55,16 @@ Another library fits better when you need:
 - Native AOT, which Doka.Tabular does not support; see
   [D-029](docs/decisions/D-029-typed-pipeline-compiled-accessors-and-aot-marking.md).
 
+[Limitations](docs/limitations.md) lists every known limit by
+responsibility.
+
 ## Status
 
-Doka.Tabular is not yet published on NuGet; the first release is being
-prepared.
+The first version, `1.0.0-rc.1`, is a release candidate: its public API can
+still change until `1.0.0`, as [Versioning](VERSIONING.md) describes. Until a
+stable version exists, `dotnet add package` needs `--prerelease`.
+[Support and qualification](docs/support-and-qualification.md) lists the
+supported platforms and which versions receive fixes.
 
 ## Packages
 
@@ -87,7 +93,7 @@ dotnet add package Doka.Tabular.EntityFrameworkCore
 
 The second package is only needed for EF Core targets and journals.
 
-## Quick Start
+## Quick start
 
 ```csharp
 public sealed record Article(string Number, int Stock);
@@ -112,23 +118,28 @@ await excel.ExportAsync(report.Items!, map, "articles.xlsx", cancellationToken);
 
 ## Documentation
 
-- [Guides](docs/README.md): getting started, maps and values, CSV, Excel,
-  Entity Framework Core, journals, errors and reports, resources and limits,
-  logging and tracing, web and file transfer.
+- [Documentation](docs/README.md): guides from getting started to journals,
+  troubleshooting, limitations, architecture, security and the release
+  process.
+- [API reference](https://doka-labs.github.io/Doka.Tabular/): every public type
+  and member and the meaning of every error code.
 - [Architecture decisions](docs/decisions/README.md): the reasons behind the
   contracts.
-- [Samples](samples): runnable programs for an ASP.NET Core controller and a
-  minimal API, EF Core imports and exports, journals, multi-sheet workbooks,
-  several targets per row, nested maps, and SFTP transfer.
+- [Samples](samples/README.md): runnable programs for an ASP.NET Core
+  controller and a minimal API, EF Core imports and exports, journals,
+  multi-sheet workbooks, several targets per row, nested maps, and SFTP
+  transfer.
+- [Changelog](CHANGELOG.md) and [roadmap](ROADMAP.md).
 
-## Community and Support
+## Community and support
 
-Doka.Tabular follows the organization-wide policies of Doka Labs:
+Doka.Tabular follows the organization-wide policies of Doka Labs and adds
+what applies to it only:
 
-- [Support channels and safe diagnostic sharing](https://github.com/doka-labs/.github/blob/main/SUPPORT.md)
-- [Contributing](https://github.com/doka-labs/.github/blob/main/CONTRIBUTING.md)
+- [Support channels and maintenance](SUPPORT.md)
+- [Contributing](CONTRIBUTING.md)
 - [Code of Conduct](https://github.com/doka-labs/.github/blob/main/CODE_OF_CONDUCT.md)
-- [Security policy and private vulnerability reporting](https://github.com/doka-labs/.github/blob/main/SECURITY.md)
+- [Security policy and private vulnerability reporting](SECURITY.md)
 - [Governance and responsibilities](https://github.com/doka-labs/.github/blob/main/GOVERNANCE.md)
 
 The project is maintained by Dominic Kalkbrenner; roles and decisions are
