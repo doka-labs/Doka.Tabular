@@ -1,0 +1,19 @@
+<Project>
+
+  <!--
+    WHY: Doka.Tabular gives Doka.Tabular.EntityFrameworkCore access to its internal import and export pipeline
+    (src/Doka.Tabular/Properties/AssemblyInfo.cs). A Doka.Tabular package of another version may change those
+    internals, so the EF Core package depends on exactly the version it was built with. Only the pack items of the
+    SDK change; restore and the lock files keep the ranges the SDK writes for project references.
+  -->
+  <Target Name="PinTabularCorePackage"
+          AfterTargets="_GetProjectReferenceVersions"
+          Condition="'$(IsPackable)' == 'true'">
+    <ItemGroup>
+      <_ProjectReferencesWithVersions Condition="'%(_ProjectReferencesWithVersions.Filename)' == 'Doka.Tabular'">
+        <ProjectVersion>[%(_ProjectReferencesWithVersions.ProjectVersion)]</ProjectVersion>
+      </_ProjectReferencesWithVersions>
+    </ItemGroup>
+  </Target>
+
+</Project>

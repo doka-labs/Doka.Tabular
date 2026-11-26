@@ -3,6 +3,7 @@
   <PropertyGroup>
     <RootNamespace>Doka.Tabular.EntityFrameworkCore</RootNamespace>
     <Description>EF Core insert, upsert, lookup and journals for Doka.Tabular imports and exports.</Description>
+    <PackageTags>$(PackageTags);entity-framework-core</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
