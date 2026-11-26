@@ -1,0 +1,181 @@
+name: doka-tabular
+
+# Database servers for running the samples and checking results by hand, one
+# profile per stage of database-images.Dockerfile. The tests do not use this
+# file; they start their servers with Testcontainers. Ports listen on
+# 127.0.0.1 only, the credentials are local defaults that an environment
+# variable overrides, and the data stays in a named volume until
+# "docker compose down --volumes".
+
+services:
+  mariadb1011:
+    profiles: [mariadb1011]
+    build:
+      context: .
+      dockerfile: database-images.Dockerfile
+      target: mariadb1011
+    # WHY: Unicode up to emoji must pass through EF Core; another server default would fail checks without a
+    # fault in the code.
+    command: [--character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci]
+    environment:
+      MARIADB_DATABASE: "${TABULAR_DEV_DATABASE:-tabular}"
+      MARIADB_USER: "${TABULAR_DEV_USER:-tabular}"
+      MARIADB_PASSWORD: "${TABULAR_DEV_PASSWORD:-tabular-local}"
+      MARIADB_ROOT_PASSWORD: "${TABULAR_DEV_ROOT_PASSWORD:-tabular-local-root}"
+    ports:
+      - "127.0.0.1:${TABULAR_DEV_MARIADB1011_PORT:-34011}:3306"
+    volumes:
+      - mariadb1011-data:/var/lib/mysql
+    healthcheck:
+      test: [CMD, healthcheck.sh, --connect, --innodb_initialized]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 40s
+
+  mariadb114:
+    profiles: [mariadb114]
+    build:
+      context: .
+      dockerfile: database-images.Dockerfile
+      target: mariadb114
+    command: [--character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci]
+    environment:
+      MARIADB_DATABASE: "${TABULAR_DEV_DATABASE:-tabular}"
+      MARIADB_USER: "${TABULAR_DEV_USER:-tabular}"
+      MARIADB_PASSWORD: "${TABULAR_DEV_PASSWORD:-tabular-local}"
+      MARIADB_ROOT_PASSWORD: "${TABULAR_DEV_ROOT_PASSWORD:-tabular-local-root}"
+    ports:
+      - "127.0.0.1:${TABULAR_DEV_MARIADB114_PORT:-34014}:3306"
+    volumes:
+      - mariadb114-data:/var/lib/mysql
+    healthcheck:
+      test: [CMD, healthcheck.sh, --connect, --innodb_initialized]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 40s
+
+  mariadb118:
+    profiles: [mariadb118]
+    build:
+      context: .
+      dockerfile: database-images.Dockerfile
+      target: mariadb118
+    command: [--character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci]
+    environment:
+      MARIADB_DATABASE: "${TABULAR_DEV_DATABASE:-tabular}"
+      MARIADB_USER: "${TABULAR_DEV_USER:-tabular}"
+      MARIADB_PASSWORD: "${TABULAR_DEV_PASSWORD:-tabular-local}"
+      MARIADB_ROOT_PASSWORD: "${TABULAR_DEV_ROOT_PASSWORD:-tabular-local-root}"
+    ports:
+      - "127.0.0.1:${TABULAR_DEV_MARIADB118_PORT:-34018}:3306"
+    volumes:
+      - mariadb118-data:/var/lib/mysql
+    healthcheck:
+      test: [CMD, healthcheck.sh, --connect, --innodb_initialized]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 40s
+
+  mariadb123:
+    profiles: [mariadb123]
+    build:
+      context: .
+      dockerfile: database-images.Dockerfile
+      target: mariadb123
+    command: [--character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci]
+    environment:
+      MARIADB_DATABASE: "${TABULAR_DEV_DATABASE:-tabular}"
+      MARIADB_USER: "${TABULAR_DEV_USER:-tabular}"
+      MARIADB_PASSWORD: "${TABULAR_DEV_PASSWORD:-tabular-local}"
+      MARIADB_ROOT_PASSWORD: "${TABULAR_DEV_ROOT_PASSWORD:-tabular-local-root}"
+    ports:
+      - "127.0.0.1:${TABULAR_DEV_MARIADB123_PORT:-34023}:3306"
+    volumes:
+      - mariadb123-data:/var/lib/mysql
+    healthcheck:
+      test: [CMD, healthcheck.sh, --connect, --innodb_initialized]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 40s
+
+  mysql84:
+    profiles: [mysql84]
+    build:
+      context: .
+      dockerfile: database-images.Dockerfile
+      target: mysql84
+    command: [--character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci]
+    environment:
+      MYSQL_DATABASE: "${TABULAR_DEV_DATABASE:-tabular}"
+      MYSQL_USER: "${TABULAR_DEV_USER:-tabular}"
+      MYSQL_PASSWORD: "${TABULAR_DEV_PASSWORD:-tabular-local}"
+      MYSQL_ROOT_PASSWORD: "${TABULAR_DEV_ROOT_PASSWORD:-tabular-local-root}"
+    ports:
+      - "127.0.0.1:${TABULAR_DEV_MYSQL84_PORT:-34084}:3306"
+    volumes:
+      - mysql84-data:/var/lib/mysql
+    healthcheck:
+      test: [CMD-SHELL, 'mysqladmin ping --host=127.0.0.1 --user=root --password="$${MYSQL_ROOT_PASSWORD}" --silent']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 40s
+
+  mysql97:
+    profiles: [mysql97]
+    build:
+      context: .
+      dockerfile: database-images.Dockerfile
+      target: mysql97
+    command: [--character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci]
+    environment:
+      MYSQL_DATABASE: "${TABULAR_DEV_DATABASE:-tabular}"
+      MYSQL_USER: "${TABULAR_DEV_USER:-tabular}"
+      MYSQL_PASSWORD: "${TABULAR_DEV_PASSWORD:-tabular-local}"
+      MYSQL_ROOT_PASSWORD: "${TABULAR_DEV_ROOT_PASSWORD:-tabular-local-root}"
+    ports:
+      - "127.0.0.1:${TABULAR_DEV_MYSQL97_PORT:-34097}:3306"
+    volumes:
+      - mysql97-data:/var/lib/mysql
+    healthcheck:
+      test: [CMD-SHELL, 'mysqladmin ping --host=127.0.0.1 --user=root --password="$${MYSQL_ROOT_PASSWORD}" --silent']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 40s
+
+  postgres:
+    profiles: [postgres]
+    build:
+      context: .
+      dockerfile: database-images.Dockerfile
+      target: postgres
+    environment:
+      POSTGRES_DB: "${TABULAR_DEV_DATABASE:-tabular}"
+      POSTGRES_USER: "${TABULAR_DEV_USER:-tabular}"
+      POSTGRES_PASSWORD: "${TABULAR_DEV_PASSWORD:-tabular-local}"
+    ports:
+      - "127.0.0.1:${TABULAR_DEV_POSTGRES_PORT:-54418}:5432"
+    volumes:
+      # WHY: PostgreSQL 18 images keep their data in a versioned directory below /var/lib/postgresql.
+      # https://github.com/docker-library/postgres/pull/1259
+      - postgres-data:/var/lib/postgresql
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready --username="$${POSTGRES_USER}" --dbname="$${POSTGRES_DB}"']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+
+volumes:
+  mariadb1011-data:
+  mariadb114-data:
+  mariadb118-data:
+  mariadb123-data:
+  mysql84-data:
+  mysql97-data:
+  postgres-data:
