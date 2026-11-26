@@ -7,6 +7,16 @@ namespace Doka.Tabular.Excel.Tests;
 /// <summary>Cell values, sheets and position, range and table mode, formatting, freeze and filter, widths, limits, and several sheets.</summary>
 public sealed partial class ExcelExportTests : IDisposable
 {
+    [Flags]
+    [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
+    public enum Rights
+    {
+        None = 0,
+        Read = 1,
+        Write = 2,
+        Delete = 4,
+    }
+
     private static readonly TabularMap<Booking> s_bookings = TabularMap
         .For<Booking>()
         .Column(x => x.Amount,
@@ -398,9 +408,95 @@ public sealed partial class ExcelExportTests : IDisposable
         Assert.Empty(sheet.TableDefinitionParts);
     }
 
+    [Fact]
+    public async Task GuidAndEnum_AreInlineTextsThatReadBack()
+    {
+        // Arrange
+        var map = TabularMap
+            .For<Tagged>()
+            .Column(x => x.Id, index: 0)
+            .Column(x => x.Day, index: 1)
+            .Build();
+
+        Tagged[] rows = [new(new Guid("0f8fad5b-d9cb-469f-a165-70867728950e"), DayOfWeek.Friday)];
+
+        // Act
+        // WHY: The written texts must read back to the values, so export and reimport form one action.
+        var (report, file) = await ExcelInstance.ExportAsync(rows, map, new ExcelExportOptions(), Token);
+        var back = await ExcelInstance.ImportAsync(file!, map, Token);
+
+        // Assert
+        Assert.Equal(ReportStatus.Succeeded, report.Status);
+        Assert.Equal(["inlineStr", "inlineStr"], CellTypes(file!, 1));
+        Assert.Equal(["0f8fad5b-d9cb-469f-a165-70867728950e", "Friday"], Cells(TabularType.Excel, file!)[0]);
+        Assert.Equal(rows, back.Items);
+    }
+
+    [Fact]
+    public async Task TextsAfterTheWidthSample_AreWrittenFromTheRowBufferAndReadBack()
+    {
+        // Arrange
+        // WHY: A Guid is formatted into the row buffer of the export. The writer copies such texts of the first 200
+        // rows for its width sample and writes every later one directly from that buffer, so only rows after the
+        // sample take that path.
+        var map = TabularMap
+            .For<Tagged>()
+            .Column(x => x.Id, index: 0)
+            .Column(x => x.Day, index: 1)
+            .Build();
+
+        var rows = Enumerable
+            .Range(1, 250)
+            .Select(number => new Tagged(new Guid(number, 0, 0, new byte[8]), (DayOfWeek)(number % 7)))
+            .ToArray();
+
+        // Act
+        // WHY: The written texts must read back to the rows, so export and reimport form one action.
+        var (report, file) = await ExcelInstance.ExportAsync(rows, map, new ExcelExportOptions(), Token);
+        var back = await ExcelInstance.ImportAsync(file!, map, Token);
+
+        // Assert
+        Assert.Equal(ReportStatus.Succeeded, report.Status);
+        Assert.Equal(["inlineStr", "inlineStr"], CellTypes(file!, 250));
+        Assert.Equal(rows, back.Items);
+    }
+
+    [Fact]
+    public async Task FlagsCombination_IsOneInlineTextThatReadsBack()
+    {
+        // Arrange
+        // WHY: The names of a combination are joined in the shared output buffer, not taken from one stored name.
+        var map = TabularMap
+            .For<Permitted>()
+            .Column(x => x.Rights, index: 0, configure: c => c.FlagsSeparator('|'))
+            .Build();
+
+        Permitted[] rows = [new(Rights.Read | Rights.Delete)];
+
+        // Act
+        // WHY: The written text must read back to the combination, so export and reimport form one action.
+        var (report, file) = await ExcelInstance.ExportAsync(rows, map, new ExcelExportOptions(), Token);
+        var back = await ExcelInstance.ImportAsync(file!, map, Token);
+
+        // Assert
+        Assert.Equal(ReportStatus.Succeeded, report.Status);
+        Assert.Equal(["inlineStr"], CellTypes(file!, 1));
+        Assert.Equal(["Read|Delete"], Cells(TabularType.Excel, file!)[0]);
+        Assert.Equal(rows, back.Items);
+    }
+
     private static WorksheetPart Single(
         SpreadsheetDocument document
     ) => document.WorkbookPart!.WorksheetParts.Single();
+
+    public sealed record Permitted(
+        Rights Rights
+    );
+
+    public sealed record Tagged(
+        Guid Id,
+        DayOfWeek Day
+    );
 
     public sealed record Booking(
         decimal Amount,
