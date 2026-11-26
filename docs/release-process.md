@@ -45,8 +45,8 @@ The stages run in this order:
    on the candidate commit in the checkout of the line, verifies it with
    `git tag -v` and pushes only that tag.
 7. **Approval**: a reviewer of the `nuget` environment approves the publish
-   job, which then rechecks candidate, authority, environment, its own token
-   and the signed tag, and attests the admission.
+   job, which then rechecks candidate, authority, environment, release
+   workflow and the signed tag, and attests the admission.
 8. **Publication and readback** (`release-publish` action of
    `doka-labs/workflows`): pushes the packages to nuget.org with Trusted
    Publishing, reads them back signed with their symbols, restores them in an

@@ -16,4 +16,4 @@ concurrency:
 
 jobs:
   dependency-review:
-    uses: doka-labs/workflows/.github/workflows/dependency-review.yml@a3c0c35f11f1b657c09233ef02609cf75af1a1ba # v0.5.0
+    uses: doka-labs/workflows/.github/workflows/dependency-review.yml@abbb17a2390d9bd58f23aa2495ebc481964e5cb4 # v0.5.1
