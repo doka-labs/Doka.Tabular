@@ -1,8 +1,9 @@
 name: Tests
 
 # Runs every test project once, the MySQL tests once per engine, and uploads
-# per job a Cobertura coverage report and the TRX results. CI and the release
-# candidate call it, so both run the same matrix.
+# per job the TRX results and, except for the benchmark tests, a Cobertura
+# coverage report. CI and the release candidate call it, so both run the same
+# matrix.
 
 on:
   workflow_call:
@@ -27,54 +28,70 @@ jobs:
             project: Doka.Tabular.Tests
             target: ""
             artifact: core
+            coverage: true
           - name: Csv
             project: Doka.Tabular.Csv.Tests
             target: ""
             artifact: csv
+            coverage: true
           - name: Excel
             project: Doka.Tabular.Excel.Tests
             target: ""
             artifact: excel
+            coverage: true
           - name: EF Core
             project: Doka.Tabular.EntityFrameworkCore.Tests
             target: ""
             artifact: entityframeworkcore
+            coverage: true
           - name: PostgreSQL
             project: Doka.Tabular.EntityFrameworkCore.PostgreSql.Tests
             target: ""
             artifact: entityframeworkcore-postgresql
+            coverage: true
           - name: Samples
             project: Doka.Tabular.Samples.Tests
             target: ""
             artifact: samples
+            coverage: true
           - name: Benchmarks
             project: Doka.Tabular.Benchmarks.Tests
             target: ""
             artifact: benchmarks
+            # WHY: The profile tests run the benchmark work at full size, up to one million rows. Measured
+            # coverage made the project run 374 instead of 86 seconds with four threads, and every line and
+            # branch it reached is reached by the unit test projects as well.
+            coverage: false
           - name: MariaDB 10.11
             project: Doka.Tabular.EntityFrameworkCore.MySql.Tests
             target: "mariadb1011"
             artifact: entityframeworkcore-mysql-mariadb1011
+            coverage: true
           - name: MariaDB 11.4
             project: Doka.Tabular.EntityFrameworkCore.MySql.Tests
             target: "mariadb114"
             artifact: entityframeworkcore-mysql-mariadb114
+            coverage: true
           - name: MariaDB 11.8
             project: Doka.Tabular.EntityFrameworkCore.MySql.Tests
             target: "mariadb118"
             artifact: entityframeworkcore-mysql-mariadb118
+            coverage: true
           - name: MariaDB 12.3
             project: Doka.Tabular.EntityFrameworkCore.MySql.Tests
             target: "mariadb123"
             artifact: entityframeworkcore-mysql-mariadb123
+            coverage: true
           - name: MySQL 8.4
             project: Doka.Tabular.EntityFrameworkCore.MySql.Tests
             target: "mysql84"
             artifact: entityframeworkcore-mysql-mysql84
+            coverage: true
           - name: MySQL 9.7
             project: Doka.Tabular.EntityFrameworkCore.MySql.Tests
             target: "mysql97"
             artifact: entityframeworkcore-mysql-mysql97
+            coverage: true
 
     steps:
       - name: Check out the repository
@@ -93,18 +110,25 @@ jobs:
       # WHY: Coverage starts only with the coverlet switch; tests/Shared/testconfig.json sets its format and filter.
       # xUnit writes the TRX results the release qualification reads with --report-xunit-trx. Both files get a fixed
       # name so each upload names one file.
-      - name: Run the tests with coverage and TRX results
+      - name: Run the tests with TRX results and, where measured, coverage
         env:
           PROJECT: ${{ matrix.project }}
           ARTIFACT: ${{ matrix.artifact }}
+          COVERAGE: ${{ matrix.coverage }}
           DOKA_TABULAR_MYSQL_TARGET: ${{ matrix.target }}
         run: |
+          arguments=(--report-xunit-trx --report-xunit-trx-filename "$ARTIFACT.trx")
+          if [ "$COVERAGE" = "true" ]; then
+            arguments+=(--coverlet)
+          fi
           dotnet test --project "tests/$PROJECT" --configuration Release --no-restore \
-            --results-directory "$RUNNER_TEMP/results" -- --coverlet --report-xunit-trx \
-            --report-xunit-trx-filename "$ARTIFACT.trx"
-          mv "$RUNNER_TEMP"/results/coverage.cobertura.*.xml "$RUNNER_TEMP/coverage.cobertura.xml"
+            --results-directory "$RUNNER_TEMP/results" -- "${arguments[@]}"
+          if [ "$COVERAGE" = "true" ]; then
+            mv "$RUNNER_TEMP"/results/coverage.cobertura.*.xml "$RUNNER_TEMP/coverage.cobertura.xml"
+          fi
 
       - name: Upload the coverage report
+        if: matrix.coverage
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: coverage-${{ matrix.artifact }}
