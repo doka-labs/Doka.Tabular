@@ -25,7 +25,7 @@ jobs:
     permissions:
       contents: write
       attestations: read
-    uses: doka-labs/workflows/.github/workflows/release-preflight.yml@a3c0c35f11f1b657c09233ef02609cf75af1a1ba # v0.5.0
+    uses: doka-labs/workflows/.github/workflows/release-preflight.yml@abbb17a2390d9bd58f23aa2495ebc481964e5cb4 # v0.5.1
     with:
       version: ${{ inputs.version }}
       qualification-only: ${{ inputs.qualification-only }}
@@ -50,7 +50,7 @@ jobs:
       actions: read
       id-token: write
       attestations: write
-    uses: doka-labs/workflows/.github/workflows/release-qualification.yml@a3c0c35f11f1b657c09233ef02609cf75af1a1ba # v0.5.0
+    uses: doka-labs/workflows/.github/workflows/release-qualification.yml@abbb17a2390d9bd58f23aa2495ebc481964e5cb4 # v0.5.1
     with:
       version: ${{ inputs.version }}
       qualification-only: ${{ inputs.qualification-only }}
@@ -64,7 +64,7 @@ jobs:
       actions: read
       id-token: write
       attestations: write
-    uses: doka-labs/workflows/.github/workflows/release-candidate.yml@a3c0c35f11f1b657c09233ef02609cf75af1a1ba # v0.5.0
+    uses: doka-labs/workflows/.github/workflows/release-candidate.yml@abbb17a2390d9bd58f23aa2495ebc481964e5cb4 # v0.5.1
     with:
       version: ${{ inputs.version }}
       packages-artifact: packages
@@ -87,7 +87,7 @@ jobs:
       id-token: write
       attestations: write
     # WHY: The environment is release.environment of .github/release-policy.json and of the nuget.org policy; its
-    # reviewers approve the publication, and the action requires it in the job's environment claim.
+    # reviewers approve the publication, and nuget.org accepts the token of NuGet/login only from this environment.
     environment: nuget
     # WHY: Publications of one repository run one after another and are never cancelled midway; queue: max keeps
     # up to 100 waiting. https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#jobsjob_idconcurrency
@@ -101,7 +101,7 @@ jobs:
     timeout-minutes: 180
     steps:
       - name: Publish the approved candidate
-        uses: doka-labs/workflows/.github/actions/release-publish@a3c0c35f11f1b657c09233ef02609cf75af1a1ba # v0.5.0
+        uses: doka-labs/workflows/.github/actions/release-publish@abbb17a2390d9bd58f23aa2495ebc481964e5cb4 # v0.5.1
         with:
           tag: ${{ needs.preflight.outputs.tag }}
           nuget-user: ${{ secrets.NUGET_USER }}
@@ -112,6 +112,6 @@ jobs:
       contents: read
       pages: write
       id-token: write
-    uses: doka-labs/workflows/.github/workflows/api-reference.yml@a3c0c35f11f1b657c09233ef02609cf75af1a1ba # v0.5.0
+    uses: doka-labs/workflows/.github/workflows/api-reference.yml@abbb17a2390d9bd58f23aa2495ebc481964e5cb4 # v0.5.1
     with:
       tag: ${{ needs.preflight.outputs.tag }}
