@@ -263,7 +263,7 @@ flowchart LR
 | `Formats` | [D-013](decisions/D-013-common-entry-point-and-per-call-options.md) |
 | `Import` | [D-004](decisions/D-004-immutable-maps-dto-construction-column-binding-and-headers.md), [D-009](decisions/D-009-translation-of-headers-and-values.md), [D-011](decisions/D-011-validation-and-pre-checks.md), [D-029](decisions/D-029-typed-pipeline-compiled-accessors-and-aot-marking.md) |
 | `Mapping` | [D-004](decisions/D-004-immutable-maps-dto-construction-column-binding-and-headers.md), [D-005](decisions/D-005-row-maps-nested-maps-and-composed-values.md), [D-006](decisions/D-006-value-conversion-and-field-options.md), [D-011](decisions/D-011-validation-and-pre-checks.md), [D-029](decisions/D-029-typed-pipeline-compiled-accessors-and-aot-marking.md) |
-| `Primitives` | [D-028](decisions/D-028-json-conversion-of-own-value-types.md) |
+| `Primitives` | [D-013](decisions/D-013-common-entry-point-and-per-call-options.md), [D-028](decisions/D-028-json-conversion-of-own-value-types.md) |
 | `Properties` | - |
 | `Reports` | [D-012](decisions/D-012-import-and-export-reports.md) |
 | `Resources` | [D-015](decisions/D-015-export-into-the-output-buffer.md), [D-016](decisions/D-016-resource-contract-streams-and-temporary-files.md) |
