@@ -239,8 +239,40 @@ pending, and the job summary says
    gh run rerun --repo doka-labs/Doka.Tabular --job "${JOB_ID}"
    ```
 
+   A re-run of a job also re-runs the jobs that need it, so `api-reference`
+   deploys the site after the release is published.
+
 **Verify.** The steps of [Confirm completion](#7-confirm-completion) give the
 expected output.
+
+### Release published, API site missing
+
+**Detect.** The release of the version is published, but the `api-reference`
+job was skipped or failed and the site does not show the version.
+
+**Collect evidence.** The first command shows that the release is published,
+the second the result of the `api-reference` job of the run:
+
+```sh
+gh release view "${release_tag}" --repo doka-labs/Doka.Tabular --json isDraft,isImmutable
+gh run view "${RUN_ID}" --repo doka-labs/Doka.Tabular --json jobs --jq '.jobs[] | select(.name | startswith("api-reference")) | {name, conclusion}'
+```
+
+**Act.**
+
+1. If the job failed for a reason outside the repository, re-run it as in
+   [Candidate failed or draft incomplete](#candidate-failed-or-draft-incomplete).
+2. Otherwise start the `Release Candidate` workflow on `main` again with the
+   same version, as in [Start the candidate](#3-start-the-candidate). The
+   preflight finds the published release and resumes there: the run builds
+   and tests nothing, `publish` asks for the approval in `nuget`, checks the
+   candidate, the signed tag and nuget.org again and writes nothing to
+   nuget.org, because every package and every Portable PDB is already
+   there. `api-reference` then deploys the site, unless a higher version is
+   published.
+
+**Verify.** The `api-reference` job of the run succeeded, and
+`https://doka-labs.github.io/Doka.Tabular/` answers with the site.
 
 ### Tag pushed, publication not possible
 

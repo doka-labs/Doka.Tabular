@@ -20,32 +20,32 @@ concurrency:
 
 jobs:
   scope:
-    uses: doka-labs/workflows/.github/workflows/change-scope.yml@abbb17a2390d9bd58f23aa2495ebc481964e5cb4 # v0.5.1
+    uses: doka-labs/workflows/.github/workflows/change-scope.yml@15567daa9c4c37ffa6477f7562995e9ef861fe0b # v0.6.1
 
   lint:
     needs: scope
     if: needs.scope.outputs.scope == 'full'
-    uses: doka-labs/workflows/.github/workflows/workflow-lint.yml@abbb17a2390d9bd58f23aa2495ebc481964e5cb4 # v0.5.1
+    uses: doka-labs/workflows/.github/workflows/workflow-lint.yml@15567daa9c4c37ffa6477f7562995e9ef861fe0b # v0.6.1
 
   policy:
     needs: scope
     if: needs.scope.outputs.scope == 'full'
-    uses: doka-labs/workflows/.github/workflows/release-policy-check.yml@abbb17a2390d9bd58f23aa2495ebc481964e5cb4 # v0.5.1
+    uses: doka-labs/workflows/.github/workflows/release-policy-check.yml@15567daa9c4c37ffa6477f7562995e9ef861fe0b # v0.6.1
 
   style:
     needs: scope
     if: needs.scope.outputs.scope == 'full'
-    uses: doka-labs/workflows/.github/workflows/code-style.yml@abbb17a2390d9bd58f23aa2495ebc481964e5cb4 # v0.5.1
+    uses: doka-labs/workflows/.github/workflows/code-style.yml@15567daa9c4c37ffa6477f7562995e9ef861fe0b # v0.6.1
     with:
       solution: Doka.Tabular.slnx
 
   # WHY: Decision records are documentation, so the check runs for docs pull requests too and is not skippable.
   decision-records:
-    uses: doka-labs/workflows/.github/workflows/decision-records.yml@abbb17a2390d9bd58f23aa2495ebc481964e5cb4 # v0.5.1
+    uses: doka-labs/workflows/.github/workflows/decision-records.yml@15567daa9c4c37ffa6477f7562995e9ef861fe0b # v0.6.1
 
   # WHY: The document describes the code, so the check runs for docs pull requests too and is not skippable.
   architecture-document:
-    uses: doka-labs/workflows/.github/workflows/architecture-document.yml@abbb17a2390d9bd58f23aa2495ebc481964e5cb4 # v0.5.1
+    uses: doka-labs/workflows/.github/workflows/architecture-document.yml@15567daa9c4c37ffa6477f7562995e9ef861fe0b # v0.6.1
     with:
       solution: Doka.Tabular.slnx
 
@@ -61,7 +61,7 @@ jobs:
     permissions:
       contents: read
       actions: read
-    uses: doka-labs/workflows/.github/workflows/coverage-gate.yml@abbb17a2390d9bd58f23aa2495ebc481964e5cb4 # v0.5.1
+    uses: doka-labs/workflows/.github/workflows/coverage-gate.yml@15567daa9c4c37ffa6477f7562995e9ef861fe0b # v0.6.1
     with:
       reports-pattern: coverage-*
 
@@ -77,7 +77,7 @@ jobs:
     permissions:
       contents: read
       actions: read
-    uses: doka-labs/workflows/.github/workflows/package-check.yml@abbb17a2390d9bd58f23aa2495ebc481964e5cb4 # v0.5.1
+    uses: doka-labs/workflows/.github/workflows/package-check.yml@15567daa9c4c37ffa6477f7562995e9ef861fe0b # v0.6.1
     with:
       version: ${{ needs.pack.outputs.version }}
       packages-artifact: packages
@@ -85,7 +85,7 @@ jobs:
   required:
     needs: [scope, lint, policy, style, decision-records, architecture-document, tests, coverage, pack, packages]
     if: always()
-    uses: doka-labs/workflows/.github/workflows/required-gate.yml@abbb17a2390d9bd58f23aa2495ebc481964e5cb4 # v0.5.1
+    uses: doka-labs/workflows/.github/workflows/required-gate.yml@15567daa9c4c37ffa6477f7562995e9ef861fe0b # v0.6.1
     with:
       results: ${{ toJSON(needs) }}
       scope: ${{ needs.scope.outputs.scope }}
@@ -102,4 +102,4 @@ jobs:
       actions: read
       id-token: write
       attestations: write
-    uses: doka-labs/workflows/.github/workflows/release-pr-attestation.yml@abbb17a2390d9bd58f23aa2495ebc481964e5cb4 # v0.5.1
+    uses: doka-labs/workflows/.github/workflows/release-pr-attestation.yml@15567daa9c4c37ffa6477f7562995e9ef861fe0b # v0.6.1
