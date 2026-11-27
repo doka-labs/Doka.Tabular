@@ -7,7 +7,9 @@ namespace Doka.Tabular.EntityFrameworkCore;
 /// <summary>Entity types of the journals: shared-type entities named per journal, so several journals use the same CLR types.</summary>
 internal static class JournalModel
 {
-    public const string IgnoreScopeCaseAnnotation = "DokaTabular:IgnoreScopeCase";
+    // WHY: The value keeps its 1.0.0-rc.1 spelling, so the EF model of an application does not change with the
+    // rename of the public setting.
+    public const string IgnoreImportScopeCaseAnnotation = "DokaTabular:IgnoreScopeCase";
 
     public static string ImportLog(
         JournalName name
@@ -39,10 +41,10 @@ internal static class JournalModel
         ModelBuilder modelBuilder,
         JournalName name,
         string prefix,
-        bool ignoreScopeCase
+        bool ignoreImportScopeCase
     )
     {
-        var comparison = ignoreScopeCase
+        var comparison = ignoreImportScopeCase
             ? "true"
             : "false";
 
@@ -50,7 +52,7 @@ internal static class JournalModel
         {
             var claim = modelBuilder.Model.FindEntityType(ImportClaim(name))!;
             if (!Equals(
-                claim.FindAnnotation(IgnoreScopeCaseAnnotation)
+                claim.FindAnnotation(IgnoreImportScopeCaseAnnotation)
                     ?.Value,
                 comparison))
             {
@@ -104,7 +106,7 @@ internal static class JournalModel
     private static void ImportClaimTable(
         EntityTypeBuilder<TabularImportClaim> claim,
         string prefix,
-        string ignoreScopeCase
+        string ignoreImportScopeCase
     )
     {
         claim.ToTable(prefix + "ImportClaims");
@@ -127,7 +129,7 @@ internal static class JournalModel
             .Property<Guid>("Version")
             .IsConcurrencyToken();
 
-        claim.HasAnnotation(IgnoreScopeCaseAnnotation, ignoreScopeCase);
+        claim.HasAnnotation(IgnoreImportScopeCaseAnnotation, ignoreImportScopeCase);
     }
 
     public static void AddExport(

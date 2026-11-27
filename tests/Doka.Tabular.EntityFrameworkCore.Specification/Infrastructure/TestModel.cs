@@ -246,7 +246,7 @@ public sealed class TabularTestContext : DbContext
             journal =>
             {
                 journal.TablePrefix = "Caseless_";
-                journal.IgnoreScopeCase = true;
+                journal.IgnoreImportScopeCase = true;
             });
     }
 }

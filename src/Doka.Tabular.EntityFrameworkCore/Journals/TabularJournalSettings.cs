@@ -14,5 +14,5 @@ public sealed class TabularJournalSettings
     public bool ExportEnabled { get; set; } = true;
 
     /// <summary>Gets or sets whether import scopes are compared with <see cref="StringComparison.OrdinalIgnoreCase" />; the default is ordinal.</summary>
-    public bool IgnoreScopeCase { get; set; }
+    public bool IgnoreImportScopeCase { get; set; }
 }

@@ -14,8 +14,8 @@ The standard journal creates the tables `<prefix>ImportLogs`,
 `<prefix>ImportClaims`, and `<prefix>ExportLogs` (default prefix
 `DokaTabular_`) through your migrations. Named journals are added in
 `OnModelCreating` with `modelBuilder.AddTabularImportJournal(JournalName.Create("users"))`
-and `AddTabularExportJournal`. `IgnoreScopeCase` compares import scopes without
-regard to case.
+and `AddTabularExportJournal`. `IgnoreImportScopeCase` compares import scopes
+without regard to case; export scopes are not affected.
 
 ## Duplicate files
 

@@ -1,2 +1,10 @@
 #nullable enable
 static Doka.Tabular.EntityFrameworkCore.TabularDatabase.ForFactory<TContext>(System.Func<System.Threading.CancellationToken, System.Threading.Tasks.Task<TContext!>!>! factory) -> Doka.Tabular.EntityFrameworkCore.TabularDatabase<TContext!>!
+*REMOVED*Doka.Tabular.EntityFrameworkCore.TabularJournalSettings.IgnoreScopeCase.get -> bool
+*REMOVED*Doka.Tabular.EntityFrameworkCore.TabularJournalSettings.IgnoreScopeCase.set -> void
+Doka.Tabular.EntityFrameworkCore.TabularJournalSettings.IgnoreImportScopeCase.get -> bool
+Doka.Tabular.EntityFrameworkCore.TabularJournalSettings.IgnoreImportScopeCase.set -> void
+*REMOVED*Doka.Tabular.EntityFrameworkCore.TabularJournalTables.IgnoreScopeCase.get -> bool
+*REMOVED*Doka.Tabular.EntityFrameworkCore.TabularJournalTables.IgnoreScopeCase.set -> void
+Doka.Tabular.EntityFrameworkCore.TabularJournalTables.IgnoreImportScopeCase.get -> bool
+Doka.Tabular.EntityFrameworkCore.TabularJournalTables.IgnoreImportScopeCase.set -> void

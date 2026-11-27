@@ -11,13 +11,13 @@ internal sealed class TabularJournalOptionsExtension : IDbContextOptionsExtensio
         string prefix,
         bool import,
         bool export,
-        bool ignoreScopeCase
+        bool ignoreImportScopeCase
     )
     {
         Prefix = prefix;
         Import = import;
         Export = export;
-        IgnoreScopeCase = ignoreScopeCase;
+        IgnoreImportScopeCase = ignoreImportScopeCase;
         Info = new ExtensionInfo(this);
     }
 
@@ -27,7 +27,7 @@ internal sealed class TabularJournalOptionsExtension : IDbContextOptionsExtensio
 
     public bool Export { get; }
 
-    public bool IgnoreScopeCase { get; }
+    public bool IgnoreImportScopeCase { get; }
 
     public DbContextOptionsExtensionInfo Info { get; }
 
@@ -57,7 +57,7 @@ internal sealed class TabularJournalOptionsExtension : IDbContextOptionsExtensio
             Extension.Prefix,
             Extension.Import,
             Extension.Export,
-            Extension.IgnoreScopeCase);
+            Extension.IgnoreImportScopeCase);
 
         public override bool ShouldUseSameServiceProvider(
             DbContextOptionsExtensionInfo other
@@ -65,12 +65,12 @@ internal sealed class TabularJournalOptionsExtension : IDbContextOptionsExtensio
             && info.Extension.Prefix == Extension.Prefix
             && info.Extension.Import == Extension.Import
             && info.Extension.Export == Extension.Export
-            && info.Extension.IgnoreScopeCase == Extension.IgnoreScopeCase;
+            && info.Extension.IgnoreImportScopeCase == Extension.IgnoreImportScopeCase;
 
         public override void PopulateDebugInfo(
             IDictionary<string, string> debugInfo
         ) => debugInfo["DokaTabular:Journal"] = HashCode
-            .Combine(Extension.Prefix, Extension.Import, Extension.Export, Extension.IgnoreScopeCase)
+            .Combine(Extension.Prefix, Extension.Import, Extension.Export, Extension.IgnoreImportScopeCase)
             .ToString(CultureInfo.InvariantCulture);
     }
 }

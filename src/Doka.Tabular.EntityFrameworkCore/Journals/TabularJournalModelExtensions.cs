@@ -45,7 +45,7 @@ public static class TabularJournalModelExtensions
                 && (existing.Prefix != settings.TablePrefix
                     || existing.Import != settings.ImportEnabled
                     || existing.Export != settings.ExportEnabled
-                    || existing.IgnoreScopeCase != settings.IgnoreScopeCase))
+                    || existing.IgnoreImportScopeCase != settings.IgnoreImportScopeCase))
             {
                 throw new InvalidOperationException(
                     "The standard journal is already registered on these options with other settings.");
@@ -56,7 +56,7 @@ public static class TabularJournalModelExtensions
                     settings.TablePrefix,
                     settings.ImportEnabled,
                     settings.ExportEnabled,
-                    settings.IgnoreScopeCase));
+                    settings.IgnoreImportScopeCase));
 
             return options;
         }
@@ -103,7 +103,7 @@ public static class TabularJournalModelExtensions
             var tables = new TabularJournalTables();
             configure?.Invoke(tables);
             JournalModel.CheckPrefix(tables.TablePrefix);
-            JournalModel.AddImport(modelBuilder, name, tables.TablePrefix, tables.IgnoreScopeCase);
+            JournalModel.AddImport(modelBuilder, name, tables.TablePrefix, tables.IgnoreImportScopeCase);
 
             return modelBuilder;
         }

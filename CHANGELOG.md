@@ -8,6 +8,10 @@ All notable changes to this project are documented in this file. The format foll
 
 - `Doka.Tabular.EntityFrameworkCore`: `TabularDatabase.ForFactory` also takes a function `Func<CancellationToken, Task<TContext>>`, like `TabularJournal.ForFactory`.
 
+### Changed
+
+- `Doka.Tabular.EntityFrameworkCore`: `TabularJournalSettings.IgnoreScopeCase` and `TabularJournalTables.IgnoreScopeCase` are renamed to `IgnoreImportScopeCase`, because the setting applies to import scopes only.
+
 ## [1.0.0-rc.1] - 2026-11-26
 
 ### Added

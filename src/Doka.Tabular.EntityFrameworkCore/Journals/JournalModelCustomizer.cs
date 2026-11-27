@@ -27,7 +27,11 @@ internal sealed class JournalModelCustomizer : RelationalModelCustomizer
 
         if (extension.Import)
         {
-            JournalModel.AddImport(modelBuilder, JournalName.Default, extension.Prefix, extension.IgnoreScopeCase);
+            JournalModel.AddImport(
+                modelBuilder,
+                JournalName.Default,
+                extension.Prefix,
+                extension.IgnoreImportScopeCase);
         }
 
         if (extension.Export)

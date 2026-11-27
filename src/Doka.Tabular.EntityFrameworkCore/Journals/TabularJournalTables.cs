@@ -8,5 +8,5 @@ public sealed class TabularJournalTables
     public string TablePrefix { get; set; } = "DokaTabular_";
 
     /// <summary>Gets or sets whether import scopes are compared with <see cref="StringComparison.OrdinalIgnoreCase" />; the default is ordinal.</summary>
-    public bool IgnoreScopeCase { get; set; }
+    public bool IgnoreImportScopeCase { get; set; }
 }
