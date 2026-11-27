@@ -1,8 +1,6 @@
 name: Dependency Review
 
-# Reviews the dependency delta of every pull request. It is a workflow of its
-# own because it runs only for pull requests, while the CI gate also judges
-# pushes to main.
+# Reviews the dependency delta of every pull request.
 
 on:
   pull_request:
