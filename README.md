@@ -1,6 +1,8 @@
 # Doka.Tabular
 
 [![CI](https://github.com/doka-labs/Doka.Tabular/actions/workflows/ci.yml/badge.svg)](https://github.com/doka-labs/Doka.Tabular/actions/workflows/ci.yml)
+[![NuGet](https://img.shields.io/nuget/v/Doka.Tabular.svg?label=NuGet)](https://www.nuget.org/packages/Doka.Tabular)
+[![NuGet EF Core](https://img.shields.io/nuget/v/Doka.Tabular.EntityFrameworkCore.svg?label=NuGet%20EF%20Core)](https://www.nuget.org/packages/Doka.Tabular.EntityFrameworkCore)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 Typed CSV and Excel import and export for .NET 10, with optional EF Core targets
@@ -60,9 +62,8 @@ responsibility.
 
 ## Status
 
-The first version, `1.0.0-rc.1`, is a release candidate: its public API can
-still change until `1.0.0`, as [Versioning](VERSIONING.md) describes. Until a
-stable version exists, `dotnet add package` needs `--prerelease`.
+`1.0.0` is the first stable version; its public API changes only as
+[Versioning](VERSIONING.md) describes.
 [Support and qualification](docs/support-and-qualification.md) lists the
 supported platforms and which versions receive fixes.
 
