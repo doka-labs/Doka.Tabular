@@ -101,20 +101,23 @@ public static class MultiSheetSample
 
     private static readonly TabularMap<BookingRow> s_bookings = TabularMap
         .For<BookingRow>()
-        .Column(x => x.Date,
+        .Column(
+            x => x.Date,
             index: 0,
             key: ColumnKey.Create("date"),
             configure: c => c
                 .Header("Datum")
                 .ExcelNumberFormat("dd.mm.yyyy"))
         .Column(x => x.Category, index: 1, key: ColumnKey.Create("category"), configure: c => c.Header("Kategorie"))
-        .Column(x => x.Amount,
+        .Column(
+            x => x.Amount,
             index: 2,
             key: ColumnKey.Create("amount"),
             configure: c => c
                 .Header("Betrag")
                 .ExcelNumberFormat(Euro))
-        .Column(x => x.CreatedAt,
+        .Column(
+            x => x.CreatedAt,
             index: 3,
             key: ColumnKey.Create("createdAt"),
             configure: c => c
@@ -124,19 +127,22 @@ public static class MultiSheetSample
 
     private static readonly TabularMap<MonthRow> s_months = TabularMap
         .For<MonthRow>()
-        .Column(x => x.Month,
+        .Column(
+            x => x.Month,
             index: 0,
             key: ColumnKey.Create("month"),
             configure: c => c
                 .Header("Monat")
                 .ExcelNumberFormat("mmmm yyyy"))
-        .Column(x => x.Income,
+        .Column(
+            x => x.Income,
             index: 1,
             key: ColumnKey.Create("income"),
             configure: c => c
                 .Header("Einnahmen")
                 .ExcelNumberFormat(Euro))
-        .Column(x => x.Expenses,
+        .Column(
+            x => x.Expenses,
             index: 2,
             key: ColumnKey.Create("expenses"),
             configure: c => c
@@ -147,7 +153,8 @@ public static class MultiSheetSample
     private static readonly TabularMap<CustomerDto> s_customers = TabularMap
         .For<CustomerDto>()
         .Column(x => x.Number, index: 0, configure: c => c.Header("Nummer"))
-        .Column(x => x.Name,
+        .Column(
+            x => x.Name,
             index: 1,
             configure: c => c
                 .Header("Name")
@@ -157,7 +164,8 @@ public static class MultiSheetSample
     private static readonly TabularMap<OrderDto> s_orders = TabularMap
         .For<OrderDto>()
         .Column(x => x.Number, index: 0, configure: c => c.Header("Nummer"))
-        .Column(x => x.Total,
+        .Column(
+            x => x.Total,
             index: 1,
             configure: c => c
                 .Header("Summe")
@@ -172,7 +180,8 @@ public static class MultiSheetSample
         var excel = new ExcelFormat(new ExcelFormatOptions());
         await ExportAnnualReportAsync(excel, output, cancellationToken);
         await using var database =
-            await SampleDatabase<AppDbContext>.StartAsync(options => new AppDbContext(options),
+            await SampleDatabase<AppDbContext>.StartAsync(
+                options => new AppDbContext(options),
                 null,
                 cancellationToken);
 
@@ -206,7 +215,8 @@ public static class MultiSheetSample
     /// <summary>Two sheets with their own tables and column layouts, in registration order.</summary>
     private static ExcelWorkbookExport AnnualReport() => ExcelExport
         .Create()
-        .Add(TabularSheetName.Create("Buchungen"),
+        .Add(
+            TabularSheetName.Create("Buchungen"),
             Bookings(),
             s_bookings,
             new ExcelSheetExportOptions
@@ -226,7 +236,8 @@ public static class MultiSheetSample
                     },
                 },
             })
-        .Add(TabularSheetName.Create("Monate"),
+        .Add(
+            TabularSheetName.Create("Monate"),
             new[]
             {
                 new MonthRow(new DateOnly(2026, 1, 1), 4200m, 3100.5m),
@@ -253,7 +264,8 @@ public static class MultiSheetSample
         var db = TabularDatabase.ForFactory(factory);
         var options = new TabularWriteOptions { TransactionPerSheet = perSheet };
         var customers = db
-            .PrepareInsert<CustomerDto, Customer>(set: context => context.Customers,
+            .PrepareInsert<CustomerDto, Customer>(
+                set: context => context.Customers,
                 create: dto => new Customer
                 {
                     Number = dto.Number,
@@ -267,7 +279,8 @@ public static class MultiSheetSample
             .WithOptions(options);
 
         var orders = db
-            .PrepareInsert<OrderDto, Order>(set: context => context.Orders,
+            .PrepareInsert<OrderDto, Order>(
+                set: context => context.Orders,
                 create: dto => new Order
                 {
                     Number = dto.Number,
@@ -276,18 +289,21 @@ public static class MultiSheetSample
             .WithOptions(options);
 
         var definition = ExcelImport.Create();
-        var customerSheet = definition.Add(TabularSheetName.Create("Kunden"),
+        var customerSheet = definition.Add(
+            TabularSheetName.Create("Kunden"),
             s_customers,
             customers,
             new ExcelSheetImportOptions { Binding = ColumnBinding.ByHeaderName });
 
-        var orderSheet = definition.Add(TabularSheetName.Create("Bestellungen"),
+        var orderSheet = definition.Add(
+            TabularSheetName.Create("Bestellungen"),
             s_orders,
             orders,
             new ExcelSheetImportOptions { Binding = ColumnBinding.ByHeaderName });
 
         input.Position = 0;
-        var imported = await excel.ImportAsync(input,
+        var imported = await excel.ImportAsync(
+            input,
             definition.Build(),
             new ExcelWorkbookImportOptions { Strategy = ImportStrategy.Strict },
             cancellationToken);
@@ -304,7 +320,8 @@ public static class MultiSheetSample
         {
             await Task.Yield();
 
-            yield return new BookingRow(new DateOnly(2026, 1, day),
+            yield return new BookingRow(
+                new DateOnly(2026, 1, day),
                 day == 2
                     ? "Miete"
                     : "Einkauf",
@@ -323,14 +340,17 @@ public static class MultiSheetSample
         var excel = new ExcelFormat(new ExcelFormatOptions());
         var workbook = ExcelExport
             .Create()
-            .Add(TabularSheetName.Create("Hinweise"),
+            .Add(
+                TabularSheetName.Create("Hinweise"),
                 new[] { new CustomerDto(0, "Diese Mappe enthält Beispieldaten.") },
                 s_customers)
-            .Add(TabularSheetName.Create("Bestellungen"),
+            .Add(
+                TabularSheetName.Create("Bestellungen"),
                 new[] { new OrderDto(1, 99m), new OrderDto(2, -1m) },
                 s_orders,
                 new ExcelSheetExportOptions { WriteHeader = true })
-            .Add(TabularSheetName.Create("Kunden"),
+            .Add(
+                TabularSheetName.Create("Kunden"),
                 new[] { new CustomerDto(1, "Ada"), new CustomerDto(2, "Grace") },
                 s_customers,
                 new ExcelSheetExportOptions { WriteHeader = true })

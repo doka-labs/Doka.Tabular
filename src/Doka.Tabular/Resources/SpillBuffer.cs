@@ -115,7 +115,9 @@ internal sealed class SpillBuffer : IAsyncDisposable
         var memory = _memory!;
         _memory = null;
 
-        return new OwnedReadStream(new MemoryStream(memory.GetBuffer(),
+        return new OwnedReadStream(
+            new MemoryStream(
+                memory.GetBuffer(),
                 0,
                 (int)memory.Length,
                 writable: false,

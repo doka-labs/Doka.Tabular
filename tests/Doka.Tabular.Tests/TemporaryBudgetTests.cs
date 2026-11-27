@@ -36,7 +36,8 @@ public sealed class TemporaryBudgetTests : IDisposable
             .AsTask());
 
         // Assert
-        Assert.Equal(succeeds
+        Assert.Equal(
+            succeeds
                 ? null
                 : TabularErrorCodes.Resource.LimitExceeded,
             (exception as TabularResourceException)?.Error.Code);
@@ -74,7 +75,8 @@ public sealed class TemporaryBudgetTests : IDisposable
         var exception = Record.Exception(() => second.Account(1));
 
         // Assert
-        Assert.Equal(TabularErrorCodes.Resource.LimitExceeded,
+        Assert.Equal(
+            TabularErrorCodes.Resource.LimitExceeded,
             Assert.IsType<TabularResourceException>(exception)
                 .Error
                 .Code);
@@ -84,12 +86,14 @@ public sealed class TemporaryBudgetTests : IDisposable
 
     private TemporaryFiles Files(
         long maxTemporaryBytes
-    ) => new(new ResourceLimits(0,
-        0,
-        true,
-        _directory,
-        maxTemporaryBytes,
-        null,
-        null,
-        null));
+    ) => new(
+        new ResourceLimits(
+            0,
+            0,
+            true,
+            _directory,
+            maxTemporaryBytes,
+            null,
+            null,
+            null));
 }

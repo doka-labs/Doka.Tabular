@@ -58,7 +58,8 @@ public sealed class ExcelEdgeCaseTests
         };
 
         // Act
-        var report = await new ExcelFormat(new ExcelFormatOptions()).ImportAsync(RawWorkbook.Create(rows),
+        var report = await new ExcelFormat(new ExcelFormatOptions()).ImportAsync(
+            RawWorkbook.Create(rows),
             s_numbers,
             new ExcelImportOptions
             {
@@ -70,7 +71,8 @@ public sealed class ExcelEdgeCaseTests
 
         // Assert
         Assert.Equal(ReportStatus.Succeeded, report.Status);
-        Assert.Equal(7,
+        Assert.Equal(
+            7,
             Assert.Single(report.Items!)
                 .Value);
     }
@@ -83,14 +85,16 @@ public sealed class ExcelEdgeCaseTests
             """<row r="1" hidden="1"><c r="A1" t="d"><v>yesterday</v></c></row><row r="2"><c r="A2"><v>7</v></c></row>""");
 
         // Act
-        var report = await new ExcelFormat(new ExcelFormatOptions()).ImportAsync(file,
+        var report = await new ExcelFormat(new ExcelFormatOptions()).ImportAsync(
+            file,
             s_numbers,
             new ExcelImportOptions { VisibleRowsOnly = true },
             Token);
 
         // Assert
         Assert.Equal(ReportStatus.Succeeded, report.Status);
-        Assert.Equal(7,
+        Assert.Equal(
+            7,
             Assert.Single(report.Items!)
                 .Value);
     }
@@ -106,7 +110,8 @@ public sealed class ExcelEdgeCaseTests
         var sheet = sheets.Add(TabularSheetName.Create("Sheet1"), s_numbers);
 
         // Act
-        var report = await new ExcelFormat(new ExcelFormatOptions()).ImportAsync(file,
+        var report = await new ExcelFormat(new ExcelFormatOptions()).ImportAsync(
+            file,
             sheets.Build(),
             new ExcelWorkbookImportOptions { Strategy = ImportStrategy.Partial },
             Token);
@@ -115,9 +120,11 @@ public sealed class ExcelEdgeCaseTests
         Assert.Equal(TabularErrorCodes.Parsing.InvalidSyntax, report.FatalError?.Code);
         Assert.False(report.IsComplete);
         Assert.Equal(1, report.RowsImported);
-        Assert.Equal(7,
-            Assert.Single(report.Get(sheet)
-                    .Items!)
+        Assert.Equal(
+            7,
+            Assert.Single(
+                    report.Get(sheet)
+                        .Items!)
                 .Value);
     }
 
@@ -132,12 +139,14 @@ public sealed class ExcelEdgeCaseTests
 
         // Act
         // WHY: The equal result of one sheet and a workbook is the checked contract, so both runs form one action.
-        var single = await new ExcelFormat(new ExcelFormatOptions()).ImportAsync(Rows(),
+        var single = await new ExcelFormat(new ExcelFormatOptions()).ImportAsync(
+            Rows(),
             CancelingMap(singleCancellation),
             new ExcelImportOptions { Strategy = ImportStrategy.Partial },
             singleCancellation.Token);
 
-        var workbook = await new ExcelFormat(new ExcelFormatOptions()).ImportAsync(Rows(),
+        var workbook = await new ExcelFormat(new ExcelFormatOptions()).ImportAsync(
+            Rows(),
             sheets.Build(),
             new ExcelWorkbookImportOptions { Strategy = ImportStrategy.Partial },
             workbookCancellation.Token);
@@ -145,7 +154,8 @@ public sealed class ExcelEdgeCaseTests
         // Assert
         Assert.Equal((ReportStatus.Canceled, ReportStatus.Canceled), (single.Status, workbook.Status));
         Assert.NotEmpty(single.Items!);
-        Assert.Equal(single.Items!.Select(item => item.Value),
+        Assert.Equal(
+            single.Items!.Select(item => item.Value),
             workbook.Get(sheet)
                 .Items!.Select(item => item.Value));
 
@@ -161,9 +171,11 @@ public sealed class ExcelEdgeCaseTests
             CancellationTokenSource cancellation
         ) => TabularMap
             .For<Number>()
-            .Column(x => x.Value,
+            .Column(
+                x => x.Value,
                 index: 0,
-                configure: c => c.Validate(value =>
+                configure: c => c.Validate(
+                    value =>
                     {
                         cancellation.Cancel();
 
@@ -231,13 +243,15 @@ public sealed class ExcelEdgeCaseTests
 
         // Act
         var report =
-            await new ExcelFormat(new ExcelFormatOptions()).ExportAsync(CancelingRows(cancellation),
+            await new ExcelFormat(new ExcelFormatOptions()).ExportAsync(
+                CancelingRows(cancellation),
                 s_numbers,
                 target,
                 cancellation.Token);
 
         // Assert
-        Assert.Equal((ReportStatus.Canceled, StreamOutputState.NotWritten, 0L),
+        Assert.Equal(
+            (ReportStatus.Canceled, StreamOutputState.NotWritten, 0L),
             (report.Status, report.StreamOutput, target.Length));
 
         return;
@@ -261,7 +275,8 @@ public sealed class ExcelEdgeCaseTests
             """<row r="1"><c r="A1"><v>7</v></c></row><row r="2"><c r="A2"><v>8</v></c></row><row r="3"><c r="A3"><v>9</c></row>""");
 
         // Act
-        var report = await new ExcelFormat(new ExcelFormatOptions()).ImportAsync(file,
+        var report = await new ExcelFormat(new ExcelFormatOptions()).ImportAsync(
+            file,
             s_numbers,
             new ExcelImportOptions { EndRow = 1 },
             Token);
@@ -307,12 +322,14 @@ public sealed class ExcelEdgeCaseTests
         var file = RawWorkbook.Create("""<row r="1"><c r="A1" t="inlineStr"><is><t>_x0041_</t></is></c></row>""");
 
         // Act
-        var report = await new ExcelFormat(new ExcelFormatOptions { MaxFieldCharacters = 1 }).ImportAsync(file,
+        var report = await new ExcelFormat(new ExcelFormatOptions { MaxFieldCharacters = 1 }).ImportAsync(
+            file,
             s_texts,
             Token);
 
         // Assert
-        Assert.Equal("A",
+        Assert.Equal(
+            "A",
             Assert.Single(report.Items!)
                 .Value);
     }
@@ -328,11 +345,13 @@ public sealed class ExcelEdgeCaseTests
         // Arrange
         // WHY: The text beyond the limit is not kept, but the part is still parsed to its end, so damaged XML behind
         // the limit is still found.
-        var file = RawWorkbook.Create("""<row r="1"><c r="A1" t="s"><v>0</v></c></row>""",
+        var file = RawWorkbook.Create(
+            """<row r="1"><c r="A1" t="s"><v>0</v></c></row>""",
             $"""<si><t>{new string('a', 20000)}{tail}</t></si>""");
 
         // Act
-        var report = await new ExcelFormat(new ExcelFormatOptions { MaxFieldCharacters = 100 }).ImportAsync(file,
+        var report = await new ExcelFormat(new ExcelFormatOptions { MaxFieldCharacters = 100 }).ImportAsync(
+            file,
             s_texts,
             Token);
 
@@ -354,20 +373,23 @@ public sealed class ExcelEdgeCaseTests
         // Arrange
         // WHY: The long shared string is used only in row 2; with EndRow 1 it is no field value. 80 characters are
         // beyond seven times the limit, which the loader does not keep.
-        var file = RawWorkbook.Create("""
+        var file = RawWorkbook.Create(
+            """
             <row r="1"><c r="A1" t="s"><v>0</v></c></row><row r="2"><c r="A2" t="s"><v>1</v></c></row>
             """,
             $"""<si><t>short</t></si><si><t>{new string('a', length)}</t></si>""");
 
         // Act
-        var report = await new ExcelFormat(new ExcelFormatOptions { MaxFieldCharacters = 10 }).ImportAsync(file,
+        var report = await new ExcelFormat(new ExcelFormatOptions { MaxFieldCharacters = 10 }).ImportAsync(
+            file,
             s_texts,
             new ExcelImportOptions { EndRow = endRow },
             Token);
 
         // Assert
         Assert.Equal(succeeds, report.Status == ReportStatus.Succeeded);
-        Assert.Equal(succeeds
+        Assert.Equal(
+            succeeds
                 ? null
                 : TabularErrorCodes.Resource.LimitExceeded,
             report.FatalError?.Code);
@@ -405,7 +427,8 @@ public sealed class ExcelEdgeCaseTests
         var format = new CheckedExcelFormat(new ExcelFormat(new ExcelFormatOptions()));
 
         // Act
-        var (report, file) = await format.ExportAsync(new[] { new Text("x") },
+        var (report, file) = await format.ExportAsync(
+            new[] { new Text("x") },
             s_texts,
             new ExcelExportOptions
             {
@@ -415,7 +438,8 @@ public sealed class ExcelEdgeCaseTests
             Token);
 
         // Assert
-        Assert.True(report.Status == ReportStatus.Succeeded,
+        Assert.True(
+            report.Status == ReportStatus.Succeeded,
             string.Join(" | ", report.Errors.Select(error => error.Message)));
 
         Assert.Empty(WorkbookProblems(file!));

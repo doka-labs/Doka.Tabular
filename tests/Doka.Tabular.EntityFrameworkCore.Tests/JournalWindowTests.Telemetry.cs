@@ -57,12 +57,14 @@ public sealed partial class JournalWindowTests
         Activity activity;
         lock (activities)
         {
-            activity = Assert.Single(activities,
+            activity = Assert.Single(
+                activities,
                 candidate => Equals(candidate.GetTagItem("doka.tabular.operation_id"), operation.ToString()));
         }
 
         Assert.Equal(ReportStatus.Succeeded, status);
-        Assert.Contains(errors,
+        Assert.Contains(
+            errors,
             error => error is { Code.Value: "tabular.callback.failed", Kind: TabularErrorKind.Technical });
 
         Assert.Equal(LogLevel.Error, logger.CompletedLevel);
@@ -79,7 +81,8 @@ public sealed partial class JournalWindowTests
             // WHY: The local function runs during the awaited call, before the database is disposed.
             var target = TestMaps
                 .Upsert(TabularDatabase.ForFactory(database.Plain))
-                .WithImportLog(journal,
+                .WithImportLog(
+                    journal,
                     new TabularImportLogOptions
                     {
                         Scope = s_scope,
@@ -108,7 +111,8 @@ public sealed partial class JournalWindowTests
         {
             var target = TabularFileTarget
                 .To(new MemoryFileStore(), "users.csv")
-                .WithExportLog(journal,
+                .WithExportLog(
+                    journal,
                     new TabularExportLogOptions
                     {
                         Scope = s_scope,

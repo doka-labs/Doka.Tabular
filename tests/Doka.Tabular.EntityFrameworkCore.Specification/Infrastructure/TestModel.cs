@@ -237,10 +237,12 @@ public sealed class TabularTestContext : DbContext
             .Property(entry => entry.State)
             .HasMaxLength(50);
 
-        modelBuilder.AddTabularImportJournal(JournalName.Create("userImports"),
+        modelBuilder.AddTabularImportJournal(
+            JournalName.Create("userImports"),
             journal => journal.TablePrefix = "Users_");
 
-        modelBuilder.AddTabularImportJournal(JournalName.Create("caseless"),
+        modelBuilder.AddTabularImportJournal(
+            JournalName.Create("caseless"),
             journal =>
             {
                 journal.TablePrefix = "Caseless_";

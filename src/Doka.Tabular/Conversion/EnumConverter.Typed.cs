@@ -58,7 +58,8 @@ internal sealed class EnumConverter<TEnum> : ValueConverter<TEnum>
         ConversionContext context,
         TextBuffer output,
         out ConversionFailure failure
-    ) => _engine.TryWriteRaw(ToRaw(value),
+    ) => _engine.TryWriteRaw(
+        ToRaw(value),
         settings,
         context,
         excel: false,
@@ -73,7 +74,8 @@ internal sealed class EnumConverter<TEnum> : ValueConverter<TEnum>
         TextBuffer output,
         out OutputCell cell,
         out ConversionFailure failure
-    ) => _engine.TryWriteRaw(ToRaw(value),
+    ) => _engine.TryWriteRaw(
+        ToRaw(value),
         settings,
         context,
         excel: true,

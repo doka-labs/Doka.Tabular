@@ -33,7 +33,8 @@ public sealed partial class ConversionTests
         // Assert
         var cells = ExcelCells(file!);
         Assert.Equal(ReportStatus.Succeeded, report.Status);
-        Assert.Equal(type switch
+        Assert.Equal(
+            type switch
             {
                 "double" => s_doubles.Length,
                 "float" => s_floats.Length,
@@ -68,7 +69,8 @@ public sealed partial class ConversionTests
     private static Task<BufferedExportResult> ExportNonFiniteAsync<T>(
         T[] values
     )
-        where T : struct, INumberBase<T> => Export.ExportAsync(values
+        where T : struct, INumberBase<T> => Export.ExportAsync(
+        values
             .Select(value => new Value<T>(value))
             .ToArray(),
         Map<T>(c => c.NonFiniteValues()),
@@ -128,7 +130,8 @@ public sealed partial class ConversionTests
     public async Task WithoutNonFiniteValues_FiniteValuesStayNativeExcelNumbers()
     {
         // Act
-        var (_, file) = await Export.ExportAsync(new[] { new Value<double>(1), new Value<double>(2.5) },
+        var (_, file) = await Export.ExportAsync(
+            new[] { new Value<double>(1), new Value<double>(2.5) },
             Map<double>(),
             TabularType.Excel,
             Token);

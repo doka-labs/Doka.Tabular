@@ -4,7 +4,8 @@ namespace Doka.Tabular.Tests;
 
 public sealed partial class BehaviorTests
 {
-    private static readonly string s_abortedLines = string.Join("\n",
+    private static readonly string s_abortedLines = string.Join(
+        "\n",
         Enumerable
             .Range(1, 99)
             .Select(number => $"u{number}@example.org,{number},Berlin,10115")
@@ -17,7 +18,8 @@ public sealed partial class BehaviorTests
     private static readonly CsvExportOptions s_emailAndPostalCode =
         new() { ColumnKeys = [ColumnKey.Create("email"), ColumnKey.Create("postalCode")] };
 
-    private static readonly string s_countedLines = string.Join("\n",
+    private static readonly string s_countedLines = string.Join(
+        "\n",
         Enumerable
             .Range(1, 100)
             .Select(number => number switch
@@ -30,7 +32,8 @@ public sealed partial class BehaviorTests
 
     private static readonly TabularMap<Employee> s_countedMap = TabularMap
         .For<Employee>()
-        .Column(x => x.Email,
+        .Column(
+            x => x.Email,
             index: 0,
             configure: c => c.Validate(email => email.Contains('@', StringComparison.Ordinal)))
         .Column(x => x.NumericId, index: 1)
@@ -45,13 +48,15 @@ public sealed partial class BehaviorTests
     )
     {
         // Arrange
-        var file = Create(type,
+        var file = Create(
+            type,
             ["E-Mail", "Nummer", "Ort", "PLZ"],
             ["a@example.org", "abc", "Berlin", "10115"],
             ["b@example.org", "99999999999", "Berlin", "10115"]);
 
         // Act
-        var report = await Import.ImportAsync(file,
+        var report = await Import.ImportAsync(
+            file,
             type,
             s_employees,
             new TabularImportOptions { Binding = ColumnBinding.ByIndexWithHeader },
@@ -62,11 +67,13 @@ public sealed partial class BehaviorTests
         Assert.True(report.IsComplete);
         Assert.Empty(report.Items!);
         var first = report.Errors[0];
-        Assert.Equal((2L, 1L, 1, "NumericId"),
+        Assert.Equal(
+            (2L, 1L, 1, "NumericId"),
             (first.Location.RowNumber!.Value, first.Location.RecordNumber!.Value, first.Location.ColumnIndex!.Value,
                 first.Location.PropertyPath!.Value));
 
-        Assert.Equal(type == TabularType.Excel
+        Assert.Equal(
+            type == TabularType.Excel
                 ? "Sheet1"
                 : null,
             first.Location.SheetName?.Value);
@@ -99,7 +106,8 @@ public sealed partial class BehaviorTests
     public async Task ParserAbort_WithKey_KeepsNoRow()
     {
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8(s_abortedLines),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8(s_abortedLines),
             s_employees,
             s_partial with { SourceKey = s_employees.Key(x => x.NumericId) },
             Token);
@@ -120,7 +128,8 @@ public sealed partial class BehaviorTests
 
         // Assert
         var error = Assert.Single(report.Errors);
-        Assert.Equal(("personnelNumber.mustBePositive", 2L, 1, "NumericId"),
+        Assert.Equal(
+            ("personnelNumber.mustBePositive", 2L, 1, "NumericId"),
             (error.Code.Value, error.Location.RowNumber!.Value, error.Location.ColumnIndex!.Value,
                 error.Location.PropertyPath!.Value));
     }
@@ -136,13 +145,15 @@ public sealed partial class BehaviorTests
             .Build();
 
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8("E-Mail,Nummer\na@example.org,0"),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8("E-Mail,Nummer\na@example.org,0"),
             generic,
             new CsvImportOptions { Binding = ColumnBinding.ByIndexWithHeader },
             Token);
 
         // Assert
-        Assert.Equal(TabularErrorCodes.Validation.Failed,
+        Assert.Equal(
+            TabularErrorCodes.Validation.Failed,
             Assert.Single(report.Errors)
                 .Code);
     }
@@ -154,7 +165,8 @@ public sealed partial class BehaviorTests
         var map = TabularMap
             .For<Pair>()
             .Column(x => x.Email, index: 0)
-            .Column(x => x.NumericId,
+            .Column(
+                x => x.NumericId,
                 index: 1,
                 configure: c => c.Validate(number => number == 3
                     ? throw new InvalidOperationException()
@@ -162,14 +174,16 @@ public sealed partial class BehaviorTests
             .Build();
 
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8("a,1\nb,2\nc,3\nd,4"),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8("a,1\nb,2\nc,3\nd,4"),
             map,
             new CsvImportOptions { Strategy = ImportStrategy.Partial },
             Token);
 
         // Assert
         Assert.Equal(TabularErrorCodes.Validation.Failed, report.Errors[0].Code);
-        Assert.Equal((TabularErrorCodes.Callback.Failed, 3L),
+        Assert.Equal(
+            (TabularErrorCodes.Callback.Failed, 3L),
             (report.FatalError!.Code, report.FatalError.Location.RowNumber!.Value));
 
         Assert.False(report.IsComplete);
@@ -207,7 +221,8 @@ public sealed partial class BehaviorTests
     public async Task ExportRule_OfAnUnselectedField_DoesNotRun()
     {
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { s_invalidNumber },
+        var report = await CsvInstance.ExportAsync(
+            new[] { s_invalidNumber },
             s_employees,
             new MemoryStream(),
             s_emailAndPostalCode,
@@ -246,14 +261,16 @@ public sealed partial class BehaviorTests
         };
 
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { row },
+        var report = await CsvInstance.ExportAsync(
+            new[] { row },
             s_employees,
             new MemoryStream(),
             new CsvExportOptions { ColumnKeys = [ColumnKey.Create("postalCode"), ColumnKey.Create("city")] },
             Token);
 
         // Assert
-        Assert.Contains((report.FatalError ?? report.Errors[0]).Code.Value,
+        Assert.Contains(
+            (report.FatalError ?? report.Errors[0]).Code.Value,
             new[] { "city.needsPostalCode", TabularErrorCodes.Validation.Failed.Value });
     }
 
@@ -263,7 +280,8 @@ public sealed partial class BehaviorTests
         // Arrange
         var map = TabularMap
             .For<Pair>()
-            .Column(x => x.Email,
+            .Column(
+                x => x.Email,
                 index: 0,
                 configure: c => c.Validate(email => email.Contains('@', StringComparison.Ordinal)))
             .Column(x => x.NumericId, index: 1, configure: c => c.IncludeSourceValue())
@@ -273,12 +291,14 @@ public sealed partial class BehaviorTests
         var report = await CsvInstance.ImportAsync(TestInput.Utf8("invalid,12O4"), map, Token);
 
         // Assert
-        Assert.Equal("12O4",
+        Assert.Equal(
+            "12O4",
             report.Errors.Single(error => error.Location.ColumnIndex == 1)
                 .SourceValue);
 
-        Assert.Null(report.Errors.Single(error => error.Location.ColumnIndex == 0)
-            .SourceValue);
+        Assert.Null(
+            report.Errors.Single(error => error.Location.ColumnIndex == 0)
+                .SourceValue);
 
         Assert.All(report.Errors, error => Assert.DoesNotContain("12O4", error.Message, StringComparison.Ordinal));
     }
@@ -289,7 +309,8 @@ public sealed partial class BehaviorTests
         // Arrange
         var map = TabularMap
             .For<Triple>()
-            .Column(x => x.Email,
+            .Column(
+                x => x.Email,
                 index: 0,
                 configure: c => c.Validate(email => email.Contains('@', StringComparison.Ordinal)))
             .Column(x => x.NumericId, index: 1)
@@ -297,7 +318,8 @@ public sealed partial class BehaviorTests
             .Build();
 
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8("x,a,\ny,b,Bonn\nz,1,\nd@example.org,4,Bonn"),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8("x,a,\ny,b,Bonn\nz,1,\nd@example.org,4,Bonn"),
             map,
             new CsvImportOptions
             {
@@ -315,7 +337,8 @@ public sealed partial class BehaviorTests
     public async Task SourceKey_RejectsEveryOccurrenceWithRelatedLocations()
     {
         // Arrange
-        var lines = string.Join("\n",
+        var lines = string.Join(
+            "\n",
             Enumerable
                 .Range(1, 9)
                 .Select(number => $"u{number}@example.org,{(number is 2 or 9 ? 42 : number)},Berlin,10115"));
@@ -332,7 +355,8 @@ public sealed partial class BehaviorTests
 
         // Assert
         Assert.Equal([2L, 9L], report.Errors.Select(error => error.Location.RecordNumber!.Value));
-        Assert.Equal(9L,
+        Assert.Equal(
+            9L,
             Assert.Single(report.Errors[0].RelatedLocations)
                 .RecordNumber);
 
@@ -346,7 +370,8 @@ public sealed partial class BehaviorTests
         var report = await CsvInstance.ImportAsync(TestInput.Utf8(s_countedLines), s_countedMap, s_partial, Token);
 
         // Assert
-        Assert.Equal((ReportStatus.CompletedWithErrors, 97L, 3L, 5L),
+        Assert.Equal(
+            (ReportStatus.CompletedWithErrors, 97L, 3L, 5L),
             (report.Status, report.RowsImported, report.RowsRejected, report.TotalErrorCount));
 
         Assert.Null(report.FatalError);
@@ -356,7 +381,8 @@ public sealed partial class BehaviorTests
     public async Task PartialReportWithADetailLimit_CountsTheOmittedErrors()
     {
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8(s_countedLines),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8(s_countedLines),
             s_countedMap,
             s_partial with { MaxErrorDetails = 2 },
             Token);
@@ -372,7 +398,8 @@ public sealed partial class BehaviorTests
         var report = await CsvInstance.ImportAsync(TestInput.Utf8(s_countedLines), s_countedMap, Token);
 
         // Assert
-        Assert.Equal((ReportStatus.Failed, 0L, 3L, true),
+        Assert.Equal(
+            (ReportStatus.Failed, 0L, 3L, true),
             (report.Status, report.RowsImported, report.RowsRejected, report.IsComplete));
 
         Assert.Empty(report.Items!);
@@ -386,7 +413,8 @@ public sealed partial class BehaviorTests
         var map = TabularMap
             .For<Pair>()
             .Column(x => x.Email, index: 0)
-            .Column(x => x.NumericId,
+            .Column(
+                x => x.NumericId,
                 index: 1,
                 configure: c => c.Validate(number =>
                 {
@@ -402,10 +430,13 @@ public sealed partial class BehaviorTests
             .Build();
 
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8(string.Join("\n",
-                Enumerable
-                    .Range(1, 1000)
-                    .Select(number => $"u,{number}"))),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8(
+                string.Join(
+                    "\n",
+                    Enumerable
+                        .Range(1, 1000)
+                        .Select(number => $"u,{number}"))),
             map,
             cancellation.Token);
 
@@ -422,7 +453,8 @@ public sealed partial class BehaviorTests
 
         // Assert
         Assert.Equal(32, codes.Count);
-        Assert.Equal(codes.Count,
+        Assert.Equal(
+            codes.Count,
             codes
                 .Select(code => code.Value)
                 .Distinct(StringComparer.Ordinal)

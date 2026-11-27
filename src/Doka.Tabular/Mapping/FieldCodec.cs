@@ -68,7 +68,8 @@ internal sealed class FieldCodec<TCore, TBase, TValue> : FieldCodec
         ValueConverter converter,
         int columnIndex,
         string? fileHeader
-    ) => new FieldReader<TCore, TBase, TValue>(field,
+    ) => new FieldReader<TCore, TBase, TValue>(
+        field,
         (ValueConverter<TCore>)converter,
         columnIndex,
         fileHeader,
@@ -77,7 +78,8 @@ internal sealed class FieldCodec<TCore, TBase, TValue> : FieldCodec
     public override FieldFormatter CreateFormatter(
         FlatField field,
         ValueConverter converter
-    ) => new FieldFormatter<TCore, TBase, TValue>(field,
+    ) => new FieldFormatter<TCore, TBase, TValue>(
+        field,
         (ValueConverter<TCore>)converter,
         WriteMap(field.Settings.Conversion));
 

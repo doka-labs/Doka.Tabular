@@ -28,18 +28,20 @@ public static class MinimalApiSample
         builder.Services.AddSingleton<ContactStore>();
 
         // The format instances carry defaults, limits, and logging; the application registers them itself.
-        builder.Services.AddSingleton(provider => new CsvFormat(new CsvFormatOptions
-        {
-            Diagnostics =
-                new TabularDiagnosticsOptions { LoggerFactory = provider.GetRequiredService<ILoggerFactory>() },
-            Export = new CsvExportOptions { Delimiter = ';' },
-        }));
+        builder.Services.AddSingleton(provider => new CsvFormat(
+            new CsvFormatOptions
+            {
+                Diagnostics =
+                    new TabularDiagnosticsOptions { LoggerFactory = provider.GetRequiredService<ILoggerFactory>() },
+                Export = new CsvExportOptions { Delimiter = ';' },
+            }));
 
-        builder.Services.AddSingleton(provider => new ExcelFormat(new ExcelFormatOptions
-        {
-            Diagnostics =
-                new TabularDiagnosticsOptions { LoggerFactory = provider.GetRequiredService<ILoggerFactory>() },
-        }));
+        builder.Services.AddSingleton(provider => new ExcelFormat(
+            new ExcelFormatOptions
+            {
+                Diagnostics =
+                    new TabularDiagnosticsOptions { LoggerFactory = provider.GetRequiredService<ILoggerFactory>() },
+            }));
 
         builder.Services.AddSingleton(provider
             => new TabularExport(provider.GetRequiredService<CsvFormat>(), provider.GetRequiredService<ExcelFormat>()));
@@ -92,7 +94,8 @@ public static class MinimalApiSample
         CancellationToken cancellationToken
     )
     {
-        var valid = await client.PostAsJsonAsync("/contacts/export",
+        var valid = await client.PostAsJsonAsync(
+            "/contacts/export",
             new ContactExportRequest(TabularType.Csv, ["number", "fullName"], "en"),
             cancellationToken);
 
@@ -101,13 +104,15 @@ public static class MinimalApiSample
 
         await output.WriteLineAsync(await valid.Content.ReadAsStringAsync(cancellationToken));
 
-        var invalid = await client.PostAsJsonAsync("/contacts/export",
+        var invalid = await client.PostAsJsonAsync(
+            "/contacts/export",
             new ContactExportRequest(TabularType.Excel, ["number", "postCode"], "de"),
             cancellationToken);
 
         await output.WriteLineAsync($"Export with an unknown column: {(int)invalid.StatusCode}");
 
-        var streamed = await client.PostAsJsonAsync("/contacts/export/stream",
+        var streamed = await client.PostAsJsonAsync(
+            "/contacts/export/stream",
             new ContactExportRequest(TabularType.Excel, ["email", "since"], "de"),
             cancellationToken);
 
@@ -116,7 +121,8 @@ public static class MinimalApiSample
 
         using var upload = new MultipartFormDataContent();
         upload.Add(new StringContent("Csv"), "type");
-        upload.Add(new StringContent("3;carol@example.org;Carol;Shaw;2024-06-01\n0;;Dan;Brown;2024-06-02"),
+        upload.Add(
+            new StringContent("3;carol@example.org;Carol;Shaw;2024-06-01\n0;;Dan;Brown;2024-06-02"),
             "file",
             "contacts.csv");
 
@@ -132,7 +138,8 @@ public static class MinimalApiSample
         CancellationToken cancellationToken
     )
     {
-        var (report, file) = await export.ExportAsync(store.ReadAsync(cancellationToken),
+        var (report, file) = await export.ExportAsync(
+            store.ReadAsync(cancellationToken),
             ContactCatalog.Map,
             request.Type,
             Options(request),
@@ -155,7 +162,8 @@ public static class MinimalApiSample
         http.Response.ContentType = request.Type.ContentType;
         http.Response.Headers.ContentDisposition = $"attachment; filename=\"contacts{request.Type.FileExtension}\"";
 
-        var report = await export.ExportAsync(store.ReadAsync(cancellationToken),
+        var report = await export.ExportAsync(
+            store.ReadAsync(cancellationToken),
             ContactCatalog.Map,
             http.Response.Body,
             request.Type,
@@ -193,7 +201,8 @@ public static class MinimalApiSample
         await using var source = file.OpenReadStream();
 
         // The client states the format; Tabular checks it against the first bytes and ignores the file name.
-        var report = await import.ImportAsync(source,
+        var report = await import.ImportAsync(
+            source,
             type,
             ContactCatalog.Map,
             new TabularImportOptions

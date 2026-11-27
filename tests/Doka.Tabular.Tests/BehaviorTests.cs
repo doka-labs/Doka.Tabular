@@ -15,13 +15,15 @@ public sealed partial class BehaviorTests
 
     private static readonly TabularMap<Place> s_places = TabularMap
         .For<Place>()
-        .Column(x => x.City,
+        .Column(
+            x => x.City,
             index: 0,
             key: ColumnKey.Create("city"),
             configure: c => c
                 .Header("Ort")
                 .HeaderTranslationKey("city"))
-        .Column(x => x.State,
+        .Column(
+            x => x.State,
             index: 1,
             key: ColumnKey.Create("status"),
             configure: c => c
@@ -40,22 +42,26 @@ public sealed partial class BehaviorTests
     private static readonly TabularMap<Employee> s_employees = TabularMap
         .For<Employee>()
         .Column(x => x.Email, index: 0, key: ColumnKey.Create("email"), configure: c => c.Header("E-Mail"))
-        .Column(x => x.NumericId,
+        .Column(
+            x => x.NumericId,
             index: 1,
             configure: c => c
                 .Header("Nummer")
                 .IncludeSourceValue()
-                .Validate(number => number >= 1,
+                .Validate(
+                    number => number >= 1,
                     code: TabularErrorCode.Create("personnelNumber.mustBePositive"),
                     alsoOnExport: true))
         .Column(x => x.City, index: 2, key: ColumnKey.Create("city"), configure: c => c.Header("Ort"))
-        .Column(x => x.PostalCode,
+        .Column(
+            x => x.PostalCode,
             index: 3,
             key: ColumnKey.Create("postalCode"),
             configure: c => c
                 .Header("PLZ")
                 .Validate(code => code.Length == 5, alsoOnExport: true))
-        .Validate(x => x.City,
+        .Validate(
+            x => x.City,
             x => x.PostalCode,
             (city, postal) => city.Length == 0 || postal.Length > 0,
             code: TabularErrorCode.Create("city.needsPostalCode"),
@@ -87,7 +93,8 @@ public sealed partial class BehaviorTests
     {
         // Act
         var (_, file) =
-            await new TabularExport(s_semicolonCsv).ExportAsync(new[] { new Pair("a", 1) },
+            await new TabularExport(s_semicolonCsv).ExportAsync(
+                new[] { new Pair("a", 1) },
                 s_pairs,
                 TabularType.Csv,
                 Token);
@@ -100,7 +107,8 @@ public sealed partial class BehaviorTests
     public async Task CommonEntry_CallOptionsOverrideTheInstanceDefaults()
     {
         // Act
-        var (_, file) = await new TabularExport(s_semicolonCsv).ExportAsync(new[] { new Pair("a", 1) },
+        var (_, file) = await new TabularExport(s_semicolonCsv).ExportAsync(
+            new[] { new Pair("a", 1) },
             s_pairs,
             TabularType.Csv,
             new TabularExportOptions { Csv = new CsvExportOptions { Delimiter = ',' } },
@@ -117,7 +125,8 @@ public sealed partial class BehaviorTests
         var target = new MemoryStream();
 
         // Act
-        var report = await new TabularExport(s_semicolonCsv).ExportAsync(new[] { new Pair("a", 1) },
+        var report = await new TabularExport(s_semicolonCsv).ExportAsync(
+            new[] { new Pair("a", 1) },
             s_pairs,
             target,
             TabularType.Excel,
@@ -136,13 +145,15 @@ public sealed partial class BehaviorTests
 
         // Act
         var report =
-            await new TabularImport(s_semicolonCsv, ExcelInstance.Format).ImportAsync(workbook!,
+            await new TabularImport(s_semicolonCsv, ExcelInstance.Format).ImportAsync(
+                workbook!,
                 TabularType.Csv,
                 s_pairs,
                 Token);
 
         // Assert
-        Assert.Equal(TabularErrorCodes.Schema.FormatMismatch,
+        Assert.Equal(
+            TabularErrorCodes.Schema.FormatMismatch,
             Assert.Single(report.Errors)
                 .Code);
     }
@@ -222,7 +233,8 @@ public sealed partial class BehaviorTests
     )
     {
         // Act
-        var report = await Import.ImportAsync(Create(type, ["A-01", 12], ["A-02", "unbekannt"], ["A-03", 0]),
+        var report = await Import.ImportAsync(
+            Create(type, ["A-01", 12], ["A-02", "unbekannt"], ["A-03", 0]),
             type,
             s_pairs,
             new TabularImportOptions { Strategy = ImportStrategy.Partial },
@@ -231,7 +243,8 @@ public sealed partial class BehaviorTests
         // Assert
         Assert.Equal([("A-01", 12), ("A-03", 0)], report.Items!.Select(item => (item.Email, item.NumericId)));
         var error = Assert.Single(report.Errors);
-        Assert.Equal((2L, 1, "NumericId"),
+        Assert.Equal(
+            (2L, 1, "NumericId"),
             (error.Location.RecordNumber!.Value, error.Location.ColumnIndex!.Value,
                 error.Location.PropertyPath!.Value));
 

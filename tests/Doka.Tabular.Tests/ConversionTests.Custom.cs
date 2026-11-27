@@ -8,7 +8,8 @@ public sealed partial class ConversionTests
     private static readonly TabularErrorCode s_invalidCode = TabularErrorCode.Create("probe.invalid");
 
     private static TabularMap<Keyed<Wrapped>> ValidatedWrapped => KeyedMap<Wrapped>(c
-        => c.Convert<string, Wrapped>(text => new Wrapped(text),
+        => c.Convert<string, Wrapped>(
+            text => new Wrapped(text),
             wrapped => wrapped.Text,
             configure: b => b
                 .Trim()
@@ -33,14 +34,16 @@ public sealed partial class ConversionTests
     public async Task CustomConversionOverANullableBase_Imports()
     {
         // Arrange
-        var map = KeyedMap<Wrapped>(c => c.Convert<int?, Wrapped>(number => new Wrapped($"{number}"),
+        var map = KeyedMap<Wrapped>(c => c.Convert<int?, Wrapped>(
+            number => new Wrapped($"{number}"),
             wrapped => int.Parse(wrapped.Text, CultureInfo.InvariantCulture)));
 
         // Act
         var report = await CsvInstance.ImportAsync(TestInput.Utf8("1,42"), map, Token);
 
         // Assert
-        Assert.Equal("42",
+        Assert.Equal(
+            "42",
             Assert.Single(report.Items!)
                 .Item.Text);
     }
@@ -49,7 +52,8 @@ public sealed partial class ConversionTests
     public async Task NullBaseValue_ReachesTheCustomRead()
     {
         // Arrange
-        var map = KeyedMap<Wrapped>(c => c.Convert<string?, Wrapped>(text => new Wrapped(text ?? "empty"),
+        var map = KeyedMap<Wrapped>(c => c.Convert<string?, Wrapped>(
+            text => new Wrapped(text ?? "empty"),
             wrapped => wrapped.Text,
             configure: b => b.EmptyStringAsNull()));
 
@@ -57,7 +61,8 @@ public sealed partial class ConversionTests
         var report = await CsvInstance.ImportAsync(TestInput.Utf8("1,"), map, Token);
 
         // Assert
-        Assert.Equal("empty",
+        Assert.Equal(
+            "empty",
             Assert.Single(report.Items!)
                 .Item.Text);
     }
@@ -66,7 +71,8 @@ public sealed partial class ConversionTests
     public async Task ExpectedExceptionOfTheCustomRead_ForEmptyText_IsARowError()
     {
         // Arrange
-        var map = KeyedMap<Wrapped>(c => c.Convert<string, Wrapped>(
+        var map = KeyedMap<Wrapped>(
+            c => c.Convert<string, Wrapped>(
                 text => text.Length == 0
                     ? throw new InvalidCustomerNumberException()
                     : new Wrapped(text),
@@ -74,18 +80,21 @@ public sealed partial class ConversionTests
             builder => builder.Expect<InvalidCustomerNumberException>(s_invalidCode));
 
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8("1,\n2,ok"),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8("1,\n2,ok"),
             map,
             new CsvImportOptions { Strategy = ImportStrategy.Partial },
             Token);
 
         // Assert
         Assert.Null(report.FatalError);
-        Assert.Equal(s_invalidCode,
+        Assert.Equal(
+            s_invalidCode,
             Assert.Single(report.Errors)
                 .Code);
 
-        Assert.Equal("ok",
+        Assert.Equal(
+            "ok",
             Assert.Single(report.Items!)
                 .Item.Text);
     }
@@ -97,7 +106,8 @@ public sealed partial class ConversionTests
         var report = await CsvInstance.ImportAsync(TestInput.Utf8("1, bad "), ValidatedWrapped, Token);
 
         // Assert
-        Assert.Equal(s_invalidCode,
+        Assert.Equal(
+            s_invalidCode,
             Assert.Single(report.Errors)
                 .Code);
     }
@@ -109,7 +119,8 @@ public sealed partial class ConversionTests
         var report = await CsvInstance.ImportAsync(TestInput.Utf8("1, good "), ValidatedWrapped, Token);
 
         // Assert
-        Assert.Equal("good",
+        Assert.Equal(
+            "good",
             Assert.Single(report.Items!)
                 .Item.Text);
     }
@@ -118,7 +129,8 @@ public sealed partial class ConversionTests
     public async Task BaseSettings_Required_RejectsAnEmptyField()
     {
         // Arrange
-        var required = KeyedMap<Wrapped>(c => c.Convert<string, Wrapped>(text => new Wrapped(text),
+        var required = KeyedMap<Wrapped>(c => c.Convert<string, Wrapped>(
+            text => new Wrapped(text),
             wrapped => wrapped.Text,
             configure: b => b.Required()));
 
@@ -126,7 +138,8 @@ public sealed partial class ConversionTests
         var report = await CsvInstance.ImportAsync(TestInput.Utf8("1,"), required, Token);
 
         // Assert
-        Assert.Equal(TabularErrorCodes.Conversion.MissingValue,
+        Assert.Equal(
+            TabularErrorCodes.Conversion.MissingValue,
             Assert.Single(report.Errors)
                 .Code);
     }
@@ -135,7 +148,8 @@ public sealed partial class ConversionTests
     public async Task BaseNullText_GivesTheCustomReadANullBase()
     {
         // Arrange
-        var map = KeyedMap<Wrapped>(c => c.Convert<string?, Wrapped>(text => new Wrapped(text ?? "empty"),
+        var map = KeyedMap<Wrapped>(c => c.Convert<string?, Wrapped>(
+            text => new Wrapped(text ?? "empty"),
             wrapped => wrapped.Text,
             configure: b => b.NullText("NULL")));
 
@@ -143,7 +157,8 @@ public sealed partial class ConversionTests
         var report = await CsvInstance.ImportAsync(TestInput.Utf8("1,NULL"), map, Token);
 
         // Assert
-        Assert.Equal("empty",
+        Assert.Equal(
+            "empty",
             Assert.Single(report.Items!)
                 .Item.Text);
     }
@@ -152,12 +167,14 @@ public sealed partial class ConversionTests
     public async Task BaseExportRule_ChecksTheWrittenBaseValue()
     {
         // Arrange
-        var map = KeyedMap<Wrapped>(c => c.Convert(number => new Wrapped($"{number}"),
+        var map = KeyedMap<Wrapped>(c => c.Convert(
+            number => new Wrapped($"{number}"),
             _ => -1,
             configure: b => b.Validate(number => number > 0, s_invalidCode, alsoOnExport: true)));
 
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Keyed<Wrapped>(1, new Wrapped("x")) },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Keyed<Wrapped>(1, new Wrapped("x")) },
             map,
             new MemoryStream(),
             Token);
@@ -171,14 +188,16 @@ public sealed partial class ConversionTests
     {
         // Arrange
         var calls = 0;
-        var map = KeyedMap<Wrapped>(c => c.Convert(number => new Wrapped($"{number}"),
+        var map = KeyedMap<Wrapped>(c => c.Convert(
+            number => new Wrapped($"{number}"),
             _ => ++calls == 1
                 ? 1
                 : -1,
             configure: b => b.Validate(number => number > 0, s_invalidCode, alsoOnExport: true)));
 
         // Act
-        var (report, file) = await CsvInstance.ExportAsync(new[] { new Keyed<Wrapped>(1, new Wrapped("x")) },
+        var (report, file) = await CsvInstance.ExportAsync(
+            new[] { new Keyed<Wrapped>(1, new Wrapped("x")) },
             map,
             Token);
 
@@ -192,14 +211,16 @@ public sealed partial class ConversionTests
     {
         // Arrange
         var calls = 0;
-        var map = KeyedMap<Wrapped>(c => c.Convert(number => new Wrapped($"{number}"),
+        var map = KeyedMap<Wrapped>(c => c.Convert(
+            number => new Wrapped($"{number}"),
             _ => ++calls == 1
                 ? throw new InvalidOperationException("write failed")
                 : 1,
             configure: b => b.Validate(number => number > 0, s_invalidCode, alsoOnExport: true)));
 
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Keyed<Wrapped>(1, new Wrapped("x")) },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Keyed<Wrapped>(1, new Wrapped("x")) },
             map,
             new MemoryStream(),
             Token);
@@ -213,12 +234,14 @@ public sealed partial class ConversionTests
     public async Task BaseExportRule_ChecksANullBaseValue()
     {
         // Arrange
-        var map = KeyedMap<Wrapped>(c => c.Convert<int?, Wrapped>(number => new Wrapped($"{number}"),
+        var map = KeyedMap<Wrapped>(c => c.Convert<int?, Wrapped>(
+            number => new Wrapped($"{number}"),
             _ => null,
             configure: b => b.Validate(number => number is not null, s_invalidCode, alsoOnExport: true)));
 
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Keyed<Wrapped>(1, new Wrapped("x")) },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Keyed<Wrapped>(1, new Wrapped("x")) },
             map,
             new MemoryStream(),
             Token);
@@ -231,12 +254,14 @@ public sealed partial class ConversionTests
     public async Task BaseNullText_IsWrittenForANullBaseValue()
     {
         // Arrange
-        var map = KeyedMap<Wrapped>(c => c.Convert<string?, Wrapped>(text => new Wrapped(text ?? "empty"),
+        var map = KeyedMap<Wrapped>(c => c.Convert<string?, Wrapped>(
+            text => new Wrapped(text ?? "empty"),
             _ => null,
             configure: b => b.NullText("NULL")));
 
         // Act
-        var (report, file) = await CsvInstance.ExportAsync(new[] { new Keyed<Wrapped>(1, new Wrapped("x")) },
+        var (report, file) = await CsvInstance.ExportAsync(
+            new[] { new Keyed<Wrapped>(1, new Wrapped("x")) },
             map,
             Token);
 
@@ -261,19 +286,22 @@ public sealed partial class ConversionTests
     public async Task BaseValueEqualToTheTranslatedNullMarker_IsRejectedOnExport()
     {
         // Arrange
-        var map = KeyedMap<Wrapped>(c => c.Convert<string?, Wrapped>(text => new Wrapped(text ?? "empty"),
+        var map = KeyedMap<Wrapped>(c => c.Convert<string?, Wrapped>(
+            text => new Wrapped(text ?? "empty"),
             wrapped => wrapped.Text,
             configure: b => b.EmptyTranslationKey("empty")));
 
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Keyed<Wrapped>(1, new Wrapped("NULL")) },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Keyed<Wrapped>(1, new Wrapped("NULL")) },
             map,
             new MemoryStream(),
             new CsvExportOptions { Translations = new Dictionary<string, string> { ["empty"] = "NULL" } },
             Token);
 
         // Assert
-        Assert.Equal(TabularErrorCodes.Conversion.InvalidFormat,
+        Assert.Equal(
+            TabularErrorCodes.Conversion.InvalidFormat,
             (report.FatalError ?? Assert.Single(report.Errors)).Code);
     }
 
@@ -285,7 +313,8 @@ public sealed partial class ConversionTests
     )
     {
         // Arrange
-        var map = KeyedMap<Wrapped>(c => c.Convert<string?, Wrapped>(text => new Wrapped(text ?? "empty"),
+        var map = KeyedMap<Wrapped>(c => c.Convert<string?, Wrapped>(
+            text => new Wrapped(text ?? "empty"),
             wrapped => wrapped.Text,
             configure: b =>
             {
@@ -301,14 +330,16 @@ public sealed partial class ConversionTests
             }));
 
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Keyed<Wrapped>(1, new Wrapped(" NULL ")) },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Keyed<Wrapped>(1, new Wrapped(" NULL ")) },
             map,
             new MemoryStream(),
             new CsvExportOptions { Translations = new Dictionary<string, string> { ["empty"] = "NULL" } },
             Token);
 
         // Assert
-        Assert.Equal(TabularErrorCodes.Conversion.InvalidFormat,
+        Assert.Equal(
+            TabularErrorCodes.Conversion.InvalidFormat,
             (report.FatalError ?? Assert.Single(report.Errors)).Code);
     }
 
@@ -337,7 +368,8 @@ public sealed partial class ConversionTests
         var report = await CsvInstance.ImportAsync(TestInput.Utf8("1,"), map, Token);
 
         // Assert
-        Assert.Equal("00000",
+        Assert.Equal(
+            "00000",
             Assert.Single(report.Items!)
                 .Item);
     }

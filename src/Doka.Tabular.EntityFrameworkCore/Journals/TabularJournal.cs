@@ -39,7 +39,8 @@ public sealed partial class TabularJournal
     {
         ArgumentNullException.ThrowIfNull(factory);
 
-        return new TabularJournal(async token => await factory
+        return new TabularJournal(
+            async token => await factory
                 .CreateDbContextAsync(token)
                 .ConfigureAwait(false),
             journalName ?? JournalName.Default,
@@ -59,7 +60,8 @@ public sealed partial class TabularJournal
     {
         ArgumentNullException.ThrowIfNull(factory);
 
-        return new TabularJournal(async token => await factory(token)
+        return new TabularJournal(
+            async token => await factory(token)
                 .ConfigureAwait(false),
             journalName ?? JournalName.Default,
             new TabularJournalOptions());
@@ -127,7 +129,8 @@ public sealed partial class TabularJournal
 
     private static TabularJournalResult Conflict(
         string message
-    ) => new(JournalCallStatus.Conflict,
+    ) => new(
+        JournalCallStatus.Conflict,
         TabularError.Create(TabularErrorCodes.Persistence.Conflict, TabularErrorKind.Technical, message));
 
     private async Task<TResult> RunAsync<TResult>(
@@ -139,9 +142,11 @@ public sealed partial class TabularJournal
     {
         if (Options.Diagnostics.LoggerFactory is null)
         {
-            return failed(new TabularJournalResult(JournalCallStatus.Failed,
-                TabularError.Configuration(
-                    "The diagnostics settings need a logger factory; use NullLoggerFactory.Instance to disable logging.")));
+            return failed(
+                new TabularJournalResult(
+                    JournalCallStatus.Failed,
+                    TabularError.Configuration(
+                        "The diagnostics settings need a logger factory; use NullLoggerFactory.Instance to disable logging.")));
         }
 
         var operationId = Guid.NewGuid();
@@ -152,13 +157,17 @@ public sealed partial class TabularJournal
 
             await using (context.ConfigureAwait(false))
             {
-                if (JournalModel.Find(context,
+                if (JournalModel.Find(
+                    context,
                     direction == "import"
                         ? JournalModel.ImportLog(Name)
                         : JournalModel.ExportLog(Name)) is null)
                 {
-                    return failed(new TabularJournalResult(JournalCallStatus.Failed,
-                        TabularError.Configuration($"The {direction} journal {Name} is not registered in the model.")));
+                    return failed(
+                        new TabularJournalResult(
+                            JournalCallStatus.Failed,
+                            TabularError.Configuration(
+                                $"The {direction} journal {Name} is not registered in the model.")));
                 }
 
                 return await action(context)
@@ -176,10 +185,13 @@ public sealed partial class TabularJournal
         {
             Log(logger => TabularLog.JournalUpdateFailed(logger, operationId, direction, "journal"));
 
-            return failed(new TabularJournalResult(JournalCallStatus.Failed,
-                TabularError.Create(TabularErrorCodes.Persistence.OperationFailed,
-                    TabularErrorKind.Technical,
-                    "Reading or writing the journal failed.")));
+            return failed(
+                new TabularJournalResult(
+                    JournalCallStatus.Failed,
+                    TabularError.Create(
+                        TabularErrorCodes.Persistence.OperationFailed,
+                        TabularErrorKind.Technical,
+                        "Reading or writing the journal failed.")));
         }
     }
 

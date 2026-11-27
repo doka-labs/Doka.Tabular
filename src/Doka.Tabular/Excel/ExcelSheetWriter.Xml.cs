@@ -49,7 +49,8 @@ internal sealed partial class ExcelSheetWriter
         {
             writer.WriteStartElement("tableColumn", MainNamespace);
             writer.WriteAttributeString("id", (position + 1).ToString(CultureInfo.InvariantCulture));
-            writer.WriteAttributeString("name",
+            writer.WriteAttributeString(
+                "name",
                 ExcelXml.Escape(_plan.Columns[position].Header ?? string.Empty, attribute: true));
 
             writer.WriteEndElement();
@@ -64,7 +65,8 @@ internal sealed partial class ExcelSheetWriter
 
         writer.WriteAttributeString("showFirstColumn", "0");
         writer.WriteAttributeString("showLastColumn", "0");
-        writer.WriteAttributeString("showRowStripes",
+        writer.WriteAttributeString(
+            "showRowStripes",
             _plan.BandedRows
                 ? "1"
                 : "0");
@@ -105,7 +107,8 @@ internal sealed partial class ExcelSheetWriter
             }
 
             xml.WriteAttributeString("topLeftCell", ExcelXml.Reference(freezeColumns, freezeRows + 1));
-            xml.WriteAttributeString("activePane",
+            xml.WriteAttributeString(
+                "activePane",
                 (frozenRows: freezeRows > 0, frozenColumns: freezeColumns > 0) switch
                 {
                     (true, true) => "bottomRight",
@@ -142,7 +145,8 @@ internal sealed partial class ExcelSheetWriter
             xml.WriteAttributeString("r", reference);
             if (_headerStyles[position] != 0)
             {
-                xml.WriteAttributeString("s",
+                xml.WriteAttributeString(
+                    "s",
                     _headerStyles[position]
                         .ToString(CultureInfo.InvariantCulture));
             }
@@ -200,7 +204,8 @@ internal sealed partial class ExcelSheetWriter
         long row
     )
     {
-        var style = StyleOf(cell.Kind == OutputKind.Number
+        var style = StyleOf(
+            cell.Kind == OutputKind.Number
                 ? cell.NumberFormat
                 : null,
             position);
@@ -224,7 +229,8 @@ internal sealed partial class ExcelSheetWriter
                 break;
             case OutputKind.Boolean:
                 xml.WriteAttributeString("t", "b");
-                xml.WriteElementString("v",
+                xml.WriteElementString(
+                    "v",
                     MainNamespace,
                     cell.Boolean
                         ? "1"

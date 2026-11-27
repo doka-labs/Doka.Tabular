@@ -102,7 +102,8 @@ internal sealed class CharReader
 
             // WHY: The decoder may fill the character buffer before it consumed every byte, for example when
             // it still holds the start of a scalar from the previous block; the rest is decoded next time.
-            _decoder.Convert(_bytes,
+            _decoder.Convert(
+                _bytes,
                 _byteOffset,
                 _byteCount - _byteOffset,
                 _chars,
@@ -131,7 +132,8 @@ internal sealed class CharReader
         }
 
         _flushed = true;
-        _decoder.Convert([],
+        _decoder.Convert(
+            [],
             0,
             0,
             _chars,

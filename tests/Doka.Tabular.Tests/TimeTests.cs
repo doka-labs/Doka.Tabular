@@ -7,7 +7,8 @@ public sealed partial class TimeTests
 {
     private static readonly TimeZoneInfo s_berlin = TimeZoneInfo.FindSystemTimeZoneById("Europe/Berlin");
 
-    private static readonly DateTimeOffset s_offsetValue = new(2024,
+    private static readonly DateTimeOffset s_offsetValue = new(
+        2024,
         4,
         1,
         14,
@@ -15,7 +16,8 @@ public sealed partial class TimeTests
         0,
         TimeSpan.FromHours(2));
 
-    private static readonly DateTime s_utcTen = new(2024,
+    private static readonly DateTime s_utcTen = new(
+        2024,
         1,
         1,
         10,
@@ -57,7 +59,8 @@ public sealed partial class TimeTests
         ImportReport<Value<T>> report
     )
     {
-        Assert.True(report.Status == ReportStatus.Succeeded,
+        Assert.True(
+            report.Status == ReportStatus.Succeeded,
             string.Join(" | ", report.Errors.Select(error => error.Code.Value)));
 
         return Assert.Single(report.Items!)
@@ -81,7 +84,8 @@ public sealed partial class TimeTests
         double value,
         bool dateFormat = true,
         bool date1904 = false
-    ) => Workbook(date1904,
+    ) => Workbook(
+        date1904,
         dateFormat
             ? new HashSet<int> { 1 }
             : null,
@@ -180,7 +184,9 @@ public sealed partial class TimeTests
         var report = await ReadAsync<DateTimeOffset>("2024-04-01T14:30:00-05:30", null, null, null);
 
         // Assert
-        Assert.Equal(new DateTimeOffset(2024,
+        Assert.Equal(
+            new DateTimeOffset(
+                2024,
                 4,
                 1,
                 14,
@@ -198,7 +204,9 @@ public sealed partial class TimeTests
 
         // Assert
         var value = ValueOf(report);
-        Assert.Equal(new DateTimeOffset(2024,
+        Assert.Equal(
+            new DateTimeOffset(
+                2024,
                 4,
                 1,
                 14,
@@ -217,7 +225,8 @@ public sealed partial class TimeTests
         var report = await ReadAsync<DateTime>("2024-04-01T08:30:00", null, null, null);
 
         // Assert
-        Assert.Equal(DateTimeKind.Unspecified,
+        Assert.Equal(
+            DateTimeKind.Unspecified,
             ValueOf(report)
                 .Kind);
     }
@@ -242,7 +251,9 @@ public sealed partial class TimeTests
         var report = await ReadAsync("2024-04-01T08:30:00", map, null, null);
 
         // Assert
-        Assert.Equal(new DateTimeOffset(2024,
+        Assert.Equal(
+            new DateTimeOffset(
+                2024,
                 4,
                 1,
                 8,
@@ -259,7 +270,9 @@ public sealed partial class TimeTests
         var map = Map<DateTimeOffset>(c => c.FileTimeZone(s_berlin));
 
         // Act
-        var (_, text) = await ExportTextAsync(new DateTimeOffset(2024,
+        var (_, text) = await ExportTextAsync(
+            new DateTimeOffset(
+                2024,
                 4,
                 1,
                 23,
@@ -280,7 +293,9 @@ public sealed partial class TimeTests
 
         // Act
         // WHY: The round trip of the own output is the checked contract, so export and reimport form one action.
-        var (_, text) = await ExportTextAsync(new DateTimeOffset(2024,
+        var (_, text) = await ExportTextAsync(
+            new DateTimeOffset(
+                2024,
                 4,
                 1,
                 23,
@@ -292,7 +307,9 @@ public sealed partial class TimeTests
         var report = await ReadAsync(text, map, null, null);
 
         // Assert
-        Assert.Equal(new DateTimeOffset(2024,
+        Assert.Equal(
+            new DateTimeOffset(
+                2024,
                 4,
                 1,
                 23,
@@ -307,13 +324,15 @@ public sealed partial class TimeTests
     {
         // Arrange
         // WHY: With a negative delta the gap lies at the end of daylight time: 02:00 to 03:00 on 1 November.
-        var rule = TimeZoneInfo.AdjustmentRule.CreateAdjustmentRule(new DateTime(2024, 1, 1),
+        var rule = TimeZoneInfo.AdjustmentRule.CreateAdjustmentRule(
+            new DateTime(2024, 1, 1),
             new DateTime(2024, 12, 31),
             TimeSpan.FromHours(-1),
             TimeZoneInfo.TransitionTime.CreateFixedDateRule(new DateTime(1, 1, 1, 2, 0, 0), 3, 1),
             TimeZoneInfo.TransitionTime.CreateFixedDateRule(new DateTime(1, 1, 1, 2, 0, 0), 11, 1));
 
-        var zone = TimeZoneInfo.CreateCustomTimeZone("Negative",
+        var zone = TimeZoneInfo.CreateCustomTimeZone(
+            "Negative",
             TimeSpan.Zero,
             "Negative",
             "Standard",
@@ -329,7 +348,9 @@ public sealed partial class TimeTests
 
         // Assert
         Assert.True(zone.IsInvalidTime(new DateTime(2024, 11, 1, 2, 30, 0)));
-        Assert.Equal(new DateTimeOffset(2024,
+        Assert.Equal(
+            new DateTimeOffset(
+                2024,
                 11,
                 1,
                 3,
@@ -365,7 +386,9 @@ public sealed partial class TimeTests
         var report = await ReadAsync("2024-03-31T02:30:00", map, null, null);
 
         // Assert
-        Assert.Equal(new DateTimeOffset(2024,
+        Assert.Equal(
+            new DateTimeOffset(
+                2024,
                 3,
                 31,
                 3,
@@ -392,7 +415,9 @@ public sealed partial class TimeTests
         var report = await ReadAsync("2024-10-27T02:30:00", map, null, null);
 
         // Assert
-        Assert.Equal(new DateTimeOffset(2024,
+        Assert.Equal(
+            new DateTimeOffset(
+                2024,
                 10,
                 27,
                 2,
@@ -406,7 +431,8 @@ public sealed partial class TimeTests
     public async Task LocalDateTime_FailsTheExport()
     {
         // Arrange
-        var local = new DateTime(2024,
+        var local = new DateTime(
+            2024,
             4,
             1,
             8,
@@ -415,7 +441,8 @@ public sealed partial class TimeTests
             DateTimeKind.Local);
 
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Value<DateTime>(1, local) },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Value<DateTime>(1, local) },
             Map<DateTime>(),
             new MemoryStream(),
             Token);
@@ -430,8 +457,10 @@ public sealed partial class TimeTests
         // Arrange
         var rows = new[]
         {
-            new Value<DateTime>(1,
-                new DateTime(2024,
+            new Value<DateTime>(
+                1,
+                new DateTime(
+                    2024,
                     4,
                     1,
                     8,
@@ -454,7 +483,8 @@ public sealed partial class TimeTests
     public async Task UtcDateTime_InExcelWithoutUtcColumn_FailsTheExport()
     {
         // Arrange
-        var utc = new DateTime(2024,
+        var utc = new DateTime(
+            2024,
             4,
             1,
             8,
@@ -463,7 +493,8 @@ public sealed partial class TimeTests
             DateTimeKind.Utc);
 
         // Act
-        var report = await ExcelInstance.ExportAsync(new[] { new Value<DateTime>(1, utc) },
+        var report = await ExcelInstance.ExportAsync(
+            new[] { new Value<DateTime>(1, utc) },
             Map<DateTime>(),
             new MemoryStream(),
             Token);
@@ -490,7 +521,8 @@ public sealed partial class TimeTests
     public async Task DateTimeRounding_CarriesIntoTheNextDay()
     {
         // Act
-        var report = await ReadAsync("2024-04-01T23:59:59.9999",
+        var report = await ReadAsync(
+            "2024-04-01T23:59:59.9999",
             Map<DateTime>(c => c.Rounding(TimeSpan.FromMilliseconds(1))),
             null,
             null);
@@ -503,7 +535,8 @@ public sealed partial class TimeTests
     public async Task TimeRounding_PastMidnight_IsRejected()
     {
         // Act
-        var report = await ReadAsync("23:59:59.9999",
+        var report = await ReadAsync(
+            "23:59:59.9999",
             Map<TimeOnly>(c => c.Rounding(TimeSpan.FromMilliseconds(1))),
             null,
             null);
@@ -583,7 +616,8 @@ public sealed partial class TimeTests
     public async Task SerialWithoutDateFormat_IsReadWhenSerialNumbersAreAllowed()
     {
         // Act
-        var report = await ReadAsync(null,
+        var report = await ReadAsync(
+            null,
             Map<DateOnly>(c => c.AllowExcelSerialNumbers()),
             null,
             Serial(45292, dateFormat: false));
@@ -640,7 +674,8 @@ public sealed partial class TimeTests
     public async Task DateTimeOffset_InExcel_IsAnIsoTextCell()
     {
         // Act
-        var (_, file) = await ExcelInstance.ExportAsync(new[] { new Value<DateTimeOffset>(1, s_offsetValue) },
+        var (_, file) = await ExcelInstance.ExportAsync(
+            new[] { new Value<DateTimeOffset>(1, s_offsetValue) },
             Map<DateTimeOffset>(),
             Token);
 
@@ -653,7 +688,8 @@ public sealed partial class TimeTests
     {
         // Act
         // WHY: The round trip of the own output is the checked contract, so export and reimport form one action.
-        var (_, file) = await ExcelInstance.ExportAsync(new[] { new Value<DateTimeOffset>(1, s_offsetValue) },
+        var (_, file) = await ExcelInstance.ExportAsync(
+            new[] { new Value<DateTimeOffset>(1, s_offsetValue) },
             Map<DateTimeOffset>(),
             Token);
 
@@ -709,7 +745,8 @@ public sealed partial class TimeTests
     )
     {
         // Act
-        var report = await ReadAsync(s_utcTen.ToString(format, CultureInfo.InvariantCulture),
+        var report = await ReadAsync(
+            s_utcTen.ToString(format, CultureInfo.InvariantCulture),
             Map<DateTimeOffset>(c => c.Format(format)),
             null,
             null);
@@ -750,13 +787,15 @@ public sealed partial class TimeTests
             .ExcelNumberFormat(format));
 
         // Act
-        var report = await ExcelInstance.ExportAsync(new[] { new Value<TimeSpan>(1, TimeSpan.FromMinutes(-90)) },
+        var report = await ExcelInstance.ExportAsync(
+            new[] { new Value<TimeSpan>(1, TimeSpan.FromMinutes(-90)) },
             map,
             new MemoryStream(),
             Token);
 
         // Assert
-        Assert.Equal(written
+        Assert.Equal(
+            written
                 ? null
                 : TabularErrorCodes.Conversion.OutOfRange,
             report.FatalError?.Code);
@@ -766,7 +805,8 @@ public sealed partial class TimeTests
     public async Task Duration_InExcel_IsWrittenInDaysByDefault()
     {
         // Act
-        var report = await ExcelInstance.ExportAsync(new[] { new Value<TimeSpan>(1, TimeSpan.FromHours(27)) },
+        var report = await ExcelInstance.ExportAsync(
+            new[] { new Value<TimeSpan>(1, TimeSpan.FromHours(27)) },
             Map<TimeSpan>(),
             Token);
 
@@ -781,7 +821,8 @@ public sealed partial class TimeTests
         var report = await ExcelInstance.ExportAsync(s_durations, s_hours, Token);
 
         // Assert
-        Assert.Equal(["27", "-1.5"],
+        Assert.Equal(
+            ["27", "-1.5"],
             Cells(TabularType.Excel, report.File!)
                 .Select(row => row[1]));
     }
@@ -802,7 +843,8 @@ public sealed partial class TimeTests
     public async Task NegativeDuration_InExcelDays_FailsTheExportAtItsRow()
     {
         // Act
-        var report = await ExcelInstance.ExportAsync(new[] { new Value<TimeSpan>(1, TimeSpan.FromMinutes(-90)) },
+        var report = await ExcelInstance.ExportAsync(
+            new[] { new Value<TimeSpan>(1, TimeSpan.FromMinutes(-90)) },
             Map<TimeSpan>(),
             new MemoryStream(),
             Token);
@@ -831,7 +873,8 @@ public sealed partial class TimeTests
     public async Task SecondsHiddenByTheExcelFormat_ReadBack()
     {
         // Arrange
-        var halfSecond = new DateTime(2024,
+        var halfSecond = new DateTime(
+            2024,
             4,
             1,
             10,

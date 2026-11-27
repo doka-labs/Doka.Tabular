@@ -6,47 +6,61 @@ public sealed partial class ExcelWorkbookOverloadTests
 
     private static readonly WorkbookExportCase[] s_exports =
     [
-        new(ExportTargetKind.Stream,
+        new(
+            ExportTargetKind.Stream,
             false,
             c => ExportOutcome.Of(s_format.ExportAsync(c.Sheets, c.Stream, c.Cancellation))),
-        new(ExportTargetKind.Stream,
+        new(
+            ExportTargetKind.Stream,
             true,
             c => ExportOutcome.Of(s_format.ExportAsync(c.Sheets, c.Stream, c.ExportOptions, c.Cancellation))),
-        new(ExportTargetKind.Path,
+        new(
+            ExportTargetKind.Path,
             false,
             c => ExportOutcome.Of(s_format.ExportAsync(c.Sheets, c.Path, c.Cancellation))),
-        new(ExportTargetKind.Path,
+        new(
+            ExportTargetKind.Path,
             true,
             c => ExportOutcome.Of(s_format.ExportAsync(c.Sheets, c.Path, c.ExportOptions, c.Cancellation))),
-        new(ExportTargetKind.Buffer,
+        new(
+            ExportTargetKind.Buffer,
             false,
             c => ExportOutcome.Of(s_format.ExportAsync(c.Sheets, c.Cancellation))),
-        new(ExportTargetKind.Buffer,
+        new(
+            ExportTargetKind.Buffer,
             true,
             c => ExportOutcome.Of(s_format.ExportAsync(c.Sheets, c.ExportOptions, c.Cancellation))),
-        new(ExportTargetKind.FileStore,
+        new(
+            ExportTargetKind.FileStore,
             false,
             c => ExportOutcome.Of(s_format.ExportAsync(c.Sheets, c.FileTarget, c.Cancellation))),
-        new(ExportTargetKind.FileStore,
+        new(
+            ExportTargetKind.FileStore,
             true,
             c => ExportOutcome.Of(s_format.ExportAsync(c.Sheets, c.FileTarget, c.ExportOptions, c.Cancellation))),
     ];
 
     private static readonly WorkbookImportCase[] s_imports =
     [
-        new(ImportSourceKind.Stream,
+        new(
+            ImportSourceKind.Stream,
             false,
             c => ImportOutcome.Of(s_format.ImportAsync(c.Source, c.ImportSheets, c.Cancellation), c.Sheet)),
-        new(ImportSourceKind.Stream,
+        new(
+            ImportSourceKind.Stream,
             true,
-            c => ImportOutcome.Of(s_format.ImportAsync(c.Source, c.ImportSheets, c.ImportOptions, c.Cancellation),
+            c => ImportOutcome.Of(
+                s_format.ImportAsync(c.Source, c.ImportSheets, c.ImportOptions, c.Cancellation),
                 c.Sheet)),
-        new(ImportSourceKind.Path,
+        new(
+            ImportSourceKind.Path,
             false,
             c => ImportOutcome.Of(s_format.ImportAsync(c.Path, c.ImportSheets, c.Cancellation), c.Sheet)),
-        new(ImportSourceKind.Path,
+        new(
+            ImportSourceKind.Path,
             true,
-            c => ImportOutcome.Of(s_format.ImportAsync(c.Path, c.ImportSheets, c.ImportOptions, c.Cancellation),
+            c => ImportOutcome.Of(
+                s_format.ImportAsync(c.Path, c.ImportSheets, c.ImportOptions, c.Cancellation),
                 c.Sheet)),
     ];
 

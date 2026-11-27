@@ -21,7 +21,8 @@ internal static class Translations
                 return true;
             }
 
-            failure = new ConversionFailure(TabularErrorCodes.Translation.Missing,
+            failure = new ConversionFailure(
+                TabularErrorCodes.Translation.Missing,
                 "No text is available for the value.");
 
             return false;
@@ -37,7 +38,8 @@ internal static class Translations
             }
 
             text = string.Empty;
-            failure = new ConversionFailure(TabularErrorCodes.Configuration.Invalid,
+            failure = new ConversionFailure(
+                TabularErrorCodes.Configuration.Invalid,
                 $"The translation of key {key} is empty.");
 
             return false;
@@ -52,7 +54,8 @@ internal static class Translations
         }
 
         text = string.Empty;
-        failure = new ConversionFailure(TabularErrorCodes.Translation.Missing,
+        failure = new ConversionFailure(
+            TabularErrorCodes.Translation.Missing,
             $"The translation key {key} is missing.");
 
         return false;

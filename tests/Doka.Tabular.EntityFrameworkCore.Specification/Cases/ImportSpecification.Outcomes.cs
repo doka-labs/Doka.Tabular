@@ -16,7 +16,8 @@ public abstract partial class ImportSpecification
         var faults = new TransactionFaults(failure);
         var target = TabularDatabase
             .ForFactory(database.FactoryWith(faults))
-            .PrepareInsert<UserDto, User>(set: context => context.Users,
+            .PrepareInsert<UserDto, User>(
+                set: context => context.Users,
                 create: dto =>
                 {
                     // WHY: The commit of the second group (rows 3 and 4) fails; the first group is confirmed.
@@ -27,7 +28,8 @@ public abstract partial class ImportSpecification
             .WithOptions(new TabularWriteOptions { CommitGroupSize = 2 });
 
         // Act
-        var report = await s_csv.ImportAsync(TestMaps.Csv([.. TestMaps.Rows(5)]),
+        var report = await s_csv.ImportAsync(
+            TestMaps.Csv([.. TestMaps.Rows(5)]),
             TestMaps.Users,
             target,
             Partial,
@@ -37,7 +39,8 @@ public abstract partial class ImportSpecification
         faults.Armed = false;
 
         // Assert
-        Assert.Equal((TabularErrorCodes.Persistence.CommitUnknown, 2L, 2L),
+        Assert.Equal(
+            (TabularErrorCodes.Persistence.CommitUnknown, 2L, 2L),
             (report.FatalError?.Code, report.RowsImported, report.RowsUncertain));
 
         Assert.True(faults.Injected > 0);
@@ -52,7 +55,8 @@ public abstract partial class ImportSpecification
         using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(Token);
         var target = TabularDatabase
             .ForFactory(database.Factory)
-            .PrepareInsert<UserDto, User>(set: context => context.Users,
+            .PrepareInsert<UserDto, User>(
+                set: context => context.Users,
                 create: dto =>
                 {
                     if (dto.PersonnelNumber == 3)
@@ -66,7 +70,8 @@ public abstract partial class ImportSpecification
                 });
 
         // Act
-        var report = await s_csv.ImportAsync(TestMaps.Csv([.. TestMaps.Rows(5)]),
+        var report = await s_csv.ImportAsync(
+            TestMaps.Csv([.. TestMaps.Rows(5)]),
             TestMaps.Users,
             target,
             new CsvImportOptions { Strategy = ImportStrategy.Strict },

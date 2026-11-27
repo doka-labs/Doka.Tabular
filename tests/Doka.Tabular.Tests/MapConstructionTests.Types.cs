@@ -48,7 +48,8 @@ public sealed partial class MapConstructionTests
         var exception = Record.Exception(() => converted
             ? TabularMap
                 .For<Counted>()
-                .Column(x => x.Number,
+                .Column(
+                    x => x.Number,
                     index: 0,
                     configure: c => c.Convert<long, int>(value => checked((int)value), value => value))
                 .Build()

@@ -13,11 +13,12 @@ public sealed class SqliteProvider : ITestDatabaseProvider
     {
         var path = Path.Combine(Path.GetTempPath(), $"tabular-{Guid.NewGuid():N}.db");
         var options = new DbContextOptionsBuilder<TabularTestContext>()
-            .UseSqlite(new SqliteConnectionStringBuilder
-            {
-                DataSource = path,
-                Pooling = false,
-            }.ConnectionString)
+            .UseSqlite(
+                new SqliteConnectionStringBuilder
+                {
+                    DataSource = path,
+                    Pooling = false,
+                }.ConnectionString)
             .UseTabularJournal()
             .Options;
 

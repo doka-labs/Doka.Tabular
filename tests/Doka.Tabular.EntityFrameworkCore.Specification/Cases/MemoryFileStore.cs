@@ -18,7 +18,8 @@ public sealed class MemoryFileStore : ITabularFileStore
         Files[request.ExportId] = copy.ToArray();
 
         // A real adapter reads its metadata back from storage, so the hash is an equal but separate instance.
-        return new TabularStoredFile(request.ExportId,
+        return new TabularStoredFile(
+            request.ExportId,
             request.ExportId,
             request.ByteSize,
             Sha256Hash.Parse(request.Sha256.Value));

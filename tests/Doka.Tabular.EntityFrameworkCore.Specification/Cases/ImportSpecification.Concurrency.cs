@@ -18,7 +18,8 @@ public abstract partial class ImportSpecification
         const int rows = 40;
 
         // Act
-        var reports = await Task.WhenAll(InsertUsersAsync(database, rows, _ => { }),
+        var reports = await Task.WhenAll(
+            InsertUsersAsync(database, rows, _ => { }),
             InsertUsersAsync(database, rows, _ => { }));
 
         // Assert
@@ -32,7 +33,8 @@ public abstract partial class ImportSpecification
     public async Task TwoInsertsOfTheSameKeyAfterBothFoundNoMatch_AreOneStoredRecordAndOneRowError()
     {
         // Arrange
-        Assert.SkipUnless(_provider.SupportsConcurrentWriters,
+        Assert.SkipUnless(
+            _provider.SupportsConcurrentWriters,
             "The engine serializes writers; two inserts of one key at the same time need a server database.");
 
         await using var database = await _provider.CreateAsync(Token);
@@ -85,11 +87,13 @@ public abstract partial class ImportSpecification
         TestDatabase database,
         int rows,
         Action<UserDto> beforeCreate
-    ) => s_csv.ImportAsync(TestMaps.Csv([.. TestMaps.Rows(rows)]),
+    ) => s_csv.ImportAsync(
+        TestMaps.Csv([.. TestMaps.Rows(rows)]),
         TestMaps.Users,
         TabularDatabase
             .ForFactory(database.Factory)
-            .PrepareInsert<UserDto, User>(set: context => context.Users,
+            .PrepareInsert<UserDto, User>(
+                set: context => context.Users,
                 create: dto =>
                 {
                     beforeCreate(dto);

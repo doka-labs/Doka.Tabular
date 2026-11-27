@@ -94,7 +94,8 @@ public sealed partial class ReferenceFileTests
         var report = await s_format.ImportAsync(path, s_benutzer, Partial, Token);
 
         // Assert
-        Assert.Contains(report.Errors,
+        Assert.Contains(
+            report.Errors,
             error => error is { Location: { RowNumber: 2, ColumnIndex: 4 } }
                 && error.Code == TabularErrorCodes.Conversion.InvalidFormat);
     }
@@ -128,13 +129,15 @@ public sealed partial class ReferenceFileTests
         var file = await ReferenceFiles.CopyAsync(ReferenceFiles.Path(set, "R03", "R03-macro.xlsm"));
 
         // Act
-        var report = await s_format.ImportAsync(file,
+        var report = await s_format.ImportAsync(
+            file,
             s_users,
             Partial with { ExpectedVariant = ExcelVariant.Xlsx },
             Token);
 
         // Assert
-        Assert.Equal(TabularErrorCodes.Schema.FormatMismatch,
+        Assert.Equal(
+            TabularErrorCodes.Schema.FormatMismatch,
             Assert.Single(report.Errors)
                 .Code);
     }
@@ -156,7 +159,8 @@ public sealed partial class ReferenceFileTests
             .Build();
 
         // Act
-        var report = await s_format.ImportAsync(file,
+        var report = await s_format.ImportAsync(
+            file,
             map,
             Partial with
             {
@@ -175,7 +179,8 @@ public sealed partial class ReferenceFileTests
     {
         var row2 = report.Items!.Single(item => item.Id == 1);
         Assert.Equal(
-            new BenutzerRow(1,
+            new BenutzerRow(
+                1,
                 "Müller",
                 12.5m,
                 true,
@@ -190,7 +195,9 @@ public sealed partial class ReferenceFileTests
             row2);
 
         var row4 = report.Items!.Single(item => item.Id == 3);
-        Assert.Equal(new BenutzerRow(3,
+        Assert.Equal(
+            new BenutzerRow(
+                3,
                 "Müller",
                 -0.1m,
                 null,
@@ -210,19 +217,24 @@ public sealed partial class ReferenceFileTests
     )
     {
         var all = values.Items!.ToDictionary(item => item.Id);
-        Assert.Equal(("Ærøskøbing Ödön 😀", 1000000000000000m, false, new DateOnly(2000, 2, 29), "00000",
+        Assert.Equal(
+            ("Ærøskøbing Ödön 😀", 1000000000000000m, false, new DateOnly(2000, 2, 29), "00000",
                 "1234567890123456"),
             (all[2].Name, all[2].Betrag!.Value, all[2].Aktiv!.Value, all[2].Geburtsdatum!.Value, all[2].Postleitzahl,
                 all[2].Kundennummer));
 
-        Assert.Equal(("Zeile 1\nZeile 2", new DateTime(1900, 3, 1), TimeSpan.Zero),
+        Assert.Equal(
+            ("Zeile 1\nZeile 2", new DateTime(1900, 3, 1), TimeSpan.Zero),
             (all[2].Bemerkung, all[2].Zeitpunkt!.Value, all[2].Dauer!.Value));
 
-        Assert.Equal((" Leerzeichen vorn und hinten ", new DateOnly(9999, 12, 31), TimeSpan.FromDays(60), "92991000"),
+        Assert.Equal(
+            (" Leerzeichen vorn und hinten ", new DateOnly(9999, 12, 31), TimeSpan.FromDays(60), "92991000"),
             (all[4].Name, all[4].Geburtsdatum!.Value, all[4].Dauer!.Value, all[4].Kundennummer));
 
-        Assert.Equal(("Formeltext", true, new DateOnly(2020, 6, 18), new TimeOnly(12, 0),
-                new DateTime(2024,
+        Assert.Equal(
+            ("Formeltext", true, new DateOnly(2020, 6, 18), new TimeOnly(12, 0),
+                new DateTime(
+                    2024,
                     4,
                     1,
                     12,

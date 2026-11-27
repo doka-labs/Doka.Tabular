@@ -21,16 +21,19 @@ public sealed partial class StructureTests
             .Build();
 
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8("Name\nAda"),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8("Name\nAda"),
             map,
             new CsvImportOptions { Binding = ColumnBinding.ByHeaderName },
             Token);
 
         // Assert
-        Assert.True(report.Status == ReportStatus.Succeeded,
+        Assert.True(
+            report.Status == ReportStatus.Succeeded,
             string.Join(" | ", report.Errors.Select(error => error.Message)));
 
-        Assert.Equal("Ada",
+        Assert.Equal(
+            "Ada",
             Assert.Single(report.Items!)
                 .Name);
     }
@@ -41,7 +44,8 @@ public sealed partial class StructureTests
         // Act
         var exception = Record.Exception(() => TabularMap
             .For<OptionalName>()
-            .Column(x => x.Name,
+            .Column(
+                x => x.Name,
                 index: 0,
                 configure: c => c
                     .EmptyTranslationKey("name.empty")

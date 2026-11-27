@@ -49,7 +49,8 @@ internal sealed class FloatingConverter<TFloat> : ValueConverter<TFloat>
         }
 
         // WHY: Rounding starts at the binary value the text denotes, as on export; 2.675 is slightly below 2.675.
-        var rounded = NumberRules.ApplyRounding(ExactDecimal.FromDouble(double.CreateChecked(nearest)),
+        var rounded = NumberRules.ApplyRounding(
+            ExactDecimal.FromDouble(double.CreateChecked(nearest)),
             settings.NumericRounding);
 
         return Checked(rounded.ToFloat<TFloat>(), rounded.IsZero, out value, out failure);
@@ -202,9 +203,10 @@ internal sealed class FloatingConverter<TFloat> : ValueConverter<TFloat>
         }
         else
         {
-            output.Append(TFloat.IsPositiveInfinity(value)
-                ? "Infinity"
-                : "-Infinity");
+            output.Append(
+                TFloat.IsPositiveInfinity(value)
+                    ? "Infinity"
+                    : "-Infinity");
         }
 
         return true;
@@ -274,7 +276,8 @@ internal sealed class FloatingConverter<TFloat> : ValueConverter<TFloat>
     {
         if (TFloat.IsInfinity(result))
         {
-            return Fail(ConversionFailure.OutOfRange("The value is outside the range of the target type."),
+            return Fail(
+                ConversionFailure.OutOfRange("The value is outside the range of the target type."),
                 out value,
                 out failure);
         }
@@ -288,7 +291,8 @@ internal sealed class FloatingConverter<TFloat> : ValueConverter<TFloat>
                 out failure);
         }
 
-        return Read(TFloat.IsZero(result)
+        return Read(
+            TFloat.IsZero(result)
                 ? TFloat.Zero
                 : result,
             out value,

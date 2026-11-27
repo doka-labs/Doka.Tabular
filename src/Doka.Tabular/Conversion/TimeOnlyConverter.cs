@@ -37,7 +37,8 @@ internal sealed class TimeOnlyConverter : TimeConverterBase<TimeOnly>
         else
         {
             var culture = context.CultureFor(settings);
-            if (!TryCulture(text,
+            if (!TryCulture(
+                text,
                 culture,
                 [culture.DateTimeFormat.LongTimePattern, culture.DateTimeFormat.ShortTimePattern],
                 Parse,
@@ -98,14 +99,16 @@ internal sealed class TimeOnlyConverter : TimeConverterBase<TimeOnly>
         if (!IsDateFormatted(cell)
             && !settings.AllowExcelSerialNumbers)
         {
-            return Fail(ConversionFailure.InvalidFormat("An unformatted number is not a time of day for this field."),
+            return Fail(
+                ConversionFailure.InvalidFormat("An unformatted number is not a time of day for this field."),
                 out value,
                 out failure);
         }
 
         if (cell.Number is < 0 or >= 1)
         {
-            return Fail(ConversionFailure.PrecisionLoss("The cell contains a date part, which TimeOnly cannot hold."),
+            return Fail(
+                ConversionFailure.PrecisionLoss("The cell contains a date part, which TimeOnly cannot hold."),
                 out value,
                 out failure);
         }
@@ -161,7 +164,8 @@ internal sealed class TimeOnlyConverter : TimeConverterBase<TimeOnly>
 
         var numberFormat = settings.ExcelNumberFormat ?? format;
 
-        return TryExcelSerial(serial,
+        return TryExcelSerial(
+            serial,
             numberFormat,
             TryReadBackNative(serial, numberFormat, settings, context, out var back) && back == typed,
             out cell,

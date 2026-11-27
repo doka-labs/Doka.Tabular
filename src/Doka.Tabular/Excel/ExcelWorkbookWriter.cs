@@ -67,7 +67,8 @@ internal sealed class ExcelWorkbookWriter : IAsyncDisposable
     )
     {
         var entry = _archive!.CreateEntry(name, CompressionLevel.Optimal);
-        entry.LastWriteTime = new DateTimeOffset(1980,
+        entry.LastWriteTime = new DateTimeOffset(
+            1980,
             1,
             1,
             0,
@@ -94,7 +95,8 @@ internal sealed class ExcelWorkbookWriter : IAsyncDisposable
     internal Task DrainAsync(
         bool force,
         CancellationToken cancellationToken
-    ) => _output.DrainAsync(force
+    ) => _output.DrainAsync(
+        force
             ? 0
             : DrainThreshold,
         cancellationToken);
@@ -124,7 +126,8 @@ internal sealed class ExcelWorkbookWriter : IAsyncDisposable
         await WriteEntryAsync("xl/styles.xml", Styles.ToXml(), cancellationToken)
             .ConfigureAwait(false);
 
-        await WriteEntryAsync("_rels/.rels",
+        await WriteEntryAsync(
+                "_rels/.rels",
                 Raw(
                     "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\">"
                     + "<Relationship Id=\"rId1\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument\" Target=\"xl/workbook.xml\"/>"
@@ -220,9 +223,10 @@ internal sealed class ExcelWorkbookWriter : IAsyncDisposable
 
                 // WHY: The defined name is an ST_Formula, an ST_Xstring; characters XML cannot hold are escaped like the
                 // sheet name attribute.
-                writer.WriteString(ExcelXml.Escape(
-                    $"'{plan.Name.Value.Replace("'", "''", StringComparison.Ordinal)}'!{AbsoluteRange(range!)}",
-                    attribute: false));
+                writer.WriteString(
+                    ExcelXml.Escape(
+                        $"'{plan.Name.Value.Replace("'", "''", StringComparison.Ordinal)}'!{AbsoluteRange(range!)}",
+                        attribute: false));
 
                 writer.WriteEndElement();
             }
@@ -241,11 +245,13 @@ internal sealed class ExcelWorkbookWriter : IAsyncDisposable
 
         foreach (var (_, index, _, _) in _sheets)
         {
-            builder.Append(CultureInfo.InvariantCulture,
+            builder.Append(
+                CultureInfo.InvariantCulture,
                 $"<Relationship Id=\"rId{index}\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet\" Target=\"worksheets/sheet{index}.xml\"/>");
         }
 
-        builder.Append(CultureInfo.InvariantCulture,
+        builder.Append(
+            CultureInfo.InvariantCulture,
             $"<Relationship Id=\"rId{_sheets.Count + 1}\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\" Target=\"styles.xml\"/>");
 
         builder.Append("</Relationships>");
@@ -269,13 +275,15 @@ internal sealed class ExcelWorkbookWriter : IAsyncDisposable
 
         foreach (var (_, index, _, _) in _sheets)
         {
-            builder.Append(CultureInfo.InvariantCulture,
+            builder.Append(
+                CultureInfo.InvariantCulture,
                 $"<Override PartName=\"/xl/worksheets/sheet{index}.xml\" ContentType=\"application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml\"/>");
         }
 
         for (var table = 1; table <= _tables; table++)
         {
-            builder.Append(CultureInfo.InvariantCulture,
+            builder.Append(
+                CultureInfo.InvariantCulture,
                 $"<Override PartName=\"/xl/tables/table{table}.xml\" ContentType=\"application/vnd.openxmlformats-officedocument.spreadsheetml.table+xml\"/>");
         }
 
@@ -289,12 +297,14 @@ internal sealed class ExcelWorkbookWriter : IAsyncDisposable
     {
         var parts = range.Split(':');
 
-        return string.Join(':',
+        return string.Join(
+            ':',
             parts.Select(part =>
             {
-                var letters = new string(part
-                    .TakeWhile(char.IsAsciiLetter)
-                    .ToArray());
+                var letters = new string(
+                    part
+                        .TakeWhile(char.IsAsciiLetter)
+                        .ToArray());
 
                 return $"${letters}${part[letters.Length..]}";
             }));

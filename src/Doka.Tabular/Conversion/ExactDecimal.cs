@@ -31,8 +31,9 @@ internal readonly record struct ExactDecimal(
 
     public int SignificantDigits => Mantissa.IsZero
         ? 1
-        : DigitCount(Normalize()
-            .Mantissa);
+        : DigitCount(
+            Normalize()
+                .Mantissa);
 
     public BigInteger ToBigIntegerExact()
     {

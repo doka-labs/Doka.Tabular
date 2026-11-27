@@ -60,8 +60,10 @@ public sealed class TabularFields<T>
             }
         }
 
-        _errors.Add(TabularError.Configuration($"The factory reads the property {info.Name}, which is not mapped.",
-            new TabularErrorLocation { PropertyPath = TabularPropertyPath.Of(info.Name) }));
+        _errors.Add(
+            TabularError.Configuration(
+                $"The factory reads the property {info.Name}, which is not mapped.",
+                new TabularErrorLocation { PropertyPath = TabularPropertyPath.Of(info.Name) }));
 
         return new TabularField<T, TValue>(-1);
     }

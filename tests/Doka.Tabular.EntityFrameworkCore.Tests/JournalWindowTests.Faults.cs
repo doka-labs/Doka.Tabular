@@ -24,7 +24,8 @@ public sealed partial class JournalWindowTests
             .WithOptions(new TabularWriteOptions { CommitGroupSize = 1 });
 
         // Act
-        var report = await s_csv.ImportAsync(TestMaps.Csv([.. TestMaps.Rows(3)]),
+        var report = await s_csv.ImportAsync(
+            TestMaps.Csv([.. TestMaps.Rows(3)]),
             TestMaps.Users,
             target,
             new CsvImportOptions { Strategy = ImportStrategy.Partial },
@@ -32,7 +33,8 @@ public sealed partial class JournalWindowTests
 
         // Assert
         await using var check = await database.PlainContextAsync();
-        Assert.Equal((1L, TabularErrorCodes.Persistence.OperationFailed, TabularErrorKind.Technical),
+        Assert.Equal(
+            (1L, TabularErrorCodes.Persistence.OperationFailed, TabularErrorKind.Technical),
             (report.RowsImported, report.FatalError?.Code, report.FatalError?.Kind));
 
         Assert.Equal(1, await check.Users.CountAsync(Token));
@@ -49,7 +51,8 @@ public sealed partial class JournalWindowTests
         var report = await s_csv.ImportAsync(TestMaps.Csv([.. TestMaps.Rows(1)]), TestMaps.Users, target, Token);
 
         // Assert
-        Assert.Equal((TabularErrorCodes.Persistence.OperationFailed, TabularErrorKind.Technical),
+        Assert.Equal(
+            (TabularErrorCodes.Persistence.OperationFailed, TabularErrorKind.Technical),
             (report.FatalError?.Code, report.FatalError?.Kind));
     }
 
@@ -68,7 +71,8 @@ public sealed partial class JournalWindowTests
         var status = call switch
         {
             "recover" => (await journal.RecoverImportAsync(Guid.NewGuid(), Token)).Status,
-            "resolve" => (await journal.ResolveImportAsync(Guid.NewGuid(),
+            "resolve" => (await journal.ResolveImportAsync(
+                Guid.NewGuid(),
                 new ImportResolution
                 {
                     Outcome = ImportResolutionOutcome.Imported,
@@ -94,7 +98,8 @@ public sealed partial class JournalWindowTests
         await using var database = await FileDatabase.CreateAsync();
         var target = TestMaps
             .Upsert(TabularDatabase.ForFactory(database.Plain))
-            .WithImportLog(TabularJournal.ForFactory(database.Plain),
+            .WithImportLog(
+                TabularJournal.ForFactory(database.Plain),
                 new TabularImportLogOptions
                 {
                     Scope = s_scope,
@@ -107,7 +112,8 @@ public sealed partial class JournalWindowTests
         // Assert
         await using var check = await database.PlainContextAsync();
 
-        Assert.Equal(accepted
+        Assert.Equal(
+            accepted
                 ? (ReportStatus.Succeeded, 1)
                 : (ReportStatus.Failed, 0),
             (report.Status, await check.Users.CountAsync(Token)));
@@ -121,7 +127,8 @@ public sealed partial class JournalWindowTests
         var target = TabularFileTarget.To(new MemoryFileStore(), "users.csv");
 
         // Act
-        var exception = Record.Exception(() => target.WithExportLog(journal,
+        var exception = Record.Exception(() => target.WithExportLog(
+            journal,
             new TabularExportLogOptions
             {
                 Scope = s_scope,
@@ -140,7 +147,8 @@ public sealed partial class JournalWindowTests
         var target = TabularFileTarget.To(new MemoryFileStore(), "users.csv");
 
         // Act
-        var exception = Record.Exception(() => target.WithExportLog(journal,
+        var exception = Record.Exception(() => target.WithExportLog(
+            journal,
             new TabularExportLogOptions
             {
                 Scope = s_scope,
@@ -164,7 +172,8 @@ public sealed partial class JournalWindowTests
             .WithExportLog(journal, new TabularExportLogOptions { Scope = s_scope });
 
         // Act
-        var report = await s_csv.ExportAsync(new[] { new UserDto(1, "a@example.org", "Ada") },
+        var report = await s_csv.ExportAsync(
+            new[] { new UserDto(1, "a@example.org", "Ada") },
             TestMaps.Users,
             target,
             Token);
@@ -173,7 +182,8 @@ public sealed partial class JournalWindowTests
         await using var check = await database.PlainContextAsync();
         Assert.Equal(TabularErrorKind.Configuration, report.FatalError?.Kind);
         Assert.Empty(store.Files);
-        Assert.Equal(0,
+        Assert.Equal(
+            0,
             await journal
                 .QueryExports(check)
                 .CountAsync(Token));
@@ -218,7 +228,8 @@ public sealed partial class JournalWindowTests
             .SingleAsync(Token);
 
         Assert.Equal((null, TabularExportLogStatus.Ready), (report.FatalError?.Code, log.Status));
-        Assert.Equal(capped
+        Assert.Equal(
+            capped
                 ? DateTimeOffset.MaxValue
                 : start + retention,
             log.ExpiresAt);
@@ -231,7 +242,8 @@ public sealed partial class JournalWindowTests
         await using var database = await FileDatabase.CreateAsync();
         var journal = TabularJournal.ForFactory(database.Plain);
         ImportRecoveryState? during = null;
-        var input = new ReadingStream(((MemoryStream)TestMaps.Csv("1,a@example.org,Ada")).ToArray(),
+        var input = new ReadingStream(
+            ((MemoryStream)TestMaps.Csv("1,a@example.org,Ada")).ToArray(),
             async () =>
             {
                 // ReSharper disable once AccessToDisposedClosure
@@ -269,7 +281,8 @@ public sealed partial class JournalWindowTests
         var recovered = await journal.RecoverImportAsync(importId, Token);
 
         // Assert
-        Assert.Equal((JournalCallStatus.Succeeded, ImportRecoveryState.Unresolved),
+        Assert.Equal(
+            (JournalCallStatus.Succeeded, ImportRecoveryState.Unresolved),
             (recovered.Status, recovered.State));
     }
 
@@ -281,7 +294,8 @@ public sealed partial class JournalWindowTests
         await using var owned = database;
 
         // Act
-        var resolved = await journal.ResolveImportAsync(importId,
+        var resolved = await journal.ResolveImportAsync(
+            importId,
             new ImportResolution
             {
                 Outcome = ImportResolutionOutcome.NoChanges,
@@ -305,7 +319,8 @@ public sealed partial class JournalWindowTests
         // Arrange
         var (database, journal, importId) = await AbandonedAttemptAsync();
         await using var owned = database;
-        await journal.ResolveImportAsync(importId,
+        await journal.ResolveImportAsync(
+            importId,
             new ImportResolution
             {
                 Outcome = ImportResolutionOutcome.NoChanges,
@@ -328,7 +343,8 @@ public sealed partial class JournalWindowTests
         await using var owned = database;
 
         // Act
-        var resolved = await journal.ResolveImportAsync(importId,
+        var resolved = await journal.ResolveImportAsync(
+            importId,
             new ImportResolution
             {
                 Outcome = ImportResolutionOutcome.Imported,
@@ -346,7 +362,8 @@ public sealed partial class JournalWindowTests
         // Arrange
         var (database, journal, importId) = await AbandonedAttemptAsync();
         await using var owned = database;
-        await journal.ResolveImportAsync(importId,
+        await journal.ResolveImportAsync(
+            importId,
             new ImportResolution
             {
                 Outcome = ImportResolutionOutcome.NoChanges,
@@ -393,7 +410,8 @@ public sealed partial class JournalWindowTests
         await journal.RecoverImportAsync(importId, Token);
         if (resolved)
         {
-            await journal.ResolveImportAsync(importId,
+            await journal.ResolveImportAsync(
+                importId,
                 new ImportResolution
                 {
                     Outcome = ImportResolutionOutcome.NoChanges,
@@ -417,7 +435,8 @@ public sealed partial class JournalWindowTests
         var faults = new TransactionFaults(failure) { Armed = true };
         var database = await FileDatabase.CreateAsync(faults);
         var journal = TabularJournal.ForFactory(database.Plain);
-        var report = await s_csv.ImportAsync(TestMaps.Csv([.. TestMaps.Rows(2)]),
+        var report = await s_csv.ImportAsync(
+            TestMaps.Csv([.. TestMaps.Rows(2)]),
             TestMaps.Users,
             TestMaps
                 .Upsert(TabularDatabase.ForFactory(database.Hooked))

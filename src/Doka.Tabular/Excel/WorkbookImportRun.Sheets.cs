@@ -27,9 +27,11 @@ internal sealed partial class WorkbookImportRun
             or UnauthorizedAccessException
             or InvalidDataException)
         {
-            _errors.AddFatal(TabularError.Create(TabularErrorCodes.Io.Failed,
-                TabularErrorKind.Technical,
-                "Reading the input failed."));
+            _errors.AddFatal(
+                TabularError.Create(
+                    TabularErrorCodes.Io.Failed,
+                    TabularErrorKind.Technical,
+                    "Reading the input failed."));
         }
 
         // WHY: However the reading ended, a call that stops before every sheet is written leaves no import rows
@@ -58,7 +60,8 @@ internal sealed partial class WorkbookImportRun
             {
                 try
                 {
-                    ownedFile = new FileStream(path,
+                    ownedFile = new FileStream(
+                        path,
                         FileMode.Open,
                         FileAccess.Read,
                         FileShare.Read,
@@ -91,7 +94,8 @@ internal sealed partial class WorkbookImportRun
             }
 
             input = await PreparedInput
-                .CreateAsync(stream!,
+                .CreateAsync(
+                    stream!,
                     needsSeekable: true,
                     _journals.Count == 1,
                     _runtime.Limits,
@@ -208,10 +212,12 @@ internal sealed partial class WorkbookImportRun
                 continue;
             }
 
-            _errors.Add(TabularError.Create(TabularErrorCodes.Schema.MissingSheet,
-                TabularErrorKind.Data,
-                $"The sheet {name} does not exist; the workbook contains: {string.Join(", ", package.Sheets.Select(item => item.Name.Value))}.",
-                new TabularErrorLocation { SheetName = name }));
+            _errors.Add(
+                TabularError.Create(
+                    TabularErrorCodes.Schema.MissingSheet,
+                    TabularErrorKind.Data,
+                    $"The sheet {name} does not exist; the workbook contains: {string.Join(", ", package.Sheets.Select(item => item.Name.Value))}.",
+                    new TabularErrorLocation { SheetName = name }));
 
             _configurationFailed = true;
         }
@@ -289,7 +295,8 @@ internal sealed partial class WorkbookImportRun
         if (!Shared)
         {
             _written[index] = await run
-                .WriteAsync(new ImportSinkWrite(_strategy, run.Counts.Aborted, true),
+                .WriteAsync(
+                    new ImportSinkWrite(_strategy, run.Counts.Aborted, true),
                     _errors,
                     _cancellationToken)
                 .ConfigureAwait(false);
@@ -329,7 +336,8 @@ internal sealed partial class WorkbookImportRun
         for (var index = 0; index < _prepared.Count; index++)
         {
             _written[index] = await _runs[index]!
-                .WriteAsync(new ImportSinkWrite(_strategy, false, index == lastWriter),
+                .WriteAsync(
+                    new ImportSinkWrite(_strategy, false, index == lastWriter),
                     _errors,
                     _cancellationToken)
                 .ConfigureAwait(false);
@@ -459,7 +467,8 @@ internal sealed partial class WorkbookImportRun
     private ReportStatus SheetStatus(
         TableCounts counts,
         SinkCounts? written
-    ) => new ImportStatusFacts(Canceled: counts.Canceled || written is { Canceled: true },
+    ) => new ImportStatusFacts(
+            Canceled: counts.Canceled || written is { Canceled: true },
             Failed: counts.Aborted || counts.SchemaFailed || written is { Failed: true },
             GateStopped: false,
             Skipped: false,

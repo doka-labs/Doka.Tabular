@@ -70,11 +70,12 @@ public sealed class ProfileDatabase : IDbContextFactory<ProfileContext>, IDispos
     {
         _path = path;
         _options = new DbContextOptionsBuilder<ProfileContext>()
-            .UseSqlite(new SqliteConnectionStringBuilder
-            {
-                DataSource = path,
-                Pooling = false,
-            }.ConnectionString)
+            .UseSqlite(
+                new SqliteConnectionStringBuilder
+                {
+                    DataSource = path,
+                    Pooling = false,
+                }.ConnectionString)
             .Options;
     }
 

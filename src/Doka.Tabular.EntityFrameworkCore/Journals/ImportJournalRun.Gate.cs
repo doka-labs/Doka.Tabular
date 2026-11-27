@@ -95,7 +95,8 @@ internal sealed partial class ImportJournalRun
         return preparation;
     }
 
-    private static TabularError StartFailed() => TabularError.Create(TabularErrorCodes.Persistence.WriteFailed,
+    private static TabularError StartFailed() => TabularError.Create(
+        TabularErrorCodes.Persistence.WriteFailed,
         TabularErrorKind.Technical,
         "The start of the import log could not be written.");
 
@@ -105,7 +106,8 @@ internal sealed partial class ImportJournalRun
         CancellationToken cancellationToken
     )
     {
-        var log = new TabularImportLog(Guid.NewGuid(),
+        var log = new TabularImportLog(
+            Guid.NewGuid(),
             _binding.Options.Scope,
             _binding.Options.FileName,
             _binding.Options.FileId,
@@ -206,7 +208,8 @@ internal sealed partial class ImportJournalRun
 
                 break;
             case ImportClaimState.Imported:
-                Decide(preparation,
+                Decide(
+                    preparation,
                     _binding.Options.DuplicateBehavior == ImportDuplicateBehavior.Skip
                         ? ImportJournalDecision.Skipped
                         : ImportJournalDecision.RejectedDuplicate,

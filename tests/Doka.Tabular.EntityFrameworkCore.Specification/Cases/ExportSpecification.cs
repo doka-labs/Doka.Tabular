@@ -40,7 +40,8 @@ public abstract class ExportSpecification
     {
         // Arrange
         await using var database = await _provider.CreateAsync(Token);
-        await database.SeedAsync(User.Create(2, "b@example.org", "B"),
+        await database.SeedAsync(
+            User.Create(2, "b@example.org", "B"),
             User.Create(1, "a@example.org", "A"),
             User.Create(3, "c@example.org", "C"));
 
@@ -69,7 +70,8 @@ public abstract class ExportSpecification
     {
         // Arrange
         await using var database = await _provider.CreateAsync(Token);
-        await database.SeedAsync(User.Create(2, "b@example.org", "B"),
+        await database.SeedAsync(
+            User.Create(2, "b@example.org", "B"),
             User.Create(1, "a@example.org", "A"),
             User.Create(3, "c@example.org", "C"));
 
@@ -87,7 +89,8 @@ public abstract class ExportSpecification
     {
         // Arrange
         await using var database = await _provider.CreateAsync(Token);
-        await database.SeedAsync(User.Create(2, "b@example.org", "B"),
+        await database.SeedAsync(
+            User.Create(2, "b@example.org", "B"),
             User.Create(1, "a@example.org", "A"),
             User.Create(3, "c@example.org", "C"));
 
@@ -111,12 +114,14 @@ public abstract class ExportSpecification
     {
         var map = TabularMap
             .For<User>()
-            .Column(x => x.PersonnelNumber,
+            .Column(
+                x => x.PersonnelNumber,
                 index: 0,
                 configure: c => c
                     .Header("Nr")
                     .ExportOnly())
-            .Column(x => x.Email,
+            .Column(
+                x => x.Email,
                 index: 1,
                 configure: c => c
                     .Header("E-Mail")
@@ -129,7 +134,8 @@ public abstract class ExportSpecification
             .Where(user => user.PersonnelNumber > 1)
             .OrderBy(user => user.PersonnelNumber);
 
-        var export = new TabularExport(new CsvFormat(new CsvFormatOptions()),
+        var export = new TabularExport(
+            new CsvFormat(new CsvFormatOptions()),
             new ExcelFormat(new ExcelFormatOptions()));
 
         var withHeader = new TabularExportOptions { WriteHeader = true };

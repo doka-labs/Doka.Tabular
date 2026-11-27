@@ -56,15 +56,17 @@ internal sealed class WorkbookExportSheet<T> : WorkbookExportSheet
     {
         if (_source is null)
         {
-            errors.Add(TabularError.Configuration(
-                "The query does not support asynchronous enumeration; it would be read synchronously.",
-                new TabularErrorLocation { SheetName = Name }));
+            errors.Add(
+                TabularError.Configuration(
+                    "The query does not support asynchronous enumeration; it would be read synchronously.",
+                    new TabularErrorLocation { SheetName = Name }));
 
             return null;
         }
 
         var settings = SettingsOf(workbook, defaults);
-        var context = new ConversionContext(TabularFormatKind.Excel,
+        var context = new ConversionContext(
+            TabularFormatKind.Excel,
             settings.Culture,
             false,
             settings.Translations,
@@ -75,7 +77,8 @@ internal sealed class WorkbookExportSheet<T> : WorkbookExportSheet
         var layout = Options.Layout ?? workbook.Layout ?? defaults.Layout ?? new ExcelLayoutOptions();
         var sheetPlan = plan is null
             ? null
-            : ExcelLayoutValidation.Plan(Name,
+            : ExcelLayoutValidation.Plan(
+                Name,
                 layout,
                 plan.Columns,
                 plan.ExportKeys,
@@ -108,13 +111,14 @@ internal sealed class WorkbookExportSheet<T> : WorkbookExportSheet
     private TabularError WithSheet(
         TabularError error
     ) => error.Location.SheetName is null
-        ? error.WithLocation(new TabularErrorLocation
-        {
-            SheetName = Name,
-            ColumnKey = error.Location.ColumnKey,
-            PropertyPath = error.Location.PropertyPath,
-            ColumnIndex = error.Location.ColumnIndex,
-        })
+        ? error.WithLocation(
+            new TabularErrorLocation
+            {
+                SheetName = Name,
+                ColumnKey = error.Location.ColumnKey,
+                PropertyPath = error.Location.PropertyPath,
+                ColumnIndex = error.Location.ColumnIndex,
+            })
         : error;
 
     private sealed class Prepared : PreparedExportSheet
@@ -147,7 +151,8 @@ internal sealed class WorkbookExportSheet<T> : WorkbookExportSheet
                 .ConfigureAwait(false);
 
             return await ExportEngine
-                .WriteTableAsync(_source,
+                .WriteTableAsync(
+                    _source,
                     _plan,
                     WriteHeader,
                     sheet,

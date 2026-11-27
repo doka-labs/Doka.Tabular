@@ -54,7 +54,8 @@ public abstract class TabularWriteTarget<TDto> : TabularImportDestination<TDto>
 
     internal override IImportSink<TDto> CreateSink(
         ImportCall call
-    ) => new WriteSink<TDto>(call,
+    ) => new WriteSink<TDto>(
+        call,
         View.Definition.Database,
         [new BoundTarget(View.Definition, null, 0)],
         View.Options,

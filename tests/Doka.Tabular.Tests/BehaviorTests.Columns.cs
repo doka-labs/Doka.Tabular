@@ -14,7 +14,8 @@ public sealed partial class BehaviorTests
     private static readonly TabularMap<Sourced> s_sourced = TabularMap
         .For<Sourced>()
         .Column(x => x.FirstName, index: 0)
-        .Column(x => x.SourceReference,
+        .Column(
+            x => x.SourceReference,
             index: 1,
             key: ColumnKey.Create("sourceReference"),
             configure: c => c
@@ -58,7 +59,8 @@ public sealed partial class BehaviorTests
     )
     {
         // Act
-        var (_, file) = await Export.ExportAsync(new[] { new Contact("Ada", "Lovelace") },
+        var (_, file) = await Export.ExportAsync(
+            new[] { new Contact("Ada", "Lovelace") },
             s_contacts,
             type,
             new TabularExportOptions { ColumnKeys = [ColumnKey.Create("fullName")] },
@@ -78,7 +80,8 @@ public sealed partial class BehaviorTests
         var report = await Import.ImportAsync(Create(type, ["Ada", "EXT-42", "Lovelace"]), type, s_sourced, Token);
 
         // Assert
-        Assert.Equal("EXT-42",
+        Assert.Equal(
+            "EXT-42",
             Assert.Single(report.Items!)
                 .SourceReference);
     }
@@ -93,7 +96,8 @@ public sealed partial class BehaviorTests
         var (_, file) = await Export.ExportAsync(SourcedRows, s_sourced, type, Token);
 
         // Assert
-        Assert.Equal(["Ada", "", "Lovelace"],
+        Assert.Equal(
+            ["Ada", "", "Lovelace"],
             Cells(type, file!)[0]
                 .Select(cell => cell ?? ""));
     }
@@ -108,7 +112,8 @@ public sealed partial class BehaviorTests
         var target = new MemoryStream();
 
         // Act
-        var report = await Export.ExportAsync(SourcedRows,
+        var report = await Export.ExportAsync(
+            SourcedRows,
             s_sourced,
             target,
             type,
@@ -137,7 +142,8 @@ public sealed partial class BehaviorTests
         ];
 
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Employee("a@example.org", 1, "Berlin", "10115") },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Employee("a@example.org", 1, "Berlin", "10115") },
             s_employees,
             target,
             new CsvExportOptions { ColumnKeys = selection },
@@ -171,13 +177,15 @@ public sealed partial class BehaviorTests
 
         var map = TabularMap
             .For<Employee>()
-            .Column(x => x.Email,
+            .Column(
+                x => x.Email,
                 index: 0,
                 key: ColumnKey.Create("email"),
                 configure: c => c
                     .Header("Mail")
                     .HeaderTranslationKey("mail"))
-            .Column(x => x.PostalCode,
+            .Column(
+                x => x.PostalCode,
                 index: 3,
                 key: ColumnKey.Create("postalCode"),
                 configure: c => c
@@ -206,7 +214,8 @@ public sealed partial class BehaviorTests
     public async Task SemicolonInText_IsQuoted()
     {
         // Act
-        var (_, file) = await CsvInstance.ExportAsync(new[] { new MailCity("a", "Halle; Saale") },
+        var (_, file) = await CsvInstance.ExportAsync(
+            new[] { new MailCity("a", "Halle; Saale") },
             s_mailCities,
             new CsvExportOptions { Delimiter = ';' },
             Token);
@@ -220,7 +229,8 @@ public sealed partial class BehaviorTests
     {
         // Act
         // WHY: The round trip of the own output is the checked contract, so export and reimport form one action.
-        var (_, file) = await CsvInstance.ExportAsync(new[] { new MailCity("a", "Halle; Saale") },
+        var (_, file) = await CsvInstance.ExportAsync(
+            new[] { new MailCity("a", "Halle; Saale") },
             s_mailCities,
             new CsvExportOptions { Delimiter = ';' },
             Token);
@@ -229,7 +239,8 @@ public sealed partial class BehaviorTests
             await CsvInstance.ImportAsync(file!, s_mailCities, new CsvImportOptions { Delimiter = ';' }, Token);
 
         // Assert
-        Assert.Equal("Halle; Saale",
+        Assert.Equal(
+            "Halle; Saale",
             Assert.Single(report.Items!)
                 .City);
     }
@@ -254,7 +265,8 @@ public sealed partial class BehaviorTests
         {
             var rows = RowMap.Create();
             rows.Add(map, e => e.KeyPrefix(ColumnKey.Create("billing")));
-            rows.Add(map,
+            rows.Add(
+                map,
                 e => e
                     .StartIndex(1)
                     .ExportKey(x => x.PostalCode, ColumnKey.Create("BILLING.POSTALCODE")));
@@ -269,12 +281,14 @@ public sealed partial class BehaviorTests
         // Arrange
         var map = TabularMap
             .For<Account>()
-            .Column(x => x.MaskedIban,
+            .Column(
+                x => x.MaskedIban,
                 index: 0,
                 configure: c => c
                     .ExportOnly()
                     .MaskExceptLast(visibleCount: 4, maskChar: '*'))
-            .Column(x => x.MaskedName,
+            .Column(
+                x => x.MaskedName,
                 index: 1,
                 configure: c => c
                     .ExportOnly()
@@ -295,9 +309,11 @@ public sealed partial class BehaviorTests
 
         Assert.Throws<TabularConfigurationException>(() => TabularMap
             .For<Account>()
-            .Column(x => x.Iban,
+            .Column(
+                x => x.Iban,
                 index: 0,
-                configure: c => c.Convert<string, string>(value => value,
+                configure: c => c.Convert<string, string>(
+                    value => value,
                     value => value,
                     configure: b => b.MaskExceptLast(visibleCount: 1, maskChar: '*')))
             .Build());

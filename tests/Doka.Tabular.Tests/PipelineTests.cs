@@ -21,7 +21,8 @@ public sealed partial class PipelineTests
         var input = new FailingAfterStream(Encoding.UTF8.GetBytes(text));
 
         // Act
-        var report = await CsvInstance.ImportAsync(input,
+        var report = await CsvInstance.ImportAsync(
+            input,
             s_numbers,
             new CsvImportOptions { Strategy = ImportStrategy.Partial },
             Token);
@@ -66,7 +67,8 @@ public sealed partial class PipelineTests
         var map = TabularMap
             .For<Holder>()
             .Column(x => x.Name, index: 0)
-            .Nested(x => x.Address,
+            .Nested(
+                x => x.Address,
                 address,
                 e => e
                     .StartIndex(1)
@@ -74,7 +76,8 @@ public sealed partial class PipelineTests
             .Build();
 
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Holder("Ada", new Address("Bonn", "53111")) },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Holder("Ada", new Address("Bonn", "53111")) },
             map,
             new MemoryStream(),
             Token);
@@ -101,7 +104,8 @@ public sealed partial class PipelineTests
             .Build();
 
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8("a,b"),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8("a,b"),
             map,
             new CsvImportOptions { Strategy = ImportStrategy.Partial },
             Token);
@@ -152,7 +156,8 @@ public sealed partial class PipelineTests
 
         var rows = RowMap.Create();
         var left = rows.Add(pair, e => e.KeyPrefix(ColumnKey.Create("left")));
-        var right = rows.Add(pair,
+        var right = rows.Add(
+            pair,
             e => e
                 .StartIndex(2)
                 .KeyPrefix(ColumnKey.Create("right")));
@@ -165,14 +170,16 @@ public sealed partial class PipelineTests
             .Build();
 
         // Act
-        var report = await Export.ExportAsync(new[] { new PairRow(new Pair("ok", "x"), new Pair("invalid", "y")) },
+        var report = await Export.ExportAsync(
+            new[] { new PairRow(new Pair("ok", "x"), new Pair("invalid", "y")) },
             export,
             TabularType.Csv,
             new TabularExportOptions { ColumnKeys = [ColumnKey.Create("left.a"), ColumnKey.Create("left.b")] },
             Token);
 
         // Assert
-        Assert.True(report.Report.Status == ReportStatus.Succeeded,
+        Assert.True(
+            report.Report.Status == ReportStatus.Succeeded,
             string.Join(" | ", report.Report.Errors.Select(error => error.Code.Value)));
     }
 
@@ -182,8 +189,10 @@ public sealed partial class PipelineTests
         // Arrange
         var map = TabularMap
             .For<Priced>()
-            .Compose(x => x.Amount,
-                c => c.Field<long>(index: 0,
+            .Compose(
+                x => x.Amount,
+                c => c.Field<long>(
+                    index: 0,
                     key: ColumnKey.Create("minor"),
                     configure: f => f.Validate(_ => false, s_rule, alsoOnExport: true)),
                 c => c.Field<string>(index: 1, key: ColumnKey.Create("currency")),
@@ -192,7 +201,8 @@ public sealed partial class PipelineTests
             .Build();
 
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Priced(new Money(100, "EUR")) },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Priced(new Money(100, "EUR")) },
             map,
             new MemoryStream(),
             Token);
@@ -207,8 +217,10 @@ public sealed partial class PipelineTests
         // Arrange
         var priced = TabularMap
             .For<Priced>()
-            .Compose(x => x.Amount,
-                c => c.Field<long>(index: 0,
+            .Compose(
+                x => x.Amount,
+                c => c.Field<long>(
+                    index: 0,
                     key: ColumnKey.Create("minor"),
                     configure: f => f.Validate(minor => minor > 0, s_rule, alsoOnExport: true)),
                 c => c.Field<string>(index: 1, key: ColumnKey.Create("currency")),
@@ -233,7 +245,8 @@ public sealed partial class PipelineTests
             Token);
 
         // Assert
-        Assert.Equal((first.FatalError ?? first.Errors.SingleOrDefault())?.Code,
+        Assert.Equal(
+            (first.FatalError ?? first.Errors.SingleOrDefault())?.Code,
             (second.FatalError ?? second.Errors.SingleOrDefault())?.Code);
     }
 
@@ -243,9 +256,11 @@ public sealed partial class PipelineTests
         // Arrange
         var inner = TabularMap
             .For<Line>()
-            .Column(x => x.Text,
+            .Column(
+                x => x.Text,
                 index: 0,
-                configure: c => c.Convert<string?, string>(text => text ?? "",
+                configure: c => c.Convert<string?, string>(
+                    text => text ?? "",
                     text => text,
                     configure: b => b.Validate(_ => false, s_rule, alsoOnExport: true)))
             .Build();
@@ -272,14 +287,16 @@ public sealed partial class PipelineTests
         Directory.CreateDirectory(directory);
         try
         {
-            var format = new ExcelFormat(new ExcelFormatOptions
-            {
-                ImportBufferBytes = 16,
-                TemporaryDirectory = directory,
-            });
+            var format = new ExcelFormat(
+                new ExcelFormatOptions
+                {
+                    ImportBufferBytes = 16,
+                    TemporaryDirectory = directory,
+                });
 
             // WHY: When the input is buffered, a directory replaces the spilled file, so its later delete fails.
-            var input = new FailingAfterStream(Workbook(false, null, ("Sheet1", [[1]]))
+            var input = new FailingAfterStream(
+                Workbook(false, null, ("Sheet1", [[1]]))
                     .ToArray(),
                 () =>
                 {
@@ -320,7 +337,8 @@ public sealed partial class PipelineTests
         var import = new TabularImport(CsvInstance);
 
         // Act
-        var report = await import.ImportAsync(TestInput.Utf8("1"),
+        var report = await import.ImportAsync(
+            TestInput.Utf8("1"),
             TabularType.Excel,
             s_numbers,
             new TabularImportOptions { MaxErrorDetails = 0 },
@@ -346,7 +364,8 @@ public sealed partial class PipelineTests
         var errors = await NegativeDetailLimitErrorsAsync(entry);
 
         // Assert
-        Assert.Equal(TabularErrorKind.Configuration,
+        Assert.Equal(
+            TabularErrorKind.Configuration,
             Assert.Single(errors)
                 .Kind);
     }
@@ -362,34 +381,41 @@ public sealed partial class PipelineTests
 
         return entry switch
         {
-            "csv import" => (await CsvInstance.ImportAsync(TestInput.Utf8("1"),
+            "csv import" => (await CsvInstance.ImportAsync(
+                TestInput.Utf8("1"),
                 s_numbers,
                 new CsvImportOptions { MaxErrorDetails = -1 },
                 Token)).Errors,
-            "excel import" => (await ExcelInstance.Format.ImportAsync(Create(TabularType.Excel, [1]),
+            "excel import" => (await ExcelInstance.Format.ImportAsync(
+                Create(TabularType.Excel, [1]),
                 s_numbers,
                 new ExcelImportOptions { MaxErrorDetails = -1 },
                 Token)).Errors,
-            "workbook import" => (await ExcelInstance.Format.ImportAsync(Create(TabularType.Excel, [1]),
+            "workbook import" => (await ExcelInstance.Format.ImportAsync(
+                Create(TabularType.Excel, [1]),
                 sheets.Build(),
                 new ExcelWorkbookImportOptions { MaxErrorDetails = -1 },
                 Token)).Errors,
-            "common import" => (await Import.ImportAsync(TestInput.Utf8("1"),
+            "common import" => (await Import.ImportAsync(
+                TestInput.Utf8("1"),
                 TabularType.Csv,
                 s_numbers,
                 new TabularImportOptions { MaxErrorDetails = -1 },
                 Token)).Errors,
-            "csv export" => (await CsvInstance.ExportAsync(new[] { new Numbered(1) },
+            "csv export" => (await CsvInstance.ExportAsync(
+                new[] { new Numbered(1) },
                 s_numbers,
                 new MemoryStream(),
                 new CsvExportOptions { MaxErrorDetails = -1 },
                 Token)).Errors,
-            "excel export" => (await ExcelInstance.Format.ExportAsync(new[] { new Numbered(1) },
+            "excel export" => (await ExcelInstance.Format.ExportAsync(
+                new[] { new Numbered(1) },
                 s_numbers,
                 new MemoryStream(),
                 new ExcelExportOptions { MaxErrorDetails = -1 },
                 Token)).Errors,
-            _ => (await ExcelInstance.Format.ExportAsync(export.Build(),
+            _ => (await ExcelInstance.Format.ExportAsync(
+                export.Build(),
                 new MemoryStream(),
                 new ExcelWorkbookExportOptions { MaxErrorDetails = -1 },
                 Token)).Errors,
@@ -419,7 +445,8 @@ public sealed partial class PipelineTests
         };
 
         // Assert
-        Assert.Equal(("The input stream is not readable.", TabularErrorKind.Configuration),
+        Assert.Equal(
+            ("The input stream is not readable.", TabularErrorKind.Configuration),
             (Assert.Single(errors)
                 .Message, errors[0].Kind));
     }
@@ -438,7 +465,8 @@ public sealed partial class PipelineTests
     public async Task EmptyPathOfTheCommonExport_IsAConfigurationReport()
     {
         // Act
-        var report = await new TabularExport(CsvInstance).ExportAsync(new[] { new Numbered(1) },
+        var report = await new TabularExport(CsvInstance).ExportAsync(
+            new[] { new Numbered(1) },
             s_numbers,
             "",
             TabularType.Csv,
@@ -461,7 +489,8 @@ public sealed partial class PipelineTests
     {
         // Act
         var errors = export
-            ? (await new TabularExport(CsvInstance).ExportAsync(new[] { new Numbered(1) },
+            ? (await new TabularExport(CsvInstance).ExportAsync(
+                new[] { new Numbered(1) },
                 s_numbers,
                 new MemoryStream(),
                 TabularType.Excel,
@@ -471,7 +500,8 @@ public sealed partial class PipelineTests
                     Excel = new ExcelExportOptions { MaxErrorDetails = inner },
                 },
                 Token)).Errors
-            : (await new TabularImport(CsvInstance).ImportAsync(TestInput.Utf8("1"),
+            : (await new TabularImport(CsvInstance).ImportAsync(
+                TestInput.Utf8("1"),
                 TabularType.Excel,
                 s_numbers,
                 new TabularImportOptions
@@ -490,7 +520,8 @@ public sealed partial class PipelineTests
     public async Task MissingFormat_HonorsTheInnerDetailLimitOfTheRequestedImportFormat()
     {
         // Act
-        var report = await new TabularImport(CsvInstance).ImportAsync(TestInput.Utf8("1"),
+        var report = await new TabularImport(CsvInstance).ImportAsync(
+            TestInput.Utf8("1"),
             TabularType.Excel,
             s_numbers,
             new TabularImportOptions
@@ -508,7 +539,8 @@ public sealed partial class PipelineTests
     public async Task MissingFormat_HonorsTheInnerDetailLimitOfTheRequestedExportFormat()
     {
         // Act
-        var report = await new TabularExport(CsvInstance).ExportAsync(new[] { new Numbered(1) },
+        var report = await new TabularExport(CsvInstance).ExportAsync(
+            new[] { new Numbered(1) },
             s_numbers,
             new MemoryStream(),
             TabularType.Excel,
@@ -532,7 +564,8 @@ public sealed partial class PipelineTests
         var text = string.Join('\n', Enumerable.Range(1, 20));
 
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8(text),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8(text),
             s_numbers,
             new CsvImportOptions
             {
@@ -555,7 +588,8 @@ public sealed partial class PipelineTests
         var text = string.Join('\n', Enumerable.Range(1, 20));
 
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8(text),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8(text),
             s_numbers,
             new CsvImportOptions
             {
@@ -578,7 +612,8 @@ public sealed partial class PipelineTests
         var text = string.Join('\n', Enumerable.Range(1, 20));
 
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8(text),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8(text),
             s_numbers,
             new CsvImportOptions
             {
@@ -599,7 +634,8 @@ public sealed partial class PipelineTests
         var key = s_numbers.Key(x => x.Number, new ThrowingComparer());
 
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8("1\n2"),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8("1\n2"),
             s_numbers,
             new CsvImportOptions
             {
@@ -609,7 +645,8 @@ public sealed partial class PipelineTests
             Token);
 
         // Assert
-        Assert.Equal((ReportStatus.Failed, TabularErrorCodes.Callback.Failed, TabularErrorKind.Technical, 2L),
+        Assert.Equal(
+            (ReportStatus.Failed, TabularErrorCodes.Callback.Failed, TabularErrorKind.Technical, 2L),
             (report.Status, report.FatalError?.Code, report.FatalError?.Kind, report.RowsRead));
 
         Assert.Empty(report.Items ?? []);
@@ -619,7 +656,8 @@ public sealed partial class PipelineTests
     public async Task DuplicateDetails_KeepTheirRelatedRowsWithinTheLimit()
     {
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8("7\n7\n7"),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8("7\n7\n7"),
             s_numbers,
             new CsvImportOptions
             {
@@ -630,7 +668,8 @@ public sealed partial class PipelineTests
 
         // Assert
         Assert.Equal((3L, 2L), (report.TotalErrorCount, report.OmittedErrorCount));
-        Assert.Equal(2,
+        Assert.Equal(
+            2,
             Assert.Single(report.Errors)
                 .RelatedLocations.Count);
 

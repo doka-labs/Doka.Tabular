@@ -65,17 +65,20 @@ public sealed class ProfileCatalogTests
             .ToHashSet();
 
         // Assert
-        Assert.Equal(Enum
+        Assert.Equal(
+            Enum
                 .GetValues<ProfileShape>()
                 .ToHashSet(),
             shapes);
 
-        Assert.Equal(Enum
+        Assert.Equal(
+            Enum
                 .GetValues<ProfileFormat>()
                 .ToHashSet(),
             formats);
 
-        Assert.Equal(Enum
+        Assert.Equal(
+            Enum
                 .GetValues<ProfileTarget>()
                 .ToHashSet(),
             targets);
@@ -96,7 +99,8 @@ public sealed class ProfileCatalogTests
 
         // Assert
         Assert.Equal((true, true, true, true), (multiSheet, selection, errors, wide));
-        Assert.Superset(new HashSet<ProfileFormat>
+        Assert.Superset(
+            new HashSet<ProfileFormat>
             {
                 ProfileFormat.Csv,
                 ProfileFormat.Xlsx,
@@ -124,7 +128,8 @@ public sealed class ProfileCatalogTests
         var parameters = All.Select(profile => profile.Parameters);
 
         // Assert
-        Assert.All(parameters,
+        Assert.All(
+            parameters,
             text => Assert.All(s_parameterNames, name => Assert.Contains(name, text, StringComparison.Ordinal)));
     }
 
@@ -132,11 +137,13 @@ public sealed class ProfileCatalogTests
     public void ReportColumns_NameParametersSizeAndVersions()
     {
         // Act
-        var values = ProfileColumn.All.ToDictionary(column => column.ColumnName,
+        var values = ProfileColumn.All.ToDictionary(
+            column => column.ColumnName,
             column => column.ValueOf(ReferenceProfile.CsvSmall));
 
         // Assert
-        Assert.Equal(["Parameters", "InputBytes", "Tabular", "RuntimeVersion", "EfCore", "SqliteProvider"],
+        Assert.Equal(
+            ["Parameters", "InputBytes", "Tabular", "RuntimeVersion", "EfCore", "SqliteProvider"],
             values.Keys);
 
         Assert.All(values.Values, value => Assert.False(string.IsNullOrWhiteSpace(value)));

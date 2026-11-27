@@ -35,7 +35,8 @@ public static class PackageReadmeExamples
             .Build();
 
         var csv = new CsvFormat(new CsvFormatOptions());
-        var report = await csv.ImportAsync(source,
+        var report = await csv.ImportAsync(
+            source,
             map,
             new CsvImportOptions { Strategy = ImportStrategy.Partial },
             cancellationToken);

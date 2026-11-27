@@ -30,7 +30,8 @@ internal sealed partial class ExportPlan<TSource>
         catch (Exception exception) when (exception is not TabularResourceException
             && Callbacks.Failed(exception, record.CallCancellation))
         {
-            error = TabularError.Create(TabularErrorCodes.Callback.Failed,
+            error = TabularError.Create(
+                TabularErrorCodes.Callback.Failed,
                 TabularErrorKind.Technical,
                 "Reading a property of the exported record threw an exception.",
                 record.Location(null));
@@ -54,7 +55,8 @@ internal sealed partial class ExportPlan<TSource>
         }
         catch (Exception exception) when (Callbacks.Failed(exception, record.CallCancellation))
         {
-            return TabularError.Create(TabularErrorCodes.Callback.Failed,
+            return TabularError.Create(
+                TabularErrorCodes.Callback.Failed,
                 TabularErrorKind.Technical,
                 "A validation rule threw an exception.",
                 record.FieldLocation(column.Field, preceding));
@@ -62,7 +64,8 @@ internal sealed partial class ExportPlan<TSource>
 
         return violated is null
             ? null
-            : TabularError.Create(violated.Code ?? TabularErrorCodes.Validation.Failed,
+            : TabularError.Create(
+                violated.Code ?? TabularErrorCodes.Validation.Failed,
                 TabularErrorKind.Data,
                 "The value violates a rule of the field.",
                 record.FieldLocation(column.Field, preceding));
@@ -110,7 +113,8 @@ internal sealed partial class ExportPlan<TSource>
             }
             catch (Exception exception) when (Callbacks.Failed(exception, record.CallCancellation))
             {
-                return TabularError.Create(TabularErrorCodes.Callback.Failed,
+                return TabularError.Create(
+                    TabularErrorCodes.Callback.Failed,
                     TabularErrorKind.Technical,
                     "A rule over several fields threw an exception.",
                     location);
@@ -118,7 +122,8 @@ internal sealed partial class ExportPlan<TSource>
 
             if (!valid)
             {
-                return TabularError.Create(rule.Rule.Code ?? TabularErrorCodes.Validation.Failed,
+                return TabularError.Create(
+                    rule.Rule.Code ?? TabularErrorCodes.Validation.Failed,
                     TabularErrorKind.Data,
                     "The values violate a rule over several fields.",
                     location);
@@ -160,14 +165,16 @@ internal sealed partial class ExportPlan<TSource>
                 return ruleError;
             }
 
-            if (!formatter.TryFormat(ValueOf(source, column),
+            if (!formatter.TryFormat(
+                ValueOf(source, column),
                 Context,
                 _text,
                 record.CallCancellation,
                 out cells[column.Position],
                 out var failure))
             {
-                return TabularError.Create(failure.Code,
+                return TabularError.Create(
+                    failure.Code,
                     KindOf(failure.Code),
                     failure.Message,
                     record.FieldLocation(column.Field, cells.AsSpan(0, column.Position)));
@@ -238,7 +245,8 @@ internal sealed partial class ExportPlan<TSource>
         }
         catch (Exception exception) when (Callbacks.Failed(exception, record.CallCancellation))
         {
-            return TabularError.Create(TabularErrorCodes.Callback.Failed,
+            return TabularError.Create(
+                TabularErrorCodes.Callback.Failed,
                 TabularErrorKind.Technical,
                 $"The write function of {group.Compose.Name} threw an exception.",
                 record.FieldLocation(column.Field, preceding));

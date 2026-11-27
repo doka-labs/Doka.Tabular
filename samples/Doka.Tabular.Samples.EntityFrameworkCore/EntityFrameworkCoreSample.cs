@@ -127,7 +127,8 @@ public static class EntityFrameworkCoreSample
 
     private static readonly TabularMap<UserDto> s_importMap = TabularMap
         .For<UserDto>()
-        .Column(x => x.PersonnelNumber,
+        .Column(
+            x => x.PersonnelNumber,
             index: 0,
             key: ColumnKey.Create("personnelNumber"),
             configure: c => c.IncludeSourceValue())
@@ -137,19 +138,22 @@ public static class EntityFrameworkCoreSample
 
     private static readonly TabularMap<UserRow> s_exportMap = TabularMap
         .For<UserRow>()
-        .Column(x => x.PersonnelNumber,
+        .Column(
+            x => x.PersonnelNumber,
             index: 0,
             key: ColumnKey.Create("personnelNumber"),
             configure: c => c
                 .Header("Personalnummer")
                 .HeaderTranslationKey("personnelNumber"))
-        .Column(x => x.Email,
+        .Column(
+            x => x.Email,
             index: 1,
             key: ColumnKey.Create("email"),
             configure: c => c
                 .Header("E-Mail")
                 .HeaderTranslationKey("email"))
-        .Column(x => x.Name,
+        .Column(
+            x => x.Name,
             index: 2,
             key: ColumnKey.Create("name"),
             configure: c => c
@@ -182,7 +186,8 @@ public static class EntityFrameworkCoreSample
     )
     {
         await using var database =
-            await SampleDatabase<AppDbContext>.StartAsync(options => new AppDbContext(options),
+            await SampleDatabase<AppDbContext>.StartAsync(
+                options => new AppDbContext(options),
                 null,
                 cancellationToken);
 
@@ -204,7 +209,8 @@ public static class EntityFrameworkCoreSample
     )
     {
         // 1. The check: an import without target. A repeated personnel number would reject all its occurrences.
-        var check = await csv.ImportAsync(Input(UsersFile),
+        var check = await csv.ImportAsync(
+            Input(UsersFile),
             s_importMap,
             new CsvImportOptions
             {
@@ -225,7 +231,8 @@ public static class EntityFrameworkCoreSample
     )
     {
         // 2. Strict upsert: the duplicate email in record 3 is a row error; nothing is stored.
-        var strict = await csv.ImportAsync(Input(UsersFile),
+        var strict = await csv.ImportAsync(
+            Input(UsersFile),
             s_importMap,
             Upsert(TabularDatabase.ForFactory(factory)),
             cancellationToken);
@@ -234,7 +241,8 @@ public static class EntityFrameworkCoreSample
             $"Strict upsert: {strict.Status}, imported {strict.RowsImported}, errors {string.Join(", ", strict.Errors.Select(error => $"{error.Code} in record {error.Location.RecordNumber}"))}");
 
         // 3. Partial upsert in commit groups of two: the other rows are stored.
-        var partial = await csv.ImportAsync(Input(UsersFile),
+        var partial = await csv.ImportAsync(
+            Input(UsersFile),
             s_importMap,
             Upsert(TabularDatabase.ForFactory(factory))
                 .WithOptions(new TabularWriteOptions { CommitGroupSize = 2 }),
@@ -293,7 +301,8 @@ public static class EntityFrameworkCoreSample
                 .OrderBy(user => user.PersonnelNumber)
                 .Select(user => new UserRow(user.PersonnelNumber, user.Email, user.Name));
 
-            var export = await csv.ExportAsync(query,
+            var export = await csv.ExportAsync(
+                query,
                 s_exportMap,
                 path,
                 new CsvExportOptions

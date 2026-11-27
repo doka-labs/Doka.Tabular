@@ -77,12 +77,14 @@ internal sealed partial class ExportRun
         var report = await CompleteJournalAsync(BuildReport(status), status)
             .ConfigureAwait(false);
 
-        _scope.Completed(report.Status,
+        _scope.Completed(
+            report.Status,
             report.IsComplete,
             report.FatalError,
             report.TotalErrorCount,
             report.OmittedErrorCount,
-            new ReportCounters(report.RowsRead,
+            new ReportCounters(
+                report.RowsRead,
                 0,
                 0,
                 0,
@@ -92,7 +94,8 @@ internal sealed partial class ExportRun
             _errors.TotalCount > 0,
             _errors.HasTechnical);
 
-        return new ExportRunResult(report,
+        return new ExportRunResult(
+            report,
             status == ReportStatus.Succeeded
                 ? _file
                 : null);
@@ -117,9 +120,11 @@ internal sealed partial class ExportRun
         }
         catch (Exception exception) when (exception is not OutOfMemoryException)
         {
-            _errors.Add(TabularError.Create(TabularErrorCodes.Persistence.WriteFailed,
-                TabularErrorKind.Technical,
-                "The final export log state could not be written."));
+            _errors.Add(
+                TabularError.Create(
+                    TabularErrorCodes.Persistence.WriteFailed,
+                    TabularErrorKind.Technical,
+                    "The final export log state could not be written."));
 
             _scope.JournalUpdateFailed();
         }
@@ -153,20 +158,23 @@ internal sealed partial class ExportRun
 
     private ExportReport BuildReport(
         ReportStatus status
-    ) => new(new ExportReportData(status,
-        _result.Success,
-        _result.RowsRead,
-        _result.RowsWritten,
-        _errors.Snapshot(),
-        _errors.TotalCount,
-        _errors.OmittedCount,
-        _errors.Fatal,
-        _pathOutput,
-        _streamOutput,
-        _fileId,
-        _scope.Diagnostics));
+    ) => new(
+        new ExportReportData(
+            status,
+            _result.Success,
+            _result.RowsRead,
+            _result.RowsWritten,
+            _errors.Snapshot(),
+            _errors.TotalCount,
+            _errors.OmittedCount,
+            _errors.Fatal,
+            _pathOutput,
+            _streamOutput,
+            _fileId,
+            _scope.Diagnostics));
 
-    private SpillBuffer CreateBuffer() => new(_limits.OutputBufferBytes,
+    private SpillBuffer CreateBuffer() => new(
+        _limits.OutputBufferBytes,
         _limits.AllowSpill,
         _files,
         "the output buffer");
@@ -188,9 +196,11 @@ internal sealed partial class ExportRun
             return;
         }
 
-        _errors.AddFatal(TabularError.Create(TabularErrorCodes.Io.Failed,
-            TabularErrorKind.Technical,
-            "An own temporary file could not be deleted."));
+        _errors.AddFatal(
+            TabularError.Create(
+                TabularErrorCodes.Io.Failed,
+                TabularErrorKind.Technical,
+                "An own temporary file could not be deleted."));
 
         _scope.CleanupFailed();
     }
@@ -222,9 +232,11 @@ internal sealed partial class ExportRun
             or ObjectDisposedException
             or NotSupportedException)
         {
-            _errors.AddFatal(TabularError.Create(TabularErrorCodes.Io.Failed,
-                TabularErrorKind.Technical,
-                "Writing the output failed."));
+            _errors.AddFatal(
+                TabularError.Create(
+                    TabularErrorCodes.Io.Failed,
+                    TabularErrorKind.Technical,
+                    "Writing the output failed."));
 
             return new ProduceResult(false, false, 0, 0);
         }

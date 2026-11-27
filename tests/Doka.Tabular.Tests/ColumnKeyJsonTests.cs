@@ -126,7 +126,8 @@ public sealed class ColumnKeyJsonTests
         var people = new[] { new Person("P-7", "ada@example.org", "Halle") };
 
         // Act
-        var (report, file) = await CsvInstance.ExportAsync(people,
+        var (report, file) = await CsvInstance.ExportAsync(
+            people,
             s_people,
             new CsvExportOptions { ColumnKeys = request.Columns },
             Token);
@@ -144,7 +145,8 @@ public sealed class ColumnKeyJsonTests
         var target = new MemoryStream();
 
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Person("P-7", "ada@example.org", "Halle") },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Person("P-7", "ada@example.org", "Halle") },
             s_people,
             target,
             new CsvExportOptions { ColumnKeys = request.Columns },

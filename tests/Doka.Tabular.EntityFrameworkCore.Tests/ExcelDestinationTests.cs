@@ -31,7 +31,8 @@ public sealed class ExcelDestinationTests
         file.Position = 0;
         var returned = await excel.ImportAsync(file, TestMaps.Users, Token);
         file.Position = 0;
-        var stored = await excel.ImportAsync(file,
+        var stored = await excel.ImportAsync(
+            file,
             TestMaps.Users,
             TestMaps.Upsert(TabularDatabase.ForContext(context)),
             Token);
@@ -39,7 +40,8 @@ public sealed class ExcelDestinationTests
         // Assert
         Assert.Equal(users, returned.Items);
         Assert.Equal((ReportStatus.Succeeded, 2L), (stored.Status, stored.RowsImported));
-        Assert.Equal(users.Select(user => (user.PersonnelNumber, user.Email, user.Name)),
+        Assert.Equal(
+            users.Select(user => (user.PersonnelNumber, user.Email, user.Name)),
             await context
                 .Users
                 .OrderBy(user => user.PersonnelNumber)

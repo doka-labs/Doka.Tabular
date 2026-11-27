@@ -32,13 +32,15 @@ public sealed class CommitOutcomeTests
             await setup.Database.EnsureCreatedAsync(Token);
         }
 
-        await using var context = new TabularTestContext(new DbContextOptionsBuilder<TabularTestContext>()
-            .UseSqlite(connection)
-            .AddInterceptors(new ThrowAfterCommit(databaseError))
-            .Options);
+        await using var context = new TabularTestContext(
+            new DbContextOptionsBuilder<TabularTestContext>()
+                .UseSqlite(connection)
+                .AddInterceptors(new ThrowAfterCommit(databaseError))
+                .Options);
 
         // Act
-        var report = await new CsvFormat(new CsvFormatOptions()).ImportAsync(TestMaps.Csv("1,a@example.org,Ada"),
+        var report = await new CsvFormat(new CsvFormatOptions()).ImportAsync(
+            TestMaps.Csv("1,a@example.org,Ada"),
             TestMaps.Users,
             TestMaps.Upsert(TabularDatabase.ForContext(context)),
             Token);
@@ -70,13 +72,15 @@ public sealed class CommitOutcomeTests
         }
 
         using var cancellation = new CancellationTokenSource();
-        await using var context = new TabularTestContext(new DbContextOptionsBuilder<TabularTestContext>()
-            .UseSqlite(connection)
-            .AddInterceptors(new CancelAfterSave(cancellation))
-            .Options);
+        await using var context = new TabularTestContext(
+            new DbContextOptionsBuilder<TabularTestContext>()
+                .UseSqlite(connection)
+                .AddInterceptors(new CancelAfterSave(cancellation))
+                .Options);
 
         // Act
-        var report = await new CsvFormat(new CsvFormatOptions()).ImportAsync(TestMaps.Csv("1,a@example.org,Ada"),
+        var report = await new CsvFormat(new CsvFormatOptions()).ImportAsync(
+            TestMaps.Csv("1,a@example.org,Ada"),
             TestMaps.Users,
             TestMaps.Upsert(TabularDatabase.ForContext(context)),
             new CsvImportOptions { Strategy = strategy },
@@ -108,7 +112,8 @@ public sealed class CommitOutcomeTests
         await using var context = new TabularTestContext(options);
         var target = TabularDatabase
             .ForContext(context)
-            .PrepareUpsert<UserDto, User>(set: users => users.Users,
+            .PrepareUpsert<UserDto, User>(
+                set: users => users.Users,
                 match: TestMaps.UserMatch,
                 create: dto =>
                 {
@@ -160,21 +165,24 @@ public sealed class CommitOutcomeTests
         await using var context = new TabularTestContext(options);
         var target = TabularDatabase
             .ForContext(context)
-            .PrepareUpsert(set: users => users.Users,
+            .PrepareUpsert(
+                set: users => users.Users,
                 match: TestMaps.UserMatch,
                 create: _ => throw new OperationCanceledException(),
                 update: (_, _) => { },
                 errors: errors => errors.Expect<OperationCanceledException>(code));
 
         // Act
-        var report = await new CsvFormat(new CsvFormatOptions()).ImportAsync(TestMaps.Csv("1,a@example.org,Ada"),
+        var report = await new CsvFormat(new CsvFormatOptions()).ImportAsync(
+            TestMaps.Csv("1,a@example.org,Ada"),
             TestMaps.Users,
             target,
             new CsvImportOptions { Strategy = ImportStrategy.Partial },
             Token);
 
         // Assert
-        Assert.Equal(code,
+        Assert.Equal(
+            code,
             Assert.Single(report.Errors)
                 .Code);
     }
@@ -194,13 +202,15 @@ public sealed class CommitOutcomeTests
             await setup.Database.EnsureCreatedAsync(Token);
         }
 
-        await using var context = new TabularTestContext(new DbContextOptionsBuilder<TabularTestContext>()
-            .UseSqlite(connection)
-            .AddInterceptors(new RejectCommit())
-            .Options);
+        await using var context = new TabularTestContext(
+            new DbContextOptionsBuilder<TabularTestContext>()
+                .UseSqlite(connection)
+                .AddInterceptors(new RejectCommit())
+                .Options);
 
         // Act
-        var report = await new CsvFormat(new CsvFormatOptions()).ImportAsync(TestMaps.Csv("1,a@example.org,Ada"),
+        var report = await new CsvFormat(new CsvFormatOptions()).ImportAsync(
+            TestMaps.Csv("1,a@example.org,Ada"),
             TestMaps.Users,
             TestMaps.Upsert(TabularDatabase.ForContext(context)),
             Token);
@@ -236,7 +246,8 @@ public sealed class CommitOutcomeTests
         await using var context = new TabularTestContext(builder.Options);
 
         // Act
-        var report = await new CsvFormat(new CsvFormatOptions()).ImportAsync(TestMaps.Csv("1,a@example.org,Ada"),
+        var report = await new CsvFormat(new CsvFormatOptions()).ImportAsync(
+            TestMaps.Csv("1,a@example.org,Ada"),
             TestMaps.Users,
             TestMaps.Upsert(TabularDatabase.ForContext(context)),
             Token);
@@ -271,13 +282,15 @@ public sealed class CommitOutcomeTests
         await using var context = new TabularTestContext(builder.Options);
 
         // Act
-        var report = await new CsvFormat(new CsvFormatOptions()).ImportAsync(TestMaps.Csv("1,a@example.org,Ada"),
+        var report = await new CsvFormat(new CsvFormatOptions()).ImportAsync(
+            TestMaps.Csv("1,a@example.org,Ada"),
             TestMaps.Users,
             TestMaps.Upsert(TabularDatabase.ForContext(context)),
             Token);
 
         // Assert
-        Assert.Equal((TabularErrorCodes.Persistence.CommitUnknown, 1L),
+        Assert.Equal(
+            (TabularErrorCodes.Persistence.CommitUnknown, 1L),
             (report.FatalError?.Code, report.RowsUncertain));
     }
 
@@ -296,10 +309,11 @@ public sealed class CommitOutcomeTests
             await setup.Database.EnsureCreatedAsync(Token);
         }
 
-        await using var context = new TabularTestContext(new DbContextOptionsBuilder<TabularTestContext>()
-            .UseSqlite(connection)
-            .ReplaceService<IRelationalTransactionFactory, ThrowingReleaseFactory>()
-            .Options);
+        await using var context = new TabularTestContext(
+            new DbContextOptionsBuilder<TabularTestContext>()
+                .UseSqlite(connection)
+                .ReplaceService<IRelationalTransactionFactory, ThrowingReleaseFactory>()
+                .Options);
 
         var target = TestMaps.Upsert(TabularDatabase.ForContext(context));
         var sheets = ExcelImport.Create();
@@ -309,7 +323,8 @@ public sealed class CommitOutcomeTests
         var excel = new ExcelFormat(new ExcelFormatOptions());
 
         // Act
-        var report = await excel.ImportAsync(await WorkbookAsync(excel),
+        var report = await excel.ImportAsync(
+            await WorkbookAsync(excel),
             sheets.Build(),
             new ExcelWorkbookImportOptions { Strategy = ImportStrategy.Strict },
             Token);
@@ -375,7 +390,8 @@ public sealed class CommitOutcomeTests
             Guid transactionId,
             IDiagnosticsLogger<DbLoggerCategory.Database.Transaction> logger,
             bool transactionOwned
-        ) => new ThrowingReleaseTransaction(connection,
+        ) => new ThrowingReleaseTransaction(
+            connection,
             transaction,
             transactionId,
             logger,

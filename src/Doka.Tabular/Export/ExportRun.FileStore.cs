@@ -101,7 +101,9 @@ internal sealed partial class ExportRun
             }
 
             _journal = await hook
-                .StartAsync(new ExportJournalStart(_scope.OperationId,
+                .StartAsync(
+                    new ExportJournalStart(
+                        _scope.OperationId,
                         target.FileName,
                         _formatName,
                         target.Retention,
@@ -115,9 +117,11 @@ internal sealed partial class ExportRun
             }
 
             // WHY: The entry exists; the export stops but still ends it and runs its completion.
-            _errors.AddFatal(TabularError.Create(TabularErrorCodes.Persistence.OperationFailed,
-                TabularErrorKind.Technical,
-                "The context of the export log could not be released after the start."));
+            _errors.AddFatal(
+                TabularError.Create(
+                    TabularErrorCodes.Persistence.OperationFailed,
+                    TabularErrorKind.Technical,
+                    "The context of the export log could not be released after the start."));
 
             _scope.JournalUpdateFailed();
 
@@ -131,9 +135,11 @@ internal sealed partial class ExportRun
         }
         catch (Exception exception) when (exception is not OutOfMemoryException)
         {
-            _errors.AddFatal(TabularError.Create(TabularErrorCodes.Persistence.WriteFailed,
-                TabularErrorKind.Technical,
-                "The export log could not be started."));
+            _errors.AddFatal(
+                TabularError.Create(
+                    TabularErrorCodes.Persistence.WriteFailed,
+                    TabularErrorKind.Technical,
+                    "The export log could not be started."));
 
             _scope.JournalUpdateFailed();
 
@@ -158,12 +164,14 @@ internal sealed partial class ExportRun
             .CompleteAsync(_cancellationToken)
             .ConfigureAwait(false);
 
-        var hash = Sha256Hash.FromBytes(await SHA256
-            .HashDataAsync(view, _cancellationToken)
-            .ConfigureAwait(false));
+        var hash = Sha256Hash.FromBytes(
+            await SHA256
+                .HashDataAsync(view, _cancellationToken)
+                .ConfigureAwait(false));
 
         view.Position = 0;
-        var request = new TabularFileWriteRequest(_journal?.ExportId ?? Guid.NewGuid(),
+        var request = new TabularFileWriteRequest(
+            _journal?.ExportId ?? Guid.NewGuid(),
             target.FileName,
             _contentType,
             view.Length,
@@ -257,7 +265,8 @@ internal sealed partial class ExportRun
             return stored;
         }
 
-        Fail(TabularErrorCodes.Callback.InvalidResult,
+        Fail(
+            TabularErrorCodes.Callback.InvalidResult,
             "The storage adapter returned metadata that does not match the file.");
 
         return null;
@@ -280,7 +289,8 @@ internal sealed partial class ExportRun
         }
         catch (Exception exception) when (exception is not OutOfMemoryException)
         {
-            Fail(TabularErrorCodes.Persistence.WriteFailed,
+            Fail(
+                TabularErrorCodes.Persistence.WriteFailed,
                 "The export log could not be set to Ready; the stored file remains.");
 
             _scope.JournalUpdateFailed();

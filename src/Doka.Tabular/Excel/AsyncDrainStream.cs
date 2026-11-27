@@ -49,7 +49,8 @@ internal sealed class AsyncDrainStream : Stream
         }
 
         await _output
-            .WriteAsync(_pending
+            .WriteAsync(
+                _pending
                     .GetBuffer()
                     .AsMemory(0, (int)_pending.Length),
                 cancellationToken)

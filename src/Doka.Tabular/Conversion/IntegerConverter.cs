@@ -30,7 +30,8 @@ internal sealed class IntegerConverter<TInteger> : ValueConverter<TInteger>
         if (parsed.HadDecimalPoint
             && !settings.AllowDecimalPoint)
         {
-            return Fail(ConversionFailure.InvalidFormat("A decimal point is not allowed for an integer field."),
+            return Fail(
+                ConversionFailure.InvalidFormat("A decimal point is not allowed for an integer field."),
                 out value,
                 out failure);
         }
@@ -55,7 +56,8 @@ internal sealed class IntegerConverter<TInteger> : ValueConverter<TInteger>
 
         if (!double.IsFinite(cell.Number))
         {
-            return Fail(ConversionFailure.Unsupported("The cell does not contain a finite number."),
+            return Fail(
+                ConversionFailure.Unsupported("The cell does not contain a finite number."),
                 out value,
                 out failure);
         }
@@ -145,7 +147,8 @@ internal sealed class IntegerConverter<TInteger> : ValueConverter<TInteger>
         {
             return magnitude <= s_maxMagnitude
                 ? Read(TInteger.CreateChecked(magnitude), out value, out failure)
-                : Fail(ConversionFailure.OutOfRange("The value is outside the range of the target type."),
+                : Fail(
+                    ConversionFailure.OutOfRange("The value is outside the range of the target type."),
                     out value,
                     out failure);
         }
@@ -155,7 +158,8 @@ internal sealed class IntegerConverter<TInteger> : ValueConverter<TInteger>
 
         return signed >= s_minSigned
             ? Read(TInteger.CreateChecked(signed), out value, out failure)
-            : Fail(ConversionFailure.OutOfRange("The value is outside the range of the target type."),
+            : Fail(
+                ConversionFailure.OutOfRange("The value is outside the range of the target type."),
                 out value,
                 out failure);
     }
@@ -174,7 +178,8 @@ internal sealed class IntegerConverter<TInteger> : ValueConverter<TInteger>
         var integer = exact.ToBigIntegerExact();
 
         return integer < s_min || integer > s_max
-            ? Fail(ConversionFailure.OutOfRange("The value is outside the range of the target type."),
+            ? Fail(
+                ConversionFailure.OutOfRange("The value is outside the range of the target type."),
                 out value,
                 out failure)
             : Read(TInteger.CreateChecked(integer), out value, out failure);

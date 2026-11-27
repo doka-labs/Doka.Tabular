@@ -102,7 +102,8 @@ internal sealed partial class WriteSession
         catch (Exception exception) when (exception is not OutOfMemoryException)
         {
             _transaction = null;
-            result.Fatal ??= TabularError.Create(TabularErrorCodes.Persistence.OperationFailed,
+            result.Fatal ??= TabularError.Create(
+                TabularErrorCodes.Persistence.OperationFailed,
                 TabularErrorKind.Technical,
                 "The transaction could not be released after its commit; the committed rows stay.");
 
@@ -123,7 +124,8 @@ internal sealed partial class WriteSession
                 && _tentativeImported + group.Count(entry => !entry.Skipped) > 0)
             {
                 await Evidence
-                    .RecordAsync(Context!,
+                    .RecordAsync(
+                        Context!,
                         result.RowsImported + _tentativeImported + group.Count(entry => !entry.Skipped),
                         CancellationToken.None)
                     .ConfigureAwait(false);
@@ -133,7 +135,8 @@ internal sealed partial class WriteSession
         }
         catch (ClaimLostException lost)
         {
-            return TabularError.Create(TabularErrorCodes.Persistence.Conflict,
+            return TabularError.Create(
+                TabularErrorCodes.Persistence.Conflict,
                 TabularErrorKind.Technical,
                 lost.Message);
         }
@@ -141,7 +144,8 @@ internal sealed partial class WriteSession
         // WHY: EF passes exceptions of interceptors and providers through unchanged; any of them fails the evidence.
         catch (Exception exception) when (exception is not OutOfMemoryException)
         {
-            return TabularError.Create(TabularErrorCodes.Persistence.WriteFailed,
+            return TabularError.Create(
+                TabularErrorCodes.Persistence.WriteFailed,
                 TabularErrorKind.Technical,
                 "The import log evidence could not be written.");
         }
@@ -159,7 +163,8 @@ internal sealed partial class WriteSession
         CommitUnknown = true;
         result.Uncertain = true;
         result.RowsUncertain += group.Count;
-        result.Fatal = TabularError.Create(TabularErrorCodes.Persistence.CommitUnknown,
+        result.Fatal = TabularError.Create(
+            TabularErrorCodes.Persistence.CommitUnknown,
             TabularErrorKind.Technical,
             "The outcome of a commit is unknown; clarify the state before repeating the import.");
 
@@ -241,7 +246,8 @@ internal sealed partial class WriteSession
         // unconfirmed.
         catch (Exception exception) when (exception is not OutOfMemoryException)
         {
-            result.Fatal ??= TabularError.Create(TabularErrorCodes.Persistence.RollbackUnknown,
+            result.Fatal ??= TabularError.Create(
+                TabularErrorCodes.Persistence.RollbackUnknown,
                 TabularErrorKind.Technical,
                 "The rollback was not confirmed.");
 

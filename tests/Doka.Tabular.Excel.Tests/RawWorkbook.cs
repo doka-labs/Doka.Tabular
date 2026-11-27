@@ -36,12 +36,14 @@ internal static class RawWorkbook
         if (styles is not null)
         {
             parts["[Content_Types].xml"] = parts["[Content_Types].xml"]
-                .Replace("</Types>",
+                .Replace(
+                    "</Types>",
                     """<Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>""",
                     StringComparison.Ordinal);
 
             parts["xl/_rels/workbook.xml.rels"] = parts["xl/_rels/workbook.xml.rels"]
-                .Replace("</Relationships>",
+                .Replace(
+                    "</Relationships>",
                     """<Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>""",
                     StringComparison.Ordinal);
 
@@ -62,9 +64,10 @@ internal static class RawWorkbook
         {
             foreach (var (name, content) in parts)
             {
-                using var writer = new StreamWriter(archive
-                    .CreateEntry(name, level)
-                    .Open());
+                using var writer = new StreamWriter(
+                    archive
+                        .CreateEntry(name, level)
+                        .Open());
 
                 writer.Write(content);
             }

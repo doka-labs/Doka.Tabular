@@ -69,7 +69,8 @@ public sealed partial class JournalWindowTests
         {
             var sheets = ExcelImport.Create();
             sheets.Add(TabularSheetName.Create("First"), TestMaps.Users, target);
-            kind = (await new ExcelFormat(new ExcelFormatOptions()).ImportAsync(new WriteOnlyStream(),
+            kind = (await new ExcelFormat(new ExcelFormatOptions()).ImportAsync(
+                new WriteOnlyStream(),
                 sheets.Build(),
                 Token)).Errors[0].Kind;
         }
@@ -81,7 +82,8 @@ public sealed partial class JournalWindowTests
         // Assert
         await using var check = await database.PlainContextAsync();
         Assert.Equal(TabularErrorKind.Configuration, kind);
-        Assert.Equal(0,
+        Assert.Equal(
+            0,
             await journal
                 .QueryImports(check)
                 .CountAsync(Token));
@@ -99,7 +101,8 @@ public sealed partial class JournalWindowTests
         var second = Insert(data)
             .WithImportLog(journal, new TabularImportLogOptions { Scope = s_scope });
 
-        var file = await WorkbookAsync([new UserDto(1, "a@example.org", "Ada")],
+        var file = await WorkbookAsync(
+            [new UserDto(1, "a@example.org", "Ada")],
             [new UserDto(2, "b@example.org", "Bob")]);
 
         var sheets = ExcelImport.Create();
@@ -107,7 +110,8 @@ public sealed partial class JournalWindowTests
         sheets.Add(TabularSheetName.Create("Second"), TestMaps.Users, second);
 
         // Act
-        var report = await new ExcelFormat(new ExcelFormatOptions()).ImportAsync(file,
+        var report = await new ExcelFormat(new ExcelFormatOptions()).ImportAsync(
+            file,
             sheets.Build(),
             new ExcelWorkbookImportOptions { Strategy = ImportStrategy.Strict },
             Token);
@@ -190,7 +194,8 @@ public sealed partial class JournalWindowTests
         bool? released = null;
         var target = TestMaps
             .Upsert(TabularDatabase.ForFactory(data))
-            .WithImportLog(TabularJournal.ForFactory(database.Plain),
+            .WithImportLog(
+                TabularJournal.ForFactory(database.Plain),
                 new TabularImportLogOptions
                 {
                     Scope = s_scope,
@@ -226,7 +231,8 @@ public sealed partial class JournalWindowTests
         var finished = false;
         var target = TabularFileTarget
             .To(new MemoryFileStore(), "users.csv")
-            .WithExportLog(journal,
+            .WithExportLog(
+                journal,
                 new TabularExportLogOptions
                 {
                     Scope = s_scope,
@@ -254,7 +260,8 @@ public sealed partial class JournalWindowTests
 
         // Act
         // WHY: The held completion function and its release are one concurrency scenario.
-        var export = format.ExportAsync(new[] { new UserDto(1, "a@example.org", "Ada") },
+        var export = format.ExportAsync(
+            new[] { new UserDto(1, "a@example.org", "Ada") },
             TestMaps.Users,
             target,
             Token);
@@ -269,7 +276,8 @@ public sealed partial class JournalWindowTests
         // Assert
         Assert.False(returnedWhileHeld);
         Assert.True(finished);
-        Assert.Equal(TabularErrorCodes.Callback.Failed,
+        Assert.Equal(
+            TabularErrorCodes.Callback.Failed,
             Assert.Single(report.Errors)
                 .Code);
     }
@@ -287,7 +295,8 @@ public sealed partial class JournalWindowTests
 
         // Act
         // WHY: The deletion during the storing and the end of the export are one concurrency scenario.
-        var export = s_csv.ExportAsync(new[] { new UserDto(1, "a@example.org", "Ada") },
+        var export = s_csv.ExportAsync(
+            new[] { new UserDto(1, "a@example.org", "Ada") },
             TestMaps.Users,
             target,
             Token);
@@ -316,11 +325,13 @@ public sealed partial class JournalWindowTests
         var completed = false;
         var target = TabularDatabase
             .ForFactory(new ThrowingDisposeFactory(database.ConnectionString))
-            .PrepareUpsert<UserDto, User>(set: context => context.Users,
+            .PrepareUpsert<UserDto, User>(
+                set: context => context.Users,
                 match: TestMaps.UserMatch,
                 create: dto => User.Create(dto.PersonnelNumber, dto.Email, dto.Name),
                 update: (_, _) => { })
-            .WithImportLog(TabularJournal.ForFactory(database.Plain),
+            .WithImportLog(
+                TabularJournal.ForFactory(database.Plain),
                 new TabularImportLogOptions
                 {
                     Scope = s_scope,
@@ -385,7 +396,8 @@ public sealed partial class JournalWindowTests
         var plain = TabularJournal.ForFactory(database.Plain);
 
         // Act
-        var allowed = await plain.DeleteExportAsync(logId,
+        var allowed = await plain.DeleteExportAsync(
+            logId,
             store,
             new ExportDeletionOptions { AllowUnfinished = true },
             Token);
@@ -402,7 +414,8 @@ public sealed partial class JournalWindowTests
         await using var database = await FileDatabase.CreateAsync(new FailExportLogEnd());
         var (store, logId) = await ExportThroughTheHookedJournalAsync(database);
         var plain = TabularJournal.ForFactory(database.Plain);
-        await plain.DeleteExportAsync(logId,
+        await plain.DeleteExportAsync(
+            logId,
             store,
             new ExportDeletionOptions { AllowUnfinished = true },
             Token);
@@ -509,7 +522,8 @@ public sealed partial class JournalWindowTests
         IDbContextFactory<TabularTestContext> data,
         TabularJournal journal,
         string csv
-    ) => s_csv.ImportAsync(TestMaps.Csv(csv),
+    ) => s_csv.ImportAsync(
+        TestMaps.Csv(csv),
         TestMaps.Users,
         TestMaps
             .Upsert(TabularDatabase.ForFactory(data))
@@ -519,7 +533,8 @@ public sealed partial class JournalWindowTests
 
     private static TabularWriteTarget<UserDto, User> Insert(
         TabularDatabase<TabularTestContext> data
-    ) => data.PrepareInsert<UserDto, User>(set: context => context.Users,
+    ) => data.PrepareInsert<UserDto, User>(
+        set: context => context.Users,
         create: dto => User.Create(dto.PersonnelNumber, dto.Email, dto.Name),
         match: TestMaps.UserMatch);
 
@@ -580,7 +595,8 @@ public sealed partial class JournalWindowTests
             params IInterceptor[] interceptors
         )
         {
-            var database = new FileDatabase(Path.Combine(Path.GetTempPath(), $"tabular-{Guid.NewGuid():N}.db"),
+            var database = new FileDatabase(
+                Path.Combine(Path.GetTempPath(), $"tabular-{Guid.NewGuid():N}.db"),
                 interceptors);
 
             await using var context = await database.PlainContextAsync();
@@ -622,10 +638,11 @@ public sealed partial class JournalWindowTests
         }
 
         // WHY: The journal gate writes its claim through the data context, so the journal belongs to its model.
-        public ThrowingDisposeContext CreateDbContext() => new(new DbContextOptionsBuilder<ThrowingDisposeContext>()
-            .UseSqlite(_connectionString)
-            .UseTabularJournal()
-            .Options);
+        public ThrowingDisposeContext CreateDbContext() => new(
+            new DbContextOptionsBuilder<ThrowingDisposeContext>()
+                .UseSqlite(_connectionString)
+                .UseTabularJournal()
+                .Options);
     }
 
     private sealed class ThrowingDisposeContext : DbContext
@@ -819,7 +836,8 @@ public sealed partial class JournalWindowTests
             await TabularJournal
                 .ForFactory(_other)
                 .QueryImportClaims(other)
-                .ExecuteUpdateAsync(setters => setters
+                .ExecuteUpdateAsync(
+                    setters => setters
                         .SetProperty(claim => claim.CurrentImportId, Guid.NewGuid())
                         .SetProperty(claim => EF.Property<Guid>(claim, "Version"), Guid.NewGuid()),
                     cancellationToken);

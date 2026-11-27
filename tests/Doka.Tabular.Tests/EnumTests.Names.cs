@@ -83,14 +83,16 @@ public sealed partial class EnumTests
     public async Task KeyFunctionOfANormalEnum_IsAskedOnlyForTheDeclaredValuesOnImport()
     {
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8("1,Down"),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8("1,Down"),
             s_declaredKeys,
             new CsvImportOptions { Translations = s_upDown },
             Token);
 
         // Assert
         Assert.Equal(ReportStatus.Succeeded, report.Status);
-        Assert.Equal(OrderBy.Descending,
+        Assert.Equal(
+            OrderBy.Descending,
             Assert.Single(report.Items!)
                 .Item);
     }
@@ -99,7 +101,8 @@ public sealed partial class EnumTests
     public async Task KeyFunctionOfANormalEnum_IsAskedOnlyForTheDeclaredValuesOnExport()
     {
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Value<OrderBy>(1, OrderBy.Ascending) },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Value<OrderBy>(1, OrderBy.Ascending) },
             s_declaredKeys,
             new MemoryStream(),
             new CsvExportOptions { Translations = s_upDown },
@@ -113,9 +116,10 @@ public sealed partial class EnumTests
     public void CollidingTexts_NameBothValues()
     {
         // Act
-        var error = Assert.Single(Assert
-            .Throws<TabularConfigurationException>(() => Map<Colliding>())
-            .Errors);
+        var error = Assert.Single(
+            Assert
+                .Throws<TabularConfigurationException>(() => Map<Colliding>())
+                .Errors);
 
         // Assert
         Assert.Contains("Active and Enabled", error.Message, StringComparison.Ordinal);
@@ -128,9 +132,10 @@ public sealed partial class EnumTests
         var exception = Record.Exception(() => Map<Numbered>(c => c.AllowNumericInput()));
 
         // Assert
-        var message = Assert.Single(Assert
-                .IsType<TabularConfigurationException>(exception)
-                .Errors)
+        var message = Assert.Single(
+                Assert
+                    .IsType<TabularConfigurationException>(exception)
+                    .Errors)
             .Message;
 
         Assert.Contains("Draft", message, StringComparison.Ordinal);
@@ -144,9 +149,10 @@ public sealed partial class EnumTests
         var exception = Record.Exception(() => Map<FarNumbered>(c => c.AllowNumericInput()));
 
         // Assert
-        var message = Assert.Single(Assert
-                .IsType<TabularConfigurationException>(exception)
-                .Errors)
+        var message = Assert.Single(
+                Assert
+                    .IsType<TabularConfigurationException>(exception)
+                    .Errors)
             .Message;
 
         Assert.Contains("7", message, StringComparison.Ordinal);

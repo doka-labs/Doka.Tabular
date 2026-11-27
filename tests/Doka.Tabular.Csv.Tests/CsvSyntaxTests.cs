@@ -45,7 +45,8 @@ public sealed class CsvSyntaxTests
         // Assert
         Assert.Equal(ReportStatus.Succeeded, export.Status);
         Assert.Equal(value, text);
-        Assert.Equal(value,
+        Assert.Equal(
+            value,
             Assert.Single(import.Items!)
                 .Value);
     }
@@ -69,7 +70,8 @@ public sealed class CsvSyntaxTests
     {
         // Act
         // WHY: The round trip of the own output is the checked contract, so export and reimport form one action.
-        var (_, file) = await s_format.ExportAsync(new[] { new Two("a;b", "c,d") },
+        var (_, file) = await s_format.ExportAsync(
+            new[] { new Two("a;b", "c,d") },
             s_two,
             new CsvExportOptions { Delimiter = ';' },
             Token);
@@ -112,7 +114,8 @@ public sealed class CsvSyntaxTests
     )
     {
         // Act
-        var report = await s_format.ImportAsync(TestInput.Utf8(text),
+        var report = await s_format.ImportAsync(
+            TestInput.Utf8(text),
             s_one,
             new CsvImportOptions { RequireCrLf = requireCrLf },
             Token);
@@ -126,7 +129,8 @@ public sealed class CsvSyntaxTests
     public async Task RecordBoundaries_SingleLfWithCrLfRequired_IsAParserError()
     {
         // Act
-        var report = await s_format.ImportAsync(TestInput.Utf8("Ada\nBob"),
+        var report = await s_format.ImportAsync(
+            TestInput.Utf8("Ada\nBob"),
             s_one,
             new CsvImportOptions { RequireCrLf = true },
             Token);
@@ -159,7 +163,8 @@ public sealed class CsvSyntaxTests
             .ToArray();
 
         // Act
-        var report = await s_format.ImportAsync(TestInput.Utf8(string.Join("\n", lines)),
+        var report = await s_format.ImportAsync(
+            TestInput.Utf8(string.Join("\n", lines)),
             s_three,
             new CsvImportOptions
             {
@@ -189,7 +194,8 @@ public sealed class CsvSyntaxTests
             .ToArray();
 
         // Act
-        var report = await s_format.ImportAsync(TestInput.Utf8(string.Join("\n", lines)),
+        var report = await s_format.ImportAsync(
+            TestInput.Utf8(string.Join("\n", lines)),
             s_three,
             new CsvImportOptions
             {
@@ -202,7 +208,8 @@ public sealed class CsvSyntaxTests
         // Assert
         Assert.Equal(ReportStatus.CompletedWithErrors, report.Status);
         Assert.Equal(4999, report.Items!.Count);
-        Assert.Equal(100,
+        Assert.Equal(
+            100,
             Assert.Single(report.Errors)
                 .Location.RowNumber);
     }
@@ -211,7 +218,8 @@ public sealed class CsvSyntaxTests
     public async Task QuotedLineBreak_WithoutLineBreaksInFields_IsARowErrorAndTheNextLineIsARecord()
     {
         // Act
-        var report = await s_format.ImportAsync(TestInput.Utf8("\"Ada\nLovelace\";1"),
+        var report = await s_format.ImportAsync(
+            TestInput.Utf8("\"Ada\nLovelace\";1"),
             s_two,
             new CsvImportOptions
             {
@@ -237,7 +245,8 @@ public sealed class CsvSyntaxTests
     )
     {
         // Act
-        var report = await s_format.ImportAsync(TestInput.Utf8("Ada\n\nBob"),
+        var report = await s_format.ImportAsync(
+            TestInput.Utf8("Ada\n\nBob"),
             s_one,
             new CsvImportOptions { EmptyLinesAsRecords = asRecords },
             Token);
@@ -252,19 +261,22 @@ public sealed class CsvSyntaxTests
         // Arrange
         var map = TabularMap
             .For<One>()
-            .Column(x => x.Value,
+            .Column(
+                x => x.Value,
                 index: 0,
                 configure: c => c.Validate(value => value != "Bob", code: TabularErrorCode.Create("test.bob")))
             .Build();
 
         // Act
-        var report = await s_format.ImportAsync(TestInput.Utf8("Ada\n\nBob"),
+        var report = await s_format.ImportAsync(
+            TestInput.Utf8("Ada\n\nBob"),
             map,
             new CsvImportOptions { Strategy = ImportStrategy.Partial },
             Token);
 
         // Assert
-        Assert.Equal(3,
+        Assert.Equal(
+            3,
             Assert.Single(report.Errors)
                 .Location.RowNumber);
     }
@@ -287,7 +299,8 @@ public sealed class CsvSyntaxTests
             .Build();
 
         // Act
-        var report = await s_format.ImportAsync(TestInput.Utf8(csv),
+        var report = await s_format.ImportAsync(
+            TestInput.Utf8(csv),
             map,
             new CsvImportOptions { Strategy = ImportStrategy.Partial },
             Token);
@@ -296,7 +309,8 @@ public sealed class CsvSyntaxTests
         var location = Assert.Single(report.Errors)
             .Location;
 
-        Assert.Equal((rowNumber, recordNumber, 1),
+        Assert.Equal(
+            (rowNumber, recordNumber, 1),
             (location.RowNumber!.Value, location.RecordNumber!.Value,
                 location.ColumnIndex!.Value));
     }
@@ -309,14 +323,16 @@ public sealed class CsvSyntaxTests
     )
     {
         // Act
-        var report = await s_format.ImportAsync(TestInput.Utf8(csv),
+        var report = await s_format.ImportAsync(
+            TestInput.Utf8(csv),
             s_two,
             new CsvImportOptions { Strategy = ImportStrategy.Partial },
             Token);
 
         // Assert
         var error = Assert.Single(report.Errors);
-        Assert.Equal((TabularErrorCodes.Parsing.InvalidSyntax, 2L, 1),
+        Assert.Equal(
+            (TabularErrorCodes.Parsing.InvalidSyntax, 2L, 1),
             (error.Code, error.Location.RowNumber!.Value, error.Location.ColumnIndex!.Value));
     }
 
@@ -331,16 +347,19 @@ public sealed class CsvSyntaxTests
         // Arrange
         var map = TabularMap
             .For<Two>()
-            .Column(x => x.First,
+            .Column(
+                x => x.First,
                 index: 0,
-                configure: c => c.Header(multilineHeader
-                    ? "A\nB"
-                    : "A"))
+                configure: c => c.Header(
+                    multilineHeader
+                        ? "A\nB"
+                        : "A"))
             .Column(x => x.Second, index: 1, configure: c => c.Header("C"))
             .Build();
 
         // Act
-        var report = await s_format.ExportAsync(new[] { new Two("a\nb", "1"), new Two("c\r\nd", "\u674E") },
+        var report = await s_format.ExportAsync(
+            new[] { new Two("a\nb", "1"), new Two("c\r\nd", "\u674E") },
             map,
             new MemoryStream(),
             new CsvExportOptions
@@ -352,7 +371,8 @@ public sealed class CsvSyntaxTests
 
         // Assert
         var location = (report.FatalError ?? Assert.Single(report.Errors)).Location;
-        Assert.Equal((rowNumber, 2L, 1),
+        Assert.Equal(
+            (rowNumber, 2L, 1),
             (location.RowNumber!.Value, location.RecordNumber!.Value,
                 location.ColumnIndex!.Value));
     }
@@ -364,7 +384,8 @@ public sealed class CsvSyntaxTests
         var map = TabularMap
             .For<Two>()
             .Column(x => x.First, index: 0)
-            .Column(x => x.Second,
+            .Column(
+                x => x.Second,
                 index: 1,
                 configure: c => c.Validate(value => value != "bad", alsoOnExport: true))
             .Build();
@@ -373,7 +394,8 @@ public sealed class CsvSyntaxTests
         var report = await s_format.ExportAsync(new[] { new Two("a\nb", "bad") }, map, new MemoryStream(), Token);
 
         // Assert
-        Assert.Equal((2L, 1L),
+        Assert.Equal(
+            (2L, 1L),
             (report.FatalError!.Location.RowNumber!.Value, report.FatalError.Location.RecordNumber!.Value));
     }
 
@@ -384,7 +406,8 @@ public sealed class CsvSyntaxTests
         var map = TabularMap
             .For<Two>()
             .Column(x => x.First, index: 0)
-            .Column(x => x.Second,
+            .Column(
+                x => x.Second,
                 index: 1,
                 configure: c => c.Convert<string, string?>(text => text, _ => throw new FormatException()))
             .Build();
@@ -409,7 +432,8 @@ public sealed class CsvSyntaxTests
         var report = await s_format.ImportAsync(TestInput.Utf8(csv), s_one, Token);
 
         // Assert
-        Assert.Equal(expected,
+        Assert.Equal(
+            expected,
             Assert.Single(report.Items!)
                 .Value);
     }
@@ -418,7 +442,8 @@ public sealed class CsvSyntaxTests
     public async Task OnlyDelimiters_AreOneRecordOfEmptyFields()
     {
         // Act
-        var report = await s_format.ImportAsync(TestInput.Utf8(";;"),
+        var report = await s_format.ImportAsync(
+            TestInput.Utf8(";;"),
             s_three,
             new CsvImportOptions { Delimiter = ';' },
             Token);
@@ -442,14 +467,16 @@ public sealed class CsvSyntaxTests
             .Column(x => x.C, index: 29)
             .Build();
 
-        var fields = string.Join(",",
+        var fields = string.Join(
+            ",",
             Enumerable
                 .Range(0, 30)
                 .Select(index => index == 1
                     ? "\"Nord, West\""
                     : $"v{index}"));
 
-        var header = string.Join(",",
+        var header = string.Join(
+            ",",
             Enumerable
                 .Range(0, 30)
                 .Select(index => $"h{index}"));
@@ -462,9 +489,11 @@ public sealed class CsvSyntaxTests
         };
 
         // Act
-        var report = await s_format.ImportAsync(TestInput.Utf8(withHeader
-                ? header + "\n" + fields
-                : fields),
+        var report = await s_format.ImportAsync(
+            TestInput.Utf8(
+                withHeader
+                    ? header + "\n" + fields
+                    : fields),
             map,
             options,
             Token);
@@ -481,7 +510,8 @@ public sealed class CsvSyntaxTests
     )
     {
         // Act
-        var report = await s_format.ImportAsync(TestInput.Utf8(line),
+        var report = await s_format.ImportAsync(
+            TestInput.Utf8(line),
             s_three,
             new CsvImportOptions
             {
@@ -491,7 +521,8 @@ public sealed class CsvSyntaxTests
             Token);
 
         // Assert
-        Assert.Equal("",
+        Assert.Equal(
+            "",
             Assert.Single(report.Items!)
                 .C);
     }
@@ -500,7 +531,8 @@ public sealed class CsvSyntaxTests
     public async Task MinimumWidth_BelowTheHighestMappedIndex_IsAMissingColumn()
     {
         // Act
-        var report = await s_format.ImportAsync(TestInput.Utf8("A-01;42"),
+        var report = await s_format.ImportAsync(
+            TestInput.Utf8("A-01;42"),
             s_three,
             new CsvImportOptions
             {

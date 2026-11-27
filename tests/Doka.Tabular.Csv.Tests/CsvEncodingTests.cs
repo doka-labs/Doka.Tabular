@@ -23,7 +23,8 @@ public sealed class CsvEncodingTests
             await s_format.ImportAsync(bytes, s_one, new CsvImportOptions { Encoding = Encoding.Latin1 }, Token);
 
         // Assert
-        Assert.Equal("Müller",
+        Assert.Equal(
+            "Müller",
             Assert.Single(report.Items!)
                 .Value);
     }
@@ -38,7 +39,8 @@ public sealed class CsvEncodingTests
         var report = await s_format.ImportAsync(bytes, s_one, Token);
 
         // Assert
-        Assert.Equal(TabularErrorCodes.Parsing.InvalidEncoding,
+        Assert.Equal(
+            TabularErrorCodes.Parsing.InvalidEncoding,
             (report.FatalError ?? Assert.Single(report.Errors)).Code);
     }
 
@@ -60,7 +62,8 @@ public sealed class CsvEncodingTests
     public async Task Export_CharacterOutsideTheEncoding_FailsWithItsLocation()
     {
         // Act
-        var report = await s_format.ExportAsync(new[] { new One("李") },
+        var report = await s_format.ExportAsync(
+            new[] { new One("李") },
             s_one,
             new MemoryStream(),
             new CsvExportOptions { Encoding = Encoding.Latin1 },
@@ -74,15 +77,16 @@ public sealed class CsvEncodingTests
 
     [Theory]
     [InlineData(new byte[] { 0x41, 0x64, 0x61 })]
-    [InlineData(new byte[]
-    {
-        0xEF,
-        0xBB,
-        0xBF,
-        0x41,
-        0x64,
-        0x61,
-    })]
+    [InlineData(
+        new byte[]
+        {
+            0xEF,
+            0xBB,
+            0xBF,
+            0x41,
+            0x64,
+            0x61,
+        })]
     public async Task Import_Utf8WithAndWithoutBom_ReadsTheSameFirstValue(
         byte[] bytes
     )
@@ -90,7 +94,8 @@ public sealed class CsvEncodingTests
         // Arrange
         var map = TabularMap
             .For<One>()
-            .Column(x => x.Value,
+            .Column(
+                x => x.Value,
                 index: 0,
                 configure: c => c.Validate(value => value == "Ada", code: TabularErrorCode.Create("test.ada")))
             .Build();
@@ -99,7 +104,8 @@ public sealed class CsvEncodingTests
         var report = await s_format.ImportAsync(new MemoryStream(bytes), map, Token);
 
         // Assert
-        Assert.Equal("Ada",
+        Assert.Equal(
+            "Ada",
             Assert.Single(report.Items!)
                 .Value);
     }
@@ -139,7 +145,8 @@ public sealed class CsvEncodingTests
     )
     {
         // Act
-        var (_, file) = await s_format.ExportAsync(new[] { new One("Ada") },
+        var (_, file) = await s_format.ExportAsync(
+            new[] { new One("Ada") },
             s_one,
             new CsvExportOptions { WriteBom = bom },
             Token);
@@ -179,7 +186,8 @@ public sealed class CsvEncodingTests
             : new MemoryStream(bytes);
 
         // Act
-        var report = await s_format.ImportAsync(input,
+        var report = await s_format.ImportAsync(
+            input,
             s_one,
             new CsvImportOptions
             {
@@ -190,7 +198,8 @@ public sealed class CsvEncodingTests
 
         // Assert
         Assert.Equal(ReportStatus.Failed, report.Status);
-        Assert.Equal(TabularErrorCodes.Schema.FormatMismatch,
+        Assert.Equal(
+            TabularErrorCodes.Schema.FormatMismatch,
             Assert.Single(report.Errors)
                 .Code);
 

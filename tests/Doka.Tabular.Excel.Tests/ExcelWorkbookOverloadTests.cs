@@ -93,10 +93,12 @@ public sealed partial class ExcelWorkbookOverloadTests : IDisposable
 
         // Assert
         Assert.Equal(ReportStatus.Succeeded, outcome.Report.Status);
-        Assert.Equal(call.WithOptions
+        Assert.Equal(
+            call.WithOptions
                 ? s_residentsBelowTheHeader
                 : s_residents,
-            TestFiles.Cells(TabularType.Excel,
+            TestFiles.Cells(
+                TabularType.Excel,
                 new MemoryStream(await arguments.WrittenAsync(call.Target, outcome)),
                 SheetName));
     }
@@ -172,12 +174,14 @@ public sealed partial class ExcelWorkbookOverloadTests : IDisposable
 
         // Assert
         Assert.Equal([MissingCity], outcome.Errors);
-        Assert.Equal(call.WithOptions
+        Assert.Equal(
+            call.WithOptions
                 ? ["Ada"]
                 : [],
             outcome.Names);
 
-        Assert.Equal(call.WithOptions
+        Assert.Equal(
+            call.WithOptions
                 ? 1
                 : 0,
             outcome.RowsImported);
@@ -215,9 +219,10 @@ public sealed partial class ExcelWorkbookOverloadTests : IDisposable
         var run = s_exports
             .Where(entry => entry.Name == overload)
             .Select(entry => (Func<WorkbookArguments, Task>)entry.Run)
-            .Concat(s_imports
-                .Where(entry => entry.Name == overload)
-                .Select(entry => (Func<WorkbookArguments, Task>)entry.Run))
+            .Concat(
+                s_imports
+                    .Where(entry => entry.Name == overload)
+                    .Select(entry => (Func<WorkbookArguments, Task>)entry.Run))
             .Single();
 
         var arguments = await CreateAsync(Input(["Ada", "Dresden"]));
@@ -226,7 +231,8 @@ public sealed partial class ExcelWorkbookOverloadTests : IDisposable
         var exception = await Record.ExceptionAsync(() => run(arguments.Without(parameter)));
 
         // Assert
-        Assert.Equal(parameter,
+        Assert.Equal(
+            parameter,
             Assert.IsType<ArgumentNullException>(exception)
                 .ParamName);
     }

@@ -21,22 +21,27 @@ public sealed partial class ConversionTests
         // Act
         var kind = type switch
         {
-            "time" => await ConfigurationKindAsync(new TimeOnly(14, 30),
+            "time" => await ConfigurationKindAsync(
+                new TimeOnly(14, 30),
                 Map<TimeOnly>(c => c
                     .Format(" HH:mm ")
                     .Trim()),
                 export),
-            "date" => await ConfigurationKindAsync(new DateOnly(2024, 5, 1),
+            "date" => await ConfigurationKindAsync(
+                new DateOnly(2024, 5, 1),
                 Map<DateOnly>(c => c
                     .Format("yyyy-MM-dd' '")
                     .Trim()),
                 export),
-            "duration" => await ConfigurationKindAsync(TimeSpan.FromMinutes(90),
+            "duration" => await ConfigurationKindAsync(
+                TimeSpan.FromMinutes(90),
                 Map<TimeSpan>(c => c
                     .Format("\\ hh\\:mm")
                     .Trim()),
                 export),
-            "offset" => await ConfigurationKindAsync(new DateTimeOffset(2024,
+            "offset" => await ConfigurationKindAsync(
+                new DateTimeOffset(
+                    2024,
                     5,
                     1,
                     14,
@@ -47,7 +52,8 @@ public sealed partial class ConversionTests
                     .Format(" yyyy-MM-dd HH:mm:ss zzz")
                     .Trim()),
                 export),
-            _ => await ConfigurationKindAsync(new DateTime(2024, 5, 1, 14, 30, 0),
+            _ => await ConfigurationKindAsync(
+                new DateTime(2024, 5, 1, 14, 30, 0),
                 Map<DateTime>(c => c
                     .Format("yyyy-MM-dd HH:mm:ss ")
                     .Trim()),
@@ -72,7 +78,8 @@ public sealed partial class ConversionTests
         spaced.DateTimeFormat.TimeSeparator = " ";
         var padded = (CultureInfo)CultureInfo.InvariantCulture.Clone();
         padded.DateTimeFormat.ShortDatePattern = " yyyy-MM-dd ";
-        var utc = new DateTime(2024,
+        var utc = new DateTime(
+            2024,
             5,
             1,
             14,
@@ -83,13 +90,15 @@ public sealed partial class ConversionTests
         // Act
         var kind = source switch
         {
-            "time separator" => await ConfigurationKindAsync(new TimeOnly(14, 30),
+            "time separator" => await ConfigurationKindAsync(
+                new TimeOnly(14, 30),
                 Map<TimeOnly>(c => c
                     .Format(":HH:mm")
                     .Culture(spaced)
                     .Trim()),
                 export),
-            "date pattern" => await ConfigurationKindAsync(new DateOnly(2024, 5, 1),
+            "date pattern" => await ConfigurationKindAsync(
+                new DateOnly(2024, 5, 1),
                 Map<DateOnly>(c => c
                     .Format("d")
                     .Culture(padded)
@@ -97,7 +106,8 @@ public sealed partial class ConversionTests
                 export),
 
             // WHY: K writes nothing for a value of unspecified kind, so the format can end with white space.
-            _ => await ConfigurationKindAsync(utc,
+            _ => await ConfigurationKindAsync(
+                utc,
                 Map<DateTime>(c => c
                     .Format("yyyy-MM-dd HH:mm K")
                     .Trim()),
@@ -152,19 +162,23 @@ public sealed partial class ConversionTests
         // Act
         var kind = type switch
         {
-            "DateOnly" => await ConfigurationKindAsync(new DateOnly(2024, 1, 1),
+            "DateOnly" => await ConfigurationKindAsync(
+                new DateOnly(2024, 1, 1),
                 Map<DateOnly>(c => c
                     .Format(format)
                     .Culture(spaced)
                     .Trim()),
                 export),
-            "DateTime" => await ConfigurationKindAsync(new DateTime(2024, 1, 1),
+            "DateTime" => await ConfigurationKindAsync(
+                new DateTime(2024, 1, 1),
                 Map<DateTime>(c => c
                     .Format(format)
                     .Culture(spaced)
                     .Trim()),
                 export),
-            _ => await ConfigurationKindAsync(new DateTimeOffset(2024,
+            _ => await ConfigurationKindAsync(
+                new DateTimeOffset(
+                    2024,
                     1,
                     1,
                     0,
@@ -263,13 +277,15 @@ public sealed partial class ConversionTests
     {
         // Arrange
         var hebrew = HebrewCulture();
-        var value = DateOnly.FromDateTime(hebrew.DateTimeFormat.Calendar.ToDateTime(year,
-            month,
-            1,
-            0,
-            0,
-            0,
-            0));
+        var value = DateOnly.FromDateTime(
+            hebrew.DateTimeFormat.Calendar.ToDateTime(
+                year,
+                month,
+                1,
+                0,
+                0,
+                0,
+                0));
 
         var map = Map<DateOnly>(c => c
             .Format("dd MMMM yyyy")
@@ -321,7 +337,8 @@ public sealed partial class ConversionTests
     public async Task EdgeWhiteSpaceWithTrimOfTheCall_IsAConfigurationError()
     {
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8("x"),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8("x"),
             Map<TimeOnly>(c => c.Format(" HH:mm")),
             new CsvImportOptions { TrimFields = true },
             Token);
@@ -334,10 +351,12 @@ public sealed partial class ConversionTests
     public async Task EdgeWhiteSpaceWithTrimOnTheBaseType_IsAConfigurationError()
     {
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8("x"),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8("x"),
             Map<string>(c => c
                 .Trim()
-                .Convert(value => value.ToString("HH:mm", CultureInfo.InvariantCulture),
+                .Convert(
+                    value => value.ToString("HH:mm", CultureInfo.InvariantCulture),
                     text => TimeOnly.Parse(text, CultureInfo.InvariantCulture),
                     configure: b => b.Format(" HH:mm"))),
             Token);
@@ -429,13 +448,15 @@ public sealed partial class ConversionTests
             .Trim());
     }
 
-    private static DateOnly UmAlQuraNewYear1445() => DateOnly.FromDateTime(new UmAlQuraCalendar().ToDateTime(1445,
-        1,
-        1,
-        0,
-        0,
-        0,
-        0));
+    private static DateOnly UmAlQuraNewYear1445() => DateOnly.FromDateTime(
+        new UmAlQuraCalendar().ToDateTime(
+            1445,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0));
 
     private static CultureInfo HebrewCulture()
     {

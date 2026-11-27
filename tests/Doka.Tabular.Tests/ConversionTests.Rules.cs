@@ -28,7 +28,8 @@ public sealed partial class ConversionTests
     public async Task EveryViolatedRuleOfTheBaseType_IsReported()
     {
         // Arrange
-        var map = KeyedMap<Wrapped>(c => c.Convert(number => new Wrapped($"{number}"),
+        var map = KeyedMap<Wrapped>(c => c.Convert(
+            number => new Wrapped($"{number}"),
             wrapped => int.Parse(wrapped.Text, CultureInfo.InvariantCulture),
             configure: b => b
                 .Validate(number => number > 0, s_positive)

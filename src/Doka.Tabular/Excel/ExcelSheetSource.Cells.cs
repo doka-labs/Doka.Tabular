@@ -12,7 +12,8 @@ internal sealed partial class ExcelSheetSource
         var type = TypeOf(reader);
 
         // WHY: A cell without style attribute uses the first cell format, the default of the workbook.
-        var style = int.TryParse(reader.GetAttribute("s"),
+        var style = int.TryParse(
+            reader.GetAttribute("s"),
             NumberStyles.None,
             CultureInfo.InvariantCulture,
             out var parsed)
@@ -156,9 +157,10 @@ internal sealed partial class ExcelSheetSource
 
         // WHY: A value element between two runs is not valid SpreadsheetML; the copy keeps such a file readable.
         var start = _text.Length;
-        _text.Append(_text
-            .Slice(_inlineStart)
-            .Span[.._inlineLength]);
+        _text.Append(
+            _text
+                .Slice(_inlineStart)
+                .Span[.._inlineLength]);
 
         _inlineStart = start;
     }
@@ -227,10 +229,12 @@ internal sealed partial class ExcelSheetSource
 
                 return SourceCell.FromText(shared.AsMemory(), isFormula);
             case CellType.Inline:
-                return SourceCell.FromText(Unescaped(_inlineStart < 0
-                        ? ReadOnlyMemory<char>.Empty
-                        : _text
-                            .Slice(_inlineStart)[.._inlineLength]),
+                return SourceCell.FromText(
+                    Unescaped(
+                        _inlineStart < 0
+                            ? ReadOnlyMemory<char>.Empty
+                            : _text
+                                .Slice(_inlineStart)[.._inlineLength]),
                     isFormula);
             case CellType.Text:
                 return _valueStart < 0 && isFormula
@@ -248,7 +252,8 @@ internal sealed partial class ExcelSheetSource
                     };
             case CellType.Error:
                 // WHY: Error cells are rare; their code is kept as a string.
-                return SourceCell.FromError(value.IsEmpty
+                return SourceCell.FromError(
+                    value.IsEmpty
                         ? "#N/A"
                         : value.ToString(),
                     isFormula);
@@ -258,12 +263,14 @@ internal sealed partial class ExcelSheetSource
                     return Empty(isFormula);
                 }
 
-                return ExcelDateText.TryToSerial(value.ToString(),
+                return ExcelDateText.TryToSerial(
+                    value.ToString(),
                     _package.Uses1904DateSystem,
                     out var serial,
                     out var shape,
                     out var utc)
-                    ? SourceCell.FromNumber(serial,
+                    ? SourceCell.FromNumber(
+                            serial,
                             format is NumberFormatKind.General or NumberFormatKind.Other
                                 ? shape
                                 : format,

@@ -10,7 +10,8 @@ public sealed partial class TimeTests
     private static readonly TabularMap<Value<DateTime>> s_escapedQuote =
         Map<DateTime>(c => c.Format("yyyy-MM-dd HH:mm 'a\\'y'"));
 
-    private static readonly DateTime s_lastUtcHour = new(9999,
+    private static readonly DateTime s_lastUtcHour = new(
+        9999,
         12,
         31,
         23,
@@ -18,7 +19,8 @@ public sealed partial class TimeTests
         0,
         DateTimeKind.Utc);
 
-    private static readonly DateTime s_utcNoon = new(2024,
+    private static readonly DateTime s_utcNoon = new(
+        2024,
         4,
         1,
         12,
@@ -45,7 +47,8 @@ public sealed partial class TimeTests
     public async Task OffsetFormatWithoutOffset_WithoutAFileZone_IsRejected()
     {
         // Act
-        var report = await ReadAsync("2024-04-01 08:30",
+        var report = await ReadAsync(
+            "2024-04-01 08:30",
             Map<DateTimeOffset>(c => c.Format("yyyy-MM-dd HH:mm")),
             null,
             null);
@@ -71,7 +74,9 @@ public sealed partial class TimeTests
         var report = await ReadAsync("2024-04-01 08:30", BerlinMinutes, null, null);
 
         // Assert
-        Assert.Equal(new DateTimeOffset(2024,
+        Assert.Equal(
+            new DateTimeOffset(
+                2024,
                 4,
                 1,
                 8,
@@ -134,19 +139,22 @@ public sealed partial class TimeTests
         // Act
         var status = type switch
         {
-            "DateOnly" => (await ReadAsync(text,
+            "DateOnly" => (await ReadAsync(
+                text,
                 format is null
                     ? Map<DateOnly>()
                     : Map<DateOnly>(c => c.Format(format)),
                 culture,
                 null)).Status,
-            "DateTime" => (await ReadAsync(text,
+            "DateTime" => (await ReadAsync(
+                text,
                 format is null
                     ? Map<DateTime>()
                     : Map<DateTime>(c => c.Format(format)),
                 culture,
                 null)).Status,
-            _ => (await ReadAsync(text,
+            _ => (await ReadAsync(
+                text,
                 Map<DateTimeOffset>(c => c
                     .Format(format!)
                     .FileTimeZone(s_berlin)),
@@ -209,7 +217,9 @@ public sealed partial class TimeTests
         var report = await ReadAsync("2024-04-01T14:30:00+02:00", map, null, null);
 
         // Assert
-        Assert.Equal(new DateTimeOffset(2024,
+        Assert.Equal(
+            new DateTimeOffset(
+                2024,
                 4,
                 1,
                 14,
@@ -262,7 +272,8 @@ public sealed partial class TimeTests
             : Map<TimeSpan>(c => c.Rounding(TimeSpan.FromTicks(roundingTicks)));
 
         // Act
-        var report = await ReadAsync(text,
+        var report = await ReadAsync(
+            text,
             map,
             culture is null
                 ? null
@@ -302,17 +313,20 @@ public sealed partial class TimeTests
 
         // Act
         var report = withOffset
-            ? await CsvInstance.ExportAsync(new[] { new Value<DateTimeOffset>(1, utc) },
+            ? await CsvInstance.ExportAsync(
+                new[] { new Value<DateTimeOffset>(1, utc) },
                 Map<DateTimeOffset>(c => BerlinWith(c, resolution)),
                 new MemoryStream(),
                 Token)
-            : await CsvInstance.ExportAsync(new[] { new Value<DateTime>(1, utc.UtcDateTime) },
+            : await CsvInstance.ExportAsync(
+                new[] { new Value<DateTime>(1, utc.UtcDateTime) },
                 Map<DateTime>(c => BerlinWith(c, resolution)),
                 new MemoryStream(),
                 Token);
 
         // Assert
-        Assert.Equal(written
+        Assert.Equal(
+            written
                 ? null
                 : TabularErrorCodes.Conversion.InvalidFormat,
             report.FatalError?.Code);
@@ -351,7 +365,9 @@ public sealed partial class TimeTests
             .Format("yyyy-MM-dd HH:mm zzz"));
 
         // Act
-        var (_, text) = await ExportTextAsync(new DateTimeOffset(2024,
+        var (_, text) = await ExportTextAsync(
+            new DateTimeOffset(
+                2024,
                 10,
                 27,
                 0,
@@ -502,7 +518,9 @@ public sealed partial class TimeTests
     public async Task DateTimeWithFileZone_IsRoundedOnTheUtcAxisOnExport()
     {
         // Act
-        var (_, text) = await ExportTextAsync(new DateTime(2024,
+        var (_, text) = await ExportTextAsync(
+            new DateTime(
+                2024,
                 4,
                 1,
                 12,
@@ -525,7 +543,9 @@ public sealed partial class TimeTests
         var report = await ReadAsync(null, BerlinThreeHours, null, Serial(local.ToOADate()));
 
         // Assert
-        Assert.Equal(new DateTime(2024,
+        Assert.Equal(
+            new DateTime(
+                2024,
                 4,
                 1,
                 12,
@@ -565,7 +585,8 @@ public sealed partial class TimeTests
     )
     {
         // Act
-        var (report, _) = await Export.ExportAsync(new[] { new Value<DateTime>(1, s_lastUtcHour) },
+        var (report, _) = await Export.ExportAsync(
+            new[] { new Value<DateTime>(1, s_lastUtcHour) },
             Map<DateTime>(c => c.FileTimeZone(FixedZone(5))),
             type,
             Token);
@@ -581,7 +602,8 @@ public sealed partial class TimeTests
     )
     {
         // Arrange
-        var first = new DateTime(1,
+        var first = new DateTime(
+            1,
             1,
             1,
             1,
@@ -590,7 +612,8 @@ public sealed partial class TimeTests
             DateTimeKind.Utc);
 
         // Act
-        var (report, _) = await Export.ExportAsync(new[] { new Value<DateTime>(1, first) },
+        var (report, _) = await Export.ExportAsync(
+            new[] { new Value<DateTime>(1, first) },
             Map<DateTime>(c => c.FileTimeZone(FixedZone(-5))),
             type,
             Token);
@@ -615,7 +638,8 @@ public sealed partial class TimeTests
 
     private static TimeZoneInfo FixedZone(
         int hours
-    ) => TimeZoneInfo.CreateCustomTimeZone($"Fixed{hours}",
+    ) => TimeZoneInfo.CreateCustomTimeZone(
+        $"Fixed{hours}",
         TimeSpan.FromHours(hours),
         $"Fixed{hours}",
         $"Fixed{hours}");
@@ -625,7 +649,8 @@ public sealed partial class TimeTests
     {
         // Act
         // WHY: The round trip of the own output is the checked contract, so export and reimport form one action.
-        var (_, file) = await Export.ExportAsync(new[] { new Value<DateTime>(1, s_utcNoon) },
+        var (_, file) = await Export.ExportAsync(
+            new[] { new Value<DateTime>(1, s_utcNoon) },
             BerlinUtcColumn,
             TabularType.Excel,
             Token);
@@ -641,7 +666,8 @@ public sealed partial class TimeTests
     public async Task UtcExcelColumnWithFileZone_RejectsALocalValue()
     {
         // Act
-        var (report, _) = await Export.ExportAsync(new[] { new Value<DateTime>(1, s_utcNoon.ToLocalTime()) },
+        var (report, _) = await Export.ExportAsync(
+            new[] { new Value<DateTime>(1, s_utcNoon.ToLocalTime()) },
             BerlinUtcColumn,
             TabularType.Excel,
             Token);
@@ -697,7 +723,9 @@ public sealed partial class TimeTests
             .FileTimeZone(s_berlin));
 
         // Act
-        var (_, text) = await ExportTextAsync(new DateTimeOffset(2024,
+        var (_, text) = await ExportTextAsync(
+            new DateTimeOffset(
+                2024,
                 4,
                 1,
                 14,
@@ -720,8 +748,10 @@ public sealed partial class TimeTests
         var (report, file) = await CsvInstance.ExportAsync(
             new[]
             {
-                new Value<DateTime>(1,
-                    new DateTime(2024,
+                new Value<DateTime>(
+                    1,
+                    new DateTime(
+                        2024,
                         4,
                         1,
                         12,
@@ -755,7 +785,8 @@ public sealed partial class TimeTests
             .FileTimeZone(FixedZone(2))
             .Rounding(TimeSpan.FromHours(3)));
 
-        var utc = new DateTime(2024,
+        var utc = new DateTime(
+            2024,
             4,
             1,
             12,
@@ -792,7 +823,8 @@ public sealed partial class TimeTests
         var local = new DateTime(2024, 4, 1, 14, 0, 0);
 
         // Act
-        var (_, file) = await Export.ExportAsync(new[] { new Value<DateTime>(1, local) },
+        var (_, file) = await Export.ExportAsync(
+            new[] { new Value<DateTime>(1, local) },
             map,
             excel
                 ? TabularType.Excel
@@ -800,12 +832,14 @@ public sealed partial class TimeTests
             Token);
 
         // Assert
-        var written = Cells(excel
+        var written = Cells(
+            excel
                 ? TabularType.Excel
                 : TabularType.Csv,
             file!)[0][1]!;
 
-        Assert.Equal(local,
+        Assert.Equal(
+            local,
             excel
                 ? DateTime.FromOADate(double.Parse(written, CultureInfo.InvariantCulture))
                 : DateTime.Parse(written, CultureInfo.InvariantCulture));
@@ -829,7 +863,9 @@ public sealed partial class TimeTests
         var report = await ExcelInstance.ImportAsync(file ?? new MemoryStream(), map, Token);
 
         // Assert
-        Assert.Equal(new DateTime(2024,
+        Assert.Equal(
+            new DateTime(
+                2024,
                 4,
                 1,
                 12,

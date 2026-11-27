@@ -97,14 +97,16 @@ internal sealed class WriteSink<TItem> : IImportSink<TItem>
         for (var index = 0; index < rows.Count; index++)
         {
             var row = rows[index];
-            work.Add(new RowWork(index,
-                _records(row.Item),
-                new TabularErrorLocation
-                {
-                    RowNumber = row.RowNumber,
-                    RecordNumber = row.RecordNumber,
-                    SheetName = row.SheetName,
-                }));
+            work.Add(
+                new RowWork(
+                    index,
+                    _records(row.Item),
+                    new TabularErrorLocation
+                    {
+                        RowNumber = row.RowNumber,
+                        RecordNumber = row.RecordNumber,
+                        SheetName = row.SheetName,
+                    }));
         }
 
         var result = await _session

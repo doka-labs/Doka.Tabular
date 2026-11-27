@@ -5,7 +5,8 @@ namespace Doka.Tabular;
 // WHY: CA1708 reads the extension blocks for T and T? as members differing only by case
 // (https://github.com/dotnet/sdk/issues/51716); the fix (https://github.com/dotnet/sdk/pull/51838) is not in
 // SDK 10.0.404. Remove the suppression once the pinned SDK contains it.
-[SuppressMessage("Naming",
+[SuppressMessage(
+    "Naming",
     "CA1708:Identifiers should differ by more than case",
     Justification = "Analyzer defect for extension blocks.")]
 [PublicAPI]

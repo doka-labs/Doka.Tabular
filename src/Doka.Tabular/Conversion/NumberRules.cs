@@ -83,7 +83,8 @@ internal static class NumberRules
             .CultureFor(settings)
             .NumberFormat;
 
-        if (!DecimalText.TryParse(text,
+        if (!DecimalText.TryParse(
+            text,
             format,
             context.SymbolsFor(format, settings.TextStyle),
             settings.TextStyle,
@@ -120,7 +121,8 @@ internal static class NumberRules
         {
             case NumberTextStyle.Percent:
                 // WHY: The import reads the percent separators of the culture, which can differ from the number ones.
-                (value with { Exponent = value.Exponent + 2 }).WritePlain(output,
+                (value with { Exponent = value.Exponent + 2 }).WritePlain(
+                    output,
                     culture.NumberFormat,
                     context
                         .SymbolsFor(culture.NumberFormat, NumberTextStyle.Percent)
@@ -131,7 +133,8 @@ internal static class NumberRules
             case NumberTextStyle.Currency:
                 // WHY: The import reads the currency separators of the culture, which can differ from the number ones.
                 output.Append(culture.NumberFormat.CurrencySymbol);
-                value.WritePlain(output,
+                value.WritePlain(
+                    output,
                     culture.NumberFormat,
                     context
                         .SymbolsFor(culture.NumberFormat, NumberTextStyle.Currency)
@@ -161,7 +164,8 @@ internal static class NumberRules
         var start = output.Length;
         var parsed = TryFormatted(value, settings, context, output, start);
 
-        return Accepted(parsed is { } exact
+        return Accepted(
+            parsed is { } exact
                 ? Equal(exact, expected)
                 : DenotesExactly(expected, settings, context, output, start),
             output,
@@ -185,7 +189,8 @@ internal static class NumberRules
         var start = output.Length;
         var parsed = TryFormatted(value, settings, context, output, start);
 
-        return Accepted(parsed is { } exact
+        return Accepted(
+            parsed is { } exact
                 ? exact.ToFloat<TFloat>() == value
                 : ReadsBackAsFloat(value, settings, context, output, start),
             output,
@@ -296,7 +301,8 @@ internal static class NumberRules
                 position++;
             }
             else if (!inFraction
-                && Separator(text,
+                && Separator(
+                    text,
                     position,
                     format.CurrencyDecimalSeparator,
                     format.NumberDecimalSeparator,
@@ -307,7 +313,8 @@ internal static class NumberRules
             }
             else if (digits > 0
                 && !inFraction
-                && Separator(text,
+                && Separator(
+                    text,
                     position,
                     format.CurrencyGroupSeparator,
                     format.NumberGroupSeparator,
@@ -462,7 +469,8 @@ internal static class NumberRules
         TextBuffer output,
         int start
     )
-        where TValue : INumberBase<TValue> => TValue.TryParse(output.Written(start),
+        where TValue : INumberBase<TValue> => TValue.TryParse(
+            output.Written(start),
             NumberStyles.Any,
             context.CultureFor(settings),
             out var parsed)
@@ -487,7 +495,8 @@ internal static class NumberRules
         var format = culture.NumberFormat;
         foreach (var style in s_writtenStyles)
         {
-            if (DecimalText.TryParse(output.Written(start),
+            if (DecimalText.TryParse(
+                output.Written(start),
                 format,
                 context.SymbolsFor(format, style),
                 style,

@@ -91,7 +91,8 @@ public sealed partial class CsvStreamAndResourceTests : IDisposable
         // Assert
         Assert.Equal((ReportStatus.Succeeded, PathOutputState.Published), (report.Status, report.PathOutput));
         Assert.Equal("k1,1\r\nk2,2\r\nk3,3"u8.ToArray(), await File.ReadAllBytesAsync(path, Token));
-        Assert.Equal(["out.csv"],
+        Assert.Equal(
+            ["out.csv"],
             Directory
                 .GetFiles(_directory)
                 .Select(Path.GetFileName));
@@ -121,9 +122,11 @@ public sealed partial class CsvStreamAndResourceTests : IDisposable
         var failing = TabularMap
             .For<Row>()
             .Column(x => x.Key, index: 0)
-            .Column(x => x.Value,
+            .Column(
+                x => x.Value,
                 index: 1,
-                configure: c => c.Convert<string, int>(read: text => int.Parse(text, CultureInfo.InvariantCulture),
+                configure: c => c.Convert<string, int>(
+                    read: text => int.Parse(text, CultureInfo.InvariantCulture),
                     write: value => value == 999
                         ? throw new FormatException()
                         : value.ToString(CultureInfo.InvariantCulture)))
@@ -131,7 +134,8 @@ public sealed partial class CsvStreamAndResourceTests : IDisposable
 
         // Act
         var report = await Format()
-            .ExportAsync(Rows(998)
+            .ExportAsync(
+                Rows(998)
                     .Append(new Row("x", 999)),
                 failing,
                 path,
@@ -141,7 +145,8 @@ public sealed partial class CsvStreamAndResourceTests : IDisposable
         Assert.Equal(ReportStatus.Failed, report.Status);
         Assert.Equal(PathOutputState.NotPublished, report.PathOutput);
         Assert.Equal("previous", await File.ReadAllTextAsync(path, Token));
-        Assert.Equal(["out.csv"],
+        Assert.Equal(
+            ["out.csv"],
             Directory
                 .GetFiles(_directory)
                 .Select(Path.GetFileName));
@@ -170,9 +175,11 @@ public sealed partial class CsvStreamAndResourceTests : IDisposable
         var failing = TabularMap
             .For<Row>()
             .Column(x => x.Key, index: 0)
-            .Column(x => x.Value,
+            .Column(
+                x => x.Value,
                 index: 1,
-                configure: c => c.Convert<string, int>(read: text => int.Parse(text, CultureInfo.InvariantCulture),
+                configure: c => c.Convert<string, int>(
+                    read: text => int.Parse(text, CultureInfo.InvariantCulture),
                     write: value => value == 50_000
                         ? throw new FormatException()
                         : value.ToString(CultureInfo.InvariantCulture)))
@@ -197,9 +204,11 @@ public sealed partial class CsvStreamAndResourceTests : IDisposable
         var failing = TabularMap
             .For<Row>()
             .Column(x => x.Key, index: 0)
-            .Column(x => x.Value,
+            .Column(
+                x => x.Value,
                 index: 1,
-                configure: c => c.Convert<string, int>(read: text => int.Parse(text, CultureInfo.InvariantCulture),
+                configure: c => c.Convert<string, int>(
+                    read: text => int.Parse(text, CultureInfo.InvariantCulture),
                     write: value => value == 4000
                         ? throw new FormatException()
                         : value.ToString(CultureInfo.InvariantCulture)))
@@ -267,12 +276,13 @@ public sealed partial class CsvStreamAndResourceTests : IDisposable
     public async Task BufferedExport_OverTheBufferWithoutSpill_IsAResourceErrorWithoutFile()
     {
         // Arrange
-        var format = new CsvFormat(new CsvFormatOptions
-        {
-            OutputBufferBytes = 1024,
-            AllowSpill = false,
-            TemporaryDirectory = _directory,
-        });
+        var format = new CsvFormat(
+            new CsvFormatOptions
+            {
+                OutputBufferBytes = 1024,
+                AllowSpill = false,
+                TemporaryDirectory = _directory,
+            });
 
         // Act
         var (report, file) = await format.ExportAsync(Rows(5000), s_map, Token);
@@ -305,7 +315,8 @@ public sealed partial class CsvStreamAndResourceTests : IDisposable
         var report = await format.ImportAsync(new ForwardOnlyStream(TestInput.Utf8("a,1\nb,2")), s_map, Token);
 
         // Assert
-        Assert.Equal((ReportStatus.Failed, TabularErrorCodes.Resource.LimitExceeded),
+        Assert.Equal(
+            (ReportStatus.Failed, TabularErrorCodes.Resource.LimitExceeded),
             (report.Status, report.FatalError?.Code));
     }
 
@@ -324,7 +335,8 @@ public sealed partial class CsvStreamAndResourceTests : IDisposable
         var report = await format.ImportAsync(TestInput.Utf8("a,1,12345"), s_map, Token);
 
         // Assert
-        Assert.Equal(succeeds
+        Assert.Equal(
+            succeeds
                 ? ReportStatus.Succeeded
                 : ReportStatus.Failed,
             report.Status);
@@ -356,7 +368,8 @@ public sealed partial class CsvStreamAndResourceTests : IDisposable
             .ImportAsync(new ForwardOnlyStream(TestInput.Utf8(string.Join("\n", lines))), s_map, options, Token);
 
         // Assert
-        Assert.Equal(large.Errors.Select(error => error.Location.RecordNumber),
+        Assert.Equal(
+            large.Errors.Select(error => error.Location.RecordNumber),
             small.Errors.Select(error => error.Location.RecordNumber));
 
         Assert.Equal(2, small.Errors.Count);
@@ -373,7 +386,8 @@ public sealed partial class CsvStreamAndResourceTests : IDisposable
         var report = await format.ImportAsync(TestInput.Utf8("a,1"), s_map, Token);
 
         // Assert
-        Assert.Equal(TabularErrorCodes.Configuration.Invalid,
+        Assert.Equal(
+            TabularErrorCodes.Configuration.Invalid,
             Assert.Single(report.Errors)
                 .Code);
 
@@ -382,12 +396,13 @@ public sealed partial class CsvStreamAndResourceTests : IDisposable
 
     private CsvFormat Format(
         long bufferBytes = 16 * 1024 * 1024
-    ) => new(new CsvFormatOptions
-    {
-        ImportBufferBytes = bufferBytes,
-        OutputBufferBytes = bufferBytes,
-        TemporaryDirectory = _directory,
-    });
+    ) => new(
+        new CsvFormatOptions
+        {
+            ImportBufferBytes = bufferBytes,
+            OutputBufferBytes = bufferBytes,
+            TemporaryDirectory = _directory,
+        });
 
     private static IEnumerable<Row> Rows(
         int count

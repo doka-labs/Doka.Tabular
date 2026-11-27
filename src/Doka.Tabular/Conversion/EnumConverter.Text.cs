@@ -16,7 +16,8 @@ internal sealed partial class EnumConverter
         if (settings.AllowNumericInput
             && IsNumericText(text))
         {
-            return FromNumber(BigInteger.Parse(text, NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture),
+            return FromNumber(
+                BigInteger.Parse(text, NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture),
                 out raw,
                 out failure);
         }
@@ -122,7 +123,8 @@ internal sealed partial class EnumConverter
 
         if (!valid)
         {
-            failure = new ConversionFailure(_shape.IsFlags
+            failure = new ConversionFailure(
+                _shape.IsFlags
                     ? TabularErrorCodes.Conversion.OutOfRange
                     : TabularErrorCodes.Conversion.MissingRepresentation,
                 "The value is not a declared value of the enum.");
@@ -218,7 +220,8 @@ internal sealed partial class EnumConverter
                 && fixedText is null
                 && context.Translations is null)
             {
-                failure = new ConversionFailure(TabularErrorCodes.Conversion.MissingRepresentation,
+                failure = new ConversionFailure(
+                    TabularErrorCodes.Conversion.MissingRepresentation,
                     "The value 0 has no member and no translation.");
             }
 
@@ -227,7 +230,8 @@ internal sealed partial class EnumConverter
 
         if (fixedText is null || isZeroWithoutMember)
         {
-            failure = new ConversionFailure(TabularErrorCodes.Conversion.MissingRepresentation,
+            failure = new ConversionFailure(
+                TabularErrorCodes.Conversion.MissingRepresentation,
                 "The value 0 has no member, no translation, and no numeric output.");
 
             return false;

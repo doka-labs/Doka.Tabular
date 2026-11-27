@@ -169,9 +169,10 @@ internal sealed partial class ExcelPackage : IAsyncDisposable
 
         if (variant is not { } known)
         {
-            return (null, Unsupported(workbookType.Contains("binary", StringComparison.OrdinalIgnoreCase)
-                ? "XLSB workbooks are not supported."
-                : "The workbook type is not supported."));
+            return (null, Unsupported(
+                workbookType.Contains("binary", StringComparison.OrdinalIgnoreCase)
+                    ? "XLSB workbooks are not supported."
+                    : "The workbook type is not supported."));
         }
 
         var package = new ExcelPackage(archive, budget, known) { MaxFieldCharacters = limits.MaxFieldCharacters };
@@ -193,7 +194,8 @@ internal sealed partial class ExcelPackage : IAsyncDisposable
 
         return ContentSignatures.IsZip(head)
             ? null
-            : TabularError.Create(TabularErrorCodes.Schema.FormatMismatch,
+            : TabularError.Create(
+                TabularErrorCodes.Schema.FormatMismatch,
                 TabularErrorKind.Data,
                 "Excel was specified, but the content is not a container.");
     }
@@ -205,7 +207,8 @@ internal sealed partial class ExcelPackage : IAsyncDisposable
     {
         var entry = _archive.GetEntry(path) ?? throw new InvalidDataException($"The part {path} is missing.");
 
-        return new ExpansionCountingStream(await entry
+        return new ExpansionCountingStream(
+            await entry
                 .OpenAsync(cancellationToken)
                 .ConfigureAwait(false),
             _budget);
@@ -237,8 +240,9 @@ internal sealed partial class ExcelPackage : IAsyncDisposable
     ) => MaxFieldCharacters is { } limit && storedLength / 7 > limit;
 
     /// <summary>The error of a field beyond the limit; only an overlong text, which needs a limit, raises it.</summary>
-    public TabularResourceException FieldLimitExceeded()
-        => TabularResourceException.Limit("field characters", MaxFieldCharacters.GetValueOrDefault());
+    public TabularResourceException FieldLimitExceeded() => TabularResourceException.Limit(
+        "field characters",
+        MaxFieldCharacters.GetValueOrDefault());
 
     /// <summary>Checks a decoded field value against the limit of UTF-16 code units.</summary>
     public void CheckLength(

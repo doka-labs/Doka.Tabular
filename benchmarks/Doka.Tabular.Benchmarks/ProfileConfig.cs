@@ -43,14 +43,16 @@ public sealed class ProfileColumn : IColumn
     public static IReadOnlyList<ProfileColumn> All { get; } =
     [
         new("Parameters", "Every parameter of the reference profile", profile => profile.Parameters),
-        new("InputBytes",
+        new(
+            "InputBytes",
             "Size of the generated input file",
             profile => InputBytes(profile)
                 .ToString("N0", CultureInfo.InvariantCulture)),
         new("Tabular", "Version of Doka.Tabular", _ => VersionOf(typeof(CsvFormat).Assembly)),
         new("RuntimeVersion", "Runtime of the measurement", _ => RuntimeInformation.FrameworkDescription),
         new("EfCore", "Version of EF Core", _ => VersionOf(typeof(DbContext).Assembly)),
-        new("SqliteProvider",
+        new(
+            "SqliteProvider",
             "Versions of the EF Core SQLite provider and Microsoft.Data.Sqlite",
             _ => $"{VersionOf(typeof(SqliteDbContextOptionsBuilderExtensions).Assembly)} / {VersionOf(typeof(SqliteConnection).Assembly)}"),
     ];
@@ -101,7 +103,8 @@ public sealed class ProfileColumn : IColumn
     /// <summary>The size of the input file; the profile is generated once per report, not per measurement.</summary>
     private static long InputBytes(
         ReferenceProfile profile
-    ) => s_sizes.GetOrAdd(profile,
+    ) => s_sizes.GetOrAdd(
+        profile,
         key => ProfileRun
             .PrepareAsync(key)
             .GetAwaiter()

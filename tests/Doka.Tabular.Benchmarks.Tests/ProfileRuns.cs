@@ -31,7 +31,8 @@ public static class ProfileRuns
     {
         var errors = run.ExpectedErrorRecords();
 
-        Assert.Equal(errors.Count == 0
+        Assert.Equal(
+            errors.Count == 0
                 ? ReportStatus.Succeeded
                 : ReportStatus.CompletedWithErrors,
             outcome.Status);

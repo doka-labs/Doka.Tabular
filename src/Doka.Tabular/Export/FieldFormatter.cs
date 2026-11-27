@@ -167,7 +167,8 @@ internal sealed class FieldFormatter<TCore, TBase, TValue> : FieldFormatter
             }
             catch (Exception exception) when (Callbacks.Failed(exception, callCancellation))
             {
-                failure = new ConversionFailure(TabularErrorCodes.Callback.Failed,
+                failure = new ConversionFailure(
+                    TabularErrorCodes.Callback.Failed,
                     "A validation rule threw an exception.");
 
                 return false;
@@ -175,7 +176,8 @@ internal sealed class FieldFormatter<TCore, TBase, TValue> : FieldFormatter
 
             if (!valid)
             {
-                failure = new ConversionFailure(validator.Code ?? TabularErrorCodes.Validation.Failed,
+                failure = new ConversionFailure(
+                    validator.Code ?? TabularErrorCodes.Validation.Failed,
                     "The value violates a rule of the field.");
 
                 return false;
@@ -229,7 +231,8 @@ internal sealed class FieldFormatter<TCore, TBase, TValue> : FieldFormatter
         catch (Exception exception) when (Callbacks.Failed(exception, callCancellation))
         {
             result = default!;
-            failure = new ConversionFailure(TabularErrorCodes.Callback.Failed,
+            failure = new ConversionFailure(
+                TabularErrorCodes.Callback.Failed,
                 "The write function of the custom conversion threw an exception.");
 
             return false;
@@ -313,7 +316,8 @@ internal sealed class FieldFormatter<TCore, TBase, TValue> : FieldFormatter
             return true;
         }
 
-        if (!Translations.Resolve(settings.EmptyTranslationKey,
+        if (!Translations.Resolve(
+            settings.EmptyTranslationKey,
             settings.NullText,
             context,
             out var nullText,

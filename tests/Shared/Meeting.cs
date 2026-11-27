@@ -41,7 +41,8 @@ internal sealed class Meeting : IDisposable
     public Task<T> JoinAsync<T>(
         Func<Task<T>> call,
         CancellationToken cancellationToken
-    ) => Task.Run(async () =>
+    ) => Task.Run(
+        async () =>
         {
             var arrived = new StrongBox<bool>();
             _arrived.Value = arrived;

@@ -187,17 +187,19 @@ internal sealed class CsvTableWriter : ITableWriter
         catch (EncoderFallbackException)
         {
             _encoder.Reset();
-            throw new TabularRowException(TabularError.Create(TabularErrorCodes.Parsing.InvalidEncoding,
-                TabularErrorKind.Data,
-                recordNumber is null
-                    ? "A header contains a character that the encoding cannot represent."
-                    : "A value contains a character that the encoding cannot represent.",
-                new TabularErrorLocation
-                {
-                    RowNumber = line,
-                    RecordNumber = recordNumber,
-                    ColumnIndex = index,
-                }));
+            throw new TabularRowException(
+                TabularError.Create(
+                    TabularErrorCodes.Parsing.InvalidEncoding,
+                    TabularErrorKind.Data,
+                    recordNumber is null
+                        ? "A header contains a character that the encoding cannot represent."
+                        : "A value contains a character that the encoding cannot represent.",
+                    new TabularErrorLocation
+                    {
+                        RowNumber = line,
+                        RecordNumber = recordNumber,
+                        ColumnIndex = index,
+                    }));
         }
     }
 
@@ -252,7 +254,8 @@ internal sealed class CsvTableWriter : ITableWriter
         }
 
         await _output
-            .WriteAsync(_pending
+            .WriteAsync(
+                _pending
                     .GetBuffer()
                     .AsMemory(0, (int)_pending.Length),
                 cancellationToken)

@@ -79,7 +79,8 @@ public sealed class TabularDestinationBuilder
             }
         }
 
-        return new TabularRowDestination(_map,
+        return new TabularRowDestination(
+            _map,
             _bound
                 .Select(entry => entry.Target)
                 .ToArray(),

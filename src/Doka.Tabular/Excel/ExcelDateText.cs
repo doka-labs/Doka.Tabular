@@ -52,7 +52,8 @@ internal static partial class ExcelDateText
         if (TimeOfDay()
                 .Match(text) is { Success: true } clock)
         {
-            if (!TrySeconds(clock.Groups["hour"].Value,
+            if (!TrySeconds(
+                clock.Groups["hour"].Value,
                 clock.Groups["minute"].Value,
                 clock.Groups["second"].Value,
                 out seconds))
@@ -82,7 +83,8 @@ internal static partial class ExcelDateText
     {
         serial = 0;
         shape = NumberFormatKind.DateTime;
-        if (!DateOnly.TryParseExact(date.Groups["date"].Value,
+        if (!DateOnly.TryParseExact(
+            date.Groups["date"].Value,
             "yyyy-MM-dd",
             CultureInfo.InvariantCulture,
             DateTimeStyles.None,
@@ -106,7 +108,8 @@ internal static partial class ExcelDateText
         var time = 0m;
         var hasTime = date.Groups["time"].Success;
         if (hasTime
-            && !TrySeconds(date.Groups["hour"].Value,
+            && !TrySeconds(
+                date.Groups["hour"].Value,
                 date.Groups["minute"].Value,
                 date.Groups["second"].Value,
                 out time))

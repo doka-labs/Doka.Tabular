@@ -33,7 +33,8 @@ internal static class Accessors
     /// <summary>A reader of the path, typed to the value of its last property.</summary>
     public static PathReader<TValue> Path<TValue>(
         IReadOnlyList<PropertyInfo> path
-    ) => (PathReader<TValue>)s_paths.GetOrAdd(new PathKey(typeof(TValue), [.. path]),
+    ) => (PathReader<TValue>)s_paths.GetOrAdd(
+        new PathKey(typeof(TValue), [.. path]),
         static key => CompilePath<TValue>(key));
 
     /// <summary>Calls a typed rule with the values of the member slots, in member order.</summary>
@@ -50,7 +51,8 @@ internal static class Accessors
         var arguments = new Expression[members.Count];
         for (var index = 0; index < members.Count; index++)
         {
-            arguments[index] = Expression.Convert(SlotValue(slots, index, members[index].Kind.Type),
+            arguments[index] = Expression.Convert(
+                SlotValue(slots, index, members[index].Kind.Type),
                 parameters[index].ParameterType);
         }
 
@@ -66,7 +68,8 @@ internal static class Accessors
         ConstructorInfo constructor,
         IReadOnlyList<CreatorArgument> arguments,
         IReadOnlyList<(PropertyInfo Property, int Slot, Type SlotType)> setters
-    ) => s_creators.GetOrAdd(new CreatorKey(constructor, [.. arguments], [.. setters]),
+    ) => s_creators.GetOrAdd(
+        new CreatorKey(constructor, [.. arguments], [.. setters]),
         static key => CompileCreator(key));
 
     private static PathReader<TValue> CompilePath<TValue>(
@@ -87,15 +90,20 @@ internal static class Accessors
             if (!current.Type.IsValueType
                 || Nullable.GetUnderlyingType(current.Type) is not null)
             {
-                body.Add(Expression.IfThen(Expression.Equal(current, Expression.Constant(null, current.Type)),
-                    Expression.Block(Expression.Assign(missing, Expression.Constant(true)),
-                        Expression.Return(result, Expression.Default(typeof(TValue))))));
+                body.Add(
+                    Expression.IfThen(
+                        Expression.Equal(current, Expression.Constant(null, current.Type)),
+                        Expression.Block(
+                            Expression.Assign(missing, Expression.Constant(true)),
+                            Expression.Return(result, Expression.Default(typeof(TValue))))));
             }
 
             var next = Expression.Variable(property.PropertyType, property.Name);
             variables.Add(next);
-            body.Add(Expression.Assign(next,
-                Expression.Property(Expression.Convert(current, property.DeclaringType!), property)));
+            body.Add(
+                Expression.Assign(
+                    next,
+                    Expression.Property(Expression.Convert(current, property.DeclaringType!), property)));
 
             current = next;
         }
@@ -126,7 +134,8 @@ internal static class Accessors
         var created = Expression.New(key.Constructor, arguments);
         var bindings = key
             .Setters
-            .Select(MemberBinding (setter) => Expression.Bind(setter.Property,
+            .Select(MemberBinding (setter) => Expression.Bind(
+                setter.Property,
                 Expression.Convert(SlotValue(slots, setter.Slot, setter.SlotType), setter.Property.PropertyType)))
             .ToArray();
 
@@ -162,7 +171,9 @@ internal static class Accessors
         ParameterExpression slots,
         int index,
         Type valueType
-    ) => Expression.Property(Expression.Convert(Expression.ArrayIndex(slots, Expression.Constant(index)),
+    ) => Expression.Property(
+        Expression.Convert(
+            Expression.ArrayIndex(slots, Expression.Constant(index)),
             typeof(ValueSlot<>).MakeGenericType(valueType)),
         nameof(ValueSlot<>.Value));
 

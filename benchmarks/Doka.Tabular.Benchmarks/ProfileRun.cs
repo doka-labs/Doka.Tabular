@@ -102,12 +102,14 @@ public sealed class ProfileRun
         Stream target,
         CancellationToken cancellationToken = default
     ) => Profile.Format == ProfileFormat.Csv
-        ? _formats.Csv.ExportAsync(ProfileData.StandardAsync(Profile, cancellationToken),
+        ? _formats.Csv.ExportAsync(
+            ProfileData.StandardAsync(Profile, cancellationToken),
             ProfileMaps.Standard,
             target,
             new CsvExportOptions { WriteHeader = true },
             cancellationToken)
-        : _formats.Excel.ExportAsync(ProfileData.StandardAsync(Profile, cancellationToken),
+        : _formats.Excel.ExportAsync(
+            ProfileData.StandardAsync(Profile, cancellationToken),
             ProfileMaps.Standard,
             target,
             new ExcelExportOptions { WriteHeader = true },
@@ -122,11 +124,13 @@ public sealed class ProfileRun
     )
     {
         var (report, file) = Profile.Format == ProfileFormat.Csv
-            ? await _formats.Csv.ExportAsync(ProfileData.Standard(Profile),
+            ? await _formats.Csv.ExportAsync(
+                ProfileData.Standard(Profile),
                 ProfileMaps.Standard,
                 new CsvExportOptions { WriteHeader = true },
                 cancellationToken)
-            : await _formats.Excel.ExportAsync(ProfileData.Standard(Profile),
+            : await _formats.Excel.ExportAsync(
+                ProfileData.Standard(Profile),
                 ProfileMaps.Standard,
                 new ExcelExportOptions { WriteHeader = true },
                 cancellationToken);
@@ -152,18 +156,21 @@ public sealed class ProfileRun
     {
         var store = new MemoryStore();
         var csv = Profile.Format == ProfileFormat.Csv;
-        var target = TabularFileTarget.To(store,
+        var target = TabularFileTarget.To(
+            store,
             csv
                 ? $"{Profile.Id}.csv"
                 : $"{Profile.Id}.xlsx");
 
         var report = csv
-            ? await _formats.Csv.ExportAsync(ProfileData.Standard(Profile),
+            ? await _formats.Csv.ExportAsync(
+                ProfileData.Standard(Profile),
                 ProfileMaps.Standard,
                 target,
                 new CsvExportOptions { WriteHeader = true },
                 cancellationToken)
-            : await _formats.Excel.ExportAsync(ProfileData.Standard(Profile),
+            : await _formats.Excel.ExportAsync(
+                ProfileData.Standard(Profile),
                 ProfileMaps.Standard,
                 target,
                 new ExcelExportOptions { WriteHeader = true },
@@ -184,22 +191,26 @@ public sealed class ProfileRun
     ) => Profile switch
     {
         { Sheets: > 1 } => ImportWorkbookAsync(input, cancellationToken),
-        { ErrorsPerThousand: > 0 } => ImportTableAsync(input,
+        { ErrorsPerThousand: > 0 } => ImportTableAsync(
+            input,
             ProfileMaps.Standard,
             ImportStrategy.Partial,
             Binding,
             cancellationToken),
-        { ColumnSelection: true } => ImportTableAsync(input,
+        { ColumnSelection: true } => ImportTableAsync(
+            input,
             ProfileMaps.Selected,
             ImportStrategy.Strict,
             ColumnBinding.ByHeaderName,
             cancellationToken),
-        { Shape: ProfileShape.Wide } => ImportTableAsync(input,
+        { Shape: ProfileShape.Wide } => ImportTableAsync(
+            input,
             ProfileMaps.Wide,
             ImportStrategy.Strict,
             Binding,
             cancellationToken),
-        { Shape: ProfileShape.Conversions } => ImportTableAsync(input,
+        { Shape: ProfileShape.Conversions } => ImportTableAsync(
+            input,
             ProfileMaps.Conversion,
             ImportStrategy.Strict,
             Binding,
@@ -215,12 +226,14 @@ public sealed class ProfileRun
     {
         var input = new MemoryStream(Input, writable: false);
         var report = IsExcel
-            ? await _formats.Excel.ImportAsync(input,
+            ? await _formats.Excel.ImportAsync(
+                input,
                 ProfileMaps.Standard,
                 destination,
                 new ExcelImportOptions { Binding = Binding },
                 cancellationToken)
-            : await _formats.Csv.ImportAsync(input,
+            : await _formats.Csv.ImportAsync(
+                input,
                 ProfileMaps.Standard,
                 destination,
                 new CsvImportOptions { Binding = Binding },
@@ -236,26 +249,30 @@ public sealed class ProfileRun
     ) => Profile switch
     {
         { Sheets: > 1 } => WriteWorkbookAsync(target, cancellationToken),
-        { ErrorsPerThousand: > 0 } => WriteTableAsync(ProfileData.WithErrors(Profile)
+        { ErrorsPerThousand: > 0 } => WriteTableAsync(
+            ProfileData.WithErrors(Profile)
                 .Rows,
             ProfileMaps.ErrorSource,
             target,
             csv,
             null,
             cancellationToken),
-        { Shape: ProfileShape.Wide } => WriteTableAsync(ProfileData.Wide(Profile),
+        { Shape: ProfileShape.Wide } => WriteTableAsync(
+            ProfileData.Wide(Profile),
             ProfileMaps.Wide,
             target,
             csv,
             null,
             cancellationToken),
-        { Shape: ProfileShape.Conversions } => WriteTableAsync(ProfileData.Conversions(Profile),
+        { Shape: ProfileShape.Conversions } => WriteTableAsync(
+            ProfileData.Conversions(Profile),
             ProfileMaps.Conversion,
             target,
             csv,
             null,
             cancellationToken),
-        _ => WriteTableAsync(ProfileData.Standard(Profile),
+        _ => WriteTableAsync(
+            ProfileData.Standard(Profile),
             ProfileMaps.Standard,
             target,
             csv,
@@ -273,7 +290,8 @@ public sealed class ProfileRun
         IReadOnlyList<ColumnKey>? columns,
         CancellationToken cancellationToken
     ) => csv
-        ? _formats.Csv.ExportAsync(rows,
+        ? _formats.Csv.ExportAsync(
+            rows,
             map,
             target,
             new CsvExportOptions
@@ -282,7 +300,8 @@ public sealed class ProfileRun
                 ColumnKeys = columns,
             },
             cancellationToken)
-        : _formats.Excel.ExportAsync(rows,
+        : _formats.Excel.ExportAsync(
+            rows,
             map,
             target,
             new ExcelExportOptions
@@ -308,7 +327,8 @@ public sealed class ProfileRun
             sheets.Add(SheetName(sheet), rows.GetRange(sheet * size, size), ProfileMaps.Standard);
         }
 
-        return _formats.Excel.ExportAsync(sheets.Build(),
+        return _formats.Excel.ExportAsync(
+            sheets.Build(),
             target,
             new ExcelWorkbookExportOptions { WriteHeader = true },
             cancellationToken);
@@ -323,7 +343,8 @@ public sealed class ProfileRun
     )
     {
         var report = IsExcel
-            ? await _formats.Excel.ImportAsync(input,
+            ? await _formats.Excel.ImportAsync(
+                input,
                 map,
                 new ExcelImportOptions
                 {
@@ -331,7 +352,8 @@ public sealed class ProfileRun
                     Strategy = strategy,
                 },
                 cancellationToken)
-            : await _formats.Csv.ImportAsync(input,
+            : await _formats.Csv.ImportAsync(
+                input,
                 map,
                 new CsvImportOptions
                 {
@@ -340,7 +362,8 @@ public sealed class ProfileRun
                 },
                 cancellationToken);
 
-        return new ProfileOutcome(report.Status,
+        return new ProfileOutcome(
+            report.Status,
             report.RowsRead,
             [.. (report.Items ?? []).Cast<object>()],
             ErrorRecords(report.Errors));
@@ -354,14 +377,16 @@ public sealed class ProfileRun
         var import = ExcelImport.Create();
         var sheets = Enumerable
             .Range(0, Profile.Sheets)
-            .Select(sheet => import.Add(SheetName(sheet),
+            .Select(sheet => import.Add(
+                SheetName(sheet),
                 ProfileMaps.Standard,
                 new ExcelSheetImportOptions { Binding = Binding }))
             .ToList();
 
         var report = await _formats.Excel.ImportAsync(input, import.Build(), cancellationToken);
 
-        return new ProfileOutcome(report.Status,
+        return new ProfileOutcome(
+            report.Status,
             report.RowsRead,
             [
                 .. sheets.SelectMany(sheet => (report.Get(sheet)

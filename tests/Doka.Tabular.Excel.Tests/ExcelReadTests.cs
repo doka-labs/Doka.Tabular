@@ -27,7 +27,8 @@ public sealed class ExcelReadTests
         var report = await ExcelInstance.ImportAsync(TestInput.Utf8("1,a"), s_rows, Partial, Token);
 
         // Assert
-        Assert.Equal(TabularErrorCodes.Schema.FormatMismatch,
+        Assert.Equal(
+            TabularErrorCodes.Schema.FormatMismatch,
             Assert.Single(report.Errors)
                 .Code);
     }
@@ -47,13 +48,15 @@ public sealed class ExcelReadTests
     public async Task EmptyZip_IsAZipWithoutWorkbookForOneSheet()
     {
         // Act
-        var report = await ExcelInstance.ImportAsync(RawWorkbook.Zip(new Dictionary<string, string>()),
+        var report = await ExcelInstance.ImportAsync(
+            RawWorkbook.Zip(new Dictionary<string, string>()),
             s_rows,
             Partial,
             Token);
 
         // Assert
-        Assert.Equal(TabularErrorCodes.Schema.UnsupportedFormat,
+        Assert.Equal(
+            TabularErrorCodes.Schema.UnsupportedFormat,
             Assert.Single(report.Errors)
                 .Code);
     }
@@ -66,12 +69,14 @@ public sealed class ExcelReadTests
         sheets.Add(TabularSheetName.Create("Sheet1"), s_rows);
 
         // Act
-        var report = await ExcelInstance.Format.ImportAsync(RawWorkbook.Zip(new Dictionary<string, string>()),
+        var report = await ExcelInstance.Format.ImportAsync(
+            RawWorkbook.Zip(new Dictionary<string, string>()),
             sheets.Build(),
             Token);
 
         // Assert
-        Assert.Equal(TabularErrorCodes.Schema.UnsupportedFormat,
+        Assert.Equal(
+            TabularErrorCodes.Schema.UnsupportedFormat,
             Assert.Single(report.Errors)
                 .Code);
     }
@@ -101,7 +106,8 @@ public sealed class ExcelReadTests
         var report = await ExcelInstance.ImportAsync(plainZip, s_rows, Partial, Token);
 
         // Assert
-        Assert.Equal(TabularErrorCodes.Schema.UnsupportedFormat,
+        Assert.Equal(
+            TabularErrorCodes.Schema.UnsupportedFormat,
             Assert.Single(report.Errors)
                 .Code);
     }
@@ -110,7 +116,8 @@ public sealed class ExcelReadTests
     public async Task DamagedZip_IsASyntaxErrorBeforeTheFirstRecord()
     {
         // Arrange
-        var damaged = new MemoryStream([
+        var damaged = new MemoryStream(
+        [
             .. RawWorkbook
                 .Bytes(Create(TabularType.Excel, [1, "a"]))
                 .Take(200),
@@ -128,13 +135,15 @@ public sealed class ExcelReadTests
     public async Task ExpectedVariantXlsm_ForAnXlsx_IsAFormatMismatch()
     {
         // Act
-        var report = await ExcelInstance.ImportAsync(Create(TabularType.Excel, [1, "a"]),
+        var report = await ExcelInstance.ImportAsync(
+            Create(TabularType.Excel, [1, "a"]),
             s_rows,
             Partial with { ExpectedVariant = ExcelVariant.Xlsm },
             Token);
 
         // Assert
-        Assert.Equal(TabularErrorCodes.Schema.FormatMismatch,
+        Assert.Equal(
+            TabularErrorCodes.Schema.FormatMismatch,
             Assert.Single(report.Errors)
                 .Code);
     }
@@ -174,7 +183,8 @@ public sealed class ExcelReadTests
         var two = Workbook(("Hinweise", [["Text"]]), ("Benutzer", [[1, "Ada"]]));
 
         // Act
-        var report = await ExcelInstance.ImportAsync(two,
+        var report = await ExcelInstance.ImportAsync(
+            two,
             s_rows,
             Partial with { SheetName = TabularSheetName.Create("Benutzer") },
             Token);
@@ -191,7 +201,8 @@ public sealed class ExcelReadTests
     )
     {
         // Act
-        var report = await ExcelInstance.ImportAsync(Workbook(("Sheet1", s_reportSheet)),
+        var report = await ExcelInstance.ImportAsync(
+            Workbook(("Sheet1", s_reportSheet)),
             s_rows,
             Partial with
             {
@@ -211,7 +222,8 @@ public sealed class ExcelReadTests
     public async Task StartRowWithoutEndRow_ReadsToTheLastRow()
     {
         // Act
-        var report = await ExcelInstance.ImportAsync(Workbook(("Sheet1", s_reportSheet)),
+        var report = await ExcelInstance.ImportAsync(
+            Workbook(("Sheet1", s_reportSheet)),
             s_rows,
             Partial with
             {
@@ -228,7 +240,8 @@ public sealed class ExcelReadTests
     public async Task StartAndEndRow_WithoutHeader_StartAtTheFirstDataRow()
     {
         // Act
-        var report = await ExcelInstance.ImportAsync(Workbook(("Sheet1", s_reportSheet)),
+        var report = await ExcelInstance.ImportAsync(
+            Workbook(("Sheet1", s_reportSheet)),
             s_rows,
             Partial with
             {
@@ -272,7 +285,8 @@ public sealed class ExcelReadTests
         var report = await ExcelInstance.ImportAsync(Workbook(("Sheet1", s_sparseRows)), required, Partial, Token);
 
         // Assert
-        Assert.Equal([(1L, 10), (2L, 10)],
+        Assert.Equal(
+            [(1L, 10), (2L, 10)],
             report.Errors.Select(error => (error.Location.RowNumber!.Value, error.Location.ColumnIndex!.Value)));
     }
 
@@ -323,7 +337,8 @@ public sealed class ExcelReadTests
         var report = await ExcelInstance.ImportAsync(RawWorkbook.Create(sheet), map, Partial, Token);
 
         // Assert
-        Assert.Equal(42m,
+        Assert.Equal(
+            42m,
             Assert.Single(report.Items!)
                 .Value);
 
@@ -382,7 +397,8 @@ public sealed class ExcelReadTests
             """;
 
         // Act
-        var report = await ExcelInstance.ImportAsync(RawWorkbook.Create(sheet),
+        var report = await ExcelInstance.ImportAsync(
+            RawWorkbook.Create(sheet),
             s_rows,
             Partial with { VisibleRowsOnly = true },
             Token);
@@ -431,14 +447,16 @@ public sealed class ExcelReadTests
             <row r="4"><c r="A4"><v>4</v></c><c r="B4" t="s"><v>1</v></c></row>
             """;
 
-        var file = RawWorkbook.Create(foreign,
+        var file = RawWorkbook.Create(
+            foreign,
             "<si><t>Zeile1_x000D_</t></si><si><r><t>Rich</t></r><r><t> text</t></r></si>");
 
         // Act
         var report = await ExcelInstance.ImportAsync(file, s_rows, Token);
 
         // Assert
-        Assert.True(report.Status == ReportStatus.Succeeded,
+        Assert.True(
+            report.Status == ReportStatus.Succeeded,
             string.Join(" | ", report.Errors.Select(error => $"{error.Code} {error.Message}"))
             + report.FatalError?.Message);
 
@@ -472,7 +490,8 @@ public sealed class ExcelReadTests
         var read = await ExcelInstance.ImportAsync(RawWorkbook.Create(rows), map, Token);
 
         // Assert
-        Assert.True(read.Status == ReportStatus.Succeeded,
+        Assert.True(
+            read.Status == ReportStatus.Succeeded,
             string.Join(" | ", read.Errors.Select(error => $"{error.Code} {error.Message}"))
             + read.FatalError?.Message);
 
@@ -484,7 +503,8 @@ public sealed class ExcelReadTests
     public async Task Dtd_InPackageXml_IsRejected()
     {
         // Arrange
-        var withDtd = RawWorkbook.Create("""<row r="1"><c r="A1"><v>1</v></c></row>""",
+        var withDtd = RawWorkbook.Create(
+            """<row r="1"><c r="A1"><v>1</v></c></row>""",
             sheetPrefix: "<?xml version=\"1.0\"?><!DOCTYPE worksheet [<!ENTITY x SYSTEM \"file:///etc/passwd\">]>");
 
         // Act

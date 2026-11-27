@@ -20,7 +20,8 @@ public sealed partial class ConversionTests
     )
     {
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Value<decimal>(-1m) },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Value<decimal>(-1m) },
             Map<decimal>(c => c
                 .Culture(s_enUs)
                 .ExportFormat(format)),
@@ -41,7 +42,8 @@ public sealed partial class ConversionTests
     )
     {
         // Act
-        var (report, file) = await Export.ExportAsync(new[] { new Value<decimal>(-1m) },
+        var (report, file) = await Export.ExportAsync(
+            new[] { new Value<decimal>(-1m) },
             Map<decimal>(c => c
                 .Culture(s_enUs)
                 .ExportFormat(format)),
@@ -67,7 +69,8 @@ public sealed partial class ConversionTests
     )
     {
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Value<decimal>((decimal)value) },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Value<decimal>((decimal)value) },
             Map<decimal>(c => c
                 .Culture(s_enUs)
                 .ExportFormat(format)),
@@ -90,7 +93,8 @@ public sealed partial class ConversionTests
     )
     {
         // Act
-        var (report, file) = await Export.ExportAsync(new[] { new Value<decimal>((decimal)value) },
+        var (report, file) = await Export.ExportAsync(
+            new[] { new Value<decimal>((decimal)value) },
             Map<decimal>(c => c
                 .Culture(s_enUs)
                 .ExportFormat(format)),
@@ -121,7 +125,8 @@ public sealed partial class ConversionTests
         culture.NumberFormat.CurrencyNegativePattern = 0;
 
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Value<decimal>(value) },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Value<decimal>(value) },
             Map<decimal>(c => c
                 .Culture(culture)
                 .ExportFormat(format)),
@@ -129,7 +134,8 @@ public sealed partial class ConversionTests
             Token);
 
         // Assert
-        Assert.Equal(written
+        Assert.Equal(
+            written
                 ? null
                 : TabularErrorCodes.Conversion.PrecisionLoss,
             report.FatalError?.Code);
@@ -153,7 +159,8 @@ public sealed partial class ConversionTests
         culture.NumberFormat.CurrencyGroupSeparator = ".";
 
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Value<decimal>((decimal)value) },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Value<decimal>((decimal)value) },
             Map<decimal>(c => c
                 .Culture(culture)
                 .ExportFormat(format)),
@@ -161,7 +168,8 @@ public sealed partial class ConversionTests
             Token);
 
         // Assert
-        Assert.Equal(written
+        Assert.Equal(
+            written
                 ? null
                 : TabularErrorCodes.Conversion.PrecisionLoss,
             report.FatalError?.Code);
@@ -190,7 +198,8 @@ public sealed partial class ConversionTests
         culture.NumberFormat.CurrencyGroupSeparator = ".";
 
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Value<decimal>((decimal)value) },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Value<decimal>((decimal)value) },
             Map<decimal>(c => c
                 .Culture(culture)
                 .ExportFormat(format)),
@@ -198,7 +207,8 @@ public sealed partial class ConversionTests
             Token);
 
         // Assert
-        Assert.Equal(written
+        Assert.Equal(
+            written
                 ? null
                 : TabularErrorCodes.Conversion.PrecisionLoss,
             report.FatalError?.Code);
@@ -208,7 +218,8 @@ public sealed partial class ConversionTests
     public async Task ExportFormatWithALiteralDigit_OfAnInteger_ThatChangesTheValue_IsAPrecisionLoss()
     {
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Value<long>(-1) },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Value<long>(-1) },
             Map<long>(c => c
                 .Culture(s_enUs)
                 .ExportFormat("0;(0'.5')")),
@@ -226,7 +237,8 @@ public sealed partial class ConversionTests
         var value = -BigInteger.Pow(10, 40);
 
         // Act
-        var (report, file) = await Export.ExportAsync(new[] { new Value<BigInteger>(value) },
+        var (report, file) = await Export.ExportAsync(
+            new[] { new Value<BigInteger>(value) },
             Map<BigInteger>(c => c
                 .Culture(s_enUs)
                 .ExportFormat("0;(0)")),
@@ -242,7 +254,8 @@ public sealed partial class ConversionTests
     public async Task PercentExportFormat_UsesThePercentSeparatorsOfTheCulture()
     {
         // Act
-        var (report, file) = await Export.ExportAsync(new[] { new Value<decimal>(0.125m) },
+        var (report, file) = await Export.ExportAsync(
+            new[] { new Value<decimal>(0.125m) },
             Map<decimal>(c => c
                 .Culture(PercentCommaCulture())
                 .ExportFormat("P1")),
@@ -258,7 +271,8 @@ public sealed partial class ConversionTests
     public async Task PercentStyle_WritesThePercentDecimalSeparatorOfTheCulture()
     {
         // Act
-        var (_, file) = await Export.ExportAsync(new[] { new Value<decimal>(0.125m) },
+        var (_, file) = await Export.ExportAsync(
+            new[] { new Value<decimal>(0.125m) },
             Map<decimal>(c => c
                 .Culture(PercentCommaCulture())
                 .TextStyle(NumberTextStyle.Percent)),
@@ -278,14 +292,17 @@ public sealed partial class ConversionTests
     )
     {
         // Act
-        var report = await ReadAsync(TabularType.Csv,
+        var report = await ReadAsync(
+            TabularType.Csv,
             text,
             Map<decimal>(c => c
                 .Culture(PercentCommaCulture())
                 .TextStyle(NumberTextStyle.Percent)));
 
         // Assert
-        Assert.Equal(decimal.Parse(text
+        Assert.Equal(
+            decimal.Parse(
+                text
                     .Replace(".", "", StringComparison.Ordinal)
                     .Replace(",", ".", StringComparison.Ordinal)
                     .TrimEnd('%', ' '),
@@ -312,7 +329,8 @@ public sealed partial class ConversionTests
         culture.NumberFormat.CurrencyNegativePattern = negativePattern;
 
         // Act
-        var report = await ReadAsync(TabularType.Csv,
+        var report = await ReadAsync(
+            TabularType.Csv,
             text,
             Map<decimal>(c => c
                 .Culture(culture)
@@ -356,7 +374,8 @@ public sealed partial class ConversionTests
         culture.NumberFormat.CurrencySymbol = "2";
 
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Value<decimal>(12.5m) },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Value<decimal>(12.5m) },
             Map<decimal>(c => c
                 .Culture(culture)
                 .TextStyle(NumberTextStyle.Currency)

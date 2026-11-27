@@ -52,20 +52,22 @@ public sealed partial class JournalWindowTests
     )
     {
         // Arrange
-        var faults = new TransactionFaults(journalEvent switch
-        {
-            JournalEvent.CommitRejected => Failure.CommitRejected,
-            JournalEvent.CommitThrowsAfterwards => Failure.CommitThrowsAfterwards,
-            JournalEvent.TechnicalErrorAndRollbackFails => Failure.RollbackFails,
-            _ => Failure.None,
-        });
+        var faults = new TransactionFaults(
+            journalEvent switch
+            {
+                JournalEvent.CommitRejected => Failure.CommitRejected,
+                JournalEvent.CommitThrowsAfterwards => Failure.CommitThrowsAfterwards,
+                JournalEvent.TechnicalErrorAndRollbackFails => Failure.RollbackFails,
+                _ => Failure.None,
+            });
 
         await using var database = await FileDatabase.CreateAsync(faults);
         var journal = TabularJournal.ForFactory(database.Plain);
         using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(Token);
         var completions = 0;
         var bytes = workbook
-            ? (await WorkbookAsync([new UserDto(1, "u1@example.org", "U1"), new UserDto(2, "u2@example.org", "U2")],
+            ? (await WorkbookAsync(
+                [new UserDto(1, "u1@example.org", "U1"), new UserDto(2, "u2@example.org", "U2")],
                 [new UserDto(3, "u3@example.org", "U3")]))
             .ToArray()
             : ((MemoryStream)TestMaps.Csv([.. TestMaps.Rows(3)])).ToArray();
@@ -98,7 +100,8 @@ public sealed partial class JournalWindowTests
             + $"claims={string.Join(",", claims.Select(claim => claim.State))} completions={completions}";
 
         // WHY: A scenario with a transaction failure proves only something when the failure was injected.
-        Assert.True(journalEvent is not (JournalEvent.CommitRejected
+        Assert.True(
+            journalEvent is not (JournalEvent.CommitRejected
                 or JournalEvent.CommitThrowsAfterwards
                 or JournalEvent.TechnicalErrorAndRollbackFails)
             || faults.Injected > 0,
@@ -117,7 +120,8 @@ public sealed partial class JournalWindowTests
                     ? ImportClaimState.Unresolved
                     : ImportClaimState.Released;
 
-        Assert.True(claims.SingleOrDefault()
+        Assert.True(
+            claims.SingleOrDefault()
                 ?.State
             == expected,
             label);
@@ -145,7 +149,8 @@ public sealed partial class JournalWindowTests
             bool logged
         )
         {
-            var target = data.PrepareUpsert<UserDto, User>(set: users => users.Users,
+            var target = data.PrepareUpsert<UserDto, User>(
+                set: users => users.Users,
                 match: TestMaps.UserMatch,
                 create: dto =>
                 {
@@ -173,7 +178,8 @@ public sealed partial class JournalWindowTests
 
             return !logged
                 ? target
-                : target.WithImportLog(journal,
+                : target.WithImportLog(
+                    journal,
                     new TabularImportLogOptions
                     {
                         Scope = s_scope,
@@ -202,7 +208,8 @@ public sealed partial class JournalWindowTests
             var target = Target(data, armed, logged: true);
             if (!workbook)
             {
-                var report = await s_csv.ImportAsync(input,
+                var report = await s_csv.ImportAsync(
+                    input,
                     TestMaps.Users,
                     target,
                     new CsvImportOptions { Strategy = strategy },
@@ -214,7 +221,8 @@ public sealed partial class JournalWindowTests
             var sheets = ExcelImport.Create();
             sheets.Add(TabularSheetName.Create("First"), TestMaps.Users, target);
             sheets.Add(TabularSheetName.Create("Second"), TestMaps.Users, Target(data, armed, logged: false));
-            var result = await new ExcelFormat(new ExcelFormatOptions()).ImportAsync(input,
+            var result = await new ExcelFormat(new ExcelFormatOptions()).ImportAsync(
+                input,
                 sheets.Build(),
                 new ExcelWorkbookImportOptions { Strategy = strategy },
                 cancellationToken);

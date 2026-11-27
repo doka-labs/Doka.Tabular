@@ -70,7 +70,8 @@ internal sealed class DateOnlyConverter : TimeConverterBase<DateOnly>
     )
     {
         rounded = date;
-        if (!TryRoundTicks(date.DayNumber * TimeSpan.TicksPerDay,
+        if (!TryRoundTicks(
+            date.DayNumber * TimeSpan.TicksPerDay,
             default,
             settings.TimeRounding,
             DateOnly.MaxValue.DayNumber * TimeSpan.TicksPerDay,
@@ -110,20 +111,23 @@ internal sealed class DateOnlyConverter : TimeConverterBase<DateOnly>
         if (!IsDateFormatted(cell)
             && !settings.AllowExcelSerialNumbers)
         {
-            return Fail(ConversionFailure.InvalidFormat("An unformatted number is not a date for this field."),
+            return Fail(
+                ConversionFailure.InvalidFormat("An unformatted number is not a date for this field."),
                 out value,
                 out failure);
         }
 
         if (!ExcelDates.TryToDateTime(cell.Number, context.Uses1904DateSystem, null, out var date))
         {
-            return Fail(ConversionFailure.OutOfRange("The serial number is not a valid Excel date."),
+            return Fail(
+                ConversionFailure.OutOfRange("The serial number is not a valid Excel date."),
                 out value,
                 out failure);
         }
 
         return date.TimeOfDay != TimeSpan.Zero
-            ? Fail(ConversionFailure.PrecisionLoss("The cell contains a time of day, which DateOnly cannot hold."),
+            ? Fail(
+                ConversionFailure.PrecisionLoss("The cell contains a time of day, which DateOnly cannot hold."),
                 out value,
                 out failure)
             : Rounded(DateOnly.FromDateTime(date), settings, out value, out failure);
@@ -181,7 +185,8 @@ internal sealed class DateOnlyConverter : TimeConverterBase<DateOnly>
         var serial = ExcelDates.ToSerial(date);
         var format = settings.ExcelNumberFormat ?? "yyyy-mm-dd";
 
-        return TryExcelSerial(serial,
+        return TryExcelSerial(
+            serial,
             format,
             TryReadBackNative(serial, format, settings, context, out var back) && back == value,
             out cell,

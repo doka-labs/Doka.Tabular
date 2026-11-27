@@ -11,12 +11,14 @@ internal sealed partial class ImportRun<TItem>
         await ReleaseSinkAsync()
             .ConfigureAwait(false);
 
-        var ending = new Ending(Aborted: _outcome.Aborted || _errors.Fatal is not null,
+        var ending = new Ending(
+            Aborted: _outcome.Aborted || _errors.Fatal is not null,
             DataFailed: _outcome.HadDataErrors
             || (_written?.RowsRejected ?? 0) > 0
             || (_written?.Errors.Count ?? 0) > 0);
 
-        var status = new ImportStatusFacts(Canceled: _canceled && _errors.Fatal is null,
+        var status = new ImportStatusFacts(
+                Canceled: _canceled && _errors.Fatal is null,
                 Failed: _configurationFailed || ending.Aborted || _outcome.SchemaFailed,
                 GateStopped: _gateStop,
                 Skipped: _journal is { Decision: ImportJournalDecision.Skipped },
@@ -53,9 +55,11 @@ internal sealed partial class ImportRun<TItem>
         }
         catch (Exception exception) when (exception is not OutOfMemoryException)
         {
-            _errors.AddFatal(TabularError.Create(TabularErrorCodes.Persistence.OperationFailed,
-                TabularErrorKind.Technical,
-                "The own data context of the import could not be released."));
+            _errors.AddFatal(
+                TabularError.Create(
+                    TabularErrorCodes.Persistence.OperationFailed,
+                    TabularErrorKind.Technical,
+                    "The own data context of the import could not be released."));
         }
     }
 
@@ -66,9 +70,11 @@ internal sealed partial class ImportRun<TItem>
             return;
         }
 
-        _errors.AddFatal(TabularError.Create(TabularErrorCodes.Io.Failed,
-            TabularErrorKind.Technical,
-            "An own temporary file could not be deleted."));
+        _errors.AddFatal(
+            TabularError.Create(
+                TabularErrorCodes.Io.Failed,
+                TabularErrorKind.Technical,
+                "An own temporary file could not be deleted."));
 
         _scope.CleanupFailed();
     }
@@ -79,9 +85,11 @@ internal sealed partial class ImportRun<TItem>
             && _journal is { Decision: ImportJournalDecision.RejectedDuplicate }
             && _errors.TotalCount == 0)
         {
-            _errors.Add(TabularError.Create(TabularErrorCodes.Validation.Failed,
-                TabularErrorKind.Data,
-                "The file was already imported in this scope."));
+            _errors.Add(
+                TabularError.Create(
+                    TabularErrorCodes.Validation.Failed,
+                    TabularErrorKind.Data,
+                    "The file was already imported in this scope."));
         }
     }
 
@@ -113,7 +121,8 @@ internal sealed partial class ImportRun<TItem>
         ReportStatus status,
         Ending ending,
         long imported
-    ) => new(status,
+    ) => new(
+        status,
         !_canceled && !ending.Aborted && !_configurationFailed && !_outcome.SchemaFailed && !_gateStop,
         _outcome.RowsRead,
         imported,
@@ -167,12 +176,14 @@ internal sealed partial class ImportRun<TItem>
 
     private void ReportCompleted(
         ImportReportData data
-    ) => _scope.Completed(data.Status,
+    ) => _scope.Completed(
+        data.Status,
         data.IsComplete,
         data.FatalError,
         data.TotalErrorCount,
         data.OmittedErrorCount,
-        new ReportCounters(data.RowsRead,
+        new ReportCounters(
+            data.RowsRead,
             data.RowsImported,
             data.RowsRejected,
             data.RowsSkipped,

@@ -27,7 +27,8 @@ public static class ExcelVariants
     {
         ProfileFormat.Xlsx => transitional,
         ProfileFormat.XlsxStrict => Rewrite(transitional, ToStrict),
-        ProfileFormat.Xlsm => Rewrite(transitional,
+        ProfileFormat.Xlsm => Rewrite(
+            transitional,
             (name, text) => name == "[Content_Types].xml"
                 ? text.Replace(WorkbookType, MacroWorkbookType, StringComparison.Ordinal)
                 : text),
@@ -64,7 +65,8 @@ public static class ExcelVariants
                 using var reader = new StreamReader(entry.Open(), Encoding.UTF8);
                 var text = reader.ReadToEnd();
                 var copy = archive.CreateEntry(entry.FullName, CompressionLevel.Optimal);
-                copy.LastWriteTime = new DateTimeOffset(2024,
+                copy.LastWriteTime = new DateTimeOffset(
+                    2024,
                     1,
                     1,
                     0,

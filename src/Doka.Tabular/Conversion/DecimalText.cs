@@ -82,14 +82,16 @@ internal static class DecimalText
                 : 0);
 
         parsed = integerDigits + fraction.Length <= SmallDigits
-            ? new ParsedNumberText(negative,
+            ? new ParsedNumberText(
+                negative,
                 true,
                 SmallMantissa(integerPart, fraction),
                 BigInteger.Zero,
                 decimalExponent,
                 hadDecimalPoint,
                 hadExponent)
-            : new ParsedNumberText(negative,
+            : new ParsedNumberText(
+                negative,
                 false,
                 0,
                 LargeMantissa(integerPart, integerDigits, fraction),

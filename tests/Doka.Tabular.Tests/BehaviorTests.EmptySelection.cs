@@ -22,7 +22,8 @@ public sealed partial class BehaviorTests
         var read = false;
 
         // Act
-        var (report, file) = await Export.ExportAsync(Rows(),
+        var (report, file) = await Export.ExportAsync(
+            Rows(),
             s_employees,
             type,
             new TabularExportOptions
@@ -33,7 +34,8 @@ public sealed partial class BehaviorTests
             Token);
 
         // Assert
-        Assert.Equal((ReportStatus.Succeeded, 0L, 0L, false),
+        Assert.Equal(
+            (ReportStatus.Succeeded, 0L, 0L, false),
             (report.Status, report.RowsRead, report.RowsWritten, read));
 
         Assert.Empty(Cells(type, file!));
@@ -56,7 +58,8 @@ public sealed partial class BehaviorTests
     {
         // Act
         // WHY: The round trip of the own output is the checked contract, so export and reimport form one action.
-        var (_, file) = await Export.ExportAsync(new[] { new Employee("a@example.org", 1, "Berlin", "10115") },
+        var (_, file) = await Export.ExportAsync(
+            new[] { new Employee("a@example.org", 1, "Berlin", "10115") },
             s_employees,
             type,
             new TabularExportOptions
@@ -87,7 +90,8 @@ public sealed partial class BehaviorTests
         // Act
         // WHY: The equality with an empty source is the checked contract, so both exports form one action; the byte
         // order mark marks the encoding of the file, not its content, so an empty source writes it too.
-        await CsvInstance.ExportAsync(Array.Empty<Employee>(),
+        await CsvInstance.ExportAsync(
+            Array.Empty<Employee>(),
             s_employees,
             empty,
             new CsvExportOptions { WriteBom = bom },
@@ -98,7 +102,8 @@ public sealed partial class BehaviorTests
         // Assert
         Assert.Equal(ReportStatus.Succeeded, report.Status);
         Assert.Equal(empty.ToArray(), stream.ToArray());
-        Assert.Equal(bom
+        Assert.Equal(
+            bom
                 ? 3
                 : 0,
             stream.Length);
@@ -117,7 +122,8 @@ public sealed partial class BehaviorTests
 
         // Act
         // WHY: The equality with an empty source is the checked contract, so both exports form one action.
-        await CsvInstance.ExportAsync(Array.Empty<Employee>(),
+        await CsvInstance.ExportAsync(
+            Array.Empty<Employee>(),
             s_employees,
             empty,
             new CsvExportOptions { WriteBom = bom },
@@ -153,7 +159,8 @@ public sealed partial class BehaviorTests
         var single = new MemoryStream();
 
         // Act
-        var report = await ExcelInstance.ExportAsync(s_oneEmployee,
+        var report = await ExcelInstance.ExportAsync(
+            s_oneEmployee,
             s_employees,
             single,
             new ExcelExportOptions
@@ -175,7 +182,8 @@ public sealed partial class BehaviorTests
     {
         // Arrange
         var sheets = ExcelExport.Create();
-        sheets.Add(TabularSheetName.Create("Leer"),
+        sheets.Add(
+            TabularSheetName.Create("Leer"),
             s_oneEmployee,
             s_employees,
             new ExcelSheetExportOptions { ColumnKeys = [] });
@@ -184,7 +192,8 @@ public sealed partial class BehaviorTests
         var file = new MemoryStream();
 
         // Act
-        var report = await ExcelInstance.ExportAsync(sheets.Build(),
+        var report = await ExcelInstance.ExportAsync(
+            sheets.Build(),
             file,
             new ExcelWorkbookExportOptions { WriteHeader = true },
             Token);
@@ -192,7 +201,8 @@ public sealed partial class BehaviorTests
         // Assert
         Assert.Equal(ReportStatus.Succeeded, report.Status);
         Assert.Empty(Cells(TabularType.Excel, file, "Leer"));
-        Assert.Equal(2,
+        Assert.Equal(
+            2,
             Cells(TabularType.Excel, file, "Voll")
                 .Count);
 
@@ -212,9 +222,10 @@ public sealed partial class BehaviorTests
                 .IsType<Workbook>(workbookPart.Workbook)
                 .Descendants<Sheet>()
                 .Select(sheet => Assert
-                    .IsType<Worksheet>(Assert
-                        .IsType<WorksheetPart>(workbookPart.GetPartById(Assert.IsType<string>(sheet.Id?.Value)))
-                        .Worksheet)
+                    .IsType<Worksheet>(
+                        Assert
+                            .IsType<WorksheetPart>(workbookPart.GetPartById(Assert.IsType<string>(sheet.Id?.Value)))
+                            .Worksheet)
                     .Descendants<Pane>()
                     .Any()),
         ];
@@ -225,7 +236,8 @@ public sealed partial class BehaviorTests
     {
         // Act
         // WHY: An empty selection gives width 0; a frozen column beyond it stays a configuration error.
-        var report = await ExcelInstance.Format.ExportAsync(s_oneEmployee,
+        var report = await ExcelInstance.Format.ExportAsync(
+            s_oneEmployee,
             s_employees,
             new MemoryStream(),
             new ExcelExportOptions
@@ -236,7 +248,8 @@ public sealed partial class BehaviorTests
             Token);
 
         // Assert
-        Assert.Equal(TabularErrorKind.Configuration,
+        Assert.Equal(
+            TabularErrorKind.Configuration,
             Assert.Single(report.Errors)
                 .Kind);
     }

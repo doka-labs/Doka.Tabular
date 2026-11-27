@@ -41,13 +41,15 @@ public sealed partial class MapConstructionTests
         var id = Guid.NewGuid();
 
         // Act
-        var report = await Import.ImportAsync(Create(type, [id.ToString(), "a@example.org"]),
+        var report = await Import.ImportAsync(
+            Create(type, [id.ToString(), "a@example.org"]),
             type,
             s_twoConstructors,
             Token);
 
         // Assert
-        Assert.Equal(TabularErrorCodes.Configuration.Invalid,
+        Assert.Equal(
+            TabularErrorCodes.Configuration.Invalid,
             Assert.Single(report.Errors)
                 .Code);
 
@@ -62,7 +64,8 @@ public sealed partial class MapConstructionTests
     )
     {
         // Act
-        var (report, file) = await Export.ExportAsync(new[] { new TwoConstructors(Guid.NewGuid(), "a@example.org") },
+        var (report, file) = await Export.ExportAsync(
+            new[] { new TwoConstructors(Guid.NewGuid(), "a@example.org") },
             s_twoConstructors,
             type,
             Token);
@@ -97,7 +100,8 @@ public sealed partial class MapConstructionTests
         var report = await Import.ImportAsync(Create(type, [id.ToString(), "a@example.org"]), type, factory, Token);
 
         // Assert
-        Assert.Equal(id,
+        Assert.Equal(
+            id,
             Assert.Single(report.Items!)
                 .Id);
     }
@@ -115,7 +119,8 @@ public sealed partial class MapConstructionTests
         var report = await CsvInstance.ImportAsync(TestInput.Utf8("42"), map, Token);
 
         // Assert
-        Assert.Equal(TabularErrorCodes.Configuration.Invalid,
+        Assert.Equal(
+            TabularErrorCodes.Configuration.Invalid,
             Assert.Single(report.Errors)
                 .Code);
     }
@@ -139,7 +144,8 @@ public sealed partial class MapConstructionTests
         var report = await CsvInstance.ImportAsync(TestInput.Utf8("42"), factory, Token);
 
         // Assert
-        Assert.Equal(42,
+        Assert.Equal(
+            42,
             Assert.Single(report.Items!)
                 .NumericId);
     }
@@ -216,33 +222,38 @@ public sealed partial class MapConstructionTests
         var report = await CsvInstance.ImportAsync(TestInput.Utf8($"{Guid.NewGuid()},a@example.org"), unmapped, Token);
 
         // Assert
-        Assert.True(Assert.Single(report.Items!)
-            .IsActive);
+        Assert.True(
+            Assert.Single(report.Items!)
+                .IsActive);
     }
 
     [Fact]
     public async Task OptionalParameter_TakesTheMappedValue()
     {
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8($"{Guid.NewGuid()},a@example.org,false"),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8($"{Guid.NewGuid()},a@example.org,false"),
             s_optionalMapped,
             Token);
 
         // Assert
-        Assert.False(Assert.Single(report.Items!)
-            .IsActive);
+        Assert.False(
+            Assert.Single(report.Items!)
+                .IsActive);
     }
 
     [Fact]
     public async Task OptionalParameter_WithAnInvalidMappedValue_IsAnErrorOfItsProperty()
     {
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8($"{Guid.NewGuid()},a@example.org,abc"),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8($"{Guid.NewGuid()},a@example.org,abc"),
             s_optionalMapped,
             Token);
 
         // Assert
-        Assert.Equal("IsActive",
+        Assert.Equal(
+            "IsActive",
             Assert.Single(report.Errors)
                 .Location.PropertyPath?.Value);
     }
@@ -254,7 +265,8 @@ public sealed partial class MapConstructionTests
     )
     {
         // Act
-        var report = await Import.ImportAsync(Create(type, s_factoryRows),
+        var report = await Import.ImportAsync(
+            Create(type, s_factoryRows),
             type,
             UserMap(s_assignedFactory),
             new TabularImportOptions { Strategy = ImportStrategy.Partial },
@@ -262,7 +274,8 @@ public sealed partial class MapConstructionTests
 
         // Assert
         var error = Assert.Single(report.Errors);
-        Assert.Equal(("address.invalid", 2L, "Address"),
+        Assert.Equal(
+            ("address.invalid", 2L, "Address"),
             (error.Code.Value, error.Location.RecordNumber!.Value, error.Location.PropertyPath!.Value));
 
         Assert.Null(error.Location.ColumnIndex);
@@ -302,7 +315,8 @@ public sealed partial class MapConstructionTests
             .Build();
 
         // Act
-        var report = await Import.ImportAsync(Create(type, s_factoryRows),
+        var report = await Import.ImportAsync(
+            Create(type, s_factoryRows),
             type,
             UserMap(unassigned),
             new TabularImportOptions { Strategy = ImportStrategy.Partial },
@@ -331,9 +345,10 @@ public sealed partial class MapConstructionTests
             .Build());
 
         // Assert
-        var error = Assert.Single(Assert
-            .IsType<TabularConfigurationException>(exception)
-            .Errors);
+        var error = Assert.Single(
+            Assert
+                .IsType<TabularConfigurationException>(exception)
+                .Errors);
 
         Assert.Equal(TabularErrorCodes.Configuration.Invalid, error.Code);
         Assert.Equal("Email", error.Location.PropertyPath?.Value);
@@ -359,14 +374,16 @@ public sealed partial class MapConstructionTests
         object?[][] rows = [["Ada", "Berlin"], ["Bob", "Bonn"]];
 
         // Act
-        var report = await Import.ImportAsync(Create(TabularType.Csv, rows),
+        var report = await Import.ImportAsync(
+            Create(TabularType.Csv, rows),
             TabularType.Csv,
             UserMap(address),
             new TabularImportOptions { Strategy = ImportStrategy.Partial },
             Token);
 
         // Assert
-        Assert.Equal((TabularErrorCodes.Callback.InvalidResult, TabularErrorKind.Technical, 1L),
+        Assert.Equal(
+            (TabularErrorCodes.Callback.InvalidResult, TabularErrorKind.Technical, 1L),
             (report.FatalError?.Code, report.FatalError?.Kind, report.RowsRead));
 
         Assert.Empty(report.Items!);
@@ -384,7 +401,8 @@ public sealed partial class MapConstructionTests
             .Build());
 
         // Assert
-        Assert.Equal(TabularErrorCodes.Configuration.Invalid,
+        Assert.Equal(
+            TabularErrorCodes.Configuration.Invalid,
             Assert.Single(exception.Errors)
                 .Code);
     }
@@ -410,13 +428,15 @@ public sealed partial class MapConstructionTests
             .Build();
 
         // Act
-        var report = await Import.ImportAsync(Create(type,
-            [
-                Guid
-                    .NewGuid()
-                    .ToString(),
-                "a@example.org",
-            ]),
+        var report = await Import.ImportAsync(
+            Create(
+                type,
+                [
+                    Guid
+                        .NewGuid()
+                        .ToString(),
+                    "a@example.org",
+                ]),
             type,
             map,
             Token);

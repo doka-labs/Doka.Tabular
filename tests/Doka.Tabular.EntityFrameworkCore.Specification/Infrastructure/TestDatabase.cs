@@ -15,11 +15,13 @@ public abstract class TestDatabase : IAsyncDisposable
     /// <summary>Gets a factory of contexts on the same database whose options also carry the given interceptors.</summary>
     public IDbContextFactory<TabularTestContext> FactoryWith(
         params IInterceptor[] interceptors
-    ) => new OptionsContextFactory(new DbContextOptionsBuilder<TabularTestContext>(Assert
-            .IsType<OptionsContextFactory>(Factory)
-            .Options)
-        .AddInterceptors(interceptors)
-        .Options);
+    ) => new OptionsContextFactory(
+        new DbContextOptionsBuilder<TabularTestContext>(
+                Assert
+                    .IsType<OptionsContextFactory>(Factory)
+                    .Options)
+            .AddInterceptors(interceptors)
+            .Options);
 
     public async Task<TabularTestContext> ContextAsync()
         => await Factory.CreateDbContextAsync(TestContext.Current.CancellationToken);

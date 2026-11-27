@@ -140,10 +140,12 @@ internal static class ExportEngine
                 or ObjectDisposedException
                 or UnauthorizedAccessException)
             {
-                _errors.AddFatal(TabularError.Create(TabularErrorCodes.Io.Failed,
-                    TabularErrorKind.Technical,
-                    "Writing the output failed.",
-                    new TabularErrorLocation { SheetName = _sheetName }));
+                _errors.AddFatal(
+                    TabularError.Create(
+                        TabularErrorCodes.Io.Failed,
+                        TabularErrorKind.Technical,
+                        "Writing the output failed.",
+                        new TabularErrorLocation { SheetName = _sheetName }));
 
                 return Failed;
             }
@@ -222,10 +224,12 @@ internal static class ExportEngine
             }
             catch (Exception exception) when (exception is not OutOfMemoryException)
             {
-                _errors.AddFatal(TabularError.Create(TabularErrorCodes.Callback.Failed,
-                    TabularErrorKind.Technical,
-                    "The export source threw an exception while it was released.",
-                    new TabularErrorLocation { SheetName = _sheetName }));
+                _errors.AddFatal(
+                    TabularError.Create(
+                        TabularErrorCodes.Callback.Failed,
+                        TabularErrorKind.Technical,
+                        "The export source threw an exception while it was released.",
+                        new TabularErrorLocation { SheetName = _sheetName }));
 
                 return SourceRelease.Failed;
             }
@@ -289,14 +293,16 @@ internal static class ExportEngine
             }
             catch (Exception exception) when (exception is not OutOfMemoryException and not TabularResourceException)
             {
-                _errors.AddFatal(TabularError.Create(TabularErrorCodes.Callback.Failed,
-                    TabularErrorKind.Technical,
-                    "The export source threw an exception.",
-                    new TabularErrorLocation
-                    {
-                        RecordNumber = _read + 1,
-                        SheetName = _sheetName,
-                    }));
+                _errors.AddFatal(
+                    TabularError.Create(
+                        TabularErrorCodes.Callback.Failed,
+                        TabularErrorKind.Technical,
+                        "The export source threw an exception.",
+                        new TabularErrorLocation
+                        {
+                            RecordNumber = _read + 1,
+                            SheetName = _sheetName,
+                        }));
 
                 return SourceStep.Failed;
             }
@@ -307,7 +313,8 @@ internal static class ExportEngine
             OutputCell[] cells
         )
         {
-            if (!_plan.TryFormat(record,
+            if (!_plan.TryFormat(
+                record,
                 _read,
                 _writer,
                 _sheetName,
@@ -394,7 +401,8 @@ internal static class ExportRunner
         string formatName,
         string contentType,
         CancellationToken cancellationToken
-    ) => new ExportRun(produce,
+    ) => new ExportRun(
+            produce,
             errors,
             scope,
             limits,

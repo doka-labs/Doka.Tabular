@@ -14,7 +14,8 @@ internal static class PropertyExpressions
         var path = Chain(expression.Body);
         if (path is not { Count: 1 })
         {
-            throw new ArgumentException("The expression must access one property directly, for example x => x.Email.",
+            throw new ArgumentException(
+                "The expression must access one property directly, for example x => x.Email.",
                 nameof(expression));
         }
 
@@ -28,7 +29,8 @@ internal static class PropertyExpressions
     {
         ArgumentNullException.ThrowIfNull(expression);
         var path = Chain(expression.Body)
-            ?? throw new ArgumentException("The expression must be a property chain, for example a => a.PostalCode.",
+            ?? throw new ArgumentException(
+                "The expression must be a property chain, for example a => a.PostalCode.",
                 nameof(expression));
 
         return string.Join('.', path.Select(property => property.Name));

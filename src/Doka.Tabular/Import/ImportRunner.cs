@@ -47,7 +47,8 @@ internal static class ImportRunner
         CancellationToken cancellationToken
     )
     {
-        var run = new ImportRun<TItem>(input,
+        var run = new ImportRun<TItem>(
+            input,
             format,
             shape,
             settings,

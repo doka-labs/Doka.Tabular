@@ -140,7 +140,8 @@ internal sealed partial class ExcelPackage
                 case { NamespaceURI: not (ExcelXml.TransitionalMain or ExcelXml.StrictMain) }:
                     break;
                 case { NodeType: XmlNodeType.Element, LocalName: "numFmt" }:
-                    if (int.TryParse(reader.GetAttribute("numFmtId"),
+                    if (int.TryParse(
+                        reader.GetAttribute("numFmtId"),
                         NumberStyles.None,
                         CultureInfo.InvariantCulture,
                         out var id))
@@ -154,7 +155,8 @@ internal sealed partial class ExcelPackage
                     inCellXfs = !reader.IsEmptyElement;
                     break;
                 case { NodeType: XmlNodeType.Element, LocalName: "xf" } when inCellXfs:
-                    _ = int.TryParse(reader.GetAttribute("numFmtId"),
+                    _ = int.TryParse(
+                        reader.GetAttribute("numFmtId"),
                         NumberStyles.None,
                         CultureInfo.InvariantCulture,
                         out var formatId);
@@ -225,11 +227,13 @@ internal sealed partial class ExcelPackage
                     // WHY: The field limit applies to the cells that use the text inside the read range; a long text
                     // used only outside of it is no field value, so it is only marked here. The stored length bounds
                     // the text while it is read; the decoded length decides.
-                    Strings.Add(_overlong
-                        ? null
-                        : ExcelXml.Unescape(_builder.ToString()) is var text && !_package.ExceedsFieldLimit(text.Length)
-                            ? text
-                            : null);
+                    Strings.Add(
+                        _overlong
+                            ? null
+                            : ExcelXml.Unescape(_builder.ToString()) is var text
+                            && !_package.ExceedsFieldLimit(text.Length)
+                                ? text
+                                : null);
 
                     _inItem = false;
                     break;

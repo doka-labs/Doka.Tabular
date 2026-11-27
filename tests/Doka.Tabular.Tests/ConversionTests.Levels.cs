@@ -23,9 +23,12 @@ public sealed partial class ConversionTests
 
         // Assert
         Assert.All(columnOnly, name => Assert.DoesNotContain(name, methods));
-        Assert.All(columnOnly,
-            name => Assert.NotNull(typeof(TabularColumnBuilder<string>).GetMethod(name,
-                BindingFlags.Public | BindingFlags.Instance)));
+        Assert.All(
+            columnOnly,
+            name => Assert.NotNull(
+                typeof(TabularColumnBuilder<string>).GetMethod(
+                    name,
+                    BindingFlags.Public | BindingFlags.Instance)));
     }
 
     [Theory]
@@ -39,7 +42,8 @@ public sealed partial class ConversionTests
         var exception = Record.Exception(() => boolText
             ? KeyedMap<bool>(c => c
                 .TrueText("ja")
-                .Convert<string, bool>(text => text == "1",
+                .Convert<string, bool>(
+                    text => text == "1",
                     flag => flag
                         ? "1"
                         : "0"))
@@ -55,7 +59,8 @@ public sealed partial class ConversionTests
     public void ConversionSettingOfTheBaseTypeOfACustomConversion_Builds()
     {
         // Act
-        var exception = Record.Exception(() => KeyedMap<Wrapped>(c => c.Convert(number => new Wrapped($"{number}"),
+        var exception = Record.Exception(() => KeyedMap<Wrapped>(c => c.Convert(
+            number => new Wrapped($"{number}"),
             _ => 0m,
             configure: b => b
                 .Culture(CultureInfo.GetCultureInfo("de-DE"))

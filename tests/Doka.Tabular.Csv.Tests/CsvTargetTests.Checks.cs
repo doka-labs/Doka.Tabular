@@ -7,7 +7,8 @@ public sealed partial class CsvTargetTests
     public async Task ForbiddenFinalFlush_IsAFailedReport()
     {
         // Act
-        var report = await new CsvFormat(new CsvFormatOptions()).ExportAsync(new[] { new Name("Ada") },
+        var report = await new CsvFormat(new CsvFormatOptions()).ExportAsync(
+            new[] { new Name("Ada") },
             s_map,
             new ForbiddenFlushStream(),
             Token);
@@ -20,11 +21,12 @@ public sealed partial class CsvTargetTests
     public async Task InvalidTemporaryDirectory_IsAFailedReportWithoutFile()
     {
         // Arrange
-        var format = new CsvFormat(new CsvFormatOptions
-        {
-            OutputBufferBytes = 0,
-            TemporaryDirectory = "bad\0directory",
-        });
+        var format = new CsvFormat(
+            new CsvFormatOptions
+            {
+                OutputBufferBytes = 0,
+                TemporaryDirectory = "bad\0directory",
+            });
 
         // Act
         var (report, file) = await format.ExportAsync(new[] { new Name("Ada") }, s_map, Token);
@@ -87,7 +89,8 @@ public sealed partial class CsvTargetTests
         var format = new CsvFormat(new CsvFormatOptions());
 
         // Act
-        var exception = await Record.ExceptionAsync(() => format.ExportAsync(new[] { new Name("Ada") },
+        var exception = await Record.ExceptionAsync(() => format.ExportAsync(
+            new[] { new Name("Ada") },
             s_map,
             (string)null!,
             Token));
@@ -104,14 +107,16 @@ public sealed partial class CsvTargetTests
         var path = Path.Combine(Path.GetTempPath(), $"tabular-missing-{Guid.NewGuid():N}", "out.csv");
 
         // Act
-        var report = await new CsvFormat(new CsvFormatOptions()).ExportAsync(new[] { new Name("Ada") },
+        var report = await new CsvFormat(new CsvFormatOptions()).ExportAsync(
+            new[] { new Name("Ada") },
             s_map,
             path,
             new CsvExportOptions { ColumnKeys = [ColumnKey.Create("missing")] },
             Token);
 
         // Assert
-        Assert.Equal(TabularErrorKind.Configuration,
+        Assert.Equal(
+            TabularErrorKind.Configuration,
             Assert.Single(report.Errors)
                 .Kind);
     }
@@ -123,13 +128,15 @@ public sealed partial class CsvTargetTests
         var read = false;
 
         // Act
-        var report = await new CsvFormat(new CsvFormatOptions()).ExportAsync(Rows(),
+        var report = await new CsvFormat(new CsvFormatOptions()).ExportAsync(
+            Rows(),
             s_map,
             new MemoryStream([], writable: false),
             Token);
 
         // Assert
-        Assert.Equal((TabularErrorKind.Configuration, false, StreamOutputState.NotWritten),
+        Assert.Equal(
+            (TabularErrorKind.Configuration, false, StreamOutputState.NotWritten),
             (report.FatalError?.Kind, read, report.StreamOutput));
 
         return;
@@ -154,7 +161,8 @@ public sealed partial class CsvTargetTests
         var target = new MemoryStream();
 
         // Act
-        var report = await new CsvFormat(new CsvFormatOptions()).ExportAsync(CancelingRows(cancellation),
+        var report = await new CsvFormat(new CsvFormatOptions()).ExportAsync(
+            CancelingRows(cancellation),
             s_map,
             target,
             new CsvExportOptions
@@ -165,7 +173,8 @@ public sealed partial class CsvTargetTests
             cancellation.Token);
 
         // Assert
-        Assert.Equal((ReportStatus.Canceled, StreamOutputState.NotWritten, 0L),
+        Assert.Equal(
+            (ReportStatus.Canceled, StreamOutputState.NotWritten, 0L),
             (report.Status, report.StreamOutput, target.Length));
 
         return;
@@ -189,7 +198,8 @@ public sealed partial class CsvTargetTests
     )
     {
         // Act
-        var report = await new CsvFormat(new CsvFormatOptions()).ExportAsync(new[] { new Name("Ada") },
+        var report = await new CsvFormat(new CsvFormatOptions()).ExportAsync(
+            new[] { new Name("Ada") },
             s_map,
             new CancelingTargetStream(atFlush),
             Token);

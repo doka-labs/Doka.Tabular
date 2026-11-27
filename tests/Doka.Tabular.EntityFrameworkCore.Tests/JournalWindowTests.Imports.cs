@@ -21,7 +21,8 @@ public sealed partial class JournalWindowTests
 
         // Assert
         await using var check = await database.PlainContextAsync();
-        Assert.Equal(TabularErrorCodes.Persistence.OperationFailed,
+        Assert.Equal(
+            TabularErrorCodes.Persistence.OperationFailed,
             Assert.Single(report.Errors)
                 .Code);
 
@@ -48,7 +49,8 @@ public sealed partial class JournalWindowTests
         var report = await excel.ImportAsync(file, sheets.Build(), Token);
 
         // Assert
-        Assert.Equal(TabularErrorCodes.Persistence.OperationFailed,
+        Assert.Equal(
+            TabularErrorCodes.Persistence.OperationFailed,
             Assert.Single(report.Errors)
                 .Code);
 
@@ -69,7 +71,8 @@ public sealed partial class JournalWindowTests
         var completions = 0;
         var withLog = TestMaps
             .Upsert(TabularDatabase.ForFactory(logged.Plain))
-            .WithImportLog(journal,
+            .WithImportLog(
+                journal,
                 new TabularImportLogOptions
                 {
                     Scope = s_scope,
@@ -83,13 +86,15 @@ public sealed partial class JournalWindowTests
 
         var withoutLog = TestMaps.Upsert(TabularDatabase.ForFactory(other.Plain));
         var sheets = ExcelImport.Create();
-        sheets.Add(TabularSheetName.Create("First"),
+        sheets.Add(
+            TabularSheetName.Create("First"),
             TestMaps.Users,
             logOnTheFirstSheet
                 ? withLog
                 : withoutLog);
 
-        sheets.Add(TabularSheetName.Create("Second"),
+        sheets.Add(
+            TabularSheetName.Create("Second"),
             TestMaps.Users,
             logOnTheFirstSheet
                 ? withoutLog
@@ -105,10 +110,12 @@ public sealed partial class JournalWindowTests
         // Assert
         await using var logs = await logged.PlainContextAsync();
         await using var check = await other.PlainContextAsync();
-        Assert.Equal((ReportStatus.Failed, TabularErrorKind.Configuration),
+        Assert.Equal(
+            (ReportStatus.Failed, TabularErrorKind.Configuration),
             (report.Status, report.Errors[0].Kind));
 
-        Assert.Equal((0L, 0, 0, 0),
+        Assert.Equal(
+            (0L, 0, 0, 0),
             (report.RowsImported, await journal
                     .QueryImports(logs)
                     .CountAsync(Token), await check.Users.CountAsync(Token),
@@ -145,9 +152,10 @@ public sealed partial class JournalWindowTests
         Assert.Equal(ImportJournalDecision.Skipped, repeated.Journal?.Decision);
     }
 
-    private static async Task<byte[]> HalfTargetedWorkbookAsync()
-        => (await WorkbookAsync([new UserDto(0, "a@example.org", "Ada")], [new UserDto(2, "b@example.org", "Bob")]))
-            .ToArray();
+    private static async Task<byte[]> HalfTargetedWorkbookAsync() => (await WorkbookAsync(
+            [new UserDto(0, "a@example.org", "Ada")],
+            [new UserDto(2, "b@example.org", "Bob")]))
+        .ToArray();
 
     private static Task<ExcelWorkbookImportReport> ImportHalfTargetedAsync(
         FileDatabase logged,
@@ -155,16 +163,19 @@ public sealed partial class JournalWindowTests
     )
     {
         var sheets = ExcelImport.Create();
-        sheets.Add(TabularSheetName.Create("First"),
+        sheets.Add(
+            TabularSheetName.Create("First"),
             TestMaps.Users,
             TestMaps
                 .Upsert(TabularDatabase.ForFactory(logged.Plain))
-                .WithImportLog(TabularJournal.ForFactory(logged.Plain),
+                .WithImportLog(
+                    TabularJournal.ForFactory(logged.Plain),
                     new TabularImportLogOptions { Scope = s_scope }));
 
         sheets.Add(TabularSheetName.Create("Second"), TestMaps.Users);
 
-        return new ExcelFormat(new ExcelFormatOptions()).ImportAsync(new MemoryStream(bytes),
+        return new ExcelFormat(new ExcelFormatOptions()).ImportAsync(
+            new MemoryStream(bytes),
             sheets.Build(),
             new ExcelWorkbookImportOptions { Strategy = ImportStrategy.Partial },
             Token);
@@ -177,11 +188,13 @@ public sealed partial class JournalWindowTests
         await using var first = await FileDatabase.CreateAsync();
         await using var second = await FileDatabase.CreateAsync();
         var sheets = ExcelImport.Create();
-        sheets.Add(TabularSheetName.Create("First"),
+        sheets.Add(
+            TabularSheetName.Create("First"),
             TestMaps.Users,
             TestMaps.Upsert(TabularDatabase.ForFactory(first.Plain)));
 
-        sheets.Add(TabularSheetName.Create("Second"),
+        sheets.Add(
+            TabularSheetName.Create("Second"),
             TestMaps.Users,
             TestMaps.Upsert(TabularDatabase.ForFactory(second.Plain)));
 
@@ -225,7 +238,8 @@ public sealed partial class JournalWindowTests
 
     private static Task<ImportReport<UserDto>> ImportFailingRowAsync(
         FileDatabase database
-    ) => s_csv.ImportAsync(TestMaps.Csv("0,a@example.org,Ada"),
+    ) => s_csv.ImportAsync(
+        TestMaps.Csv("0,a@example.org,Ada"),
         TestMaps.Users,
         TestMaps
             .Upsert(TabularDatabase.ForFactory(database.Plain))
@@ -240,20 +254,24 @@ public sealed partial class JournalWindowTests
         await using var database = await FileDatabase.CreateAsync();
         using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(Token);
         var prepared = new TrackingFactory(database.Plain);
-        var file = await WorkbookAsync([new UserDto(1, "a@example.org", "Ada")],
+        var file = await WorkbookAsync(
+            [new UserDto(1, "a@example.org", "Ada")],
             [new UserDto(2, "b@example.org", "Bob")]);
 
         var sheets = ExcelImport.Create();
-        sheets.Add(TabularSheetName.Create("First"),
+        sheets.Add(
+            TabularSheetName.Create("First"),
             TestMaps.Users,
             TestMaps.Upsert(TabularDatabase.ForFactory(prepared)));
 
-        sheets.Add(TabularSheetName.Create("Second"),
+        sheets.Add(
+            TabularSheetName.Create("Second"),
             TestMaps.Users,
             TestMaps.Upsert(TabularDatabase.ForFactory(new CancelingFactory(database.Plain, cancellation))));
 
         // Act
-        var report = await new ExcelFormat(new ExcelFormatOptions()).ImportAsync(file,
+        var report = await new ExcelFormat(new ExcelFormatOptions()).ImportAsync(
+            file,
             sheets.Build(),
             new ExcelWorkbookImportOptions { Strategy = ImportStrategy.Partial },
             cancellation.Token);
@@ -279,7 +297,8 @@ public sealed partial class JournalWindowTests
         var completions = 0;
         var target = TestMaps
             .Upsert(TabularDatabase.ForFactory(database.Plain))
-            .WithImportLog(journal,
+            .WithImportLog(
+                journal,
                 new TabularImportLogOptions
                 {
                     Scope = s_scope,
@@ -295,7 +314,8 @@ public sealed partial class JournalWindowTests
             ? (await WorkbookAsync([new UserDto(1, "a@example.org", "Ada")], [])).ToArray()
             : "1,a@example.org,Ada\r\n"u8.ToArray();
 
-        var input = new FailingSecondReadStream(bytes,
+        var input = new FailingSecondReadStream(
+            bytes,
             () =>
             {
                 if (!cancel)
@@ -317,7 +337,8 @@ public sealed partial class JournalWindowTests
         {
             var sheets = ExcelImport.Create();
             sheets.Add(TabularSheetName.Create("First"), TestMaps.Users, target);
-            var report = await new ExcelFormat(new ExcelFormatOptions()).ImportAsync(input,
+            var report = await new ExcelFormat(new ExcelFormatOptions()).ImportAsync(
+                input,
                 sheets.Build(),
                 cancellation.Token);
 
@@ -335,7 +356,8 @@ public sealed partial class JournalWindowTests
             .QueryImports(check)
             .SingleAsync(Token);
 
-        Assert.Equal(cancel
+        Assert.Equal(
+            cancel
                 ? ReportStatus.Canceled
                 : ReportStatus.Failed,
             status);
@@ -351,26 +373,31 @@ public sealed partial class JournalWindowTests
         await using var database = await FileDatabase.CreateAsync();
         var prepared = new TrackingFactory(database.Plain);
         var failing = new UnrequestedCancelFactory(database.Plain);
-        var file = await WorkbookAsync([new UserDto(1, "a@example.org", "Ada")],
+        var file = await WorkbookAsync(
+            [new UserDto(1, "a@example.org", "Ada")],
             [new UserDto(2, "b@example.org", "Bob")]);
 
         var sheets = ExcelImport.Create();
-        sheets.Add(TabularSheetName.Create("First"),
+        sheets.Add(
+            TabularSheetName.Create("First"),
             TestMaps.Users,
             TestMaps.Upsert(TabularDatabase.ForFactory(prepared)));
 
-        sheets.Add(TabularSheetName.Create("Second"),
+        sheets.Add(
+            TabularSheetName.Create("Second"),
             TestMaps.Users,
             TestMaps.Upsert(TabularDatabase.ForFactory(failing)));
 
         // Act
-        var report = await new ExcelFormat(new ExcelFormatOptions()).ImportAsync(file,
+        var report = await new ExcelFormat(new ExcelFormatOptions()).ImportAsync(
+            file,
             sheets.Build(),
             new ExcelWorkbookImportOptions { Strategy = ImportStrategy.Partial },
             Token);
 
         // Assert
-        Assert.Equal((ReportStatus.Failed, TabularErrorCodes.Persistence.OperationFailed, true),
+        Assert.Equal(
+            (ReportStatus.Failed, TabularErrorCodes.Persistence.OperationFailed, true),
             (report.Status, report.FatalError?.Code, prepared.AllDisposed));
     }
 
@@ -382,13 +409,15 @@ public sealed partial class JournalWindowTests
         var failing = new UnrequestedCancelFactory(database.Plain);
 
         // Act
-        var report = await s_csv.ImportAsync(TestMaps.Csv("1,a@example.org,Ada"),
+        var report = await s_csv.ImportAsync(
+            TestMaps.Csv("1,a@example.org,Ada"),
             TestMaps.Users,
             TestMaps.Upsert(TabularDatabase.ForFactory(failing)),
             Token);
 
         // Assert
-        Assert.Equal((ReportStatus.Failed, TabularErrorCodes.Persistence.OperationFailed),
+        Assert.Equal(
+            (ReportStatus.Failed, TabularErrorCodes.Persistence.OperationFailed),
             (report.Status, report.FatalError?.Code));
     }
 
@@ -399,14 +428,16 @@ public sealed partial class JournalWindowTests
         await using var database = await FileDatabase.CreateAsync();
         var target = TestMaps
             .Upsert(TabularDatabase.ForFactory(database.Plain))
-            .WithImportLog(TabularJournal.ForFactory(new UnrequestedCancelFactory(database.Plain)),
+            .WithImportLog(
+                TabularJournal.ForFactory(new UnrequestedCancelFactory(database.Plain)),
                 new TabularImportLogOptions { Scope = s_scope });
 
         // Act
         var report = await s_csv.ImportAsync(TestMaps.Csv("1,a@example.org,Ada"), TestMaps.Users, target, Token);
 
         // Assert
-        Assert.Equal((ReportStatus.Failed, TabularErrorCodes.Persistence.WriteFailed),
+        Assert.Equal(
+            (ReportStatus.Failed, TabularErrorCodes.Persistence.WriteFailed),
             (report.Status, report.FatalError?.Code));
     }
 
@@ -441,7 +472,8 @@ public sealed partial class JournalWindowTests
         var journal = TabularJournal.ForFactory(new StartFailureFactory(database.ConnectionString, true));
         var target = TestMaps
             .Upsert(TabularDatabase.ForFactory(database.Plain))
-            .WithImportLog(journal,
+            .WithImportLog(
+                journal,
                 new TabularImportLogOptions
                 {
                     Scope = s_scope,
@@ -476,7 +508,8 @@ public sealed partial class JournalWindowTests
         var journal = TabularJournal.ForFactory(new StartFailureFactory(database.ConnectionString, false));
         var target = TestMaps
             .Upsert(TabularDatabase.ForFactory(database.Plain))
-            .WithImportLog(journal,
+            .WithImportLog(
+                journal,
                 new TabularImportLogOptions
                 {
                     Scope = s_scope,
@@ -508,7 +541,8 @@ public sealed partial class JournalWindowTests
         Action completed
     ) => TestMaps
         .Upsert(TabularDatabase.ForFactory(database.Plain))
-        .WithImportLog(TabularJournal.ForFactory(journal),
+        .WithImportLog(
+            TabularJournal.ForFactory(journal),
             new TabularImportLogOptions
             {
                 Scope = s_scope,
@@ -671,7 +705,8 @@ public sealed partial class JournalWindowTests
             _stored = stored;
         }
 
-        public StartFailureContext CreateDbContext() => new(new DbContextOptionsBuilder<StartFailureContext>()
+        public StartFailureContext CreateDbContext() => new(
+            new DbContextOptionsBuilder<StartFailureContext>()
                 .UseSqlite(_connectionString)
                 .UseTabularJournal()
                 .Options,
@@ -724,10 +759,11 @@ public sealed partial class JournalWindowTests
             _connectionString = connectionString;
         }
 
-        public EndReleaseContext CreateDbContext() => new(new DbContextOptionsBuilder<EndReleaseContext>()
-            .UseSqlite(_connectionString)
-            .UseTabularJournal()
-            .Options);
+        public EndReleaseContext CreateDbContext() => new(
+            new DbContextOptionsBuilder<EndReleaseContext>()
+                .UseSqlite(_connectionString)
+                .UseTabularJournal()
+                .Options);
     }
 
     private sealed class EndReleaseContext : DbContext

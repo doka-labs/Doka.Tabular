@@ -41,7 +41,8 @@ public sealed partial class ConversionTests
 
     private static TabularMap<Value<string>> TrimmedYesFlag() => Map<string>(c => c
         .Trim()
-        .Convert(value => value
+        .Convert(
+            value => value
                 ? "y"
                 : "n",
             text => text == "y",
@@ -102,21 +103,25 @@ public sealed partial class ConversionTests
         // Act
         var errors = kind switch
         {
-            "bool text" => (await CsvInstance.ImportAsync(TestInput.Utf8("x"),
+            "bool text" => (await CsvInstance.ImportAsync(
+                    TestInput.Utf8("x"),
                     Map<bool>(c => c.TrueText(" ")),
                     options,
                     Token))
                 .Errors,
             "enum label" => (await CsvInstance.ImportAsync(TestInput.Utf8("x"), Map<Blank>(), options, Token)).Errors,
-            "null marker" => (await CsvInstance.ImportAsync(TestInput.Utf8("x"),
+            "null marker" => (await CsvInstance.ImportAsync(
+                TestInput.Utf8("x"),
                 Map<string?>(c => c.NullText(" ")),
                 options,
                 Token)).Errors,
-            "bool translation" => (await CsvInstance.ImportAsync(TestInput.Utf8("x"),
+            "bool translation" => (await CsvInstance.ImportAsync(
+                TestInput.Utf8("x"),
                 Map<bool>(c => c.TranslationKeys("yes", "no")),
                 options,
                 Token)).Errors,
-            _ => (await CsvInstance.ImportAsync(TestInput.Utf8("x"),
+            _ => (await CsvInstance.ImportAsync(
+                TestInput.Utf8("x"),
                 Map<string?>(c => c.EmptyTranslationKey("null")),
                 options,
                 Token)).Errors,
@@ -135,17 +140,20 @@ public sealed partial class ConversionTests
     {
         // Act
         var report = marker
-            ? (await CsvInstance.ImportAsync(TestInput.Utf8("x"),
+            ? (await CsvInstance.ImportAsync(
+                TestInput.Utf8("x"),
                 Map<string?>(c => c.EmptyTranslationKey("null")),
                 new CsvImportOptions { Translations = s_emptyTranslations },
                 Token)).Errors
-            : (await CsvInstance.ImportAsync(TestInput.Utf8("no"),
+            : (await CsvInstance.ImportAsync(
+                TestInput.Utf8("no"),
                 Map<bool>(c => c.TranslationKeys("yes", "no")),
                 new CsvImportOptions { Translations = s_emptyTranslations },
                 Token)).Errors;
 
         // Assert
-        Assert.Equal(TabularErrorKind.Configuration,
+        Assert.Equal(
+            TabularErrorKind.Configuration,
             Assert.Single(report)
                 .Kind);
     }
@@ -157,14 +165,16 @@ public sealed partial class ConversionTests
         var target = new MemoryStream();
 
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Value<bool>(false), new Value<bool>(true) },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Value<bool>(false), new Value<bool>(true) },
             Map<bool>(c => c.TranslationKeys("yes", "no")),
             target,
             new CsvExportOptions { Translations = s_emptyTranslations },
             Token);
 
         // Assert
-        Assert.Equal(TabularErrorKind.Configuration,
+        Assert.Equal(
+            TabularErrorKind.Configuration,
             Assert.Single(report.Errors)
                 .Kind);
 
@@ -178,14 +188,16 @@ public sealed partial class ConversionTests
         var target = new MemoryStream();
 
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Value<string?>("x"), new Value<string?>(null) },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Value<string?>("x"), new Value<string?>(null) },
             Map<string?>(c => c.EmptyTranslationKey("null")),
             target,
             new CsvExportOptions { Translations = s_emptyTranslations },
             Token);
 
         // Assert
-        Assert.Equal(TabularErrorKind.Configuration,
+        Assert.Equal(
+            TabularErrorKind.Configuration,
             Assert.Single(report.Errors)
                 .Kind);
 

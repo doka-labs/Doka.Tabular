@@ -53,7 +53,8 @@ internal sealed class TabularJournalOptionsExtension : IDbContextOptionsExtensio
 
         private new TabularJournalOptionsExtension Extension => (TabularJournalOptionsExtension)base.Extension;
 
-        public override int GetServiceProviderHashCode() => HashCode.Combine(Extension.Prefix,
+        public override int GetServiceProviderHashCode() => HashCode.Combine(
+            Extension.Prefix,
             Extension.Import,
             Extension.Export,
             Extension.IgnoreScopeCase);

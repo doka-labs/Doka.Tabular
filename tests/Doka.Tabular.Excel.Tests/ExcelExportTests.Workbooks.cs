@@ -10,7 +10,8 @@ public sealed partial class ExcelExportTests
         // Arrange
         var workbook = ExcelExport
             .Create()
-            .Add(TabularSheetName.Create("Kunden"),
+            .Add(
+                TabularSheetName.Create("Kunden"),
                 new[] { new Customer(1, "Ada") },
                 s_customers,
                 new ExcelSheetExportOptions
@@ -18,7 +19,8 @@ public sealed partial class ExcelExportTests
                     WriteHeader = true,
                     ColumnKeys = [ColumnKey.Create("name")],
                 })
-            .Add(TabularSheetName.Create("Bestellungen"),
+            .Add(
+                TabularSheetName.Create("Bestellungen"),
                 Async(),
                 s_orders,
                 new ExcelSheetExportOptions { WriteHeader = true })
@@ -76,9 +78,11 @@ public sealed partial class ExcelExportTests
         var failing = TabularMap
             .For<Order>()
             .Column(x => x.Number, index: 0)
-            .Column(x => x.Total,
+            .Column(
+                x => x.Total,
                 index: 1,
-                configure: c => c.Convert<string, decimal>(read: decimal.Parse,
+                configure: c => c.Convert<string, decimal>(
+                    read: decimal.Parse,
                     write: total => total < 0
                         ? throw new InvalidOperationException()
                         : total.ToString(CultureInfo.InvariantCulture)))
@@ -114,16 +118,19 @@ public sealed partial class ExcelExportTests
     public async Task SeveralSheets_ImportInConfiguredOrderWithTypedResults()
     {
         // Arrange
-        var file = Workbook(("Hinweise", [["Text"]]),
+        var file = Workbook(
+            ("Hinweise", [["Text"]]),
             ("Bestellungen", [["Nummer", "Summe"], [7, 12.5]]),
             ("Kunden", [["Id", "Name"], [1, "Ada"], [2, "Bob"]]));
 
         var definition = ExcelImport.Create();
-        var customers = definition.Add(TabularSheetName.Create("Kunden"),
+        var customers = definition.Add(
+            TabularSheetName.Create("Kunden"),
             s_customers,
             new ExcelSheetImportOptions { Binding = ColumnBinding.ByHeaderName });
 
-        var orders = definition.Add(TabularSheetName.Create("Bestellungen"),
+        var orders = definition.Add(
+            TabularSheetName.Create("Bestellungen"),
             s_orders,
             new ExcelSheetImportOptions { Binding = ColumnBinding.ByIndexWithHeader });
 
@@ -132,13 +139,16 @@ public sealed partial class ExcelExportTests
 
         // Assert
         Assert.Equal(ReportStatus.Succeeded, report.Status);
-        Assert.Equal(["Ada", "Bob"],
+        Assert.Equal(
+            ["Ada", "Bob"],
             report.Get(customers)
                 .Items!.Select(item => item.Name));
 
-        Assert.Equal(new Order(7, 12.5m),
-            Assert.Single(report.Get(orders)
-                .Items!));
+        Assert.Equal(
+            new Order(7, 12.5m),
+            Assert.Single(
+                report.Get(orders)
+                    .Items!));
 
         Assert.Equal(3, report.RowsImported);
     }
@@ -149,7 +159,8 @@ public sealed partial class ExcelExportTests
         // Arrange
         var file = Workbook(("Kunden", [["Id", "Name"], [1, "Ada"]]));
         var definition = ExcelImport.Create();
-        var own = definition.Add(TabularSheetName.Create("Kunden"),
+        var own = definition.Add(
+            TabularSheetName.Create("Kunden"),
             s_customers,
             new ExcelSheetImportOptions { Binding = ColumnBinding.ByIndexWithHeader });
 
@@ -160,7 +171,8 @@ public sealed partial class ExcelExportTests
         var report = await ExcelInstance.ImportAsync(file, definition.Build(), Token);
 
         // Assert
-        Assert.Equal(ReportStatus.Succeeded,
+        Assert.Equal(
+            ReportStatus.Succeeded,
             report.Get(own)
                 .Status);
 
@@ -171,20 +183,24 @@ public sealed partial class ExcelExportTests
     public async Task SeveralSheets_StrictFailureFailsEveryCheckedSheetAndLeavesLaterOnesNotStarted()
     {
         // Arrange
-        var file = Workbook(("Kunden", [["Id", "Name"], [1, "Ada"]]),
+        var file = Workbook(
+            ("Kunden", [["Id", "Name"], [1, "Ada"]]),
             ("Bestellungen", [["Nummer", "Summe"], ["x", 1]]),
             ("Rest", [["Id", "Name"], [3, "Cy"]]));
 
         var definition = ExcelImport.Create();
-        var customers = definition.Add(TabularSheetName.Create("Kunden"),
+        var customers = definition.Add(
+            TabularSheetName.Create("Kunden"),
             s_customers,
             new ExcelSheetImportOptions { Binding = ColumnBinding.ByIndexWithHeader });
 
-        var orders = definition.Add(TabularSheetName.Create("Bestellungen"),
+        var orders = definition.Add(
+            TabularSheetName.Create("Bestellungen"),
             s_orders,
             new ExcelSheetImportOptions { Binding = ColumnBinding.ByIndexWithHeader });
 
-        var rest = definition.Add(TabularSheetName.Create("Rest"),
+        var rest = definition.Add(
+            TabularSheetName.Create("Rest"),
             s_customers,
             new ExcelSheetImportOptions { Binding = ColumnBinding.ByIndexWithHeader });
 
@@ -193,17 +209,20 @@ public sealed partial class ExcelExportTests
 
         // Assert
         Assert.Equal(ReportStatus.Failed, report.Status);
-        Assert.Equal((ReportStatus.Failed, ReportStatus.Failed, ReportStatus.NotStarted),
+        Assert.Equal(
+            (ReportStatus.Failed, ReportStatus.Failed, ReportStatus.NotStarted),
             (report.Get(customers)
                 .Status, report.Get(orders)
                 .Status, report.Get(rest)
                 .Status));
 
-        Assert.Empty(report.Get(customers)
-            .Items!);
+        Assert.Empty(
+            report.Get(customers)
+                .Items!);
 
         Assert.Equal(0, report.RowsImported);
-        Assert.Equal("Bestellungen",
+        Assert.Equal(
+            "Bestellungen",
             Assert.Single(report.Errors)
                 .Location.SheetName?.Value);
     }
@@ -220,7 +239,8 @@ public sealed partial class ExcelExportTests
         var report = await ExcelInstance.ImportAsync(file, missing.Build(), Token);
 
         // Assert
-        Assert.Equal(TabularErrorCodes.Schema.MissingSheet,
+        Assert.Equal(
+            TabularErrorCodes.Schema.MissingSheet,
             Assert.Single(report.Errors)
                 .Code);
     }
@@ -232,7 +252,8 @@ public sealed partial class ExcelExportTests
         var map = TabularMap
             .For<Customer>()
             .Column(x => x.Id, index: 0, configure: c => c.Header("Id"))
-            .Column(x => x.Name,
+            .Column(
+                x => x.Name,
                 index: 1,
                 configure: c => c
                     .Header("Name")
@@ -241,7 +262,8 @@ public sealed partial class ExcelExportTests
 
         var workbook = ExcelExport
             .Create()
-            .Add(TabularSheetName.Create("Deutsch"),
+            .Add(
+                TabularSheetName.Create("Deutsch"),
                 new[] { new Customer(1, "Ada") },
                 map,
                 new ExcelSheetExportOptions
@@ -249,7 +271,8 @@ public sealed partial class ExcelExportTests
                     WriteHeader = true,
                     Translations = new Dictionary<string, string> { ["name"] = "Name" },
                 })
-            .Add(TabularSheetName.Create("English"),
+            .Add(
+                TabularSheetName.Create("English"),
                 new[] { new Customer(1, "Ada") },
                 map,
                 new ExcelSheetExportOptions

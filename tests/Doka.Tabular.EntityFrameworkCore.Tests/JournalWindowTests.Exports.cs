@@ -21,13 +21,15 @@ public sealed partial class JournalWindowTests
             .WithExportLog(TabularJournal.ForFactory(database.Hooked), Completing(() => completions++));
 
         // Act
-        var report = await s_csv.ExportAsync(new[] { new UserDto(1, "a@example.org", "Ada") },
+        var report = await s_csv.ExportAsync(
+            new[] { new UserDto(1, "a@example.org", "Ada") },
             TestMaps.Users,
             target,
             Token);
 
         // Assert
-        Assert.Equal((ReportStatus.Failed, TabularErrorCodes.Persistence.WriteFailed),
+        Assert.Equal(
+            (ReportStatus.Failed, TabularErrorCodes.Persistence.WriteFailed),
             (report.Status, report.FatalError?.Code));
 
         Assert.Equal((0, 1), (store.Files.Count, completions));
@@ -45,7 +47,8 @@ public sealed partial class JournalWindowTests
             .WithExportLog(journal, Completing(() => completions++));
 
         // Act
-        var report = await s_csv.ExportAsync(new[] { new UserDto(1, "a@example.org", "Ada") },
+        var report = await s_csv.ExportAsync(
+            new[] { new UserDto(1, "a@example.org", "Ada") },
             TestMaps.Users,
             target,
             new CsvExportOptions { ColumnKeys = [ColumnKey.Create("unknown")] },
@@ -54,7 +57,8 @@ public sealed partial class JournalWindowTests
         // Assert
         await using var check = await database.PlainContextAsync();
         Assert.Equal(TabularErrorKind.Configuration, report.FatalError?.Kind);
-        Assert.Equal((0, 0),
+        Assert.Equal(
+            (0, 0),
             (await journal
                 .QueryExports(check)
                 .CountAsync(Token), completions));
@@ -69,17 +73,20 @@ public sealed partial class JournalWindowTests
         var store = new MemoryFileStore();
         var target = TabularFileTarget
             .To(store, "users.csv")
-            .WithExportLog(TabularJournal.ForFactory(new StartReleaseFactory(database.ConnectionString)),
+            .WithExportLog(
+                TabularJournal.ForFactory(new StartReleaseFactory(database.ConnectionString)),
                 Completing(() => completions++));
 
         // Act
-        var report = await s_csv.ExportAsync(new[] { new UserDto(1, "a@example.org", "Ada") },
+        var report = await s_csv.ExportAsync(
+            new[] { new UserDto(1, "a@example.org", "Ada") },
             TestMaps.Users,
             target,
             Token);
 
         // Assert
-        Assert.Equal((ReportStatus.Failed, TabularErrorCodes.Persistence.OperationFailed),
+        Assert.Equal(
+            (ReportStatus.Failed, TabularErrorCodes.Persistence.OperationFailed),
             (report.Status, report.FatalError?.Code));
 
         Assert.Equal((0, 1), (store.Files.Count, completions));
@@ -101,7 +108,8 @@ public sealed partial class JournalWindowTests
         var ids = new List<Guid>();
         for (var number = 1; number <= 3; number++)
         {
-            var report = await format.ExportAsync(new[] { new UserDto(number, $"u{number}@example.org", "U") },
+            var report = await format.ExportAsync(
+                new[] { new UserDto(number, $"u{number}@example.org", "U") },
                 TestMaps.Users,
                 TabularFileTarget
                     .To(store, $"users{number}.csv")
@@ -120,7 +128,8 @@ public sealed partial class JournalWindowTests
         var result = await journal.DeleteExpiredExportsAsync(store, Token);
 
         // Assert
-        Assert.Equal((JournalCallStatus.Failed, 2L, TabularErrorCodes.Persistence.WriteFailed),
+        Assert.Equal(
+            (JournalCallStatus.Failed, 2L, TabularErrorCodes.Persistence.WriteFailed),
             (result.Status, result.Count, result.Error?.Code));
 
         Assert.Equal([ids[1]], store.Files.Keys);
@@ -151,10 +160,11 @@ public sealed partial class JournalWindowTests
             _connectionString = connectionString;
         }
 
-        public StartReleaseContext CreateDbContext() => new(new DbContextOptionsBuilder<StartReleaseContext>()
-            .UseSqlite(_connectionString)
-            .UseTabularJournal()
-            .Options);
+        public StartReleaseContext CreateDbContext() => new(
+            new DbContextOptionsBuilder<StartReleaseContext>()
+                .UseSqlite(_connectionString)
+                .UseTabularJournal()
+                .Options);
     }
 
     private sealed class StartReleaseContext : DbContext

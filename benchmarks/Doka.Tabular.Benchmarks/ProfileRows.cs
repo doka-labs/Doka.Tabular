@@ -107,20 +107,23 @@ public static class ProfileMaps
         .For<ProfileRow>()
         .Column(x => x.Id, index: 0, key: ColumnKey.Create("id"), configure: c => c.Header("Id"))
         .Column(x => x.Name, index: 1, key: ColumnKey.Create("name"), configure: c => c.Header("Name"))
-        .Column(x => x.Amount,
+        .Column(
+            x => x.Amount,
             index: 2,
             key: ColumnKey.Create("amount"),
             configure: c => c
                 .Header("Amount")
                 .ExcelNumberFormat("#,##0.00"))
-        .Column(x => x.Date,
+        .Column(
+            x => x.Date,
             index: 3,
             key: ColumnKey.Create("date"),
             configure: c => c
                 .Header("Date")
                 .ExcelNumberFormat("dd.mm.yyyy"))
         .Column(x => x.Active, index: 4, key: ColumnKey.Create("active"), configure: c => c.Header("Active"))
-        .Column(x => x.PostalCode,
+        .Column(
+            x => x.PostalCode,
             index: 5,
             key: ColumnKey.Create("postalCode"),
             configure: c => c.Header("PostalCode"))
@@ -143,7 +146,8 @@ public static class ProfileMaps
         .Column(x => x.Id, index: 0, configure: c => c.Header("Id"))
         .Column(x => x.Name, index: 1, configure: c => c.Header("Name"))
         .Column(x => x.Amount, index: 2, configure: c => c.Header("Amount"))
-        .Column(x => x.Date,
+        .Column(
+            x => x.Date,
             index: 3,
             configure: c => c
                 .Header("Date")
@@ -155,97 +159,113 @@ public static class ProfileMaps
 
     public static TabularMap<WideRow> Wide { get; } = TabularMap
         .For<WideRow>()
-        .Nested(x => x.P0,
+        .Nested(
+            x => x.P0,
             Standard,
             e => e
                 .StartIndex(0)
                 .KeyPrefix(ColumnKey.Create("p0"))
                 .HeaderPrefix("P0 "))
-        .Nested(x => x.P1,
+        .Nested(
+            x => x.P1,
             Standard,
             e => e
                 .StartIndex(7)
                 .KeyPrefix(ColumnKey.Create("p1"))
                 .HeaderPrefix("P1 "))
-        .Nested(x => x.P2,
+        .Nested(
+            x => x.P2,
             Standard,
             e => e
                 .StartIndex(14)
                 .KeyPrefix(ColumnKey.Create("p2"))
                 .HeaderPrefix("P2 "))
-        .Nested(x => x.P3,
+        .Nested(
+            x => x.P3,
             Standard,
             e => e
                 .StartIndex(21)
                 .KeyPrefix(ColumnKey.Create("p3"))
                 .HeaderPrefix("P3 "))
-        .Nested(x => x.P4,
+        .Nested(
+            x => x.P4,
             Standard,
             e => e
                 .StartIndex(28)
                 .KeyPrefix(ColumnKey.Create("p4"))
                 .HeaderPrefix("P4 "))
-        .Nested(x => x.P5,
+        .Nested(
+            x => x.P5,
             Standard,
             e => e
                 .StartIndex(35)
                 .KeyPrefix(ColumnKey.Create("p5"))
                 .HeaderPrefix("P5 "))
-        .Nested(x => x.P6,
+        .Nested(
+            x => x.P6,
             Standard,
             e => e
                 .StartIndex(42)
                 .KeyPrefix(ColumnKey.Create("p6"))
                 .HeaderPrefix("P6 "))
-        .Nested(x => x.P7,
+        .Nested(
+            x => x.P7,
             Standard,
             e => e
                 .StartIndex(49)
                 .KeyPrefix(ColumnKey.Create("p7"))
                 .HeaderPrefix("P7 "))
-        .Nested(x => x.P8,
+        .Nested(
+            x => x.P8,
             Standard,
             e => e
                 .StartIndex(56)
                 .KeyPrefix(ColumnKey.Create("p8"))
                 .HeaderPrefix("P8 "))
-        .Nested(x => x.P9,
+        .Nested(
+            x => x.P9,
             Standard,
             e => e
                 .StartIndex(63)
                 .KeyPrefix(ColumnKey.Create("p9"))
                 .HeaderPrefix("P9 "))
-        .Nested(x => x.P10,
+        .Nested(
+            x => x.P10,
             Standard,
             e => e
                 .StartIndex(70)
                 .KeyPrefix(ColumnKey.Create("p10"))
                 .HeaderPrefix("P10 "))
-        .Nested(x => x.P11,
+        .Nested(
+            x => x.P11,
             Standard,
             e => e
                 .StartIndex(77)
                 .KeyPrefix(ColumnKey.Create("p11"))
                 .HeaderPrefix("P11 "))
-        .Nested(x => x.P12,
+        .Nested(
+            x => x.P12,
             Standard,
             e => e
                 .StartIndex(84)
                 .KeyPrefix(ColumnKey.Create("p12"))
                 .HeaderPrefix("P12 "))
-        .Nested(x => x.P13,
+        .Nested(
+            x => x.P13,
             Standard,
             e => e
                 .StartIndex(91)
                 .KeyPrefix(ColumnKey.Create("p13"))
                 .HeaderPrefix("P13 "))
-        .Nested(x => x.P14,
+        .Nested(
+            x => x.P14,
             Standard,
             e => e
                 .StartIndex(98)
                 .KeyPrefix(ColumnKey.Create("p14"))
                 .HeaderPrefix("P14 "))
-        .Nested(x => x.P15,
+        .Nested(
+            x => x.P15,
             Standard,
             e => e
                 .StartIndex(105)
@@ -256,13 +276,15 @@ public static class ProfileMaps
     public static TabularMap<ConversionRow> Conversion { get; } = TabularMap
         .For<ConversionRow>()
         .Column(x => x.Id, index: 0, configure: c => c.Header("Id"))
-        .Column(x => x.Amount,
+        .Column(
+            x => x.Amount,
             index: 1,
             configure: c => c
                 .Header("Betrag")
                 .Culture(s_german)
                 .Rounding(2))
-        .Column(x => x.Share,
+        .Column(
+            x => x.Share,
             index: 2,
             configure: c => c
                 .Header("Anteil")
@@ -270,18 +292,21 @@ public static class ProfileMaps
                 .TextStyle(NumberTextStyle.Percent))
         .Column(x => x.At, index: 3, configure: c => c.Header("Zeitpunkt"))
         .Column(x => x.Duration, index: 4, configure: c => c.Header("Dauer"))
-        .Column(x => x.Rights,
+        .Column(
+            x => x.Rights,
             index: 5,
             configure: c => c
                 .Header("Rechte")
                 .FlagsSeparator('|'))
-        .Column(x => x.Approved,
+        .Column(
+            x => x.Approved,
             index: 6,
             configure: c => c
                 .Header("Freigegeben")
                 .TrueText("ja")
                 .FalseText("nein"))
-        .Column(x => x.Day,
+        .Column(
+            x => x.Day,
             index: 7,
             configure: c => c
                 .Header("Tag")

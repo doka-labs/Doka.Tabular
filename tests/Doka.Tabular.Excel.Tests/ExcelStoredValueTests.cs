@@ -34,7 +34,8 @@ public sealed class ExcelStoredValueTests
     public async Task Date1904_IsKeptWhenAnExtensionRepeatsWorkbookPr()
     {
         // Arrange
-        var workbook = RawWorkbook.Create("""
+        var workbook = RawWorkbook.Create(
+            """
             <row r="1"><c r="A1"><v>43921</v></c><c r="B1" t="d"><v>2024-04-01</v></c></row>
             <row r="2"><c r="A2"><v>0</v></c><c r="B2" t="d"><v>1904-01-01</v></c></row>
             """,
@@ -66,7 +67,8 @@ public sealed class ExcelStoredValueTests
     public async Task EmptyValueElement_IsAStoredEmptyValueNotAMissingResult()
     {
         // Arrange
-        var workbook = RawWorkbook.Create("""
+        var workbook = RawWorkbook.Create(
+            """
             <row r="1"><c r="A1"><v>1</v></c><c r="B1" t="str"><f>""</f><v/></c><c r="C1"><v/></c><c r="D1" t="b"><v/></c></row>
             """);
 
@@ -90,7 +92,8 @@ public sealed class ExcelStoredValueTests
     public async Task EmptyStoredFormulaResult_IsAnEmptyValueOfEveryCellType()
     {
         // Arrange
-        var workbook = RawWorkbook.Create("""
+        var workbook = RawWorkbook.Create(
+            """
             <row r="1"><c r="A1"><v>1</v></c><c r="B1"><f>IF(1,"",1)</f><v/></c><c r="C1" t="b"><f>IF(1,"",TRUE)</f><v/></c><c r="D1" t="d"><f>IF(1,"",TODAY())</f><v/></c></row>
             """);
 
@@ -141,14 +144,16 @@ public sealed class ExcelStoredValueTests
         var report = await s_format.ImportAsync(EmptyFormulaRow(type), map, Partial, Token);
 
         // Assert
-        Assert.Equal(TabularErrorCodes.Conversion.UnsupportedValue,
+        Assert.Equal(
+            TabularErrorCodes.Conversion.UnsupportedValue,
             Assert.Single(report.Errors)
                 .Code);
     }
 
     private static MemoryStream EmptyFormulaRow(
         string type
-    ) => RawWorkbook.Create($"""
+    ) => RawWorkbook.Create(
+        $"""
         <row r="1"><c r="A1"{type}><f>IF(1,"",1)</f><v/></c></row>
         """);
 
@@ -156,7 +161,8 @@ public sealed class ExcelStoredValueTests
     public async Task FormulaWithoutStoredResult_StaysAnErrorOfEveryCellType()
     {
         // Arrange
-        var workbook = RawWorkbook.Create("""
+        var workbook = RawWorkbook.Create(
+            """
             <row r="1"><c r="A1"><v>1</v></c><c r="B1"><f>1+1</f></c><c r="C1" t="b"><f>TRUE</f></c><c r="D1" t="d"><f>TODAY()</f></c></row>
             """);
 
@@ -164,7 +170,8 @@ public sealed class ExcelStoredValueTests
         var report = await s_format.ImportAsync(workbook, FormulaMap(), Partial, Token);
 
         // Assert
-        Assert.Equal([
+        Assert.Equal(
+            [
                 TabularErrorCodes.Conversion.UnsupportedValue, TabularErrorCodes.Conversion.UnsupportedValue,
                 TabularErrorCodes.Conversion.UnsupportedValue,
             ],
@@ -184,7 +191,8 @@ public sealed class ExcelStoredValueTests
     {
         // Arrange
         // WHY: _x0079_ is y and _x0064_ is d; such escaped codes are date formats and mark the number as a date.
-        var workbook = RawWorkbook.Create("""
+        var workbook = RawWorkbook.Create(
+            """
             <row r="1"><c r="A1" s="1"><v>45383</v></c></row>
             """,
             styles: $"""
@@ -201,7 +209,8 @@ public sealed class ExcelStoredValueTests
 
         // Assert
         Assert.Equal(date, report.Errors.Count == 0);
-        Assert.Equal(date
+        Assert.Equal(
+            date
                 ? [new OneDate(new DateOnly(2024, 4, 1))]
                 : [],
             report.Items);
@@ -214,7 +223,8 @@ public sealed class ExcelStoredValueTests
         var file = new MemoryStream();
 
         // Act
-        var report = await s_format.ExportAsync(new[] { new FormulaValues(7, null, null, null) },
+        var report = await s_format.ExportAsync(
+            new[] { new FormulaValues(7, null, null, null) },
             s_escapedFormat,
             file,
             Token);
@@ -239,7 +249,8 @@ public sealed class ExcelStoredValueTests
         // Arrange
         var map = TabularMap
             .For<OneDate>()
-            .Column(x => x.Value,
+            .Column(
+                x => x.Value,
                 index: 0,
                 configure: c =>
                 {
@@ -262,7 +273,8 @@ public sealed class ExcelStoredValueTests
         Assert.Equal(ReportStatus.Succeeded, report.Status);
         file.Position = 0;
         await using var archive = await ZipArchive.CreateAsync(file, ZipArchiveMode.Read, true, null, Token);
-        Assert.Contains($"formatCode=\"{written}\"",
+        Assert.Contains(
+            $"formatCode=\"{written}\"",
             await EntryText(archive, "xl/styles.xml"),
             StringComparison.Ordinal);
 
@@ -280,14 +292,16 @@ public sealed class ExcelStoredValueTests
             .Build();
 
         // Act
-        var report = await s_format.ExportAsync(new[] { new OneDate(new DateOnly(2024, 4, 1)) },
+        var report = await s_format.ExportAsync(
+            new[] { new OneDate(new DateOnly(2024, 4, 1)) },
             map,
             new MemoryStream(),
             Token);
 
         // Assert
         Assert.Equal(ReportStatus.Failed, report.Status);
-        Assert.Equal(TabularErrorCodes.Conversion.PrecisionLoss,
+        Assert.Equal(
+            TabularErrorCodes.Conversion.PrecisionLoss,
             Assert.Single(report.Errors)
                 .Code);
     }
@@ -306,7 +320,8 @@ public sealed class ExcelStoredValueTests
 
         // Assert
         Assert.Empty(report.Errors);
-        Assert.Equal(7,
+        Assert.Equal(
+            7,
             Assert.Single(report.Items!)
                 .Id);
     }
@@ -335,21 +350,26 @@ public sealed class ExcelStoredValueTests
         var report = await s_format.ImportAsync(ZonedWorkbook(), utc, Partial, Token);
 
         // Assert
-        Assert.Equal(new ZonedValues(new DateTime(1976,
+        Assert.Equal(
+            new ZonedValues(
+                new DateTime(
+                    1976,
                     11,
                     22,
                     8,
                     30,
                     0,
                     DateTimeKind.Utc),
-                new DateTime(2024,
+                new DateTime(
+                    2024,
                     4,
                     1,
                     12,
                     30,
                     0,
                     DateTimeKind.Utc),
-                new DateTime(2024,
+                new DateTime(
+                    2024,
                     3,
                     31,
                     23,
@@ -379,11 +399,13 @@ public sealed class ExcelStoredValueTests
 
         // Assert
         var error = Assert.Single(report.Errors);
-        Assert.Equal((TabularErrorCodes.Conversion.InvalidFormat, 0, ReportStatus.CompletedWithErrors),
+        Assert.Equal(
+            (TabularErrorCodes.Conversion.InvalidFormat, 0, ReportStatus.CompletedWithErrors),
             (error.Code, error.Location.ColumnIndex!.Value, report.Status));
     }
 
-    private static MemoryStream ZonedWorkbook() => RawWorkbook.Create("""
+    private static MemoryStream ZonedWorkbook() => RawWorkbook.Create(
+        """
         <row r="1">
           <c r="A1" t="d"><v>1976-11-22T08:30Z</v></c>
           <c r="B1" t="d"><v>2024-04-01T14:30+02:00</v></c>
@@ -406,7 +428,8 @@ public sealed class ExcelStoredValueTests
         var report = await s_format.ImportAsync(workbook, map, Partial, Token);
 
         // Assert
-        Assert.Equal((TabularErrorCodes.Conversion.OutOfRange, 0, null),
+        Assert.Equal(
+            (TabularErrorCodes.Conversion.OutOfRange, 0, null),
             (Assert.Single(report.Errors)
                 .Code, report.Errors[0].Location.ColumnIndex!.Value, report.FatalError));
     }
@@ -415,7 +438,8 @@ public sealed class ExcelStoredValueTests
     public async Task IsoDateCellWithAZoneBeforeTheFirstDate_IsARangeErrorOfTheField()
     {
         // Arrange
-        var workbook = RawWorkbook.Create("""
+        var workbook = RawWorkbook.Create(
+            """
             <row r="1"><c r="A1" t="d"><v>1904-01-01T01:00+02:00</v></c></row>
             <row r="2"><c r="A2" t="d"><v>1904-01-02T00:00Z</v></c></row>
             """,
@@ -430,11 +454,13 @@ public sealed class ExcelStoredValueTests
         var report = await s_format.ImportAsync(workbook, map, Partial, Token);
 
         // Assert
-        Assert.Equal((TabularErrorCodes.Conversion.OutOfRange, 1L, null),
+        Assert.Equal(
+            (TabularErrorCodes.Conversion.OutOfRange, 1L, null),
             (Assert.Single(report.Errors)
                 .Code, report.Errors[0].Location.RecordNumber!.Value, report.FatalError));
 
-        Assert.Equal(new DateTime(1904, 1, 2),
+        Assert.Equal(
+            new DateTime(1904, 1, 2),
             Assert.Single(report.Items!)
                 .Value);
     }
@@ -443,7 +469,8 @@ public sealed class ExcelStoredValueTests
     public async Task IsoDateCellWithAZone_WhoseLocalDateLiesBeforeTheFirstDate_IsReadAsItsInstant()
     {
         // Arrange
-        var workbook = RawWorkbook.Create("""<row r="1"><c r="A1" t="d"><v>1903-12-31T23:00-02:00</v></c></row>""",
+        var workbook = RawWorkbook.Create(
+            """<row r="1"><c r="A1" t="d"><v>1903-12-31T23:00-02:00</v></c></row>""",
             workbookBeforeSheets: """<workbookPr date1904="1"/>""");
 
         var map = TabularMap
@@ -456,7 +483,9 @@ public sealed class ExcelStoredValueTests
 
         // Assert
         Assert.Empty(report.Errors);
-        Assert.Equal(new DateTime(1904,
+        Assert.Equal(
+            new DateTime(
+                1904,
                 1,
                 1,
                 1,
@@ -477,7 +506,8 @@ public sealed class ExcelStoredValueTests
     )
     {
         // Arrange
-        var workbook = RawWorkbook.Create($"""<row r="1"><c r="A1" t="d"><v>{text}</v></c></row>""",
+        var workbook = RawWorkbook.Create(
+            $"""<row r="1"><c r="A1" t="d"><v>{text}</v></c></row>""",
             workbookBeforeSheets: date1904
                 ? """<workbookPr date1904="1"/>"""
                 : "");
@@ -491,7 +521,8 @@ public sealed class ExcelStoredValueTests
         var report = await s_format.ImportAsync(workbook, map, Partial, Token);
 
         // Assert
-        Assert.Equal((TabularErrorCodes.Conversion.OutOfRange, null),
+        Assert.Equal(
+            (TabularErrorCodes.Conversion.OutOfRange, null),
             (Assert.Single(report.Errors)
                 .Code, report.FatalError));
     }
@@ -522,7 +553,8 @@ public sealed class ExcelStoredValueTests
     public async Task IsoDateCells_ReadLikeTheSerialNumbersOfATransitionalWorkbook()
     {
         // Arrange
-        var workbook = RawWorkbook.Create("""
+        var workbook = RawWorkbook.Create(
+            """
             <row r="1">
               <c r="A1" t="d"><v>1980-04-01</v></c>
               <c r="B1" t="d"><v>14:29:59.9999999999968050</v></c>
@@ -554,7 +586,8 @@ public sealed class ExcelStoredValueTests
         Assert.Empty(report.Errors);
         Assert.Equal(
             [
-                new IsoValues(new DateOnly(1980, 4, 1),
+                new IsoValues(
+                    new DateOnly(1980, 4, 1),
                     new TimeOnly(14, 30),
                     new DateTime(2024, 4, 1, 8, 30, 0),
                     TimeSpan.FromHours(27),

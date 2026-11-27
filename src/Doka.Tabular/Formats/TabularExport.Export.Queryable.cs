@@ -26,12 +26,14 @@ public sealed partial class TabularExport
         ArgumentNullException.ThrowIfNull(map);
         ArgumentNullException.ThrowIfNull(target);
 
-        return Report(RunExportAsync(type,
-            ExportSource<T>.FromQuery(rows),
-            ExportShape<T>.ForMap(map),
-            new StreamExportTarget(target),
-            null,
-            cancellationToken));
+        return Report(
+            RunExportAsync(
+                type,
+                ExportSource<T>.FromQuery(rows),
+                ExportShape<T>.ForMap(map),
+                new StreamExportTarget(target),
+                null,
+                cancellationToken));
     }
 
     /// <summary>Exports the rows.</summary>
@@ -61,12 +63,14 @@ public sealed partial class TabularExport
         ArgumentNullException.ThrowIfNull(target);
         ArgumentNullException.ThrowIfNull(options);
 
-        return Report(RunExportAsync(type,
-            ExportSource<T>.FromQuery(rows),
-            ExportShape<T>.ForMap(map),
-            new StreamExportTarget(target),
-            options,
-            cancellationToken));
+        return Report(
+            RunExportAsync(
+                type,
+                ExportSource<T>.FromQuery(rows),
+                ExportShape<T>.ForMap(map),
+                new StreamExportTarget(target),
+                options,
+                cancellationToken));
     }
 
     /// <summary>Exports the rows.</summary>
@@ -93,12 +97,14 @@ public sealed partial class TabularExport
         ArgumentNullException.ThrowIfNull(map);
         ArgumentNullException.ThrowIfNull(path);
 
-        return Report(RunExportAsync(type,
-            ExportSource<T>.FromQuery(rows),
-            ExportShape<T>.ForMap(map),
-            new PathExportTarget(path),
-            null,
-            cancellationToken));
+        return Report(
+            RunExportAsync(
+                type,
+                ExportSource<T>.FromQuery(rows),
+                ExportShape<T>.ForMap(map),
+                new PathExportTarget(path),
+                null,
+                cancellationToken));
     }
 
     /// <summary>Exports the rows.</summary>
@@ -128,12 +134,14 @@ public sealed partial class TabularExport
         ArgumentNullException.ThrowIfNull(path);
         ArgumentNullException.ThrowIfNull(options);
 
-        return Report(RunExportAsync(type,
-            ExportSource<T>.FromQuery(rows),
-            ExportShape<T>.ForMap(map),
-            new PathExportTarget(path),
-            options,
-            cancellationToken));
+        return Report(
+            RunExportAsync(
+                type,
+                ExportSource<T>.FromQuery(rows),
+                ExportShape<T>.ForMap(map),
+                new PathExportTarget(path),
+                options,
+                cancellationToken));
     }
 
     /// <summary>Exports into the output buffer; the file is returned only on complete success.</summary>
@@ -157,12 +165,14 @@ public sealed partial class TabularExport
         ArgumentNullException.ThrowIfNull(rows);
         ArgumentNullException.ThrowIfNull(map);
 
-        return Buffered(RunExportAsync(type,
-            ExportSource<T>.FromQuery(rows),
-            ExportShape<T>.ForMap(map),
-            new BufferedExportTarget(),
-            null,
-            cancellationToken));
+        return Buffered(
+            RunExportAsync(
+                type,
+                ExportSource<T>.FromQuery(rows),
+                ExportShape<T>.ForMap(map),
+                new BufferedExportTarget(),
+                null,
+                cancellationToken));
     }
 
     /// <summary>Exports into the output buffer; the file is returned only on complete success.</summary>
@@ -189,12 +199,14 @@ public sealed partial class TabularExport
         ArgumentNullException.ThrowIfNull(map);
         ArgumentNullException.ThrowIfNull(options);
 
-        return Buffered(RunExportAsync(type,
-            ExportSource<T>.FromQuery(rows),
-            ExportShape<T>.ForMap(map),
-            new BufferedExportTarget(),
-            options,
-            cancellationToken));
+        return Buffered(
+            RunExportAsync(
+                type,
+                ExportSource<T>.FromQuery(rows),
+                ExportShape<T>.ForMap(map),
+                new BufferedExportTarget(),
+                options,
+                cancellationToken));
     }
 
     /// <summary>Exports the rows.</summary>
@@ -221,12 +233,14 @@ public sealed partial class TabularExport
         ArgumentNullException.ThrowIfNull(map);
         ArgumentNullException.ThrowIfNull(target);
 
-        return Report(RunExportAsync(type,
-            ExportSource<T>.FromQuery(rows),
-            ExportShape<T>.ForMap(map),
-            new FileStoreExportTarget(target),
-            null,
-            cancellationToken));
+        return Report(
+            RunExportAsync(
+                type,
+                ExportSource<T>.FromQuery(rows),
+                ExportShape<T>.ForMap(map),
+                new FileStoreExportTarget(target),
+                null,
+                cancellationToken));
     }
 
     /// <summary>Exports the rows.</summary>
@@ -256,11 +270,13 @@ public sealed partial class TabularExport
         ArgumentNullException.ThrowIfNull(target);
         ArgumentNullException.ThrowIfNull(options);
 
-        return Report(RunExportAsync(type,
-            ExportSource<T>.FromQuery(rows),
-            ExportShape<T>.ForMap(map),
-            new FileStoreExportTarget(target),
-            options,
-            cancellationToken));
+        return Report(
+            RunExportAsync(
+                type,
+                ExportSource<T>.FromQuery(rows),
+                ExportShape<T>.ForMap(map),
+                new FileStoreExportTarget(target),
+                options,
+                cancellationToken));
     }
 }

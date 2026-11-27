@@ -70,9 +70,10 @@ internal sealed partial class EnumConverter
                 shape.Members.SelectMany(member => TextProblems("name", shape, member.Name, member.Name, separator)))
             .Concat(Collisions(shape, settings.AllowNumericInput, settings.Trim == true, translations: null))
             .Concat(AliasProblems(shape, settings, isExported))
-            .Concat(settings.Trim == true
-                ? BlankAttributes(shape)
-                : []);
+            .Concat(
+                settings.Trim == true
+                    ? BlankAttributes(shape)
+                    : []);
     }
 
     /// <summary>
@@ -290,10 +291,11 @@ internal sealed partial class EnumConverter
         if (forExport
             && settings.EnumTranslationKey is not null)
         {
-            problems.AddRange(UndecidedAliases(shape, settings)
-                .Where(group => translated?.ContainsKey(group.Key) != true)
-                .Select(group
-                    => $"The aliases {string.Join(", ", group.Select(member => member.Name))} of {shape.Type.Name} have different texts and no translation in this call; choose one with ExportAlias."));
+            problems.AddRange(
+                UndecidedAliases(shape, settings)
+                    .Where(group => translated?.ContainsKey(group.Key) != true)
+                    .Select(group
+                        => $"The aliases {string.Join(", ", group.Select(member => member.Name))} of {shape.Type.Name} have different texts and no translation in this call; choose one with ExportAlias."));
         }
 
         // WHY: A trimmed input is compared with trimmed labels, so a padded label written by the export reads back.

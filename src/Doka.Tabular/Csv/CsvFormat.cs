@@ -64,13 +64,15 @@ public sealed partial class CsvFormat
             problems.Add(limitProblem);
         }
 
-        var context = new ConversionContext(TabularFormatKind.Csv,
+        var context = new ConversionContext(
+            TabularFormatKind.Csv,
             settings.Culture,
             settings.TrimFields,
             settings.Translations,
             settings.MissingTranslation);
 
-        var format = new CsvImportFormat(new CsvReadSettings(
+        var format = new CsvImportFormat(
+            new CsvReadSettings(
                 delimiter,
                 call.AllowLineBreaksInFields ?? true,
                 call.RequireCrLf ?? false,
@@ -78,14 +80,16 @@ public sealed partial class CsvFormat
                 _runtime.Limits.MaxFieldCharacters),
             call.Encoding ?? s_utf8);
 
-        using var scope = _runtime.Scope("import",
+        using var scope = _runtime.Scope(
+            "import",
             "csv",
             settings.Strategy == ImportStrategy.Strict
                 ? "strict"
                 : "partial");
 
         return await ImportRunner
-            .RunAsync(input,
+            .RunAsync(
+                input,
                 format,
                 shape,
                 settings,
@@ -171,12 +175,14 @@ public sealed partial class CsvFormat
         CheckEncodable(delimiter, call.Encoding ?? s_utf8, configuration);
         if (source is null)
         {
-            configuration.Add(TabularError.Configuration(
-                "The query does not support asynchronous enumeration; it would be read synchronously."));
+            configuration.Add(
+                TabularError.Configuration(
+                    "The query does not support asynchronous enumeration; it would be read synchronously."));
         }
 
         var settings = ExportSettingsOf(call);
-        var context = new ConversionContext(TabularFormatKind.Csv,
+        var context = new ConversionContext(
+            TabularFormatKind.Csv,
             settings.Culture,
             false,
             settings.Translations,
@@ -194,7 +200,8 @@ public sealed partial class CsvFormat
 
         Func<Stream, CancellationToken, Task<ProduceResult>> produce = configuration.Count > 0
             ? ExportRunner.NothingProduced
-            : new TableExport<TSource>(source!,
+            : new TableExport<TSource>(
+                    source!,
                     plan!,
                     new CsvWriteSettings(delimiter, call.Encoding ?? s_utf8, call.WriteBom ?? false),
                     settings.WriteHeader,
@@ -202,7 +209,8 @@ public sealed partial class CsvFormat
                 .ProduceAsync;
 
         return await ExportRunner
-            .RunAsync(target,
+            .RunAsync(
+                target,
                 produce,
                 errors,
                 scope,
@@ -306,7 +314,8 @@ public sealed partial class CsvFormat
         {
             await using var writer = new CsvTableWriter(stream, WriteSettings);
             var outcome = await ExportEngine
-                .WriteTableAsync(Source,
+                .WriteTableAsync(
+                    Source,
                     Plan,
                     WriteHeader,
                     writer,

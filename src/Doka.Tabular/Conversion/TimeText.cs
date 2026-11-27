@@ -144,7 +144,8 @@ internal static class TimeText
         }
 
         var rest = digits[7..];
-        excess = new ExactDecimal(false,
+        excess = new ExactDecimal(
+            false,
             BigInteger.Parse(rest, NumberStyles.None, CultureInfo.InvariantCulture),
             -rest.Length);
 

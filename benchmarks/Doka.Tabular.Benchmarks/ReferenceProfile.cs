@@ -141,7 +141,8 @@ public sealed record ReferenceProfile(
         string id,
         ProfileFormat format,
         int rows
-    ) => new(id,
+    ) => new(
+        id,
         1,
         format,
         ProfileShape.Standard,

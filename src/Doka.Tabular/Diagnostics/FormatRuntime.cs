@@ -20,8 +20,9 @@ internal sealed class FormatRuntime
         Problems = [];
         if (diagnostics?.LoggerFactory is null)
         {
-            Problems.Add(TabularError.Configuration(
-                "The diagnostics settings need a logger factory; use NullLoggerFactory.Instance to disable logging."));
+            Problems.Add(
+                TabularError.Configuration(
+                    "The diagnostics settings need a logger factory; use NullLoggerFactory.Instance to disable logging."));
         }
 
         if (timeProvider is null)
@@ -29,9 +30,10 @@ internal sealed class FormatRuntime
             Problems.Add(TabularError.Configuration("The time provider must not be null."));
         }
 
-        Problems.AddRange(limits
-            .Problems()
-            .Select(problem => TabularError.Configuration(problem)));
+        Problems.AddRange(
+            limits
+                .Problems()
+                .Select(problem => TabularError.Configuration(problem)));
     }
 
     public ResourceLimits Limits { get; }

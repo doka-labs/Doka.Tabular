@@ -29,7 +29,8 @@ internal static class JournalModel
         if (prefix.Length > 32
             || !prefix.All(character => char.IsAsciiLetterOrDigit(character) || character == '_'))
         {
-            throw new ArgumentException("A table prefix has at most 32 ASCII letters, digits, or underscores.",
+            throw new ArgumentException(
+                "A table prefix has at most 32 ASCII letters, digits, or underscores.",
                 nameof(prefix));
         }
     }
@@ -48,7 +49,8 @@ internal static class JournalModel
         if (Registered(modelBuilder, ImportLog(name), prefix + "ImportLogs"))
         {
             var claim = modelBuilder.Model.FindEntityType(ImportClaim(name))!;
-            if (!Equals(claim.FindAnnotation(IgnoreScopeCaseAnnotation)
+            if (!Equals(
+                claim.FindAnnotation(IgnoreScopeCaseAnnotation)
                     ?.Value,
                 comparison))
             {
@@ -60,7 +62,8 @@ internal static class JournalModel
         }
 
         modelBuilder.SharedTypeEntity<TabularImportLog>(ImportLog(name), log => ImportLogTable(log, prefix));
-        modelBuilder.SharedTypeEntity<TabularImportClaim>(ImportClaim(name),
+        modelBuilder.SharedTypeEntity<TabularImportClaim>(
+            ImportClaim(name),
             claim => ImportClaimTable(claim, prefix, comparison));
     }
 
@@ -220,16 +223,19 @@ internal static class JournalModel
     // WHY: SQLite cannot compare or order DateTimeOffset values in queries; UTC DateTime values compare on every provider.
     private static void Time(
         PropertyBuilder<DateTimeOffset> property
-    ) => property.HasConversion(new ValueConverter<DateTimeOffset, DateTime>(value => value.UtcDateTime,
-        value => new DateTimeOffset(DateTime.SpecifyKind(value, DateTimeKind.Utc))));
+    ) => property.HasConversion(
+        new ValueConverter<DateTimeOffset, DateTime>(
+            value => value.UtcDateTime,
+            value => new DateTimeOffset(DateTime.SpecifyKind(value, DateTimeKind.Utc))));
 
     private static void Time(
         PropertyBuilder<DateTimeOffset?> property
-    ) => property.HasConversion(new ValueConverter<DateTimeOffset?, DateTime?>(
-        value => value == null
-            ? null
-            : value.Value.UtcDateTime,
-        value => value == null
-            ? null
-            : new DateTimeOffset(DateTime.SpecifyKind(value.Value, DateTimeKind.Utc))));
+    ) => property.HasConversion(
+        new ValueConverter<DateTimeOffset?, DateTime?>(
+            value => value == null
+                ? null
+                : value.Value.UtcDateTime,
+            value => value == null
+                ? null
+                : new DateTimeOffset(DateTime.SpecifyKind(value.Value, DateTimeKind.Utc))));
 }

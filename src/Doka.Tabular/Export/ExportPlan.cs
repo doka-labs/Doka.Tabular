@@ -107,7 +107,8 @@ internal sealed partial class ExportPlan<TSource>
         // ReSharper disable once UseCollectionExpression
         var layout = settings.ColumnKeys is { } keys
             ? SelectedLayout(keys, allFields, errors)
-            : IndexLayout(allFields
+            : IndexLayout(
+                allFields
                     .Where(entry => entry.Field.IsExported)
                     .ToList(),
                 errors);
@@ -118,13 +119,15 @@ internal sealed partial class ExportPlan<TSource>
         // ReSharper disable once LoopCanBeConvertedToQuery
         for (var position = 0; position < layout.Count; position++)
         {
-            columns.Add(layout[position] is { } entry
-                ? CreateColumn(position, entry.Field, entry.Role, settings, context, errors)
-                : new ExportColumn(position, null, null, null, null, null));
+            columns.Add(
+                layout[position] is { } entry
+                    ? CreateColumn(position, entry.Field, entry.Role, settings, context, errors)
+                    : new ExportColumn(position, null, null, null, null, null));
         }
 
         // WHY: What the export writes must read back by header name; translations are known only per call.
-        HeaderText.AddIndistinct(columns
+        HeaderText.AddIndistinct(
+            columns
                 .Where(column => column.Field is not null)
                 .Select(column => (column.Field!, column.Header)),
             errors);
@@ -183,14 +186,16 @@ internal sealed partial class ExportPlan<TSource>
 
                 // WHY: Fluent materialization stays explicit as ToArray or ToList instead of a spread.
                 // ReSharper disable once UseCollectionExpression
-                composes.Add(new ComposeGroup(role,
-                    compose,
-                    compose.Kind.CreateReader(path.Path),
-                    compose.Kind.CreateSlot(),
-                    compose
-                        .Parts
-                        .Select(part => part.Kind.CreateSlot())
-                        .ToArray()));
+                composes.Add(
+                    new ComposeGroup(
+                        role,
+                        compose,
+                        compose.Kind.CreateReader(path.Path),
+                        compose.Kind.CreateSlot(),
+                        compose
+                            .Parts
+                            .Select(part => part.Kind.CreateSlot())
+                            .ToArray()));
             }
 
             sources[column.Position] = new ColumnSource(role, null, group);
@@ -198,7 +203,8 @@ internal sealed partial class ExportPlan<TSource>
                 .Parts[path.PartIndex];
         }
 
-        return new ExportPlan<TSource>(context,
+        return new ExportPlan<TSource>(
+            context,
             columns,
             roles,
             sources,
@@ -242,10 +248,12 @@ internal sealed partial class ExportPlan<TSource>
             var match = allFields.FirstOrDefault(entry => entry.Field.Key == key);
             if (match.Field is not { IsExported: true })
             {
-                errors.Add(TabularError.Configuration(match.Field is null
-                        ? $"The key {key} is not a key of the map."
-                        : $"The key {key} belongs to an import-only field.",
-                    location));
+                errors.Add(
+                    TabularError.Configuration(
+                        match.Field is null
+                            ? $"The key {key} is not a key of the map."
+                            : $"The key {key} belongs to an import-only field.",
+                        location));
 
                 continue;
             }
@@ -269,8 +277,10 @@ internal sealed partial class ExportPlan<TSource>
             .Where(group => group.Count() > 1))
         {
             var paths = string.Join(", ", group.Select(entry => entry.Field.Path.Value));
-            errors.Add(TabularError.Configuration($"Several fields write to output index {group.Key}: {paths}.",
-                new TabularErrorLocation { ColumnIndex = group.Key }));
+            errors.Add(
+                TabularError.Configuration(
+                    $"Several fields write to output index {group.Key}: {paths}.",
+                    new TabularErrorLocation { ColumnIndex = group.Key }));
         }
 
         var width = exported.Count == 0
@@ -304,12 +314,14 @@ internal sealed partial class ExportPlan<TSource>
         context.FreezeCultures(field.Settings);
         if (field.Settings.BlankNullMarker(context) is { } blank)
         {
-            errors.Add(TabularError.Configuration(blank,
-                new TabularErrorLocation
-                {
-                    PropertyPath = field.Path,
-                    ColumnKey = field.Key,
-                }));
+            errors.Add(
+                TabularError.Configuration(
+                    blank,
+                    new TabularErrorLocation
+                    {
+                        PropertyPath = field.Path,
+                        ColumnKey = field.Key,
+                    }));
         }
 
         var writeType = ConverterRegistry.Core(field.Settings.Conversion?.BaseType ?? field.ValueType);
@@ -317,30 +329,35 @@ internal sealed partial class ExportPlan<TSource>
         if (writeType.IsEnum)
         {
             var problems = new List<string>();
-            converter = EnumConverter.Create(writeType,
+            converter = EnumConverter.Create(
+                writeType,
                 field.Settings.CheckedConversionSettings(),
                 context,
                 forExport: true,
                 problems);
 
-            errors.AddRange(problems.Select(problem => TabularError.Configuration(problem,
-                new TabularErrorLocation
-                {
-                    ColumnKey = field.Key,
-                    PropertyPath = field.Path,
-                })));
-        }
-        else
-        {
-            converter = ConverterRegistry.Find(writeType)!;
-            errors.AddRange(converter
-                .ValidateCall(field.Settings.CheckedConversionSettings(), context)
-                .Select(problem => TabularError.Configuration(problem,
+            errors.AddRange(
+                problems.Select(problem => TabularError.Configuration(
+                    problem,
                     new TabularErrorLocation
                     {
                         ColumnKey = field.Key,
                         PropertyPath = field.Path,
                     })));
+        }
+        else
+        {
+            converter = ConverterRegistry.Find(writeType)!;
+            errors.AddRange(
+                converter
+                    .ValidateCall(field.Settings.CheckedConversionSettings(), context)
+                    .Select(problem => TabularError.Configuration(
+                        problem,
+                        new TabularErrorLocation
+                        {
+                            ColumnKey = field.Key,
+                            PropertyPath = field.Path,
+                        })));
         }
 
         string? header = null;
@@ -350,7 +367,8 @@ internal sealed partial class ExportPlan<TSource>
             errors.Add(headerError!);
         }
 
-        return new ExportColumn(position,
+        return new ExportColumn(
+            position,
             field,
             role,
             converter,
@@ -394,20 +412,22 @@ internal sealed partial class ExportPlan<TSource>
                 // embeddings of the same nested map stay apart.
                 var first = PathOf(prefix, rule.Members[0].Property);
                 var column = FirstColumn(columns, role, first);
-                result.Add(new ExportRule(Array.IndexOf(roles, role),
-                    rule,
-                    rule
-                        .Members
-                        .Select(member => member.Kind.CreateReader([.. prefix, member.Property]))
-                        .ToArray(),
+                result.Add(
+                    new ExportRule(
+                        Array.IndexOf(roles, role),
+                        rule,
+                        rule
+                            .Members
+                            .Select(member => member.Kind.CreateReader([.. prefix, member.Property]))
+                            .ToArray(),
 
-                    // ReSharper disable once UseCollectionExpression
-                    rule
-                        .Members
-                        .Select(member => member.Kind.CreateSlot())
-                        .ToArray(),
-                    column?.Path ?? TabularPropertyPath.Of(first),
-                    column?.Key));
+                        // ReSharper disable once UseCollectionExpression
+                        rule
+                            .Members
+                            .Select(member => member.Kind.CreateSlot())
+                            .ToArray(),
+                        column?.Path ?? TabularPropertyPath.Of(first),
+                        column?.Key));
             }
         }
 

@@ -124,7 +124,8 @@ internal readonly record struct OutputCell(
 
     public static OutputCell FromBoolean(
         bool value
-    ) => new(OutputKind.Boolean,
+    ) => new(
+        OutputKind.Boolean,
         value
             ? "true".AsMemory()
             : "false".AsMemory(),

@@ -29,17 +29,20 @@ public sealed class WorkbookWriteTests
 
         // Assert
         await using var check = new TabularTestContext(Options(sqlite));
-        Assert.Equal((ReportStatus.Failed, 0L, 0),
+        Assert.Equal(
+            (ReportStatus.Failed, 0L, 0),
             (report.Status, report.RowsPendingCommit,
                 await check.Users.CountAsync(Token)));
 
-        Assert.Equal((ReportStatus.Failed, false, 0L),
+        Assert.Equal(
+            (ReportStatus.Failed, false, 0L),
             (report.Get(first)
                 .Status, report.Get(first)
                 .IsComplete, report.Get(first)
                 .RowsPendingCommit));
 
-        Assert.Equal(ReportStatus.Failed,
+        Assert.Equal(
+            ReportStatus.Failed,
             report.Get(second)
                 .Status);
     }
@@ -51,7 +54,8 @@ public sealed class WorkbookWriteTests
         await using var sqlite = await OpenAsync();
         await using var context = new TabularTestContext(Options(sqlite));
         using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(Token);
-        var target = Target(TabularDatabase.ForContext(context),
+        var target = Target(
+            TabularDatabase.ForContext(context),
             dto =>
             {
                 // ReSharper disable once AccessToDisposedClosure
@@ -66,12 +70,14 @@ public sealed class WorkbookWriteTests
 
         // Assert
         Assert.Equal((ReportStatus.Canceled, false), (report.Status, report.IsComplete));
-        Assert.Equal((ReportStatus.Succeeded, 1L),
+        Assert.Equal(
+            (ReportStatus.Succeeded, 1L),
             (report.Get(first)
                 .Status, report.Get(first)
                 .RowsImported));
 
-        Assert.Equal((ReportStatus.Canceled, false),
+        Assert.Equal(
+            (ReportStatus.Canceled, false),
             (report.Get(second)
                 .Status, report.Get(second)
                 .IsComplete));
@@ -89,14 +95,17 @@ public sealed class WorkbookWriteTests
         var (report, first, second) = await ImportAsync(target);
 
         // Assert
-        Assert.Equal((ReportStatus.Failed, TabularErrorCodes.Callback.Failed),
+        Assert.Equal(
+            (ReportStatus.Failed, TabularErrorCodes.Callback.Failed),
             (report.Status, report.FatalError?.Code));
 
-        Assert.Equal(ReportStatus.Succeeded,
+        Assert.Equal(
+            ReportStatus.Succeeded,
             report.Get(first)
                 .Status);
 
-        Assert.Equal((ReportStatus.Failed, false),
+        Assert.Equal(
+            (ReportStatus.Failed, false),
             (report.Get(second)
                 .Status, report.Get(second)
                 .IsComplete));
@@ -113,7 +122,8 @@ public sealed class WorkbookWriteTests
 
         var excel = new ExcelFormat(new ExcelFormatOptions());
         var export = ExcelExport.Create();
-        export.Add(TabularSheetName.Create("First"),
+        export.Add(
+            TabularSheetName.Create("First"),
             [new UserDto(1, "a@example.org", "Ada"), new UserDto(2, "b@example.org", "Bob")],
             TestMaps.Users);
 
@@ -124,14 +134,16 @@ public sealed class WorkbookWriteTests
         var first = sheets.Add(TabularSheetName.Create("First"), TestMaps.Users, target);
 
         // Act
-        var report = await excel.ImportAsync(file,
+        var report = await excel.ImportAsync(
+            file,
             sheets.Build(),
             new ExcelWorkbookImportOptions { Strategy = ImportStrategy.Partial },
             Token);
 
         // Assert
         await using var check = new TabularTestContext(Options(sqlite));
-        Assert.Equal((ReportStatus.Failed, false, 1L),
+        Assert.Equal(
+            (ReportStatus.Failed, false, 1L),
             (report.Get(first)
                 .Status, report.Get(first)
                 .IsComplete, report.Get(first)
@@ -150,13 +162,15 @@ public sealed class WorkbookWriteTests
         context.Entries.Add(new ProcessingEntry { State = "started" });
         await context.SaveChangesAsync(Token);
         using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(Token);
-        var target = Target(TabularDatabase.ForContext(context),
+        var target = Target(
+                TabularDatabase.ForContext(context),
                 dto => User.Create(dto.PersonnelNumber, dto.Email, dto.Name))
             .WithOptions(new TabularWriteOptions { JoinExistingTransaction = true });
 
         var canceling = TabularMap
             .For<UserDto>()
-            .Column(x => x.PersonnelNumber,
+            .Column(
+                x => x.PersonnelNumber,
                 index: 0,
                 configure: c => c.Validate(number =>
                 {
@@ -176,7 +190,8 @@ public sealed class WorkbookWriteTests
 
         // Assert
         await using var check = new TabularTestContext(Options(sqlite));
-        Assert.Equal((ReportStatus.Canceled, 0L, 0L),
+        Assert.Equal(
+            (ReportStatus.Canceled, 0L, 0L),
             (report.Status, report.RowsPendingCommit, report.Get(first)
                 .RowsPendingCommit));
 
@@ -190,13 +205,15 @@ public sealed class WorkbookWriteTests
         await using var sqlite = await OpenAsync();
         await using var context = new TabularTestContext(Options(sqlite));
         await using var transaction = await context.Database.BeginTransactionAsync(Token);
-        var target = Target(TabularDatabase.ForContext(context),
+        var target = Target(
+                TabularDatabase.ForContext(context),
                 dto => User.Create(dto.PersonnelNumber, dto.Email, dto.Name))
             .WithOptions(new TabularWriteOptions { JoinExistingTransaction = true });
 
         // Act
         // WHY: The long name of the second sheet exceeds the field limit while the sheet is read.
-        var (report, first, _) = await ImportAsync(target,
+        var (report, first, _) = await ImportAsync(
+            target,
             secondName: new string('b', 40),
             options: new ExcelFormatOptions { MaxFieldCharacters = 20 });
 
@@ -204,7 +221,8 @@ public sealed class WorkbookWriteTests
 
         // Assert
         await using var check = new TabularTestContext(Options(sqlite));
-        Assert.Equal((TabularErrorCodes.Resource.LimitExceeded, 0L, ReportStatus.Failed),
+        Assert.Equal(
+            (TabularErrorCodes.Resource.LimitExceeded, 0L, ReportStatus.Failed),
             (report.FatalError?.Code, report.RowsPendingCommit, report.Get(first)
                 .Status));
 
@@ -217,19 +235,22 @@ public sealed class WorkbookWriteTests
         // Arrange
         await using var sqlite = await OpenAsync();
         var failing = new FailSavepointRollback();
-        await using var context = new TabularTestContext(new DbContextOptionsBuilder<TabularTestContext>()
-            .UseSqlite(sqlite.Connection)
-            .AddInterceptors(failing)
-            .Options);
+        await using var context = new TabularTestContext(
+            new DbContextOptionsBuilder<TabularTestContext>()
+                .UseSqlite(sqlite.Connection)
+                .AddInterceptors(failing)
+                .Options);
 
         await using var transaction = await context.Database.BeginTransactionAsync(Token);
         using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(Token);
-        var target = Target(TabularDatabase.ForContext(context),
+        var target = Target(
+                TabularDatabase.ForContext(context),
                 dto => User.Create(dto.PersonnelNumber, dto.Email, dto.Name))
             .WithOptions(new TabularWriteOptions { JoinExistingTransaction = true });
 
         // Act
-        var (report, first, _) = await ImportAsync(target,
+        var (report, first, _) = await ImportAsync(
+            target,
             cancellation.Token,
             CancelingMap(() =>
             {
@@ -241,7 +262,8 @@ public sealed class WorkbookWriteTests
             }));
 
         // Assert
-        Assert.Equal((0L, 1L, ReportStatus.Failed),
+        Assert.Equal(
+            (0L, 1L, ReportStatus.Failed),
             (report.RowsPendingCommit, report.RowsUncertain, report.Get(first)
                 .Status));
 
@@ -255,7 +277,8 @@ public sealed class WorkbookWriteTests
         await using var sqlite = await OpenAsync();
         await using var context = new TabularTestContext(Options(sqlite));
         using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(Token);
-        var target = Target(TabularDatabase.ForContext(context),
+        var target = Target(
+            TabularDatabase.ForContext(context),
             _ =>
             {
                 // ReSharper disable once AccessToDisposedClosure
@@ -315,7 +338,8 @@ public sealed class WorkbookWriteTests
         using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(Token);
         var match = TabularMatch
             .For<UserDto, User>(TestMaps.Users)
-            .Part(dto => dto.PersonnelNumber,
+            .Part(
+                dto => dto.PersonnelNumber,
                 entity => entity.PersonnelNumber,
                 new StoppingComparer(cancellation, cancel))
             .UseUniqueKey()
@@ -323,7 +347,8 @@ public sealed class WorkbookWriteTests
 
         var target = TabularDatabase
             .ForContext(context)
-            .PrepareUpsert<UserDto, User>(set: users => users.Users,
+            .PrepareUpsert<UserDto, User>(
+                set: users => users.Users,
                 match: match,
                 create: dto => User.Create(dto.PersonnelNumber, dto.Email, dto.Name),
                 update: (_, _) => { });
@@ -343,7 +368,8 @@ public sealed class WorkbookWriteTests
 
         // Assert
         Assert.Equal((2L, 0L), (report.RowsRejected, report.RowsImported));
-        Assert.Equal(cancel
+        Assert.Equal(
+            cancel
                 ? ReportStatus.Canceled
                 : ReportStatus.Failed,
             report.Status);
@@ -355,14 +381,16 @@ public sealed class WorkbookWriteTests
         // Arrange
         await using var sqlite = await OpenAsync();
         var failing = new FailSavepointRollback();
-        await using var context = new TabularTestContext(new DbContextOptionsBuilder<TabularTestContext>()
-            .UseSqlite(sqlite.Connection)
-            .AddInterceptors(failing)
-            .Options);
+        await using var context = new TabularTestContext(
+            new DbContextOptionsBuilder<TabularTestContext>()
+                .UseSqlite(sqlite.Connection)
+                .AddInterceptors(failing)
+                .Options);
 
         await using var transaction = await context.Database.BeginTransactionAsync(Token);
         using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(Token);
-        var target = Target(TabularDatabase.ForContext(context),
+        var target = Target(
+                TabularDatabase.ForContext(context),
                 dto =>
                 {
                     failing.Armed = true;
@@ -397,14 +425,16 @@ public sealed class WorkbookWriteTests
         // Arrange
         await using var sqlite = await OpenAsync();
         var failing = new FailSavepointRollback();
-        await using var context = new TabularTestContext(new DbContextOptionsBuilder<TabularTestContext>()
-            .UseSqlite(sqlite.Connection)
-            .AddInterceptors(failing)
-            .Options);
+        await using var context = new TabularTestContext(
+            new DbContextOptionsBuilder<TabularTestContext>()
+                .UseSqlite(sqlite.Connection)
+                .AddInterceptors(failing)
+                .Options);
 
         await using var transaction = await context.Database.BeginTransactionAsync(Token);
         using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(Token);
-        var target = Target(TabularDatabase.ForContext(context),
+        var target = Target(
+                TabularDatabase.ForContext(context),
                 dto =>
                 {
                     failing.Armed = true;
@@ -423,7 +453,8 @@ public sealed class WorkbookWriteTests
         // Assert
         // WHY: The pending row of the first sheet and the row of the second, whose reset failed, both stay uncertain.
         Assert.Equal((0L, 2L), (report.RowsPendingCommit, report.RowsUncertain));
-        Assert.Equal((1L, 1L),
+        Assert.Equal(
+            (1L, 1L),
             (report.Get(first)
                 .RowsUncertain, report.Get(second)
                 .RowsUncertain));
@@ -435,14 +466,16 @@ public sealed class WorkbookWriteTests
         // Arrange
         await using var sqlite = await OpenAsync();
         var failing = new FailSavepointRollback();
-        await using var context = new TabularTestContext(new DbContextOptionsBuilder<TabularTestContext>()
-            .UseSqlite(sqlite.Connection)
-            .AddInterceptors(failing)
-            .Options);
+        await using var context = new TabularTestContext(
+            new DbContextOptionsBuilder<TabularTestContext>()
+                .UseSqlite(sqlite.Connection)
+                .AddInterceptors(failing)
+                .Options);
 
         await using var transaction = await context.Database.BeginTransactionAsync(Token);
         using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(Token);
-        var target = Target(TabularDatabase.ForContext(context),
+        var target = Target(
+                TabularDatabase.ForContext(context),
                 dto =>
                 {
                     failing.Armed = true;
@@ -467,13 +500,15 @@ public sealed class WorkbookWriteTests
         sheets.Add(TabularSheetName.Create("Second"), TestMaps.Users, target);
 
         // Act
-        var report = await excel.ImportAsync(file,
+        var report = await excel.ImportAsync(
+            file,
             sheets.Build(),
             new ExcelWorkbookImportOptions { Strategy = ImportStrategy.Strict },
             cancellation.Token);
 
         // Assert
-        Assert.Equal((0L, 1L),
+        Assert.Equal(
+            (0L, 1L),
             (report.RowsPendingCommit, report.Get(first)
                 .RowsUncertain));
     }
@@ -491,7 +526,8 @@ public sealed class WorkbookWriteTests
         await using var context = new TabularTestContext(Options(sqlite));
         var addressMap = TabularMap
             .For<AddressDto>()
-            .Column(x => x.PersonnelNumber,
+            .Column(
+                x => x.PersonnelNumber,
                 index: 0,
                 key: ColumnKey.Create("addressPersonnelNumber"),
                 configure: c => c.ImportOnly())
@@ -508,10 +544,12 @@ public sealed class WorkbookWriteTests
         var swappedMap = swapped.Build();
         var database = TabularDatabase.ForContext(context);
         var users = TestMaps.Upsert(database);
-        var addresses = database.PrepareUpsert(set: c => c.Addresses,
+        var addresses = database.PrepareUpsert(
+            set: c => c.Addresses,
             match: TabularMatch
                 .For<AddressDto, Address>(addressMap)
-                .Part(dto => dto.PersonnelNumber,
+                .Part(
+                    dto => dto.PersonnelNumber,
                     address => address.UserId,
                     valueFrom: users.Value(userRole, user => user.Id))
                 .UseUniqueKey()
@@ -551,7 +589,8 @@ public sealed class WorkbookWriteTests
 
                 break;
             case 1:
-                errors = (await new ExcelFormat(new ExcelFormatOptions()).ImportAsync(excel,
+                errors = (await new ExcelFormat(new ExcelFormatOptions()).ImportAsync(
+                    excel,
                     swappedMap,
                     destination,
                     Token)).Errors;
@@ -560,7 +599,8 @@ public sealed class WorkbookWriteTests
             default:
                 var sheets = ExcelImport.Create();
                 sheets.Add(TabularSheetName.Create("Sheet1"), swappedMap, destination);
-                errors = (await new ExcelFormat(new ExcelFormatOptions()).ImportAsync(excel,
+                errors = (await new ExcelFormat(new ExcelFormatOptions()).ImportAsync(
+                    excel,
                     sheets.Build(),
                     Token)).Errors;
 
@@ -569,7 +609,8 @@ public sealed class WorkbookWriteTests
 
         // Assert
         await using var check = new TabularTestContext(Options(sqlite));
-        Assert.Equal(TabularErrorKind.Configuration,
+        Assert.Equal(
+            TabularErrorKind.Configuration,
             Assert.Single(errors)
                 .Kind);
 
@@ -587,10 +628,11 @@ public sealed class WorkbookWriteTests
     {
         // Arrange
         await using var sqlite = await OpenAsync();
-        await using var context = new TabularTestContext(new DbContextOptionsBuilder<TabularTestContext>()
-            .UseSqlite(sqlite.Connection)
-            .AddInterceptors(new RejectCity("Fail"))
-            .Options);
+        await using var context = new TabularTestContext(
+            new DbContextOptionsBuilder<TabularTestContext>()
+                .UseSqlite(sqlite.Connection)
+                .AddInterceptors(new RejectCity("Fail"))
+                .Options);
 
         var cityMap = TabularMap
             .For<CityDto>()
@@ -599,12 +641,14 @@ public sealed class WorkbookWriteTests
 
         var rows = RowMap.Create();
         var userRole = rows.Add(TestMaps.Users);
-        var billingRole = rows.Add(cityMap,
+        var billingRole = rows.Add(
+            cityMap,
             e => e
                 .StartIndex(3)
                 .KeyPrefix(ColumnKey.Create("billing")));
 
-        var shippingRole = rows.Add(cityMap,
+        var shippingRole = rows.Add(
+            cityMap,
             e => e
                 .StartIndex(4)
                 .KeyPrefix(ColumnKey.Create("shipping")));
@@ -629,7 +673,8 @@ public sealed class WorkbookWriteTests
             Token);
 
         // Assert
-        Assert.Equal(expected,
+        Assert.Equal(
+            expected,
             Assert.Single(report.Errors)
                 .Code.Value);
 
@@ -637,7 +682,8 @@ public sealed class WorkbookWriteTests
 
         TabularWriteTarget<CityDto> Addresses(
             string code
-        ) => database.PrepareInsert<CityDto, Address>(set: c => c.Addresses,
+        ) => database.PrepareInsert<CityDto, Address>(
+            set: c => c.Addresses,
             create: (dto, values) => Address.Create(values.Get(userId), dto.City),
             errors: errors => errors.Database(_ => TabularErrorCode.Create(code)));
     }
@@ -649,14 +695,16 @@ public sealed class WorkbookWriteTests
         await using var sqlite = await OpenAsync();
         var failing = new FailSavepointRollback();
         var failingTransaction = new FailRollback();
-        await using var context = new TabularTestContext(new DbContextOptionsBuilder<TabularTestContext>()
-            .UseSqlite(sqlite.Connection)
-            .AddInterceptors(failing, failingTransaction)
-            .Options);
+        await using var context = new TabularTestContext(
+            new DbContextOptionsBuilder<TabularTestContext>()
+                .UseSqlite(sqlite.Connection)
+                .AddInterceptors(failing, failingTransaction)
+                .Options);
 
         var addressMap = TabularMap
             .For<AddressDto>()
-            .Column(x => x.PersonnelNumber,
+            .Column(
+                x => x.PersonnelNumber,
                 index: 0,
                 key: ColumnKey.Create("addressPersonnelNumber"),
                 configure: c => c.ImportOnly())
@@ -672,7 +720,8 @@ public sealed class WorkbookWriteTests
 
         var userId = users.Value(userRole, user => user.Id);
         var addresses = database
-            .PrepareUpsert(set: c => c.Addresses,
+            .PrepareUpsert(
+                set: c => c.Addresses,
                 match: TabularMatch
                     .For<AddressDto, Address>(addressMap)
                     .Part(dto => dto.PersonnelNumber, address => address.UserId, valueFrom: userId)
@@ -695,7 +744,8 @@ public sealed class WorkbookWriteTests
             .Build();
 
         // Act
-        var report = await new CsvFormat(new CsvFormatOptions()).ImportAsync(TestMaps.Csv("1,a@example.org,A,Berlin"),
+        var report = await new CsvFormat(new CsvFormatOptions()).ImportAsync(
+            TestMaps.Csv("1,a@example.org,A,Berlin"),
             rowMap,
             destination,
             new CsvImportOptions { Strategy = ImportStrategy.Strict },
@@ -712,10 +762,11 @@ public sealed class WorkbookWriteTests
         await using var sqlite = await OpenAsync();
         var failing = new FailSavepointRollback();
         using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(Token);
-        await using var context = new TabularTestContext(new DbContextOptionsBuilder<TabularTestContext>()
-            .UseSqlite(sqlite.Connection)
-            .AddInterceptors(failing, new CancelAfterTheSave(cancellation, failing))
-            .Options);
+        await using var context = new TabularTestContext(
+            new DbContextOptionsBuilder<TabularTestContext>()
+                .UseSqlite(sqlite.Connection)
+                .AddInterceptors(failing, new CancelAfterTheSave(cancellation, failing))
+                .Options);
 
         await using var transaction = await context.Database.BeginTransactionAsync(Token);
         var target = TestMaps
@@ -731,7 +782,8 @@ public sealed class WorkbookWriteTests
             cancellation.Token);
 
         // Assert
-        Assert.Equal((TabularErrorCodes.Persistence.RollbackUnknown, 0L, 1L),
+        Assert.Equal(
+            (TabularErrorCodes.Persistence.RollbackUnknown, 0L, 1L),
             (report.FatalError?.Code, report.RowsPendingCommit, report.RowsUncertain));
     }
 
@@ -741,12 +793,14 @@ public sealed class WorkbookWriteTests
         // Arrange
         await using var sqlite = await OpenAsync();
         var failing = new FailRollback();
-        await using var context = new TabularTestContext(new DbContextOptionsBuilder<TabularTestContext>()
-            .UseSqlite(sqlite.Connection)
-            .AddInterceptors(failing)
-            .Options);
+        await using var context = new TabularTestContext(
+            new DbContextOptionsBuilder<TabularTestContext>()
+                .UseSqlite(sqlite.Connection)
+                .AddInterceptors(failing)
+                .Options);
 
-        var target = Target(TabularDatabase.ForContext(context),
+        var target = Target(
+            TabularDatabase.ForContext(context),
             _ =>
             {
                 failing.Armed = true;
@@ -766,14 +820,16 @@ public sealed class WorkbookWriteTests
         sheets.Add(TabularSheetName.Create("Second"), TestMaps.Users, target);
 
         // Act
-        var report = await excel.ImportAsync(file,
+        var report = await excel.ImportAsync(
+            file,
             sheets.Build(),
             new ExcelWorkbookImportOptions { Strategy = ImportStrategy.Strict },
             Token);
 
         // Assert
         // WHY: The failure of the second row ends the run first; the unconfirmed rollback leaves the first row open.
-        Assert.Equal((TabularErrorCodes.Callback.Failed, 0L, 1L),
+        Assert.Equal(
+            (TabularErrorCodes.Callback.Failed, 0L, 1L),
             (report.FatalError?.Code, report.RowsImported, report.RowsUncertain));
     }
 
@@ -782,18 +838,21 @@ public sealed class WorkbookWriteTests
     {
         // Arrange
         await using var sqlite = await OpenAsync();
-        await using var context = new TabularTestContext(new DbContextOptionsBuilder<TabularTestContext>()
-            .UseSqlite(sqlite.Connection)
-            .AddInterceptors(new FailStartAfterCommit())
-            .Options);
+        await using var context = new TabularTestContext(
+            new DbContextOptionsBuilder<TabularTestContext>()
+                .UseSqlite(sqlite.Connection)
+                .AddInterceptors(new FailStartAfterCommit())
+                .Options);
 
-        var target = Target(TabularDatabase.ForContext(context),
+        var target = Target(
+                TabularDatabase.ForContext(context),
                 dto => User.Create(dto.PersonnelNumber, dto.Email, dto.Name))
             .WithOptions(new TabularWriteOptions { CommitGroupSize = 1 });
 
         var excel = new ExcelFormat(new ExcelFormatOptions());
         var export = ExcelExport.Create();
-        export.Add(TabularSheetName.Create("First"),
+        export.Add(
+            TabularSheetName.Create("First"),
             [new UserDto(1, "a@example.org", "Ada"), new UserDto(2, "b@example.org", "Bob")],
             TestMaps.Users);
 
@@ -804,13 +863,15 @@ public sealed class WorkbookWriteTests
         var first = sheets.Add(TabularSheetName.Create("First"), TestMaps.Users, target);
 
         // Act
-        var report = await excel.ImportAsync(file,
+        var report = await excel.ImportAsync(
+            file,
             sheets.Build(),
             new ExcelWorkbookImportOptions { Strategy = ImportStrategy.Partial },
             Token);
 
         // Assert
-        Assert.Equal((ReportStatus.Failed, false, 1L),
+        Assert.Equal(
+            (ReportStatus.Failed, false, 1L),
             (report.Get(first)
                 .Status, report.Get(first)
                 .IsComplete, report.Get(first)
@@ -831,11 +892,12 @@ public sealed class WorkbookWriteTests
 
         var second = TestMaps
             .Upsert(database)
-            .WithOptions(new TabularWriteOptions
-            {
-                JoinExistingTransaction = true,
-                CommitGroupSize = 100,
-            });
+            .WithOptions(
+                new TabularWriteOptions
+                {
+                    JoinExistingTransaction = true,
+                    CommitGroupSize = 100,
+                });
 
         var excel = new ExcelFormat(new ExcelFormatOptions());
         var export = ExcelExport.Create();
@@ -849,13 +911,15 @@ public sealed class WorkbookWriteTests
         sheets.Add(TabularSheetName.Create("Second"), TestMaps.Users, second);
 
         // Act
-        var report = await excel.ImportAsync(file,
+        var report = await excel.ImportAsync(
+            file,
             sheets.Build(),
             new ExcelWorkbookImportOptions { Strategy = ImportStrategy.Partial },
             Token);
 
         // Assert
-        Assert.Equal((ReportStatus.Failed, TabularErrorKind.Configuration),
+        Assert.Equal(
+            (ReportStatus.Failed, TabularErrorKind.Configuration),
             (report.Status, report.Errors[0].Kind));
     }
 
@@ -864,7 +928,8 @@ public sealed class WorkbookWriteTests
         Action reached
     ) => TabularMap
         .For<UserDto>()
-        .Column(x => x.PersonnelNumber,
+        .Column(
+            x => x.PersonnelNumber,
             index: 0,
             configure: c => c.Validate(number =>
             {
@@ -880,7 +945,8 @@ public sealed class WorkbookWriteTests
     private static TabularWriteTarget<UserDto, User> Target(
         TabularDatabase<TabularTestContext> database,
         Func<UserDto, User> second
-    ) => database.PrepareUpsert<UserDto, User>(set: context => context.Users,
+    ) => database.PrepareUpsert<UserDto, User>(
+        set: context => context.Users,
         match: TestMaps.UserMatch,
         create: dto => dto.PersonnelNumber == 2
             ? second(dto)
@@ -909,7 +975,8 @@ public sealed class WorkbookWriteTests
         var sheets = ExcelImport.Create();
         var first = sheets.Add(TabularSheetName.Create("First"), TestMaps.Users, target);
         var second = sheets.Add(TabularSheetName.Create("Second"), secondMap ?? TestMaps.Users, target);
-        var report = await excel.ImportAsync(file,
+        var report = await excel.ImportAsync(
+            file,
             sheets.Build(),
             new ExcelWorkbookImportOptions { Strategy = ImportStrategy.Partial },
             cancellationToken ?? Token);

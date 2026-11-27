@@ -47,7 +47,8 @@ internal sealed partial class WriteSession
         // factories through unchanged, so any other exception is a failure of the database operation.
         catch (Exception exception) when (exception is not OutOfMemoryException)
         {
-            result.Fatal = TabularError.Create(TabularErrorCodes.Persistence.OperationFailed,
+            result.Fatal = TabularError.Create(
+                TabularErrorCodes.Persistence.OperationFailed,
                 TabularErrorKind.Technical,
                 "A transaction or savepoint operation failed.");
         }
@@ -214,7 +215,8 @@ internal sealed partial class WriteSession
         try
         {
             var (skipped, failure) =
-                await ApplyTargetsAsync(context,
+                await ApplyTargetsAsync(
+                        context,
                         row,
                         targets,
                         owners,
@@ -254,10 +256,12 @@ internal sealed partial class WriteSession
         // factories through unchanged, so any other exception is a failure of the database operation.
         catch (Exception exception) when (exception is not OutOfMemoryException)
         {
-            return await RejectAsync(tracking,
+            return await RejectAsync(
+                    tracking,
                     savepoint,
                     null,
-                    TabularError.Create(TabularErrorCodes.Persistence.OperationFailed,
+                    TabularError.Create(
+                        TabularErrorCodes.Persistence.OperationFailed,
                         TabularErrorKind.Technical,
                         "A query of a target failed.",
                         row.Location))
@@ -286,7 +290,8 @@ internal sealed partial class WriteSession
             var target = targets[targetIndex];
             var step = await target
                 .Definition
-                .ApplyAsync(context,
+                .ApplyAsync(
+                    context,
                     row.Records[target.Ordinal],
                     values,
                     tracking,
@@ -312,7 +317,8 @@ internal sealed partial class WriteSession
             }
 
             RegisterDependents(context, step.Entity!, target, owners, writes);
-            if (await ShareValuesAsync(context,
+            if (await ShareValuesAsync(
+                        context,
                         row,
                         targets,
                         owners,
@@ -425,7 +431,8 @@ internal sealed partial class WriteSession
             // canceled.
             catch (Exception exception) when (Callbacks.Failed(exception, cancellationToken))
             {
-                return (null, TabularError.Create(TabularErrorCodes.Callback.Failed,
+                return (null, TabularError.Create(
+                    TabularErrorCodes.Callback.Failed,
                     TabularErrorKind.Technical,
                     $"Reading a value of {target.Definition.EntityType.Name} threw an exception.",
                     row.Location));
@@ -454,7 +461,8 @@ internal sealed partial class WriteSession
         catch (DbUpdateConcurrencyException)
         {
             return (
-                TabularError.Create(TabularErrorCodes.Persistence.Conflict,
+                TabularError.Create(
+                    TabularErrorCodes.Persistence.Conflict,
                     TabularErrorKind.Data,
                     "The record was changed by another process since it was read.",
                     location), null);
@@ -482,7 +490,8 @@ internal sealed partial class WriteSession
             catch (Exception callback) when (Callbacks.Failed(callback, cancellationToken))
             {
                 return (null,
-                    TabularError.Create(TabularErrorCodes.Callback.Failed,
+                    TabularError.Create(
+                        TabularErrorCodes.Callback.Failed,
                         TabularErrorKind.Technical,
                         $"The database error assignment of {target.Definition.EntityType.Name} threw an exception.",
                         location));
@@ -490,12 +499,14 @@ internal sealed partial class WriteSession
 
             return code is null
                 ? (null,
-                    TabularError.Create(TabularErrorCodes.Persistence.WriteFailed,
+                    TabularError.Create(
+                        TabularErrorCodes.Persistence.WriteFailed,
                         TabularErrorKind.Technical,
                         $"Saving {target.Definition.EntityType.Name} failed without an assigned code.",
                         location))
                 : (
-                    TabularError.Create(code,
+                    TabularError.Create(
+                        code,
                         TabularErrorKind.Data,
                         $"The database rejected {target.Definition.EntityType.Name}.",
                         location), null);

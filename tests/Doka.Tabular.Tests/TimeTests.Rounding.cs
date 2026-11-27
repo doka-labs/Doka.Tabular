@@ -58,7 +58,8 @@ public sealed partial class TimeTests
         var report = await ExcelInstance.ImportAsync(file ?? new MemoryStream(), map, Token);
 
         // Assert
-        Assert.True(export.Status != ReportStatus.Succeeded || (report.Items is [{ Item: var read }] && read == stamp),
+        Assert.True(
+            export.Status != ReportStatus.Succeeded || (report.Items is [{ Item: var read }] && read == stamp),
             $"{stamp:O} was written but did not read back");
     }
 
@@ -81,7 +82,8 @@ public sealed partial class TimeTests
         var report = await ExcelInstance.ImportAsync(file ?? new MemoryStream(), map, Token);
 
         // Assert
-        Assert.True(export.Status != ReportStatus.Succeeded || (report.Items is [{ Item: var read }] && read == time),
+        Assert.True(
+            export.Status != ReportStatus.Succeeded || (report.Items is [{ Item: var read }] && read == time),
             $"{time:O} was written but did not read back");
     }
 
@@ -109,7 +111,8 @@ public sealed partial class TimeTests
     )
     {
         // Act
-        var report = await ReadAsync(text,
+        var report = await ReadAsync(
+            text,
             Map<TimeSpan>(c => c.Rounding(TimeSpan.FromTicks(1), MidpointRounding.ToZero)),
             null,
             null);
@@ -122,7 +125,8 @@ public sealed partial class TimeTests
     public async Task DateTimeTextJustBeyondTheRange_StaysARangeErrorWithRounding()
     {
         // Act
-        var report = await ReadAsync("9999-12-31T23:59:59.99999999",
+        var report = await ReadAsync(
+            "9999-12-31T23:59:59.99999999",
             Map<DateTime>(c => c.Rounding(TimeSpan.FromTicks(1), MidpointRounding.ToZero)),
             null,
             null);
@@ -135,7 +139,8 @@ public sealed partial class TimeTests
     public async Task DateTimeOffsetTextJustBeyondTheRange_StaysARangeErrorWithRounding()
     {
         // Act
-        var report = await ReadAsync("9999-12-31T23:59:59.99999999Z",
+        var report = await ReadAsync(
+            "9999-12-31T23:59:59.99999999Z",
             Map<DateTimeOffset>(c => c.Rounding(TimeSpan.FromTicks(1), MidpointRounding.ToZero)),
             null,
             null);
@@ -157,7 +162,8 @@ public sealed partial class TimeTests
         var report = await ReadAsync(null, map, null, Serial(1 + 7 * Math.Pow(2, -42)));
 
         // Assert
-        Assert.Equal(new DateTime(1900, 1, 1).Ticks + 2,
+        Assert.Equal(
+            new DateTime(1900, 1, 1).Ticks + 2,
             ValueOf(report)
                 .Ticks);
     }
@@ -166,13 +172,15 @@ public sealed partial class TimeTests
     public async Task ExportRoundingOfADurationBeyondTheRange_IsARangeErrorOfTheField()
     {
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Value<TimeSpan>(1, TimeSpan.MaxValue) },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Value<TimeSpan>(1, TimeSpan.MaxValue) },
             Map<TimeSpan>(c => c.Rounding(TimeSpan.FromTicks(2))),
             new MemoryStream(),
             Token);
 
         // Assert
-        Assert.Equal((TabularErrorCodes.Conversion.OutOfRange, "Item"),
+        Assert.Equal(
+            (TabularErrorCodes.Conversion.OutOfRange, "Item"),
             (report.FatalError?.Code, report.FatalError?.Location.PropertyPath?.ToString()));
     }
 
@@ -180,13 +188,15 @@ public sealed partial class TimeTests
     public async Task ExportRoundingOfAnInstantBeyondTheRange_IsARangeErrorOfTheField()
     {
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Value<DateTimeOffset>(1, DateTimeOffset.MaxValue) },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Value<DateTimeOffset>(1, DateTimeOffset.MaxValue) },
             Map<DateTimeOffset>(c => c.Rounding(TimeSpan.FromDays(1))),
             new MemoryStream(),
             Token);
 
         // Assert
-        Assert.Equal((TabularErrorCodes.Conversion.OutOfRange, "Item"),
+        Assert.Equal(
+            (TabularErrorCodes.Conversion.OutOfRange, "Item"),
             (report.FatalError?.Code, report.FatalError?.Location.PropertyPath?.ToString()));
     }
 

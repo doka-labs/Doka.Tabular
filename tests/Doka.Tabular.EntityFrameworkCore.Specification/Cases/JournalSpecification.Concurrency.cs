@@ -12,7 +12,8 @@ public abstract partial class JournalSpecification
         var bothHashed = new Barrier(2);
 
         // Act
-        var reports = await Task.WhenAll(Task.Run(() => ImportFileAsync(bothHashed), Token),
+        var reports = await Task.WhenAll(
+            Task.Run(() => ImportFileAsync(bothHashed), Token),
             Task.Run(() => ImportFileAsync(bothHashed), Token));
 
         // Assert
@@ -30,7 +31,8 @@ public abstract partial class JournalSpecification
 
         Task<ImportReport<UserDto>> ImportFileAsync(
             Barrier barrier
-        ) => s_csv.ImportAsync(new ReadThenWait(TestMaps.Csv([.. TestMaps.Rows(2)]), barrier),
+        ) => s_csv.ImportAsync(
+            new ReadThenWait(TestMaps.Csv([.. TestMaps.Rows(2)]), barrier),
             TestMaps.Users,
 
             // ReSharper disable once AccessToDisposedClosure

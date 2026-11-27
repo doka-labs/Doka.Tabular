@@ -122,7 +122,8 @@ public sealed class TabularMatchBuilder<TDto, TEntity>
 
         if (_parts.Any(part => part.EntityProperty.Name == entityProperty.Name))
         {
-            throw new ArgumentException($"The entity property {entityProperty.Name} is already paired.",
+            throw new ArgumentException(
+                $"The entity property {entityProperty.Name} is already paired.",
                 nameof(entity));
         }
 
@@ -141,13 +142,15 @@ public sealed class TabularMatchBuilder<TDto, TEntity>
             dtoComparer = (IEqualityComparer<TDtoValue>)comparer;
         }
 
-        _parts.Add(new MatchPart<TDto, TEntity, TDtoValue, TValue>(dtoProperty,
-            entityProperty,
-            valueFrom,
-            dto.Compile(),
-            entity.Compile(),
-            effective,
-            new SourceKeyPart<TDtoValue>(TabularPropertyPath.Of(dtoProperty.Name), dtoComparer)));
+        _parts.Add(
+            new MatchPart<TDto, TEntity, TDtoValue, TValue>(
+                dtoProperty,
+                entityProperty,
+                valueFrom,
+                dto.Compile(),
+                entity.Compile(),
+                effective,
+                new SourceKeyPart<TDtoValue>(TabularPropertyPath.Of(dtoProperty.Name), dtoComparer)));
 
         return this;
     }
@@ -170,9 +173,10 @@ public sealed class TabularMatch<TDto, TEntity>
     {
         Parts = parts;
         UniqueKey = uniqueKey;
-        SourceKey = new TabularSourceKey<TDto>(parts
-            .Select(part => part.SourceKeyPart)
-            .ToArray());
+        SourceKey = new TabularSourceKey<TDto>(
+            parts
+                .Select(part => part.SourceKeyPart)
+                .ToArray());
     }
 
     /// <summary>Gets the source key of the DTO fields of all pairs.</summary>
@@ -271,7 +275,8 @@ internal sealed class MatchPart<TDto, TEntity, TDtoValue, TValue> : MatchPart
     public override Expression Condition(
         ParameterExpression entity,
         IStrongBox holder
-    ) => Expression.Equal(Expression.Property(entity, EntityProperty),
+    ) => Expression.Equal(
+        Expression.Property(entity, EntityProperty),
         Expression.Field(Expression.Constant(holder), s_value));
 
     public override bool Stage(

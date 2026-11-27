@@ -36,13 +36,15 @@ internal static class TestFiles
 
     public static MemoryStream CsvText(
         params object?[][] rows
-    ) => TestInput.Utf8(string.Join("\r\n",
-        rows.Select(row => row is [var single]
-            && Text(single)
-                .Length
-            == 0
-                ? "\"\""
-                : string.Join(",", row.Select(cell => Quote(Text(cell)))))));
+    ) => TestInput.Utf8(
+        string.Join(
+            "\r\n",
+            rows.Select(row => row is [var single]
+                && Text(single)
+                    .Length
+                == 0
+                    ? "\"\""
+                    : string.Join(",", row.Select(cell => Quote(Text(cell)))))));
 
     public static MemoryStream Workbook(
         params (string Name, object?[][] Rows)[] sheets
@@ -63,11 +65,13 @@ internal static class TestFiles
             var styles = workbook.AddNewPart<WorkbookStylesPart>();
             styles.Stylesheet = new Stylesheet(
                 new Fonts(new Font()) { Count = 1 },
-                new Fills(new Fill(new PatternFill { PatternType = PatternValues.None }),
+                new Fills(
+                    new Fill(new PatternFill { PatternType = PatternValues.None }),
                     new Fill(new PatternFill { PatternType = PatternValues.Gray125 })) { Count = 2 },
                 new Borders(new Border()) { Count = 1 },
                 new CellStyleFormats(new CellFormat()) { Count = 1 },
-                new CellFormats(new CellFormat(),
+                new CellFormats(
+                    new CellFormat(),
                     new CellFormat
                     {
                         NumberFormatId = 14,
@@ -99,12 +103,13 @@ internal static class TestFiles
                 }
 
                 part.Worksheet = new Worksheet(data);
-                workbook.Workbook.Sheets!.Append(new Sheet
-                {
-                    Id = workbook.GetIdOfPart(part),
-                    SheetId = id++,
-                    Name = name,
-                });
+                workbook.Workbook.Sheets!.Append(
+                    new Sheet
+                    {
+                        Id = workbook.GetIdOfPart(part),
+                        SheetId = id++,
+                        Name = name,
+                    });
             }
         }
 
@@ -252,9 +257,10 @@ internal static class TestFiles
         {
             CellReference = reference,
             DataType = CellValues.Boolean,
-            CellValue = new CellValue(flag
-                ? "1"
-                : "0"),
+            CellValue = new CellValue(
+                flag
+                    ? "1"
+                    : "0"),
         },
         IFormattable number => new Cell
         {

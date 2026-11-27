@@ -49,9 +49,10 @@ internal sealed class BoundedSeekableStream : Stream
     public override async ValueTask<int> ReadAsync(
         Memory<byte> buffer,
         CancellationToken cancellationToken = default
-    ) => Checked(await _inner
-        .ReadAsync(buffer, cancellationToken)
-        .ConfigureAwait(false));
+    ) => Checked(
+        await _inner
+            .ReadAsync(buffer, cancellationToken)
+            .ConfigureAwait(false));
 
     public override Task<int> ReadAsync(
         byte[] buffer,

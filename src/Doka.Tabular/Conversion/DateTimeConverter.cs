@@ -54,7 +54,8 @@ internal sealed class DateTimeConverter : TimestampConverterBase<DateTime>
         if (!IsDateFormatted(cell)
             && !settings.AllowExcelSerialNumbers)
         {
-            return Fail(ConversionFailure.InvalidFormat("An unformatted number is not a date for this field."),
+            return Fail(
+                ConversionFailure.InvalidFormat("An unformatted number is not a date for this field."),
                 out value,
                 out failure);
         }
@@ -65,14 +66,16 @@ internal sealed class DateTimeConverter : TimestampConverterBase<DateTime>
         {
             return ExcelDates.TryToExactDateTime(cell.Number, context.Uses1904DateSystem, out var exact, out var excess)
                 ? ResolveAndRound(exact, null, excess, settings, out value, out failure)
-                : Fail(ConversionFailure.OutOfRange("The serial number is not a valid Excel date."),
+                : Fail(
+                    ConversionFailure.OutOfRange("The serial number is not a valid Excel date."),
                     out value,
                     out failure);
         }
 
         if (!ExcelDates.TryToDateTime(cell.Number, context.Uses1904DateSystem, settings.TimeRounding, out var local))
         {
-            return Fail(ConversionFailure.OutOfRange("The serial number is not a valid Excel date."),
+            return Fail(
+                ConversionFailure.OutOfRange("The serial number is not a valid Excel date."),
                 out value,
                 out failure);
         }
@@ -105,7 +108,8 @@ internal sealed class DateTimeConverter : TimestampConverterBase<DateTime>
         }
 
         // WHY: The resolved value is rounded once: a UTC value on the UTC axis, a zoneless one at the calendar origin.
-        return TryRoundTicks(resolved.Ticks,
+        return TryRoundTicks(
+            resolved.Ticks,
             excess,
             settings.TimeRounding,
             DateTime.MaxValue.Ticks,
@@ -153,7 +157,8 @@ internal sealed class DateTimeConverter : TimestampConverterBase<DateTime>
     )
     {
         cell = OutputCell.Empty;
-        if (!TryForOutput(value,
+        if (!TryForOutput(
+            value,
             settings,
             utcColumn: settings.ExcelAsUtc,
             out var typed,
@@ -183,7 +188,8 @@ internal sealed class DateTimeConverter : TimestampConverterBase<DateTime>
         var serial = ExcelDates.ToSerial(DateTime.SpecifyKind(typed, DateTimeKind.Unspecified));
         var format = settings.ExcelNumberFormat ?? DefaultFormat(typed, settings.ExcelAsUtc);
 
-        return TryExcelSerial(serial,
+        return TryExcelSerial(
+            serial,
             format,
             TryReadBackNative(serial, format, settings, context, out var back)
             && back.Ticks == expected.Ticks
@@ -243,9 +249,10 @@ internal sealed class DateTimeConverter : TimestampConverterBase<DateTime>
         if (value.Kind == DateTimeKind.Local
             && (settings.FileTimeZone is null || utcColumn))
         {
-            failure = ConversionFailure.InvalidFormat(utcColumn
-                ? "A UTC Excel column does not accept local DateTime values."
-                : "A local DateTime requires an explicit file time zone.");
+            failure = ConversionFailure.InvalidFormat(
+                utcColumn
+                    ? "A UTC Excel column does not accept local DateTime values."
+                    : "A local DateTime requires an explicit file time zone.");
 
             return false;
         }
@@ -273,7 +280,8 @@ internal sealed class DateTimeConverter : TimestampConverterBase<DateTime>
                     : value;
             }
 
-            if (!TryRoundTicks(utc.Ticks,
+            if (!TryRoundTicks(
+                utc.Ticks,
                 default,
                 settings.TimeRounding,
                 DateTime.MaxValue.Ticks,
@@ -299,7 +307,8 @@ internal sealed class DateTimeConverter : TimestampConverterBase<DateTime>
             output = DateTime.SpecifyKind(value, DateTimeKind.Utc);
         }
 
-        if (!TryRoundTicks(output.Ticks,
+        if (!TryRoundTicks(
+            output.Ticks,
             default,
             settings.TimeRounding,
             DateTime.MaxValue.Ticks,
@@ -333,9 +342,10 @@ internal sealed class DateTimeConverter : TimestampConverterBase<DateTime>
 
         if (hasOffset != (typed.Kind == DateTimeKind.Utc))
         {
-            failure = ConversionFailure.InvalidFormat(hasOffset
-                ? "A zoneless value has no offset for this format."
-                : "The format has no offset and would lose the UTC kind; use K or zzz, or a file time zone.");
+            failure = ConversionFailure.InvalidFormat(
+                hasOffset
+                    ? "A zoneless value has no offset for this format."
+                    : "The format has no offset and would lose the UTC kind; use K or zzz, or a file time zone.");
 
             return false;
         }

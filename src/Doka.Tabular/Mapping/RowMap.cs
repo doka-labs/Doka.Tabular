@@ -108,7 +108,8 @@ public sealed class RowMapBuilder
             MapFlattening.Flatten(role.Model, null, EmbeddingContext.Root.Enter(role.Embedding, string.Empty), fields);
         }
 
-        HeaderText.AddIndistinct(fields
+        HeaderText.AddIndistinct(
+            fields
                 .Where(field => field.IsExported)
                 .Select(field => (field, HeaderText.Fixed(field))),
             errors);
@@ -119,9 +120,10 @@ public sealed class RowMapBuilder
             .GroupBy(field => field.Key)
             .Where(group => group.Count() > 1))
         {
-            errors.Add(TabularError.Configuration(
-                $"The key {group.Key} is used by more than one role or field; keys must be unique across the row map.",
-                new TabularErrorLocation { ColumnKey = group.Key }));
+            errors.Add(
+                TabularError.Configuration(
+                    $"The key {group.Key} is used by more than one role or field; keys must be unique across the row map.",
+                    new TabularErrorLocation { ColumnKey = group.Key }));
         }
 
         if (errors.Count > 0)

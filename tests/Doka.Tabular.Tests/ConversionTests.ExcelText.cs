@@ -33,7 +33,8 @@ public sealed partial class ConversionTests
         });
 
         // Assert
-        Assert.Contains(Assert
+        Assert.Contains(
+            Assert
                 .IsType<TabularConfigurationException>(exception)
                 .Errors,
             error => error.Message.Contains("ExcelNumberFormat", StringComparison.Ordinal)
@@ -46,12 +47,14 @@ public sealed partial class ConversionTests
         // Act
         var exception = Record.Exception(() => Map<CustomerNumber>(c => c
             .ExcelAsText()
-            .Convert(read: number => new CustomerNumber($"{number}"),
+            .Convert(
+                read: number => new CustomerNumber($"{number}"),
                 write: _ => 0m,
                 configure: b => b.ExcelNumberFormat("0.00"))));
 
         // Assert
-        Assert.Contains(Assert
+        Assert.Contains(
+            Assert
                 .IsType<TabularConfigurationException>(exception)
                 .Errors,
             error => error.Message.Contains("ExcelAsText", StringComparison.Ordinal));
@@ -74,7 +77,8 @@ public sealed partial class ConversionTests
                 .ExcelNumberFormat("0.00")));
 
         // Assert
-        Assert.Contains(Assert
+        Assert.Contains(
+            Assert
                 .IsType<TabularConfigurationException>(exception)
                 .Errors,
             error => error.Message.Contains("ExcelNumberFormat", StringComparison.Ordinal)

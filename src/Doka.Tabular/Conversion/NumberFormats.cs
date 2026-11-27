@@ -104,11 +104,13 @@ internal static class NumberFormats
                     // WHY: An escape shows the next character, padding takes the width of it, fill repeats it.
                     if (index + 1 < code.Length)
                     {
-                        tokens.Add(new Token(TokenKind.Literal,
-                            character == '_'
-                                ? string.Empty
-                                : code[index + 1]
-                                    .ToString()));
+                        tokens.Add(
+                            new Token(
+                                TokenKind.Literal,
+                                character == '_'
+                                    ? string.Empty
+                                    : code[index + 1]
+                                        .ToString()));
                     }
 
                     index++;

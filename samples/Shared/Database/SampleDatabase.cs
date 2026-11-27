@@ -55,7 +55,8 @@ internal sealed class SampleDatabase<TContext> : IAsyncDisposable
         try
         {
             var connection = await server.CreateDatabaseAsync("tabular_sample", cancellationToken);
-            return await CreateAsync(server,
+            return await CreateAsync(
+                server,
                 connection,
                 MySqlServerVersion.MariaDb(server.Version),
                 create,
@@ -82,7 +83,8 @@ internal sealed class SampleDatabase<TContext> : IAsyncDisposable
     {
         if (!ComposeServers.Ports.TryGetValue(stage, out var defaultPort))
         {
-            throw new InvalidOperationException($"{ServerVariable} must name a MariaDB or MySQL stage of "
+            throw new InvalidOperationException(
+                $"{ServerVariable} must name a MariaDB or MySQL stage of "
                 + $"docker/compose.yml: {string.Join(", ", ComposeServers.Ports.Keys)}.");
         }
 
@@ -94,7 +96,9 @@ internal sealed class SampleDatabase<TContext> : IAsyncDisposable
         var server = new MySqlConnectionStringBuilder
         {
             Server = "127.0.0.1",
-            Port = uint.Parse(Setting($"TABULAR_DEV_{stage.ToUpperInvariant()}_PORT",
+            Port = uint.Parse(
+                Setting(
+                    $"TABULAR_DEV_{stage.ToUpperInvariant()}_PORT",
                     defaultPort.ToString(CultureInfo.InvariantCulture)),
                 CultureInfo.InvariantCulture),
             UserID = "root",

@@ -38,7 +38,8 @@ internal sealed class ImportShape<TItem>
 
     public static ImportShape<TabularRow> ForRowMap(
         RowMap map
-    ) => new(map,
+    ) => new(
+        map,
         map
             .Roles
             .Select(role => new ShapeRole(role.Model, role.Embedding, role.Identity))
@@ -134,8 +135,9 @@ internal sealed class ImportPlan<TItem>
         // ReSharper disable once LoopCanBeConvertedToQuery
         foreach (var key in settings.AllKeys.Where(key => shape.Roles.All(role => role.Model.Type != key.ItemType)))
         {
-            errors.Add(TabularError.Configuration(
-                $"The source key belongs to {key.ItemType.Name}, which is not imported by this map."));
+            errors.Add(
+                TabularError.Configuration(
+                    $"The source key belongs to {key.ItemType.Name}, which is not imported by this map."));
         }
 
         var plan = new ImportPlan<TItem>(shape, context, settings, roles, converters, headers);
@@ -171,15 +173,17 @@ internal sealed class ImportPlan<TItem>
         if (!readType.IsEnum)
         {
             var found = ConverterRegistry.Find(readType)!;
-            errors.AddRange(found
-                .ValidateCall(field.Settings.CheckedConversionSettings(), context)
-                .Select(problem => TabularError.Configuration(problem, FieldLocation(field))));
+            errors.AddRange(
+                found
+                    .ValidateCall(field.Settings.CheckedConversionSettings(), context)
+                    .Select(problem => TabularError.Configuration(problem, FieldLocation(field))));
 
             return found;
         }
 
         var problems = new List<string>();
-        var converter = EnumConverter.Create(readType,
+        var converter = EnumConverter.Create(
+            readType,
             field.Settings.CheckedConversionSettings(),
             context,
             forExport: false,
@@ -204,9 +208,10 @@ internal sealed class ImportPlan<TItem>
         else if (string.IsNullOrWhiteSpace(header))
         {
             // WHY: An empty header, also a translated or prefixed one, names no column; Excel stores it as no cell.
-            errors.Add(TabularError.Configuration(
-                $"The field {field.Path} has no header and cannot be bound by header name.",
-                FieldLocation(field)));
+            errors.Add(
+                TabularError.Configuration(
+                    $"The field {field.Path} has no header and cannot be bound by header name.",
+                    FieldLocation(field)));
         }
 
         return header;
@@ -243,7 +248,8 @@ internal sealed class ImportPlan<TItem>
                 var index = field.Index;
                 string? fileHeader = null;
                 if (Settings.Binding == ColumnBinding.ByHeaderName
-                    && !TryLocate(field,
+                    && !TryLocate(
+                        field,
                         header,
                         normalizedHeaders,
                         sheetName,
@@ -317,17 +323,19 @@ internal sealed class ImportPlan<TItem>
 
         if (code is not null)
         {
-            errors.Add(TabularError.Create(code,
-                TabularErrorKind.Data,
-                message!,
-                new TabularErrorLocation
-                {
-                    ColumnKey = field.Key,
-                    PropertyPath = field.Path,
-                    ExpectedHeader = expected,
-                    SheetName = sheetName,
-                    RowNumber = header?.RowNumber,
-                }));
+            errors.Add(
+                TabularError.Create(
+                    code,
+                    TabularErrorKind.Data,
+                    message!,
+                    new TabularErrorLocation
+                    {
+                        ColumnKey = field.Key,
+                        PropertyPath = field.Path,
+                        ExpectedHeader = expected,
+                        SheetName = sheetName,
+                        RowNumber = header?.RowNumber,
+                    }));
 
             return false;
         }

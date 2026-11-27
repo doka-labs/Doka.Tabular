@@ -35,7 +35,8 @@ internal readonly record struct TimeFormatSpec(
         char kind
     ) => kind switch
     {
-        'd' or 'D' => new TimeFormatSpec(true,
+        'd' or 'D' => new TimeFormatSpec(
+            true,
             false,
             true,
             true,
@@ -44,7 +45,8 @@ internal readonly record struct TimeFormatSpec(
             false,
             false,
             false),
-        'f' or 'F' or 'g' or 'G' or 's' => new TimeFormatSpec(true,
+        'f' or 'F' or 'g' or 'G' or 's' => new TimeFormatSpec(
+            true,
             false,
             true,
             true,
@@ -53,7 +55,8 @@ internal readonly record struct TimeFormatSpec(
             false,
             false,
             false),
-        'o' or 'O' => new TimeFormatSpec(true,
+        'o' or 'O' => new TimeFormatSpec(
+            true,
             false,
             true,
             true,
@@ -62,7 +65,8 @@ internal readonly record struct TimeFormatSpec(
             false,
             true,
             false),
-        't' or 'T' => new TimeFormatSpec(false,
+        't' or 'T' => new TimeFormatSpec(
+            false,
             false,
             false,
             false,
@@ -71,7 +75,8 @@ internal readonly record struct TimeFormatSpec(
             false,
             false,
             false),
-        _ => new TimeFormatSpec(false,
+        _ => new TimeFormatSpec(
+            false,
             false,
             false,
             false,

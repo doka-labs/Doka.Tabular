@@ -44,7 +44,8 @@ public sealed partial class CsvFormat
         ArgumentNullException.ThrowIfNull(map);
         ArgumentNullException.ThrowIfNull(options);
 
-        return RunImportAsync(new ImportInput(source, null),
+        return RunImportAsync(
+            new ImportInput(source, null),
             ImportShape<T>.ForMap(map),
             null,
             options,
@@ -72,7 +73,8 @@ public sealed partial class CsvFormat
         ArgumentNullException.ThrowIfNull(map);
         ArgumentNullException.ThrowIfNull(destination);
 
-        return RunImportAsync(new ImportInput(source, null),
+        return RunImportAsync(
+            new ImportInput(source, null),
             ImportShape<T>.ForMap(map),
             destination,
             null,
@@ -103,7 +105,8 @@ public sealed partial class CsvFormat
         ArgumentNullException.ThrowIfNull(destination);
         ArgumentNullException.ThrowIfNull(options);
 
-        return RunImportAsync(new ImportInput(source, null),
+        return RunImportAsync(
+            new ImportInput(source, null),
             ImportShape<T>.ForMap(map),
             destination,
             options,
@@ -127,7 +130,8 @@ public sealed partial class CsvFormat
         ArgumentNullException.ThrowIfNull(source);
         ArgumentNullException.ThrowIfNull(map);
 
-        return RunImportAsync(new ImportInput(source, null),
+        return RunImportAsync(
+            new ImportInput(source, null),
             ImportShape<TabularRow>.ForRowMap(map),
             null,
             null,
@@ -154,7 +158,8 @@ public sealed partial class CsvFormat
         ArgumentNullException.ThrowIfNull(map);
         ArgumentNullException.ThrowIfNull(options);
 
-        return RunImportAsync(new ImportInput(source, null),
+        return RunImportAsync(
+            new ImportInput(source, null),
             ImportShape<TabularRow>.ForRowMap(map),
             null,
             options,
@@ -181,7 +186,8 @@ public sealed partial class CsvFormat
         ArgumentNullException.ThrowIfNull(map);
         ArgumentNullException.ThrowIfNull(destination);
 
-        return RunImportAsync(new ImportInput(source, null),
+        return RunImportAsync(
+            new ImportInput(source, null),
             ImportShape<TabularRow>.ForRowMap(map),
             destination,
             null,
@@ -211,7 +217,8 @@ public sealed partial class CsvFormat
         ArgumentNullException.ThrowIfNull(destination);
         ArgumentNullException.ThrowIfNull(options);
 
-        return RunImportAsync(new ImportInput(source, null),
+        return RunImportAsync(
+            new ImportInput(source, null),
             ImportShape<TabularRow>.ForRowMap(map),
             destination,
             options,
@@ -260,7 +267,8 @@ public sealed partial class CsvFormat
         ArgumentNullException.ThrowIfNull(map);
         ArgumentNullException.ThrowIfNull(options);
 
-        return RunImportAsync(new ImportInput(null, path),
+        return RunImportAsync(
+            new ImportInput(null, path),
             ImportShape<T>.ForMap(map),
             null,
             options,
@@ -288,7 +296,8 @@ public sealed partial class CsvFormat
         ArgumentNullException.ThrowIfNull(map);
         ArgumentNullException.ThrowIfNull(destination);
 
-        return RunImportAsync(new ImportInput(null, path),
+        return RunImportAsync(
+            new ImportInput(null, path),
             ImportShape<T>.ForMap(map),
             destination,
             null,
@@ -319,7 +328,8 @@ public sealed partial class CsvFormat
         ArgumentNullException.ThrowIfNull(destination);
         ArgumentNullException.ThrowIfNull(options);
 
-        return RunImportAsync(new ImportInput(null, path),
+        return RunImportAsync(
+            new ImportInput(null, path),
             ImportShape<T>.ForMap(map),
             destination,
             options,
@@ -343,7 +353,8 @@ public sealed partial class CsvFormat
         ArgumentNullException.ThrowIfNull(path);
         ArgumentNullException.ThrowIfNull(map);
 
-        return RunImportAsync(new ImportInput(null, path),
+        return RunImportAsync(
+            new ImportInput(null, path),
             ImportShape<TabularRow>.ForRowMap(map),
             null,
             null,
@@ -370,7 +381,8 @@ public sealed partial class CsvFormat
         ArgumentNullException.ThrowIfNull(map);
         ArgumentNullException.ThrowIfNull(options);
 
-        return RunImportAsync(new ImportInput(null, path),
+        return RunImportAsync(
+            new ImportInput(null, path),
             ImportShape<TabularRow>.ForRowMap(map),
             null,
             options,
@@ -397,7 +409,8 @@ public sealed partial class CsvFormat
         ArgumentNullException.ThrowIfNull(map);
         ArgumentNullException.ThrowIfNull(destination);
 
-        return RunImportAsync(new ImportInput(null, path),
+        return RunImportAsync(
+            new ImportInput(null, path),
             ImportShape<TabularRow>.ForRowMap(map),
             destination,
             null,
@@ -427,7 +440,8 @@ public sealed partial class CsvFormat
         ArgumentNullException.ThrowIfNull(destination);
         ArgumentNullException.ThrowIfNull(options);
 
-        return RunImportAsync(new ImportInput(null, path),
+        return RunImportAsync(
+            new ImportInput(null, path),
             ImportShape<TabularRow>.ForRowMap(map),
             destination,
             options,

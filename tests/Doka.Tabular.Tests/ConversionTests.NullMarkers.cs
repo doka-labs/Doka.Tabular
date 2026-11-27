@@ -19,7 +19,8 @@ public sealed partial class ConversionTests
     public async Task PaddedNullMarkerOfTheField_ReadsBackUnderTrim()
     {
         // Act
-        var report = await ReadBackAsync(null,
+        var report = await ReadBackAsync(
+            null,
             Map<string?>(c => c
                 .NullText(" NA ")
                 .Trim()));
@@ -32,7 +33,8 @@ public sealed partial class ConversionTests
     public async Task PaddedNullMarkerOfTheField_IsReadUnderTrim()
     {
         // Act
-        var report = await ReadAsync(TabularType.Csv,
+        var report = await ReadAsync(
+            TabularType.Csv,
             " NA ",
             Map<string?>(c => c
                 .NullText(" NA ")
@@ -46,7 +48,8 @@ public sealed partial class ConversionTests
     public async Task PaddedEmptyTranslation_ReadsBackUnderTrim()
     {
         // Act
-        var report = await TranslatedReadBackAsync(Map<string?>(c => c
+        var report = await TranslatedReadBackAsync(
+            Map<string?>(c => c
                 .EmptyTranslationKey("empty")
                 .Trim()),
             new Dictionary<string, string> { ["empty"] = " NA " });
@@ -59,10 +62,12 @@ public sealed partial class ConversionTests
     public async Task PaddedNullMarkerOfAConversion_ReadsBackUnderTrimOfTheField()
     {
         // Act
-        var report = await ReadBackAsync(new Wrapped("x"),
+        var report = await ReadBackAsync(
+            new Wrapped("x"),
             Map<Wrapped?>(c => c
                 .Trim()
-                .Convert<string?, Wrapped?>(text => text is null
+                .Convert<string?, Wrapped?>(
+                    text => text is null
                         ? null
                         : new Wrapped(text),
                     _ => null,
@@ -76,7 +81,8 @@ public sealed partial class ConversionTests
     public async Task ValueEqualToThePaddedNullMarkerUnderTrim_IsAnExportError()
     {
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Value<string?>("NA") },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Value<string?>("NA") },
             Map<string?>(c => c
                 .NullText(" NA ")
                 .Trim()),
@@ -112,21 +118,24 @@ public sealed partial class ConversionTests
         // Act
         var report = kind switch
         {
-            "marker" => await CsvInstance.ExportAsync(new[] { new Value<string?>(null) },
+            "marker" => await CsvInstance.ExportAsync(
+                new[] { new Value<string?>(null) },
                 Map<string?>(c => c
                     .EmptyTranslationKey("empty")
                     .Trim()),
                 new MemoryStream(),
                 s_blankTranslations,
                 Token),
-            "flag" => await CsvInstance.ExportAsync(new[] { new Value<bool>(true) },
+            "flag" => await CsvInstance.ExportAsync(
+                new[] { new Value<bool>(true) },
                 Map<bool>(c => c
                     .TranslationKeys("yes", "no")
                     .Trim()),
                 new MemoryStream(),
                 s_blankTranslations,
                 Token),
-            _ => await CsvInstance.ExportAsync(new[] { new Value<Padded>(Padded.Ready) },
+            _ => await CsvInstance.ExportAsync(
+                new[] { new Value<Padded>(Padded.Ready) },
                 Map<Padded>(c => c
                     .TranslationKeys(_ => "yes")
                     .Trim()),
@@ -146,7 +155,8 @@ public sealed partial class ConversionTests
     )
     {
         var file = new MemoryStream();
-        await CsvInstance.ExportAsync(new[] { new Value<string?>(null) },
+        await CsvInstance.ExportAsync(
+            new[] { new Value<string?>(null) },
             map,
             file,
             new CsvExportOptions { Translations = translations },

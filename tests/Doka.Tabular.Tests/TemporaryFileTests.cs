@@ -11,14 +11,16 @@ public sealed class TemporaryFileTests
         Directory.CreateDirectory(directory);
         try
         {
-            var files = new TemporaryFiles(new ResourceLimits(4,
-                4,
-                true,
-                directory,
-                null,
-                null,
-                null,
-                null));
+            var files = new TemporaryFiles(
+                new ResourceLimits(
+                    4,
+                    4,
+                    true,
+                    directory,
+                    null,
+                    null,
+                    null,
+                    null));
 
             var buffer = new SpillBuffer(4, true, files, "the test buffer");
             await buffer.WriteAsync(new byte[16], TestFiles.Token);
@@ -56,12 +58,13 @@ public sealed class TemporaryFileTests
         try
         {
             var logger = new CapturingLoggerFactory();
-            var format = new CsvFormat(new CsvFormatOptions
-            {
-                OutputBufferBytes = 1024,
-                TemporaryDirectory = directory,
-                Diagnostics = new TabularDiagnosticsOptions { LoggerFactory = logger },
-            });
+            var format = new CsvFormat(
+                new CsvFormatOptions
+                {
+                    OutputBufferBytes = 1024,
+                    TemporaryDirectory = directory,
+                    Diagnostics = new TabularDiagnosticsOptions { LoggerFactory = logger },
+                });
 
             var map = TabularMap
                 .For<Line>()
@@ -87,7 +90,8 @@ public sealed class TemporaryFileTests
             // Assert
             Assert.Equal(ReportStatus.Succeeded, report.Status);
             var cleanup = Assert.Single(logger.Events, entry => entry.Id == TabularLogEvents.CleanupFailed);
-            Assert.Contains(cleanup.State,
+            Assert.Contains(
+                cleanup.State,
                 pair => pair.Key == "OperationId" && Equals(pair.Value, report.Diagnostics.OperationId));
         }
         finally

@@ -241,7 +241,8 @@ internal abstract class ValueConverter<T> : ValueConverter
         FieldSettings settings,
         ConversionContext context,
         out T value
-    ) => TryReadNative(SourceCell.FromNumber(number, NumberFormats.Classify(0, numberFormat ?? "General")),
+    ) => TryReadNative(
+            SourceCell.FromNumber(number, NumberFormats.Classify(0, numberFormat ?? "General")),
             settings,
             context,
             out value,

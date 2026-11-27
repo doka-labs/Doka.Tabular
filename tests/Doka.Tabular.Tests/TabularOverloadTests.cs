@@ -24,9 +24,10 @@ public sealed partial class TabularOverloadTests : IDisposable
 
     public static TheoryData<string, TabularType> ExportOverloads => InBothTypes(s_exports.Select(call => call.Name));
 
-    public static TheoryData<string, TabularType> StreamExportOverloads => InBothTypes(s_exports
-        .Where(call => call.Target == ExportTargetKind.Stream)
-        .Select(call => call.Name));
+    public static TheoryData<string, TabularType> StreamExportOverloads => InBothTypes(
+        s_exports
+            .Where(call => call.Target == ExportTargetKind.Stream)
+            .Select(call => call.Name));
 
     public static TheoryData<string, TabularType> ImportOverloads => InBothTypes(s_imports.Select(call => call.Name));
 
@@ -103,7 +104,8 @@ public sealed partial class TabularOverloadTests : IDisposable
 
         // Assert
         Assert.Equal(ReportStatus.Succeeded, outcome.Report.Status);
-        Assert.Equal(call.WithOptions
+        Assert.Equal(
+            call.WithOptions
                 ? s_nameColumn
                 : s_bothColumns,
             Cells(type, new MemoryStream(await arguments.WrittenAsync(call.Target, outcome))));
@@ -160,7 +162,8 @@ public sealed partial class TabularOverloadTests : IDisposable
         var exception = await Record.ExceptionAsync(() => call.Run(arguments.Without(parameter)));
 
         // Assert
-        Assert.Equal(parameter,
+        Assert.Equal(
+            parameter,
             Assert.IsType<ArgumentNullException>(exception)
                 .ParamName);
     }
@@ -201,12 +204,14 @@ public sealed partial class TabularOverloadTests : IDisposable
 
         // Assert
         Assert.Equal([MissingCity], outcome.Errors);
-        Assert.Equal(call.WithOptions
+        Assert.Equal(
+            call.WithOptions
                 ? ["Ada"]
                 : [],
             outcome.Names);
 
-        Assert.Equal(call.WithOptions
+        Assert.Equal(
+            call.WithOptions
                 ? 1
                 : 0,
             outcome.RowsImported);
@@ -249,7 +254,8 @@ public sealed partial class TabularOverloadTests : IDisposable
         var exception = await Record.ExceptionAsync(() => call.Run(arguments.Without(parameter)));
 
         // Assert
-        Assert.Equal(parameter,
+        Assert.Equal(
+            parameter,
             Assert.IsType<ArgumentNullException>(exception)
                 .ParamName);
     }
@@ -270,7 +276,8 @@ public sealed partial class TabularOverloadTests : IDisposable
 
     private async Task<ExportArguments<TabularExportOptions>> CreateExportAsync(
         TabularType type
-    ) => await ExportArguments<TabularExportOptions>.CreateAsync(s_exportOptions,
+    ) => await ExportArguments<TabularExportOptions>.CreateAsync(
+            s_exportOptions,
             Path.Combine(_directory, $"residents.{type}"),
             Token) with
         {
@@ -280,7 +287,8 @@ public sealed partial class TabularOverloadTests : IDisposable
     private async Task<ImportArguments<TabularImportOptions>> CreateImportAsync(
         TabularType type,
         params object?[][] rows
-    ) => await ImportArguments<TabularImportOptions>.CreateAsync(s_importOptions,
+    ) => await ImportArguments<TabularImportOptions>.CreateAsync(
+            s_importOptions,
             Create(type, rows)
                 .ToArray(),
             Path.Combine(_directory, $"residents.{type}"),

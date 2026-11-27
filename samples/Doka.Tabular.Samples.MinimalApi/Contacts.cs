@@ -44,40 +44,46 @@ public static class ContactCatalog
 {
     public static readonly TabularMap<Contact> Map = TabularMap
         .For<Contact>()
-        .Column(x => x.Number,
+        .Column(
+            x => x.Number,
             index: 0,
             key: ColumnKey.Create("number"),
             configure: c => c
                 .Header("Nummer")
                 .HeaderTranslationKey("number")
                 .Validate(number => number > 0))
-        .Column(x => x.Email,
+        .Column(
+            x => x.Email,
             index: 1,
             key: ColumnKey.Create("email"),
             configure: c => c
                 .Header("E-Mail")
                 .HeaderTranslationKey("email")
                 .Required())
-        .Column(x => x.FirstName,
+        .Column(
+            x => x.FirstName,
             index: 2,
             key: ColumnKey.Create("firstName"),
             configure: c => c
                 .Header("Vorname")
                 .HeaderTranslationKey("firstName"))
-        .Column(x => x.LastName,
+        .Column(
+            x => x.LastName,
             index: 3,
             key: ColumnKey.Create("lastName"),
             configure: c => c
                 .Header("Nachname")
                 .HeaderTranslationKey("lastName"))
-        .Column(x => x.Since,
+        .Column(
+            x => x.Since,
             index: 4,
             key: ColumnKey.Create("since"),
             configure: c => c
                 .Header("Seit")
                 .HeaderTranslationKey("since")
                 .ExcelNumberFormat("dd.mm.yyyy"))
-        .Column(x => x.FullName,
+        .Column(
+            x => x.FullName,
             index: 5,
             key: ColumnKey.Create("fullName"),
             configure: c => c
@@ -112,7 +118,8 @@ public static class ContactCatalog
 
     public static ReportResponse Response<T>(
         ImportReport<T> report
-    ) => new(report.Diagnostics.OperationId,
+    ) => new(
+        report.Diagnostics.OperationId,
         report.Status.ToString(),
         report.RowsImported,
         report.TotalErrorCount,
@@ -120,7 +127,8 @@ public static class ContactCatalog
 
     public static ReportResponse Response(
         ExportReport report
-    ) => new(report.Diagnostics.OperationId,
+    ) => new(
+        report.Diagnostics.OperationId,
         report.Status.ToString(),
         report.RowsWritten,
         report.TotalErrorCount,
@@ -130,7 +138,8 @@ public static class ContactCatalog
         IEnumerable<TabularError> errors
     ) =>
     [
-        .. errors.Select(error => new ErrorResponse(error.Code.Value,
+        .. errors.Select(error => new ErrorResponse(
+            error.Code.Value,
             error.Location.RowNumber,
             error.Location.ColumnIndex,
             error.Location.PropertyPath?.Value)),
