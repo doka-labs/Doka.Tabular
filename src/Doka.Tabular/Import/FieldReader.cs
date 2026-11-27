@@ -40,7 +40,8 @@ internal abstract class FieldReader
 
     protected TabularErrorLocation Location(
         RowContext row
-    ) => row.Location(ColumnIndex >= 0
+    ) => row.Location(
+        ColumnIndex >= 0
             ? ColumnIndex
             : null,
         Field.Key,
@@ -306,7 +307,8 @@ internal sealed class FieldReader<TCore, TBase, TValue> : FieldReader
         }
         else
         {
-            AddError(row,
+            AddError(
+                row,
                 TabularErrorCodes.Conversion.MissingValue,
                 "The field needs a value; the target type is not nullable.",
                 sourceValue);
@@ -345,15 +347,18 @@ internal sealed class FieldReader<TCore, TBase, TValue> : FieldReader
             result = default!;
             if (owner.FindExpectation(exception) is { } code)
             {
-                row.Errors.Add(TabularError.Create(code,
-                    TabularErrorKind.Data,
-                    "The custom conversion rejected the value.",
-                    Location(row),
-                    sourceValue: sourceValue));
+                row.Errors.Add(
+                    TabularError.Create(
+                        code,
+                        TabularErrorKind.Data,
+                        "The custom conversion rejected the value.",
+                        Location(row),
+                        sourceValue: sourceValue));
             }
             else
             {
-                row.Fatal ??= TabularError.Create(TabularErrorCodes.Callback.Failed,
+                row.Fatal ??= TabularError.Create(
+                    TabularErrorCodes.Callback.Failed,
                     TabularErrorKind.Technical,
                     $"The custom conversion of {Field.Path} threw an unexpected exception.",
                     Location(row));
@@ -400,7 +405,8 @@ internal sealed class FieldReader<TCore, TBase, TValue> : FieldReader
             }
             catch (Exception exception) when (Callbacks.Failed(exception, row.CallCancellation))
             {
-                row.Fatal ??= TabularError.Create(TabularErrorCodes.Callback.Failed,
+                row.Fatal ??= TabularError.Create(
+                    TabularErrorCodes.Callback.Failed,
                     TabularErrorKind.Technical,
                     $"A validation rule of {Field.Path} threw an exception.",
                     Location(row));
@@ -410,11 +416,13 @@ internal sealed class FieldReader<TCore, TBase, TValue> : FieldReader
 
             if (!valid)
             {
-                row.Errors.Add(TabularError.Create(validator.Code ?? TabularErrorCodes.Validation.Failed,
-                    TabularErrorKind.Data,
-                    "The value violates a rule of the field.",
-                    Location(row),
-                    sourceValue: sourceValue));
+                row.Errors.Add(
+                    TabularError.Create(
+                        validator.Code ?? TabularErrorCodes.Validation.Failed,
+                        TabularErrorKind.Data,
+                        "The value violates a rule of the field.",
+                        Location(row),
+                        sourceValue: sourceValue));
 
                 passed = false;
             }
@@ -428,11 +436,13 @@ internal sealed class FieldReader<TCore, TBase, TValue> : FieldReader
         TabularErrorCode code,
         string message,
         string? sourceValue
-    ) => row.Errors.Add(TabularError.Create(code,
-        TabularErrorKind.Data,
-        message,
-        Location(row),
-        sourceValue: sourceValue));
+    ) => row.Errors.Add(
+        TabularError.Create(
+            code,
+            TabularErrorKind.Data,
+            message,
+            Location(row),
+            sourceValue: sourceValue));
 
     private enum CellRead
     {

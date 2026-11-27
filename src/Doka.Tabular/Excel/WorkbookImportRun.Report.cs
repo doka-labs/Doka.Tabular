@@ -5,7 +5,8 @@ internal sealed partial class WorkbookImportRun
     private async Task<ExcelWorkbookImportReport> FinishAsync()
     {
         var anyErrors = _errors.TotalCount > 0;
-        var overall = new ImportStatusFacts(Canceled: _canceled && _errors.Fatal is null,
+        var overall = new ImportStatusFacts(
+                Canceled: _canceled && _errors.Fatal is null,
                 Failed: _configurationFailed || _errors.Fatal is not null,
                 GateStopped: _gateStop,
                 Skipped: _journal is { Decision: ImportJournalDecision.Skipped },
@@ -17,12 +18,14 @@ internal sealed partial class WorkbookImportRun
         var data = await CompleteSinksAsync(ReportData(overall, released))
             .ConfigureAwait(false);
 
-        _scope.Completed(data.Status,
+        _scope.Completed(
+            data.Status,
             data.IsComplete,
             data.FatalError,
             data.TotalErrorCount,
             data.OmittedErrorCount,
-            new ReportCounters(data.RowsRead,
+            new ReportCounters(
+                data.RowsRead,
                 data.RowsImported,
                 data.RowsRejected,
                 data.RowsSkipped,
@@ -34,7 +37,8 @@ internal sealed partial class WorkbookImportRun
 
         // WHY: Fluent materialization stays explicit as ToArray or ToList instead of a spread.
         // ReSharper disable once UseCollectionExpression
-        return new ExcelWorkbookImportReport(data,
+        return new ExcelWorkbookImportReport(
+            data,
             sheetReports,
             _definition
                 .Sheets
@@ -65,10 +69,11 @@ internal sealed partial class WorkbookImportRun
                 released += _runs[index]?.Counts.ValidRows ?? 0;
             }
 
-            reports.Add(_runs[index] is { } run
-                ? run.Report(_statuses[index], _written[index], release, _scope.Diagnostics)
-                : _prepared[index]
-                    .EmptyReport(_statuses[index], _scope.Diagnostics));
+            reports.Add(
+                _runs[index] is { } run
+                    ? run.Report(_statuses[index], _written[index], release, _scope.Diagnostics)
+                    : _prepared[index]
+                        .EmptyReport(_statuses[index], _scope.Diagnostics));
         }
 
         return (reports, released);
@@ -83,7 +88,8 @@ internal sealed partial class WorkbookImportRun
             .OfType<SinkCounts>()
             .ToList();
 
-        return new ImportReportData(overall,
+        return new ImportReportData(
+            overall,
             !_canceled
             && _errors.Fatal is null
             && !_configurationFailed

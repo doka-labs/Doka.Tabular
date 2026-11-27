@@ -101,10 +101,11 @@ internal static class HeaderText
             return null;
         }
 
-        return string.Concat(field
-                .Header
-                .Prefixes
-                .Select(prefix => prefix.Fixed))
+        return string.Concat(
+                field
+                    .Header
+                    .Prefixes
+                    .Select(prefix => prefix.Fixed))
             + own;
     }
 
@@ -125,13 +126,14 @@ internal static class HeaderText
             .Where(group => group.Count() > 1))
         {
             var first = group.First();
-            errors.Add(TabularError.Configuration(
-                $"The headers of {string.Join(", ", group.Select(entry => entry.Field.Path.Value))} are equal after trimming and ignoring case; the header-name import could not tell them apart.",
-                new TabularErrorLocation
-                {
-                    ColumnKey = first.Field.Key,
-                    PropertyPath = first.Field.Path,
-                }));
+            errors.Add(
+                TabularError.Configuration(
+                    $"The headers of {string.Join(", ", group.Select(entry => entry.Field.Path.Value))} are equal after trimming and ignoring case; the header-name import could not tell them apart.",
+                    new TabularErrorLocation
+                    {
+                        ColumnKey = first.Field.Key,
+                        PropertyPath = first.Field.Path,
+                    }));
         }
     }
 
@@ -145,7 +147,8 @@ internal static class HeaderText
     )
     {
         error = null;
-        if (Translations.Resolve(key,
+        if (Translations.Resolve(
+            key,
             fixedText
             ?? (key is null
                 ? string.Empty

@@ -89,10 +89,12 @@ internal static partial class ImportEngine
                 catch (Exception exception) when (exception is not OutOfMemoryException)
                 {
                     // WHY: The key getter and comparer are application code; the unfinished check releases no row.
-                    errors.AddFatal(TabularError.Create(TabularErrorCodes.Callback.Failed,
-                        TabularErrorKind.Technical,
-                        "A key or comparer of the source key threw an exception.",
-                        new TabularErrorLocation { SheetName = source.SheetName }));
+                    errors.AddFatal(
+                        TabularError.Create(
+                            TabularErrorCodes.Callback.Failed,
+                            TabularErrorKind.Technical,
+                            "A key or comparer of the source key threw an exception.",
+                            new TabularErrorLocation { SheetName = source.SheetName }));
 
                     outcome.Aborted = true;
                     Reject(outcome, rejected);
@@ -169,10 +171,12 @@ internal static partial class ImportEngine
         catch (Exception exception) when (exception is not OutOfMemoryException)
         {
             // WHY: NormalizeHeader is application code; a cancellation the call did not request is its failure.
-            errors.AddFatal(TabularError.Create(TabularErrorCodes.Callback.Failed,
-                TabularErrorKind.Technical,
-                "NormalizeHeader threw an exception.",
-                new TabularErrorLocation { SheetName = source.SheetName }));
+            errors.AddFatal(
+                TabularError.Create(
+                    TabularErrorCodes.Callback.Failed,
+                    TabularErrorKind.Technical,
+                    "NormalizeHeader threw an exception.",
+                    new TabularErrorLocation { SheetName = source.SheetName }));
 
             outcome.Aborted = true;
 
@@ -234,7 +238,8 @@ internal static partial class ImportEngine
                     recordNumber++;
                     outcome.RowsRead++;
                     row.Start(read.Record!, recordNumber);
-                    if (!TakeRecord(source,
+                    if (!TakeRecord(
+                        source,
                         plan,
                         read.Record!,
                         row,
@@ -271,10 +276,12 @@ internal static partial class ImportEngine
         if (source.MissingIsStructural
             && plan.MaxIndex >= record.Cells.Count)
         {
-            row.Errors.Add(TabularError.Create(TabularErrorCodes.Schema.MissingColumn,
-                TabularErrorKind.Data,
-                $"The record has {record.Cells.Count} fields; index {plan.MaxIndex} is mapped.",
-                row.Location(plan.MaxIndex)));
+            row.Errors.Add(
+                TabularError.Create(
+                    TabularErrorCodes.Schema.MissingColumn,
+                    TabularErrorKind.Data,
+                    $"The record has {record.Cells.Count} fields; index {plan.MaxIndex} is mapped.",
+                    row.Location(plan.MaxIndex)));
         }
         else if (BuildItems(plan, record, row, items))
         {
@@ -282,10 +289,12 @@ internal static partial class ImportEngine
                 ? [.. items]
                 : items;
 
-            outcome.Valid.Add(new ImportedRow<TItem>(plan.Shape.Combine(combined),
-                record.RowNumber,
-                row.RecordNumber,
-                source.SheetName));
+            outcome.Valid.Add(
+                new ImportedRow<TItem>(
+                    plan.Shape.Combine(combined),
+                    record.RowNumber,
+                    row.RecordNumber,
+                    source.SheetName));
 
             return true;
         }
@@ -350,11 +359,12 @@ internal static partial class ImportEngine
     private static TabularError WithRecordNumber(
         TabularError error,
         long recordNumber
-    ) => error.WithLocation(new TabularErrorLocation
-    {
-        RowNumber = error.Location.RowNumber,
-        RecordNumber = recordNumber,
-        ColumnIndex = error.Location.ColumnIndex,
-        SheetName = error.Location.SheetName,
-    });
+    ) => error.WithLocation(
+        new TabularErrorLocation
+        {
+            RowNumber = error.Location.RowNumber,
+            RecordNumber = recordNumber,
+            ColumnIndex = error.Location.ColumnIndex,
+            SheetName = error.Location.SheetName,
+        });
 }

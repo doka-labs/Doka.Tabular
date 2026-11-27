@@ -25,7 +25,8 @@ internal sealed class TimeSpanConverter : TimeConverterBase<TimeSpan>
 
         if (!text.Contains(':'))
         {
-            return Fail(ConversionFailure.InvalidFormat(
+            return Fail(
+                ConversionFailure.InvalidFormat(
                     "A duration needs at least hours and minutes; a bare number has no unit."),
                 out value,
                 out failure);
@@ -41,13 +42,15 @@ internal sealed class TimeSpanConverter : TimeConverterBase<TimeSpan>
         var excess = default(ExactDecimal);
         if (digits.Length > 7)
         {
-            if (!TimeText.TryFraction(digits,
+            if (!TimeText.TryFraction(
+                digits,
                 settings.TimeRounding is not null,
                 out _,
                 out excess,
                 out var needsRounding))
             {
-                return Fail(needsRounding
+                return Fail(
+                    needsRounding
                         ? ConversionFailure.PrecisionLoss("More than seven fraction digits require rounding.")
                         : Mismatch,
                     out value,
@@ -61,7 +64,8 @@ internal sealed class TimeSpanConverter : TimeConverterBase<TimeSpan>
             || TimeSpan.TryParseExact(text, "g", culture, out parsed)
             || TimeSpan.TryParseExact(text, "G", culture, out parsed))
         {
-            return Rounded(parsed.Ticks,
+            return Rounded(
+                parsed.Ticks,
                 excess.IsZero
                     ? default
                     : excess with
@@ -126,7 +130,8 @@ internal sealed class TimeSpanConverter : TimeConverterBase<TimeSpan>
         var exact = new ExactDecimal(negative, BigInteger.Abs(ticks) * scale + excess.Mantissa, excess.Exponent);
         if (ExcelDates.IsOutside(exact, TimeSpan.MinValue.Ticks, TimeSpan.MaxValue.Ticks))
         {
-            return Fail(ConversionFailure.OutOfRange("The duration is outside the supported range."),
+            return Fail(
+                ConversionFailure.OutOfRange("The duration is outside the supported range."),
                 out value,
                 out failure);
         }
@@ -166,7 +171,8 @@ internal sealed class TimeSpanConverter : TimeConverterBase<TimeSpan>
         if (rounding is not null
             && ExcelDates.IsOutside(scaled, TimeSpan.MinValue.Ticks, TimeSpan.MaxValue.Ticks))
         {
-            return Fail(ConversionFailure.OutOfRange("The duration is outside the supported range."),
+            return Fail(
+                ConversionFailure.OutOfRange("The duration is outside the supported range."),
                 out value,
                 out failure);
         }
@@ -205,7 +211,8 @@ internal sealed class TimeSpanConverter : TimeConverterBase<TimeSpan>
     {
         failure = default;
         rounded = value;
-        if (ExcelDates.TryRoundTicks(value.Ticks,
+        if (ExcelDates.TryRoundTicks(
+            value.Ticks,
             settings.TimeRounding,
             TimeSpan.MinValue.Ticks,
             TimeSpan.MaxValue.Ticks,

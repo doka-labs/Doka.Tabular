@@ -66,8 +66,9 @@ internal sealed class CapturingLoggerFactory : ILoggerFactory
 
             lock (_owner.Events)
             {
-                _owner.Events.Add((eventId, logLevel, state as IReadOnlyList<KeyValuePair<string, object?>> ?? [],
-                    formatter(state, exception)));
+                _owner.Events.Add(
+                    (eventId, logLevel, state as IReadOnlyList<KeyValuePair<string, object?>> ?? [],
+                        formatter(state, exception)));
             }
         }
     }

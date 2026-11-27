@@ -80,7 +80,8 @@ internal sealed class PreparedInput : IAsyncDisposable
                 return new PreparedInput(new BoundedSeekableStream(input, maximum), null, null, null);
             }
 
-            return new PreparedInput(new CountingReadStream(input, limits.MaxInputBytes, hash: false),
+            return new PreparedInput(
+                new CountingReadStream(input, limits.MaxInputBytes, hash: false),
                 null,
                 null,
                 null);

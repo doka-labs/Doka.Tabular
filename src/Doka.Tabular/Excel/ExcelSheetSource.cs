@@ -67,28 +67,34 @@ internal sealed partial class ExcelSheetSource : IRecordSource, IAsyncDisposable
         {
             _ended = true;
 
-            return RecordReadResult.FatalError(TabularError.Create(TabularErrorCodes.Parsing.InvalidSyntax,
-                TabularErrorKind.Data,
-                "The worksheet is not well-formed XML.",
-                new TabularErrorLocation { SheetName = _sheet.Name }));
+            return RecordReadResult.FatalError(
+                TabularError.Create(
+                    TabularErrorCodes.Parsing.InvalidSyntax,
+                    TabularErrorKind.Data,
+                    "The worksheet is not well-formed XML.",
+                    new TabularErrorLocation { SheetName = _sheet.Name }));
         }
         catch (InvalidDataException)
         {
             _ended = true;
 
-            return RecordReadResult.FatalError(TabularError.Create(TabularErrorCodes.Parsing.InvalidSyntax,
-                TabularErrorKind.Data,
-                "The worksheet part of the ZIP container is damaged.",
-                new TabularErrorLocation { SheetName = _sheet.Name }));
+            return RecordReadResult.FatalError(
+                TabularError.Create(
+                    TabularErrorCodes.Parsing.InvalidSyntax,
+                    TabularErrorKind.Data,
+                    "The worksheet part of the ZIP container is damaged.",
+                    new TabularErrorLocation { SheetName = _sheet.Name }));
         }
         catch (FormatException exception)
         {
             _ended = true;
 
-            return RecordReadResult.FatalError(TabularError.Create(TabularErrorCodes.Parsing.InvalidSyntax,
-                TabularErrorKind.Data,
-                $"The worksheet contains an invalid cell: {exception.Message}",
-                new TabularErrorLocation { SheetName = _sheet.Name }));
+            return RecordReadResult.FatalError(
+                TabularError.Create(
+                    TabularErrorCodes.Parsing.InvalidSyntax,
+                    TabularErrorKind.Data,
+                    $"The worksheet contains an invalid cell: {exception.Message}",
+                    new TabularErrorLocation { SheetName = _sheet.Name }));
         }
     }
 
@@ -226,7 +232,8 @@ internal sealed partial class ExcelSheetSource : IRecordSource, IAsyncDisposable
     {
         // WHY: XmlReader creates a string for every attribute value it returns, also through ReadAttributeValue
         // and ReadValueChunk; attributes are therefore read as strings.
-        var number = long.TryParse(reader.GetAttribute("r"),
+        var number = long.TryParse(
+            reader.GetAttribute("r"),
             NumberStyles.None,
             CultureInfo.InvariantCulture,
             out var parsed)

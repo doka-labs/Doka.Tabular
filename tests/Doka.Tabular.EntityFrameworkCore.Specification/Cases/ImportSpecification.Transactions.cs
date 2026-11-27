@@ -13,18 +13,21 @@ public abstract partial class ImportSpecification
         context.Entries.Add(new ProcessingEntry { State = "pending" });
 
         // Act
-        var report = await s_csv.ImportAsync(TestMaps.Csv([.. TestMaps.Rows(1)]),
+        var report = await s_csv.ImportAsync(
+            TestMaps.Csv([.. TestMaps.Rows(1)]),
             TestMaps.Users,
             TestMaps.Upsert(TabularDatabase.ForContext(context)),
             Token);
 
         // Assert
         Assert.Equal(ReportStatus.Failed, report.Status);
-        Assert.Equal(TabularErrorCodes.Configuration.Invalid,
+        Assert.Equal(
+            TabularErrorCodes.Configuration.Invalid,
             Assert.Single(report.Errors)
                 .Code);
 
-        Assert.Equal(EntityState.Added,
+        Assert.Equal(
+            EntityState.Added,
             context
                 .ChangeTracker
                 .Entries<ProcessingEntry>()
@@ -43,14 +46,16 @@ public abstract partial class ImportSpecification
         await using var transaction = await context.Database.BeginTransactionAsync(Token);
 
         // Act
-        var report = await s_csv.ImportAsync(TestMaps.Csv([.. TestMaps.Rows(1)]),
+        var report = await s_csv.ImportAsync(
+            TestMaps.Csv([.. TestMaps.Rows(1)]),
             TestMaps.Users,
             TestMaps.Upsert(TabularDatabase.ForContext(context)),
             Token);
 
         // Assert
         Assert.Equal(ReportStatus.Failed, report.Status);
-        Assert.Equal(TabularErrorCodes.Configuration.Invalid,
+        Assert.Equal(
+            TabularErrorCodes.Configuration.Invalid,
             Assert.Single(report.Errors)
                 .Code);
     }
@@ -121,17 +126,19 @@ public abstract partial class ImportSpecification
         await using var transaction = await context.Database.BeginTransactionAsync(Token);
         var target = TestMaps
             .Upsert(TabularDatabase.ForContext(context))
-            .WithOptions(new TabularWriteOptions
-            {
-                JoinExistingTransaction = true,
-                CommitGroupSize = 100,
-            });
+            .WithOptions(
+                new TabularWriteOptions
+                {
+                    JoinExistingTransaction = true,
+                    CommitGroupSize = 100,
+                });
 
         // Act
         var report = await s_csv.ImportAsync(TestMaps.Csv([.. TestMaps.Rows(1)]), TestMaps.Users, target, Token);
 
         // Assert
-        Assert.Equal(TabularErrorCodes.Configuration.Invalid,
+        Assert.Equal(
+            TabularErrorCodes.Configuration.Invalid,
             Assert.Single(report.Errors)
                 .Code);
     }
@@ -140,7 +147,8 @@ public abstract partial class ImportSpecification
     public async Task Concurrency_WithReadCommitted_IsARowConflictOnEveryEngine()
     {
         // Arrange
-        Assert.SkipUnless(_provider.SupportsConcurrentWriters,
+        Assert.SkipUnless(
+            _provider.SupportsConcurrentWriters,
             "The engine serializes writers; a change between read and save needs a server database.");
 
         await using var database = await _provider.CreateAsync(Token);
@@ -168,21 +176,24 @@ public abstract partial class ImportSpecification
 
                     entity.SetEmail(dto.Email);
                 })
-            .WithOptions(new TabularWriteOptions
-            {
-                IsolationLevel = IsolationLevel.ReadCommitted,
-                CommitGroupSize = 10,
-            });
+            .WithOptions(
+                new TabularWriteOptions
+                {
+                    IsolationLevel = IsolationLevel.ReadCommitted,
+                    CommitGroupSize = 10,
+                });
 
         // Act
-        var report = await s_csv.ImportAsync(TestMaps.Csv("2,b2@example.org,B", "1,new@example.org,New"),
+        var report = await s_csv.ImportAsync(
+            TestMaps.Csv("2,b2@example.org,B", "1,new@example.org,New"),
             TestMaps.Users,
             target,
             Partial,
             Token);
 
         // Assert
-        Assert.Equal(TabularErrorCodes.Persistence.Conflict,
+        Assert.Equal(
+            TabularErrorCodes.Persistence.Conflict,
             Assert.Single(report.Errors)
                 .Code);
 
@@ -193,10 +204,12 @@ public abstract partial class ImportSpecification
     public async Task Concurrency_ChangedByAnotherContext_IsARowConflict()
     {
         // Arrange
-        Assert.SkipUnless(_provider.SupportsConcurrentWriters,
+        Assert.SkipUnless(
+            _provider.SupportsConcurrentWriters,
             "The engine serializes writers; a change between read and save needs a server database.");
 
-        Assert.SkipWhen(_provider.ConcurrentChangeAbortsTransaction,
+        Assert.SkipWhen(
+            _provider.ConcurrentChangeAbortsTransaction,
             "The engine aborts the transaction at a concurrent change; that case has its own test.");
 
         await using var database = await _provider.CreateAsync(Token);
@@ -226,11 +239,13 @@ public abstract partial class ImportSpecification
             await s_csv.ImportAsync(TestMaps.Csv("1,new@example.org,New"), TestMaps.Users, target, Partial, Token);
 
         // Assert
-        Assert.Equal(TabularErrorCodes.Persistence.Conflict,
+        Assert.Equal(
+            TabularErrorCodes.Persistence.Conflict,
             Assert.Single(report.Errors)
                 .Code);
 
-        Assert.Equal("other@example.org",
+        Assert.Equal(
+            "other@example.org",
             Assert.Single(await database.UsersAsync())
                 .Email);
     }
@@ -239,10 +254,12 @@ public abstract partial class ImportSpecification
     public async Task Concurrency_ChangedByAnotherContextOnAnEngineThatAbortsTheTransaction_IsAnUnknownRollback()
     {
         // Arrange
-        Assert.SkipUnless(_provider.SupportsConcurrentWriters,
+        Assert.SkipUnless(
+            _provider.SupportsConcurrentWriters,
             "The engine serializes writers; a change between read and save needs a server database.");
 
-        Assert.SkipUnless(_provider.ConcurrentChangeAbortsTransaction,
+        Assert.SkipUnless(
+            _provider.ConcurrentChangeAbortsTransaction,
             "The engine keeps the transaction at a concurrent change; that case has its own test.");
 
         await using var database = await _provider.CreateAsync(Token);
@@ -275,7 +292,8 @@ public abstract partial class ImportSpecification
         Assert.Equal(ReportStatus.Failed, report.Status);
         Assert.Equal(TabularErrorCodes.Persistence.RollbackUnknown, report.FatalError?.Code);
 
-        Assert.Equal("other@example.org",
+        Assert.Equal(
+            "other@example.org",
             Assert.Single(await database.UsersAsync())
                 .Email);
     }

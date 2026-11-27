@@ -50,7 +50,8 @@ public abstract partial class JournalSpecification
         Assert.Equal(ImportJournalDecision.Skipped, second.Journal!.Decision);
         Assert.Equal(first.Journal!.EntryId, second.Journal.ExistingImportId);
         Assert.Equal(0, second.RowsRead);
-        Assert.Equal([ImportJournalDecision.Processed, ImportJournalDecision.Skipped],
+        Assert.Equal(
+            [ImportJournalDecision.Processed, ImportJournalDecision.Skipped],
             completed.Select(entry => entry.Decision));
     }
 
@@ -109,7 +110,8 @@ public abstract partial class JournalSpecification
         var report = await ImportAsync(database, journal, "users", "a.csv", null);
 
         // Assert
-        Assert.Equal(sameScope
+        Assert.Equal(
+            sameScope
                 ? ImportJournalDecision.Skipped
                 : ImportJournalDecision.Processed,
             report.Journal!.Decision);
@@ -124,7 +126,8 @@ public abstract partial class JournalSpecification
         await ImportAsync(database, journal, "users", "a.csv", null);
 
         // Act
-        var report = await ImportAsync(database,
+        var report = await ImportAsync(
+            database,
             journal,
             "users",
             "a.csv",
@@ -134,7 +137,8 @@ public abstract partial class JournalSpecification
         // Assert
         Assert.Equal(ReportStatus.Failed, report.Status);
         Assert.Equal(ImportJournalDecision.RejectedDuplicate, report.Journal!.Decision);
-        Assert.Equal(TabularErrorCodes.Validation.Failed,
+        Assert.Equal(
+            TabularErrorCodes.Validation.Failed,
             Assert.Single(report.Errors)
                 .Code);
     }
@@ -174,14 +178,16 @@ public abstract partial class JournalSpecification
 
         // Assert
         await using var context = await database.ContextAsync();
-        Assert.True(await named
-            .QueryImports(context)
-            .AnyAsync(entry => entry.Id == report.Journal!.EntryId, Token));
+        Assert.True(
+            await named
+                .QueryImports(context)
+                .AnyAsync(entry => entry.Id == report.Journal!.EntryId, Token));
 
-        Assert.False(await TabularJournal
-            .ForFactory(database.Factory)
-            .QueryImports(context)
-            .AnyAsync(Token));
+        Assert.False(
+            await TabularJournal
+                .ForFactory(database.Factory)
+                .QueryImports(context)
+                .AnyAsync(Token));
     }
 
     [Fact]
@@ -191,7 +197,8 @@ public abstract partial class JournalSpecification
         await using var database = await _provider.CreateAsync(Token);
 
         // Act
-        var report = await ImportAsync(database,
+        var report = await ImportAsync(
+            database,
             TabularJournal.ForFactory(database.Factory, JournalName.Create("missing")),
             "users",
             "a.csv",
@@ -199,7 +206,8 @@ public abstract partial class JournalSpecification
 
         // Assert
         Assert.Equal(ReportStatus.Failed, report.Status);
-        Assert.Equal(TabularErrorCodes.Configuration.Invalid,
+        Assert.Equal(
+            TabularErrorCodes.Configuration.Invalid,
             Assert.Single(report.Errors)
                 .Code);
 
@@ -216,14 +224,16 @@ public abstract partial class JournalSpecification
         var destination = TestMaps
             .Upsert(TabularDatabase.ForContext(context))
             .WithOptions(new TabularWriteOptions { JoinExistingTransaction = true })
-            .WithImportLog(TabularJournal.ForFactory(database.Factory),
+            .WithImportLog(
+                TabularJournal.ForFactory(database.Factory),
                 new TabularImportLogOptions { Scope = JournalScope.Create("users") });
 
         // Act
         var report = await s_csv.ImportAsync(TestMaps.Csv([.. TestMaps.Rows(1)]), TestMaps.Users, destination, Token);
 
         // Assert
-        Assert.Equal(TabularErrorCodes.Configuration.Invalid,
+        Assert.Equal(
+            TabularErrorCodes.Configuration.Invalid,
             Assert.Single(report.Errors)
                 .Code);
     }
@@ -235,7 +245,8 @@ public abstract partial class JournalSpecification
         await using var database = await _provider.CreateAsync(Token);
         var destination = TestMaps
             .Upsert(TabularDatabase.ForFactory(database.Factory))
-            .WithImportLog(TabularJournal.ForFactory(database.Factory),
+            .WithImportLog(
+                TabularJournal.ForFactory(database.Factory),
                 new TabularImportLogOptions
                 {
                     Scope = JournalScope.Create("users"),
@@ -247,7 +258,8 @@ public abstract partial class JournalSpecification
 
         // Assert
         Assert.Equal(2, report.RowsImported);
-        Assert.Equal(TabularErrorCodes.Callback.Failed,
+        Assert.Equal(
+            TabularErrorCodes.Callback.Failed,
             Assert.Single(report.Errors)
                 .Code);
 
@@ -266,7 +278,8 @@ public abstract partial class JournalSpecification
         var recovery = await journal.RecoverImportAsync(importId, Token);
 
         // Assert
-        Assert.Equal((JournalCallStatus.Succeeded, ImportRecoveryState.Unresolved),
+        Assert.Equal(
+            (JournalCallStatus.Succeeded, ImportRecoveryState.Unresolved),
             (recovery.Status, recovery.State!.Value));
     }
 
@@ -295,7 +308,8 @@ public abstract partial class JournalSpecification
         await journal.RecoverImportAsync(importId, Token);
 
         // Act
-        var resolution = await journal.ResolveImportAsync(importId,
+        var resolution = await journal.ResolveImportAsync(
+            importId,
             new ImportResolution
             {
                 Outcome = ImportResolutionOutcome.NoChanges,
@@ -315,7 +329,8 @@ public abstract partial class JournalSpecification
         var journal = TabularJournal.ForFactory(database.Factory);
         var importId = await CrashedImportAsync(database, journal, committed: false);
         await journal.RecoverImportAsync(importId, Token);
-        await journal.ResolveImportAsync(importId,
+        await journal.ResolveImportAsync(
+            importId,
             new ImportResolution
             {
                 Outcome = ImportResolutionOutcome.NoChanges,
@@ -324,7 +339,8 @@ public abstract partial class JournalSpecification
             Token);
 
         // Act
-        var second = await journal.ResolveImportAsync(importId,
+        var second = await journal.ResolveImportAsync(
+            importId,
             new ImportResolution
             {
                 Outcome = ImportResolutionOutcome.NoChanges,
@@ -344,7 +360,8 @@ public abstract partial class JournalSpecification
         var journal = TabularJournal.ForFactory(database.Factory);
         var importId = await CrashedImportAsync(database, journal, committed: false);
         await journal.RecoverImportAsync(importId, Token);
-        await journal.ResolveImportAsync(importId,
+        await journal.ResolveImportAsync(
+            importId,
             new ImportResolution
             {
                 Outcome = ImportResolutionOutcome.NoChanges,
@@ -384,7 +401,8 @@ public abstract partial class JournalSpecification
         await journal.RecoverImportAsync(importId, Token);
 
         // Act
-        var resolution = await journal.ResolveImportAsync(importId,
+        var resolution = await journal.ResolveImportAsync(
+            importId,
             new ImportResolution
             {
                 Outcome = ImportResolutionOutcome.NoChanges,
@@ -417,7 +435,8 @@ public abstract partial class JournalSpecification
 
         Assert.Equal(JournalCallStatus.Succeeded, resolution.Status);
         Assert.Equal((true, ImportResolutionOutcome.Imported), (log.CompletedAt is not null, log.ResolutionOutcome));
-        Assert.Equal(ImportClaimState.Imported,
+        Assert.Equal(
+            ImportClaimState.Imported,
             (await journal
                 .QueryImportClaims(context)
                 .SingleAsync(Token)).State);
@@ -461,7 +480,8 @@ public abstract partial class JournalSpecification
         // Arrange
         await using var database = await _provider.CreateAsync(Token);
         var journal = TabularJournal.ForFactory(database.Factory);
-        var report = await s_csv.ImportAsync(TestMaps.Csv([.. TestMaps.Rows(2)]),
+        var report = await s_csv.ImportAsync(
+            TestMaps.Csv([.. TestMaps.Rows(2)]),
             TestMaps.Users,
             TestMaps
                 .Upsert(TabularDatabase.ForFactory(database.Factory))
@@ -479,7 +499,8 @@ public abstract partial class JournalSpecification
     public async Task ResolveImported_WhileTheImportRunsInThisProcess_IsAConflictAndTheImportEnds()
     {
         // Arrange
-        Assert.SkipUnless(_provider.SupportsConcurrentWriters,
+        Assert.SkipUnless(
+            _provider.SupportsConcurrentWriters,
             "The engine serializes writers; another call cannot write while the data transaction is open.");
 
         await using var database = await _provider.CreateAsync(Token);
@@ -487,7 +508,8 @@ public abstract partial class JournalSpecification
         JournalCallStatus? during = null;
         var destination = TabularDatabase
             .ForFactory(database.Factory)
-            .PrepareInsert<UserDto, User>(set: context => context.Users,
+            .PrepareInsert<UserDto, User>(
+                set: context => context.Users,
                 create: dto =>
                 {
                     if (dto.PersonnelNumber == 2)
@@ -502,7 +524,8 @@ public abstract partial class JournalSpecification
             .WithImportLog(journal, new TabularImportLogOptions { Scope = JournalScope.Create("users") });
 
         // Act
-        var report = await s_csv.ImportAsync(TestMaps.Csv([.. TestMaps.Rows(3)]),
+        var report = await s_csv.ImportAsync(
+            TestMaps.Csv([.. TestMaps.Rows(3)]),
             TestMaps.Users,
             destination,
             new CsvImportOptions { Strategy = ImportStrategy.Partial },
@@ -544,7 +567,8 @@ public abstract partial class JournalSpecification
         // Arrange
         // WHY: A recovery in another process takes the running import for crashed and marks its claim unresolved;
         // this process knows that the import still runs, so a resolution here must not end it.
-        Assert.SkipUnless(_provider.SupportsConcurrentWriters,
+        Assert.SkipUnless(
+            _provider.SupportsConcurrentWriters,
             "The engine serializes writers; another call cannot write while the data transaction is open.");
 
         await using var database = await _provider.CreateAsync(Token);
@@ -552,7 +576,8 @@ public abstract partial class JournalSpecification
         JournalCallStatus? during = null;
         var destination = TabularDatabase
             .ForFactory(database.Factory)
-            .PrepareInsert<UserDto, User>(set: context => context.Users,
+            .PrepareInsert<UserDto, User>(
+                set: context => context.Users,
                 create: dto =>
                 {
                     if (dto.PersonnelNumber == atRow)
@@ -567,7 +592,8 @@ public abstract partial class JournalSpecification
             .WithImportLog(journal, new TabularImportLogOptions { Scope = JournalScope.Create("users") });
 
         // Act
-        var report = await s_csv.ImportAsync(TestMaps.Csv([.. TestMaps.Rows(3)]),
+        var report = await s_csv.ImportAsync(
+            TestMaps.Csv([.. TestMaps.Rows(3)]),
             TestMaps.Users,
             destination,
             new CsvImportOptions { Strategy = ImportStrategy.Partial },
@@ -577,7 +603,8 @@ public abstract partial class JournalSpecification
         // WHY: An engine that aborts the transaction at a concurrent change rejects the next evidence write of the
         // import, since the foreign recovery changed its claim; the groups before that change stay committed.
         Assert.Equal(JournalCallStatus.Conflict, during);
-        Assert.Equal(_provider.ConcurrentChangeAbortsTransaction
+        Assert.Equal(
+            _provider.ConcurrentChangeAbortsTransaction
                 ? (ReportStatus.Failed, atRow - 1L, TabularErrorCodes.Persistence.WriteFailed)
                 : (ReportStatus.Succeeded, 3L, null),
             (report.Status, report.RowsImported, report.FatalError?.Code));
@@ -599,7 +626,8 @@ public abstract partial class JournalSpecification
 
             // WHY: The callback of the row is synchronous; the call waits for the resolution in its own context.
             return journal
-                .ResolveImportAsync(claim.CurrentImportId,
+                .ResolveImportAsync(
+                    claim.CurrentImportId,
                     new ImportResolution
                     {
                         Outcome = outcome,
@@ -628,7 +656,8 @@ public abstract partial class JournalSpecification
         var journal = TabularJournal.ForFactory(database.Factory);
         var importId = await CrashedImportAsync(database, journal, committed: true);
         await journal.RecoverImportAsync(importId, Token);
-        await journal.ResolveImportAsync(importId,
+        await journal.ResolveImportAsync(
+            importId,
             new ImportResolution
             {
                 Outcome = ImportResolutionOutcome.NoChanges,
@@ -680,7 +709,8 @@ public abstract partial class JournalSpecification
         DateTimeOffset now
     ) => journal
         .QueryExports(context)
-        .CountAsync(log => log.Status == TabularExportLogStatus.Ready && (log.ExpiresAt == null || log.ExpiresAt > now),
+        .CountAsync(
+            log => log.Status == TabularExportLogStatus.Ready && (log.ExpiresAt == null || log.ExpiresAt > now),
             Token);
 
     private static async Task<ImportReport<UserDto>> ImportAsync(
@@ -695,7 +725,8 @@ public abstract partial class JournalSpecification
     {
         var destination = TestMaps
             .Upsert(TabularDatabase.ForFactory(database.Factory), mapDatabaseErrors)
-            .WithImportLog(journal,
+            .WithImportLog(
+                journal,
                 new TabularImportLogOptions
                 {
                     Scope = JournalScope.Create(scope),
@@ -736,7 +767,8 @@ public abstract partial class JournalSpecification
         var journal = TabularJournal.ForFactory(database.Factory);
         var importId = await CrashedImportAsync(database, journal, committed: false);
         await journal.RecoverImportAsync(importId, Token);
-        await journal.ResolveImportAsync(importId,
+        await journal.ResolveImportAsync(
+            importId,
             new ImportResolution
             {
                 Outcome = ImportResolutionOutcome.NoChanges,
@@ -775,7 +807,8 @@ public abstract partial class JournalSpecification
         var journal = TabularJournal.ForFactory(database.Factory);
         var importId = await CrashedImportAsync(database, journal, committed: false);
         await journal.RecoverImportAsync(importId, Token);
-        await journal.ResolveImportAsync(importId,
+        await journal.ResolveImportAsync(
+            importId,
             new ImportResolution
             {
                 Outcome = ImportResolutionOutcome.NoChanges,
@@ -808,14 +841,16 @@ public abstract partial class JournalSpecification
         // Arrange
         // WHY: Another call ends or deletes the log between the first and the second commit group, as a resolution
         // and a cleanup in another process would; the run must not write evidence into an ended or missing log.
-        Assert.SkipUnless(_provider.SupportsConcurrentWriters,
+        Assert.SkipUnless(
+            _provider.SupportsConcurrentWriters,
             "The engine serializes writers; another call cannot write while the data transaction is open.");
 
         await using var database = await _provider.CreateAsync(Token);
         var journal = TabularJournal.ForFactory(database.Factory);
         var destination = TabularDatabase
             .ForFactory(database.Factory)
-            .PrepareInsert<UserDto, User>(set: context => context.Users,
+            .PrepareInsert<UserDto, User>(
+                set: context => context.Users,
                 create: dto =>
                 {
                     if (dto.PersonnelNumber == 2)
@@ -830,7 +865,8 @@ public abstract partial class JournalSpecification
             .WithImportLog(journal, new TabularImportLogOptions { Scope = JournalScope.Create("users") });
 
         // Act
-        var report = await s_csv.ImportAsync(TestMaps.Csv([.. TestMaps.Rows(3)]),
+        var report = await s_csv.ImportAsync(
+            TestMaps.Csv([.. TestMaps.Rows(3)]),
             TestMaps.Users,
             destination,
             new CsvImportOptions { Strategy = strategy },
@@ -840,7 +876,8 @@ public abstract partial class JournalSpecification
         // WHY: A partial import committed the first group before the log ended; a strict one holds all rows in the
         // group that is rolled back. An engine that aborts the transaction at a concurrent change fails the evidence
         // write itself instead of finding no log, so the group is not committed either.
-        Assert.Equal(_provider.ConcurrentChangeAbortsTransaction
+        Assert.Equal(
+            _provider.ConcurrentChangeAbortsTransaction
                 ? TabularErrorCodes.Persistence.WriteFailed
                 : TabularErrorCodes.Persistence.Conflict,
             report.FatalError?.Code);
@@ -879,7 +916,8 @@ public abstract partial class JournalSpecification
         var hash = Sha256Hash.FromBytes(SHA256.HashData(((MemoryStream)TestMaps.Csv([.. TestMaps.Rows(2)])).ToArray()));
         var now = DateTimeOffset.UtcNow;
         await using var context = await database.ContextAsync();
-        var log = new TabularImportLog(Guid.NewGuid(),
+        var log = new TabularImportLog(
+            Guid.NewGuid(),
             JournalScope.Create("users"),
             "a.csv",
             null,

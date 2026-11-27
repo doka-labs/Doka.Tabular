@@ -4,8 +4,7 @@ This roadmap describes intent, not a commitment. Items can change or be dropped;
 
 ## Direction
 
-The first stable version is `1.0.0`, after the release candidates. No further
-item is planned yet; a planned item gets its own section here, with its goal
+`1.0.0` is the first stable version. No further item is planned yet; a planned item gets its own section here, with its goal
 and the version before which it is expected.
 
 ## Explicit non-goals

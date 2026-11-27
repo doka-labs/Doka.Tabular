@@ -23,7 +23,8 @@ internal static partial class ImportEngine
             .Select(part => part.CreateColumn(key.ItemType))
             .ToArray();
 
-        if (KeyedRows(candidates,
+        if (KeyedRows(
+                candidates,
                 key,
                 plan,
                 columns,
@@ -137,10 +138,12 @@ internal static partial class ImportEngine
                 continue;
             }
 
-            errors.Add(TabularError.Create(TabularErrorCodes.Key.Incomplete,
-                TabularErrorKind.Data,
-                "A part of the source key is empty.",
-                RowLocation(row, key.Parts[emptyPart].Path)));
+            errors.Add(
+                TabularError.Create(
+                    TabularErrorCodes.Key.Incomplete,
+                    TabularErrorKind.Data,
+                    "A part of the source key is empty.",
+                    RowLocation(row, key.Parts[emptyPart].Path)));
 
             rejected.Add(row);
         }
@@ -187,11 +190,13 @@ internal static partial class ImportEngine
                 }
             }
 
-            errors.Add(TabularError.Create(TabularErrorCodes.Key.Duplicate,
-                TabularErrorKind.Data,
-                "The source key occurs in several records.",
-                RowLocation(row, key.Parts[0].Path),
-                related));
+            errors.Add(
+                TabularError.Create(
+                    TabularErrorCodes.Key.Duplicate,
+                    TabularErrorKind.Data,
+                    "The source key occurs in several records.",
+                    RowLocation(row, key.Parts[0].Path),
+                    related));
 
             rejected.Add(row);
         }

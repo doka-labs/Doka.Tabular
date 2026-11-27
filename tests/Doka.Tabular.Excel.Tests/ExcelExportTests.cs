@@ -19,13 +19,15 @@ public sealed partial class ExcelExportTests : IDisposable
 
     private static readonly TabularMap<Booking> s_bookings = TabularMap
         .For<Booking>()
-        .Column(x => x.Amount,
+        .Column(
+            x => x.Amount,
             index: 0,
             key: ColumnKey.Create("amount"),
             configure: c => c
                 .Header("Betrag")
                 .ExcelNumberFormat("#,##0.00 [$EUR];[Red]-#,##0.00 [$EUR]"))
-        .Column(x => x.At,
+        .Column(
+            x => x.At,
             index: 1,
             key: ColumnKey.Create("at"),
             configure: c => c
@@ -101,7 +103,8 @@ public sealed partial class ExcelExportTests : IDisposable
         Assert.Equal(ReportStatus.Succeeded, report.Status);
         using var document = OpenWorkbook(file!);
         var sheet = Single(document);
-        Assert.Equal("Export",
+        Assert.Equal(
+            "Export",
             document.WorkbookPart!.Workbook!.Sheets!
                 .Elements<Sheet>()
                 .Single()
@@ -115,12 +118,14 @@ public sealed partial class ExcelExportTests : IDisposable
 
         Assert.Equal((1d, PaneStateValues.Frozen), (pane.VerticalSplit!.Value, pane.State!.Value));
         Assert.Equal(["n", "n", "inlineStr"], CellTypes(file!, 2));
-        Assert.Equal(["2", "10"],
+        Assert.Equal(
+            ["2", "10"],
             Cells(TabularType.Excel, file!)
                 .Skip(1)
                 .Select(row => row[0]));
 
-        Assert.Equal(["01067", "80331"],
+        Assert.Equal(
+            ["01067", "80331"],
             Cells(TabularType.Excel, file!)
                 .Skip(1)
                 .Select(row => row[2]));
@@ -140,7 +145,8 @@ public sealed partial class ExcelExportTests : IDisposable
         // Arrange
         var workbook = ExcelExport
             .Create()
-            .Add(TabularSheetName.Create("Buchungen"),
+            .Add(
+                TabularSheetName.Create("Buchungen"),
                 s_rows,
                 s_bookings,
                 new ExcelSheetExportOptions
@@ -148,7 +154,8 @@ public sealed partial class ExcelExportTests : IDisposable
                     WriteHeader = true,
                     Layout = new ExcelLayoutOptions { Mode = ExcelLayoutMode.Table },
                 })
-            .Add(TabularSheetName.Create("Kunden"),
+            .Add(
+                TabularSheetName.Create("Kunden"),
                 new[] { new Customer(1, "Ada") },
                 s_customers,
                 new ExcelSheetExportOptions
@@ -172,11 +179,14 @@ public sealed partial class ExcelExportTests : IDisposable
             .ToList();
 
         Assert.Equal(["TabularExport", "TabularExport_2"], tables.Select(table => table.Name!.Value));
-        Assert.All(tables,
-            table => Assert.Equal(("TableStyleMedium2", true),
+        Assert.All(
+            tables,
+            table => Assert.Equal(
+                ("TableStyleMedium2", true),
                 (table.TableStyleInfo!.Name!.Value, table.TableStyleInfo.ShowRowStripes!.Value)));
 
-        Assert.Equal(["Buchungen", "Kunden"],
+        Assert.Equal(
+            ["Buchungen", "Kunden"],
             document.WorkbookPart.Workbook!.Sheets!
                 .Elements<Sheet>()
                 .Select(sheet => sheet.Name!.Value));
@@ -204,7 +214,8 @@ public sealed partial class ExcelExportTests : IDisposable
         };
 
         // Act
-        var (_, file) = await ExcelInstance.ExportAsync(s_rows,
+        var (_, file) = await ExcelInstance.ExportAsync(
+            s_rows,
             s_bookings,
             new ExcelExportOptions
             {
@@ -224,10 +235,11 @@ public sealed partial class ExcelExportTests : IDisposable
         var styles = document.WorkbookPart!.WorkbookStylesPart!.Stylesheet!;
         var headerFormat = styles.CellFormats!
             .Elements<CellFormat>()
-            .ElementAt((int)header
-                .Elements<Cell>()
-                .First()
-                .StyleIndex!.Value);
+            .ElementAt(
+                (int)header
+                    .Elements<Cell>()
+                    .First()
+                    .StyleIndex!.Value);
 
         var fill = styles.Fills!
             .Elements<Fill>()
@@ -235,12 +247,14 @@ public sealed partial class ExcelExportTests : IDisposable
             .PatternFill!;
 
         Assert.Equal("FF3A5A8C", fill.ForegroundColor!.Rgb!.Value);
-        Assert.NotNull(styles.Fonts!
-            .Elements<Font>()
-            .ElementAt((int)headerFormat.FontId!.Value)
-            .Bold);
+        Assert.NotNull(
+            styles.Fonts!
+                .Elements<Font>()
+                .ElementAt((int)headerFormat.FontId!.Value)
+                .Bold);
 
-        Assert.Equal(16d,
+        Assert.Equal(
+            16d,
             sheet
                 .Worksheet
                 .Descendants<Column>()
@@ -252,7 +266,8 @@ public sealed partial class ExcelExportTests : IDisposable
     public async Task UnstyledExport_HasNoOwnCellFormatting()
     {
         // Act
-        var (_, file) = await ExcelInstance.ExportAsync(new[] { new Customer(1, "Ada") },
+        var (_, file) = await ExcelInstance.ExportAsync(
+            new[] { new Customer(1, "Ada") },
             s_customers,
             new ExcelExportOptions { WriteHeader = true },
             Token);
@@ -260,7 +275,8 @@ public sealed partial class ExcelExportTests : IDisposable
         // Assert
         using var document = OpenWorkbook(file!);
         var stylesheet = document.WorkbookPart!.WorkbookStylesPart!.Stylesheet!;
-        Assert.Equal(2,
+        Assert.Equal(
+            2,
             stylesheet.Fills!
                 .Elements<Fill>()
                 .Count());
@@ -280,7 +296,8 @@ public sealed partial class ExcelExportTests : IDisposable
         };
 
         // Act
-        var (_, file) = await ExcelInstance.ExportAsync(s_rows,
+        var (_, file) = await ExcelInstance.ExportAsync(
+            s_rows,
             s_bookings,
             new ExcelExportOptions
             {
@@ -329,7 +346,8 @@ public sealed partial class ExcelExportTests : IDisposable
         var target = new MemoryStream();
 
         // Act
-        var report = await ExcelInstance.ExportAsync(s_rows,
+        var report = await ExcelInstance.ExportAsync(
+            s_rows,
             s_bookings,
             target,
             new ExcelExportOptions
@@ -390,7 +408,8 @@ public sealed partial class ExcelExportTests : IDisposable
     public async Task EmptySource_WritesOnlyTheHeaderWithoutFilterOrTable()
     {
         // Act
-        var (report, file) = await ExcelInstance.ExportAsync(Array.Empty<Booking>(),
+        var (report, file) = await ExcelInstance.ExportAsync(
+            Array.Empty<Booking>(),
             s_bookings,
             new ExcelExportOptions
             {

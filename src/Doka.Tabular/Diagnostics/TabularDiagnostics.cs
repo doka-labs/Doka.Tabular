@@ -49,7 +49,8 @@ public static class TabularLogEvents
 
 internal static partial class TabularLog
 {
-    [LoggerMessage(EventId = 1000,
+    [LoggerMessage(
+        EventId = 1000,
         EventName = "OperationStarted",
         Level = LogLevel.Debug,
         Message = "Tabular {Direction} {Format} started (operation {OperationId})")]
@@ -60,7 +61,8 @@ internal static partial class TabularLog
         string format
     );
 
-    [LoggerMessage(EventId = 1001,
+    [LoggerMessage(
+        EventId = 1001,
         EventName = "OperationCompleted",
         Message =
             "Tabular {Direction} {Format} completed with {Status} in {DurationMilliseconds} ms (operation {OperationId}, complete {IsComplete}, errors {TotalErrorCount}, omitted {OmittedErrorCount}, read {RowsRead}, imported {RowsImported}, rejected {RowsRejected}, skipped {RowsSkipped}, pending {RowsPendingCommit}, uncertain {RowsUncertain}, written {RowsWritten})")]
@@ -84,7 +86,8 @@ internal static partial class TabularLog
         long rowsWritten
     );
 
-    [LoggerMessage(EventId = 1002,
+    [LoggerMessage(
+        EventId = 1002,
         EventName = "OperationFailed",
         Level = LogLevel.Error,
         Message = "Tabular {Direction} {Format} failed technically with {Code} ({Kind}) (operation {OperationId})")]
@@ -97,7 +100,8 @@ internal static partial class TabularLog
         TabularErrorKind kind
     );
 
-    [LoggerMessage(EventId = 1200,
+    [LoggerMessage(
+        EventId = 1200,
         EventName = "PersistenceUncertain",
         Level = LogLevel.Error,
         Message = "Tabular {Direction} {Format}: commit or rollback is uncertain (operation {OperationId})")]
@@ -108,7 +112,8 @@ internal static partial class TabularLog
         string format
     );
 
-    [LoggerMessage(EventId = 1300,
+    [LoggerMessage(
+        EventId = 1300,
         EventName = "CleanupFailed",
         Level = LogLevel.Error,
         Message = "Tabular {Direction} {Format}: own cleanup failed (operation {OperationId})")]
@@ -119,7 +124,8 @@ internal static partial class TabularLog
         string format
     );
 
-    [LoggerMessage(EventId = 1400,
+    [LoggerMessage(
+        EventId = 1400,
         EventName = "JournalUpdateFailed",
         Level = LogLevel.Error,
         Message = "Tabular {Direction} {Format}: journal state was not written (operation {OperationId})")]
@@ -130,7 +136,8 @@ internal static partial class TabularLog
         string format
     );
 
-    [LoggerMessage(EventId = 1401,
+    [LoggerMessage(
+        EventId = 1401,
         EventName = "CompletionFailed",
         Level = LogLevel.Error,
         Message = "Tabular {Direction} {Format}: completion callback failed (operation {OperationId})")]
@@ -239,7 +246,8 @@ internal sealed class OperationScope : IDisposable
         var technical = hasTechnicalErrors || fatal is { Kind: TabularErrorKind.Technical };
         if (fatal is { Kind: TabularErrorKind.Technical } failure)
         {
-            Log(logger => TabularLog.OperationFailed(logger,
+            Log(logger => TabularLog.OperationFailed(
+                logger,
                 OperationId,
                 _direction,
                 _format,
@@ -252,7 +260,8 @@ internal sealed class OperationScope : IDisposable
         var duration = (long)Time.GetElapsedTime(_started)
             .TotalMilliseconds;
 
-        Log(logger => TabularLog.OperationCompleted(logger,
+        Log(logger => TabularLog.OperationCompleted(
+            logger,
             level,
             OperationId,
             _direction,

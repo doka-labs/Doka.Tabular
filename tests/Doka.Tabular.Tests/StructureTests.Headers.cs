@@ -30,7 +30,8 @@ public sealed partial class StructureTests
     private static readonly TabularMap<Contact> s_optionalHire = TabularMap
         .For<Contact>()
         .Column(x => x.Email, index: 0, configure: c => c.Header("E-Mail"))
-        .Column(x => x.DateOfHire,
+        .Column(
+            x => x.DateOfHire,
             index: 1,
             configure: c => c
                 .Header("Eintrittsdatum")
@@ -41,13 +42,15 @@ public sealed partial class StructureTests
     private static TabularMap<Shipment> PrefixedShipments => TabularMap
         .For<Shipment>()
         .Column(x => x.Id, index: 0, configure: c => c.Header("Id"))
-        .Nested(x => x.Billing,
+        .Nested(
+            x => x.Billing,
             s_located,
             e => e
                 .StartIndex(1)
                 .KeyPrefix(ColumnKey.Create("billing"))
                 .HeaderPrefix("Rechnungs-"))
-        .Nested(x => x.Shipping,
+        .Nested(
+            x => x.Shipping,
             s_located,
             e => e
                 .StartIndex(3)
@@ -60,7 +63,8 @@ public sealed partial class StructureTests
     public async Task HeaderPrefixes_AndFieldHeaders_DriveTheExport()
     {
         // Act
-        var (_, file) = await CsvInstance.ExportAsync(s_shipments,
+        var (_, file) = await CsvInstance.ExportAsync(
+            s_shipments,
             PrefixedShipments,
             new CsvExportOptions
             {
@@ -70,7 +74,8 @@ public sealed partial class StructureTests
             Token);
 
         // Assert
-        Assert.Equal(["Id", "Rechnungs-Ort", "Rechnungs-PLZ", "Liefer-Ort", "Zielpostleitzahl"],
+        Assert.Equal(
+            ["Id", "Rechnungs-Ort", "Rechnungs-PLZ", "Liefer-Ort", "Zielpostleitzahl"],
             Cells(TabularType.Csv, file!, delimiter: ';')[0]);
     }
 
@@ -82,7 +87,8 @@ public sealed partial class StructureTests
             "Liefer-Ort;Zielpostleitzahl;Id;Rechnungs-PLZ;Rechnungs-Ort\nBonn;53111;1;01067;Dresden";
 
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8(reordered),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8(reordered),
             PrefixedShipments,
             new CsvImportOptions
             {
@@ -99,7 +105,8 @@ public sealed partial class StructureTests
     public async Task TranslatedPrefix_DrivesTheExportedHeader()
     {
         // Act
-        var (_, file) = await CsvInstance.ExportAsync(s_shipments,
+        var (_, file) = await CsvInstance.ExportAsync(
+            s_shipments,
             TranslatedPrefixMap(),
             new CsvExportOptions
             {
@@ -109,7 +116,8 @@ public sealed partial class StructureTests
             Token);
 
         // Assert
-        Assert.StartsWith("Id,Rechnungs-City,Rechnungs-Postal code,Shipping City,Shipping Postal code",
+        Assert.StartsWith(
+            "Id,Rechnungs-City,Rechnungs-Postal code,Shipping City,Shipping Postal code",
             TestInput.Utf8Text(file!),
             StringComparison.Ordinal);
     }
@@ -119,7 +127,8 @@ public sealed partial class StructureTests
     {
         // Arrange
         var map = TranslatedPrefixMap();
-        var (_, file) = await CsvInstance.ExportAsync(s_shipments,
+        var (_, file) = await CsvInstance.ExportAsync(
+            s_shipments,
             map,
             new CsvExportOptions
             {
@@ -142,7 +151,8 @@ public sealed partial class StructureTests
     {
         // Arrange
         var map = TranslatedPrefixMap();
-        var (_, file) = await CsvInstance.ExportAsync(s_shipments,
+        var (_, file) = await CsvInstance.ExportAsync(
+            s_shipments,
             map,
             new CsvExportOptions
             {
@@ -170,7 +180,8 @@ public sealed partial class StructureTests
     public async Task TranslatedPrefix_OfAnUnwrittenHeader_NeedsNoTranslation()
     {
         // Act
-        var report = await CsvInstance.ExportAsync(s_shipments,
+        var report = await CsvInstance.ExportAsync(
+            s_shipments,
             TranslatedPrefixMap(),
             new MemoryStream(),
             new CsvExportOptions { ColumnKeys = [ColumnKey.Create("shipping.postalCode")] },
@@ -184,13 +195,15 @@ public sealed partial class StructureTests
     private static TabularMap<Shipment> TranslatedPrefixMap() => TabularMap
         .For<Shipment>()
         .Column(x => x.Id, index: 0, configure: c => c.Header("Id"))
-        .Nested(x => x.Billing,
+        .Nested(
+            x => x.Billing,
             s_located,
             e => e
                 .StartIndex(1)
                 .KeyPrefix(ColumnKey.Create("billing"))
                 .HeaderPrefix("Rechnungs-"))
-        .Nested(x => x.Shipping,
+        .Nested(
+            x => x.Shipping,
             s_located,
             e => e
                 .StartIndex(3)
@@ -203,7 +216,8 @@ public sealed partial class StructureTests
         string text,
         TabularMap<Shipment> map,
         IReadOnlyDictionary<string, string> translations
-    ) => CsvInstance.ImportAsync(TestInput.Utf8(text),
+    ) => CsvInstance.ImportAsync(
+        TestInput.Utf8(text),
         map,
         new CsvImportOptions
         {
@@ -236,7 +250,8 @@ public sealed partial class StructureTests
         // Arrange
         var map = TabularMap
             .For<Person>()
-            .Column(x => x.Name,
+            .Column(
+                x => x.Name,
                 index: 0,
                 configure: c =>
                 {
@@ -252,7 +267,8 @@ public sealed partial class StructureTests
             .Build();
 
         // Act
-        var report = await Import.ImportAsync(Create(type, ["Name"], ["Ada"]),
+        var report = await Import.ImportAsync(
+            Create(type, ["Name"], ["Ada"]),
             type,
             map,
             new TabularImportOptions
@@ -282,20 +298,23 @@ public sealed partial class StructureTests
 
         // Act
         // WHY: The round trip of the own output is the checked contract, so export and reimport form one action.
-        var (_, file) = await Export.ExportAsync(new[] { new Person("Ada") },
+        var (_, file) = await Export.ExportAsync(
+            new[] { new Person("Ada") },
             map,
             type,
             new TabularExportOptions { WriteHeader = true },
             Token);
 
-        var report = await Import.ImportAsync(file!,
+        var report = await Import.ImportAsync(
+            file!,
             type,
             map,
             new TabularImportOptions { Binding = ColumnBinding.ByHeaderName },
             Token);
 
         // Assert
-        Assert.Equal("Ada",
+        Assert.Equal(
+            "Ada",
             Assert.Single(report.Items!)
                 .Name);
     }
@@ -310,7 +329,8 @@ public sealed partial class StructureTests
             .Build();
 
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8("Name\nAda"),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8("Name\nAda"),
             map,
             new CsvImportOptions
             {
@@ -320,7 +340,8 @@ public sealed partial class StructureTests
             Token);
 
         // Assert
-        Assert.Equal((ReportStatus.Failed, TabularErrorCodes.Callback.Failed),
+        Assert.Equal(
+            (ReportStatus.Failed, TabularErrorCodes.Callback.Failed),
             (report.Status, report.FatalError?.Code));
     }
 
@@ -328,13 +349,15 @@ public sealed partial class StructureTests
     public async Task HeaderComparison_TrimsAndIgnoresCase()
     {
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8(" POSTAL CODE \nAnna Maria"),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8(" POSTAL CODE \nAnna Maria"),
             s_postalCode,
             new CsvImportOptions { Binding = ColumnBinding.ByHeaderName },
             Token);
 
         // Assert
-        Assert.Equal("Anna Maria",
+        Assert.Equal(
+            "Anna Maria",
             Assert.Single(report.Items!)
                 .Name);
     }
@@ -347,7 +370,8 @@ public sealed partial class StructureTests
             await CsvInstance.ImportAsync(TestInput.Utf8("PostalCode\nx"), s_postalCode, s_withoutWhitespace, Token);
 
         // Assert
-        Assert.Equal("x",
+        Assert.Equal(
+            "x",
             Assert.Single(report.Items!)
                 .Name);
     }
@@ -356,13 +380,15 @@ public sealed partial class StructureTests
     public async Task HeaderComparison_WithTwoHeadersEqualAfterNormalizing_IsAmbiguous()
     {
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8("PostalCode,Postal Code\nx,y"),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8("PostalCode,Postal Code\nx,y"),
             s_postalCode,
             s_withoutWhitespace,
             Token);
 
         // Assert
-        Assert.Equal(TabularErrorCodes.Schema.AmbiguousColumn,
+        Assert.Equal(
+            TabularErrorCodes.Schema.AmbiguousColumn,
             Assert.Single(report.Errors)
                 .Code);
     }
@@ -371,13 +397,15 @@ public sealed partial class StructureTests
     public async Task MissingRequiredHeader_IsOneMissingColumnAndImportsNothing()
     {
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8("Eintrittsdatum\n2024-04-01\n2024-04-02"),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8("Eintrittsdatum\n2024-04-01\n2024-04-02"),
             s_optionalHire,
             new CsvImportOptions { Binding = ColumnBinding.ByHeaderName },
             Token);
 
         // Assert
-        Assert.Equal(TabularErrorCodes.Schema.MissingColumn,
+        Assert.Equal(
+            TabularErrorCodes.Schema.MissingColumn,
             Assert.Single(report.Errors)
                 .Code);
 
@@ -388,14 +416,16 @@ public sealed partial class StructureTests
     public async Task MissingOptionalHeader_IsAnEmptyValue()
     {
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8("E-Mail\nada@example.org"),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8("E-Mail\nada@example.org"),
             s_optionalHire,
             new CsvImportOptions { Binding = ColumnBinding.ByHeaderName },
             Token);
 
         // Assert
-        Assert.Null(Assert.Single(report.Items!)
-            .DateOfHire);
+        Assert.Null(
+            Assert.Single(report.Items!)
+                .DateOfHire);
     }
 
     [Fact]

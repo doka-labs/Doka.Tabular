@@ -268,13 +268,15 @@ public sealed partial class ExcelFormat
         var workbook = options ?? new ExcelWorkbookImportOptions();
         var defaults = _options.Import ?? new ExcelImportOptions();
         var strategy = workbook.Strategy ?? defaults.Strategy ?? ImportStrategy.Strict;
-        using var scope = _runtime.Scope("import",
+        using var scope = _runtime.Scope(
+            "import",
             "excel",
             strategy == ImportStrategy.Strict
                 ? "strict"
                 : "partial");
 
-        return await new WorkbookImportRun(_runtime,
+        return await new WorkbookImportRun(
+                _runtime,
                 input,
                 definition,
                 workbook,
@@ -321,7 +323,8 @@ public sealed partial class ExcelFormat
         }
 
         return await ExportRunner
-            .RunAsync(target,
+            .RunAsync(
+                target,
                 configuration.Count > 0
                     ? ExportRunner.NothingProduced
                     : (stream, token) => ProduceWorkbookAsync(sheets, errors, stream, token),
@@ -353,8 +356,10 @@ public sealed partial class ExcelFormat
             .GroupBy(sheet => sheet.Name)
             .Where(group => group.Count() > 1))
         {
-            configuration.Add(TabularError.Configuration($"The sheet name {group.Key} is used more than once.",
-                new TabularErrorLocation { SheetName = group.Key }));
+            configuration.Add(
+                TabularError.Configuration(
+                    $"The sheet name {group.Key} is used more than once.",
+                    new TabularErrorLocation { SheetName = group.Key }));
         }
     }
 

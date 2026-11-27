@@ -51,7 +51,8 @@ public sealed partial class ConversionTests
             return false;
         }
 
-        var magnitude = decimal.Parse($"{read.Mantissa}E{read.Exponent}",
+        var magnitude = decimal.Parse(
+            $"{read.Mantissa}E{read.Exponent}",
             NumberStyles.Float,
             CultureInfo.InvariantCulture);
 

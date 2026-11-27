@@ -21,13 +21,15 @@ public sealed partial class StructureTests
 
     private static readonly TabularMap<Located> s_located = TabularMap
         .For<Located>()
-        .Column(x => x.City,
+        .Column(
+            x => x.City,
             index: 0,
             key: ColumnKey.Create("city"),
             configure: c => c
                 .Header("Ort")
                 .HeaderTranslationKey("ort"))
-        .Column(x => x.PostalCode,
+        .Column(
+            x => x.PostalCode,
             index: 1,
             key: ColumnKey.Create("postalCode"),
             configure: c => c
@@ -45,13 +47,15 @@ public sealed partial class StructureTests
     private static readonly TabularMap<Order> s_shiftedOrder = TabularMap
         .For<Order>()
         .Column(x => x.Number, index: 0)
-        .Nested(x => x.Billing,
+        .Nested(
+            x => x.Billing,
             s_address,
             e => e
                 .StartIndex(5)
                 .KeyPrefix(ColumnKey.Create("billing"))
                 .HeaderPrefix("Rechnung "))
-        .Nested(x => x.Shipping,
+        .Nested(
+            x => x.Shipping,
             s_address,
             e => e
                 .StartIndex(12)
@@ -76,11 +80,13 @@ public sealed partial class StructureTests
     private static readonly TabularMap<Holder> s_throwingHolder = TabularMap
         .For<Holder>()
         .Column(x => x.Name, index: 0)
-        .Nested(x => x.Address,
+        .Nested(
+            x => x.Address,
             TabularMap
                 .For<ThrowingAddress>()
                 .Column(x => x.City, index: 0, key: ColumnKey.Create("city"), configure: c => c.ExportOnly())
-                .Column(x => x.PostalCode,
+                .Column(
+                    x => x.PostalCode,
                     index: 1,
                     key: ColumnKey.Create("postalCode"),
                     configure: c => c.ExportOnly())
@@ -93,7 +99,8 @@ public sealed partial class StructureTests
     private static readonly TabularMap<CityOwner> s_cityOwnerMap = TabularMap
         .For<CityOwner>()
         .Column(x => x.Name, index: 0)
-        .Nested(x => x.Address,
+        .Nested(
+            x => x.Address,
             TabularMap
                 .For<OptionalCity>()
                 .Column(x => x.City, index: 0, configure: c => c.NullText("NULL"))
@@ -109,7 +116,8 @@ public sealed partial class StructureTests
             await CsvInstance.ImportAsync(TestInput.Utf8(string.Join(",", s_sixteenFields)), s_shiftedOrder, Token);
 
         // Assert
-        Assert.Equal(new Order("v0", new AddressDto("v5", "v6", "v8"), new AddressDto("v12", "v13", "v15")),
+        Assert.Equal(
+            new Order("v0", new AddressDto("v5", "v6", "v8"), new AddressDto("v12", "v13", "v15")),
             Assert.Single(report.Items!));
     }
 
@@ -117,12 +125,14 @@ public sealed partial class StructureTests
     public async Task StartIndex_SetsTheMinimumWidth()
     {
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8(string.Join(",", s_sixteenFields[..15])),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8(string.Join(",", s_sixteenFields[..15])),
             s_shiftedOrder,
             Token);
 
         // Assert
-        Assert.Equal(15,
+        Assert.Equal(
+            15,
             Assert.Single(report.Errors)
                 .Location.ColumnIndex);
     }
@@ -137,7 +147,8 @@ public sealed partial class StructureTests
         var (_, file) = await Export.ExportAsync(s_dresdenUsers, s_userWithAddress, type, Token);
 
         // Assert
-        Assert.Equal(["Ada", "Dresden", "01067", "", "Hauptstraße"],
+        Assert.Equal(
+            ["Ada", "Dresden", "01067", "", "Hauptstraße"],
             Cells(type, file!)[0]
                 .Select(cell => cell ?? ""));
     }
@@ -164,21 +175,24 @@ public sealed partial class StructureTests
         var report = await CsvInstance.ImportAsync(TestInput.Utf8("Ada,,,,"), s_userWithRequiredAddress, Token);
 
         // Assert
-        Assert.Null(Assert.Single(report.Items!)
-            .Address);
+        Assert.Null(
+            Assert.Single(report.Items!)
+                .Address);
     }
 
     [Fact]
     public async Task OptionalNested_WithOneFilledField_AppliesAllRules()
     {
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8("Ada,,01067,,\nBob,Bonn,53111,,Markt"),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8("Ada,,01067,,\nBob,Bonn,53111,,Markt"),
             s_userWithRequiredAddress,
             new CsvImportOptions { Strategy = ImportStrategy.Partial },
             Token);
 
         // Assert
-        Assert.Equal(["Address.City", "Address.Street"],
+        Assert.Equal(
+            ["Address.City", "Address.Street"],
             report
                 .Errors
                 .Select(error => error.Location.PropertyPath!.Value)
@@ -194,7 +208,8 @@ public sealed partial class StructureTests
         var report = await CsvInstance.ImportAsync(TestInput.Utf8("Ada,,01067,,"), s_userWithAddress, Token);
 
         // Assert
-        Assert.Equal(new AddressDto("", "01067", ""),
+        Assert.Equal(
+            new AddressDto("", "01067", ""),
             Assert.Single(report.Items!)
                 .Address);
     }
@@ -210,7 +225,8 @@ public sealed partial class StructureTests
 
         // Assert
         Assert.Equal(ReportStatus.Succeeded, report.Status);
-        Assert.Equal(["Ada", "", ""],
+        Assert.Equal(
+            ["Ada", "", ""],
             Cells(type, file!)[0]
                 .Select(cell => cell ?? "")
                 .Concat(["", ""])
@@ -224,14 +240,16 @@ public sealed partial class StructureTests
     )
     {
         // Act
-        var (_, file) = await Export.ExportAsync(new[] { new Holder("Ada", null) },
+        var (_, file) = await Export.ExportAsync(
+            new[] { new Holder("Ada", null) },
             s_throwingHolder,
             type,
             new TabularExportOptions { ColumnKeys = [ColumnKey.Create("postalCode"), ColumnKey.Create("Name")] },
             Token);
 
         // Assert
-        Assert.Equal(["", "Ada"],
+        Assert.Equal(
+            ["", "Ada"],
             Cells(type, file!)[0]
                 .Select(cell => cell ?? ""));
     }
@@ -242,9 +260,11 @@ public sealed partial class StructureTests
         // Arrange
         var city = TabularMap
             .For<OptionalCity>()
-            .Column(x => x.City,
+            .Column(
+                x => x.City,
                 index: 0,
-                configure: c => c.Convert<string, string?>(text => text,
+                configure: c => c.Convert<string, string?>(
+                    text => text,
                     text => text ?? "",
                     configure: b => b
                         .Trim()
@@ -258,7 +278,8 @@ public sealed partial class StructureTests
             .Build();
 
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8("Ada,   "),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8("Ada,   "),
             map,
             new CsvImportOptions { TrimFields = false },
             Token);
@@ -278,7 +299,8 @@ public sealed partial class StructureTests
 
         // Assert
         Assert.Equal(ReportStatus.Succeeded, report.Status);
-        Assert.Equal(["", "NULL"],
+        Assert.Equal(
+            ["", "NULL"],
             Cells(type, file!)
                 .Select(row => row.Length > 1
                     ? row[1] ?? ""
@@ -304,13 +326,15 @@ public sealed partial class StructureTests
         Func<long, string, Money> read
     ) => TabularMap
         .For<Payment>()
-        .Column(x => x.Email,
+        .Column(
+            x => x.Email,
             index: 0,
             key: ColumnKey.Create("email"),
             configure: c => c
                 .Header("E-Mail")
                 .Validate(email => email.Contains('@', StringComparison.Ordinal)))
-        .Compose(x => x.Amount,
+        .Compose(
+            x => x.Amount,
             c => c.Field<long>(index: 3, key: ColumnKey.Create("amountMinor"), configure: f => f.Header("Betrag")),
             c => c.Field<string>(index: 4, key: ColumnKey.Create("currency"), configure: f => f.Header("Währung")),
             read: read,

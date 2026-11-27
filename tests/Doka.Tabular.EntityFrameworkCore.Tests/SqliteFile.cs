@@ -15,11 +15,12 @@ internal sealed class SqliteFile : IAsyncDisposable
     )
     {
         _path = path;
-        Connection = new SqliteConnection(new SqliteConnectionStringBuilder
-        {
-            DataSource = path,
-            Pooling = false,
-        }.ConnectionString);
+        Connection = new SqliteConnection(
+            new SqliteConnectionStringBuilder
+            {
+                DataSource = path,
+                Pooling = false,
+            }.ConnectionString);
     }
 
     public SqliteConnection Connection { get; }

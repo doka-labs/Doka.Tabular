@@ -15,7 +15,8 @@ public sealed partial class ConversionTests
     public async Task PaddedBoolText_ReadsBackUnderTrim()
     {
         // Act
-        var report = await ReadBackAsync(true,
+        var report = await ReadBackAsync(
+            true,
             Map<bool>(c => c
                 .TrueText(" yes ")
                 .Trim()));
@@ -28,7 +29,8 @@ public sealed partial class ConversionTests
     public async Task PaddedBoolText_IsReadUnderTrim()
     {
         // Act
-        var report = await ReadAsync(TabularType.Csv,
+        var report = await ReadAsync(
+            TabularType.Csv,
             " yes ",
             Map<bool>(c => c
                 .TrueText(" yes ")

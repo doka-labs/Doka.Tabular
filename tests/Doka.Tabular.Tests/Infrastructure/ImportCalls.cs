@@ -39,7 +39,8 @@ internal sealed record ImportOutcome(
     {
         var result = await report;
 
-        return new ImportOutcome(result.Status,
+        return new ImportOutcome(
+            result.Status,
             result.RowsImported,
             [.. (result.Items ?? []).Select(record => record.Name)],
             Describe(result.Errors));
@@ -51,7 +52,8 @@ internal sealed record ImportOutcome(
     {
         var result = await report;
 
-        return new ImportOutcome(result.Status,
+        return new ImportOutcome(
+            result.Status,
             result.RowsImported,
             [
                 .. (result.Items ?? []).Select(row => row.Get(Residents.Role)
@@ -67,7 +69,8 @@ internal sealed record ImportOutcome(
     {
         var result = await report;
 
-        return new ImportOutcome(result.Status,
+        return new ImportOutcome(
+            result.Status,
             result.RowsImported,
             [
                 .. (result.Get(sheet)

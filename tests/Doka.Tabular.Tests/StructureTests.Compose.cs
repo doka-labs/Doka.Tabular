@@ -10,8 +10,10 @@ public sealed partial class StructureTests
     [
         .. Enumerable
             .Range(1, 7)
-            .Select(number => new Payment($"u{number}",
-                new Money(1,
+            .Select(number => new Payment(
+                $"u{number}",
+                new Money(
+                    1,
                     number == 7
                         ? "XYZ"
                         : "EUR"))),
@@ -19,7 +21,8 @@ public sealed partial class StructureTests
 
     private static readonly TabularMap<Taxed> s_taxed = TabularMap
         .For<Taxed>()
-        .Compose(x => x.Total,
+        .Compose(
+            x => x.Total,
             c => c.Field<decimal>(index: 3, key: ColumnKey.Create("taxAmount")),
             c => c.Field<decimal>(index: 1, key: ColumnKey.Create("netAmount")),
             read: (tax, net) => new Money(net + tax, "EUR"),
@@ -33,13 +36,15 @@ public sealed partial class StructureTests
     )
     {
         // Act
-        var report = await Import.ImportAsync(Create(type, ["a@example.org", "", "", 1234, "EUR"]),
+        var report = await Import.ImportAsync(
+            Create(type, ["a@example.org", "", "", 1234, "EUR"]),
             type,
             CentsPayment(),
             Token);
 
         // Assert
-        Assert.Equal(new Money(12.34m, "EUR"),
+        Assert.Equal(
+            new Money(12.34m, "EUR"),
             Assert.Single(report.Items!)
                 .Amount);
     }
@@ -64,7 +69,8 @@ public sealed partial class StructureTests
     )
     {
         // Act
-        var (_, file) = await Export.ExportAsync(s_euroPayment,
+        var (_, file) = await Export.ExportAsync(
+            s_euroPayment,
             CentsPayment(),
             type,
             new TabularExportOptions { ColumnKeys = [ColumnKey.Create("currency")] },
@@ -92,7 +98,8 @@ public sealed partial class StructureTests
             .Build();
 
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8("no-mail,,,abc,EUR\nb@example.org,,,100,EUR"),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8("no-mail,,,abc,EUR\nb@example.org,,,100,EUR"),
             map,
             new CsvImportOptions { Strategy = ImportStrategy.Partial },
             Token);
@@ -113,17 +120,19 @@ public sealed partial class StructureTests
             .Expect<UnsupportedCurrencyException>(TabularErrorCode.Create("currency.unsupported"))
             .Build();
 
-        var lines = string.Join("\n",
-        [
-            "E-Mail,Währung,x,Betrag", .. Enumerable
-                .Range(1, 6)
-                .Select(number => number == 6
-                    ? "f@example.org,XYZ,,100"
-                    : $"u{number}@example.org,EUR,,100"),
-        ]);
+        var lines = string.Join(
+            "\n",
+            [
+                "E-Mail,Währung,x,Betrag", .. Enumerable
+                    .Range(1, 6)
+                    .Select(number => number == 6
+                        ? "f@example.org,XYZ,,100"
+                        : $"u{number}@example.org,EUR,,100"),
+            ]);
 
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8(lines),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8(lines),
             map,
             new CsvImportOptions
             {
@@ -134,7 +143,8 @@ public sealed partial class StructureTests
 
         // Assert
         var error = Assert.Single(report.Errors);
-        Assert.Equal(("currency.unsupported", 7L, "Amount"),
+        Assert.Equal(
+            ("currency.unsupported", 7L, "Amount"),
             (error.Code.Value, error.Location.RowNumber!.Value, error.Location.PropertyPath!.Value));
 
         Assert.Null(error.Location.ColumnIndex);
@@ -166,7 +176,8 @@ public sealed partial class StructureTests
                 .Compose(x => x.Amount, minor, minor, missing, (a, _, _) => new Money(a, ""), _ => (0L, 0L, 0L)),
             _ => TabularMap
                 .For<Payment>()
-                .Compose(x => x.Amount,
+                .Compose(
+                    x => x.Amount,
                     minor,
                     minor,
                     minor,
@@ -176,7 +187,8 @@ public sealed partial class StructureTests
         });
 
         // Assert
-        Assert.Equal(part,
+        Assert.Equal(
+            part,
             Assert.IsType<ArgumentNullException>(exception)
                 .ParamName);
     }
@@ -196,7 +208,8 @@ public sealed partial class StructureTests
             .Compose(x => x.Amount, minor, empty, (a, _) => new Money(a, ""), _ => (0L, 0L)));
 
         // Assert
-        Assert.Equal("part2",
+        Assert.Equal(
+            "part2",
             Assert.IsType<ArgumentException>(exception)
                 .ParamName);
     }
@@ -208,7 +221,8 @@ public sealed partial class StructureTests
         var map = TabularMap
             .For<Payment>()
             .Column(x => x.Email, index: 0)
-            .Compose(x => x.Amount,
+            .Compose(
+                x => x.Amount,
                 c => c.Field<long>(index: 1, key: ColumnKey.Create("amountMinor")),
                 c => c.Field<string>(index: 2, key: ColumnKey.Create("currency")),
                 read: (minor, currency) => new Money(minor, currency),
@@ -221,7 +235,8 @@ public sealed partial class StructureTests
         var report = await CsvInstance.ExportAsync(s_sixEuroThenXyz, map, new MemoryStream(), Token);
 
         // Assert
-        Assert.Equal((TabularErrorCodes.Callback.Failed, 7L, "Amount"),
+        Assert.Equal(
+            (TabularErrorCodes.Callback.Failed, 7L, "Amount"),
             (report.FatalError!.Code, report.FatalError.Location.RowNumber!.Value,
                 report.FatalError.Location.PropertyPath!.Value));
     }
@@ -233,14 +248,16 @@ public sealed partial class StructureTests
         var validated = TabularMap
             .For<Payment>()
             .Column(x => x.Email, index: 0)
-            .Compose(x => x.Amount,
+            .Compose(
+                x => x.Amount,
                 c => c.Field<long>(index: 1, key: ColumnKey.Create("amountMinor")),
                 c => c.Field<string>(index: 2, key: ColumnKey.Create("currency")),
                 read: (minor, currency) => new Money(minor, currency),
                 write: money => money.Currency == "XYZ"
                     ? throw new InvalidOperationException()
                     : ((long)money.Amount, money.Currency))
-            .Validate(x => x.Email,
+            .Validate(
+                x => x.Email,
                 x => x.Amount,
                 (_, amount) => amount.Currency != "XYZ",
                 code: TabularErrorCode.Create("amount.currency"),
@@ -262,13 +279,15 @@ public sealed partial class StructureTests
             .Build();
 
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8("a@example.org,,,1,EUR"),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8("a@example.org,,,1,EUR"),
             map,
             new CsvImportOptions { Strategy = ImportStrategy.Partial },
             Token);
 
         // Assert
-        Assert.Equal((TabularErrorCodes.Callback.InvalidResult, TabularErrorKind.Technical, "Amount"),
+        Assert.Equal(
+            (TabularErrorCodes.Callback.InvalidResult, TabularErrorKind.Technical, "Amount"),
             (report.FatalError?.Code, report.FatalError?.Kind, report.FatalError?.Location.PropertyPath?.Value));
 
         Assert.Empty(report.Items!);
@@ -285,8 +304,10 @@ public sealed partial class StructureTests
         var map = TabularMap
             .For<Payment>()
             .Column(x => x.Email, index: 0)
-            .Compose(x => x.Amount,
-                c => c.Field<long>(index: 1,
+            .Compose(
+                x => x.Amount,
+                c => c.Field<long>(
+                    index: 1,
                     key: ColumnKey.Create("amountMinor"),
                     configure: f => f.Validate(minor => minor > 0, alsoOnExport: true)),
                 c => c.Field<string>(index: 2, key: ColumnKey.Create("currency")),
@@ -297,7 +318,8 @@ public sealed partial class StructureTests
             .Build();
 
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Payment("a\nb", new Money(-1, "EUR")) },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Payment("a\nb", new Money(-1, "EUR")) },
             map,
             new MemoryStream(),
             Token);
@@ -313,7 +335,8 @@ public sealed partial class StructureTests
         var optional = TabularMap
             .For<OptionalPayment>()
             .Column(x => x.Email, index: 0)
-            .Compose(x => x.Amount,
+            .Compose(
+                x => x.Amount,
                 c => c.Field<long?>(index: 1, key: ColumnKey.Create("amountMinor")),
                 c => c.Field<string>(index: 2, key: ColumnKey.Create("currency")),
                 read: (minor, currency) => minor is null
@@ -328,8 +351,9 @@ public sealed partial class StructureTests
         var report = await CsvInstance.ImportAsync(TestInput.Utf8("a@example.org,,"), optional, Token);
 
         // Assert
-        Assert.Null(Assert.Single(report.Items!)
-            .Amount);
+        Assert.Null(
+            Assert.Single(report.Items!)
+                .Amount);
     }
 
     [Fact]
@@ -339,7 +363,8 @@ public sealed partial class StructureTests
         var report = await CsvInstance.ImportAsync(TestInput.Utf8("x,100,x,19"), s_taxed, Token);
 
         // Assert
-        Assert.Equal(119m,
+        Assert.Equal(
+            119m,
             Assert.Single(report.Items!)
                 .Total.Amount);
     }

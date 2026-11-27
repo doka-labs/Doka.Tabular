@@ -16,7 +16,7 @@ Only public read access is needed; no account or token beyond an anonymous
 The commands read the version from `VERSION`.
 
 ```sh
-VERSION=1.0.0-rc.1
+VERSION=1.0.0
 git clone https://github.com/doka-labs/Doka.Tabular.git
 cd Doka.Tabular
 git fetch --tags origin

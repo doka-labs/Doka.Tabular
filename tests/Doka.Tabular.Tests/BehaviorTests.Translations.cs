@@ -22,7 +22,8 @@ public sealed partial class BehaviorTests
     )
     {
         // Act
-        var (_, file) = await Export.ExportAsync(new[] { new Place("Berlin", Status.Active) },
+        var (_, file) = await Export.ExportAsync(
+            new[] { new Place("Berlin", Status.Active) },
             s_places,
             type,
             new TabularExportOptions
@@ -47,7 +48,8 @@ public sealed partial class BehaviorTests
 
         // Act
         // WHY: The round trip of the own output is the checked contract, so export and reimport form one action.
-        var (_, file) = await Export.ExportAsync(rows,
+        var (_, file) = await Export.ExportAsync(
+            rows,
             s_places,
             type,
             new TabularExportOptions
@@ -57,7 +59,8 @@ public sealed partial class BehaviorTests
             },
             Token);
 
-        var report = await Import.ImportAsync(file!,
+        var report = await Import.ImportAsync(
+            file!,
             type,
             s_places,
             new TabularImportOptions
@@ -81,7 +84,8 @@ public sealed partial class BehaviorTests
         var target = new MemoryStream();
 
         // Act
-        var report = await Export.ExportAsync(new[] { new Place("Berlin", Status.Active) },
+        var report = await Export.ExportAsync(
+            new[] { new Place("Berlin", Status.Active) },
             s_places,
             target,
             type,
@@ -106,7 +110,8 @@ public sealed partial class BehaviorTests
     )
     {
         // Act
-        var report = await Export.ExportAsync(new[] { new Place("Berlin", Status.Active) },
+        var report = await Export.ExportAsync(
+            new[] { new Place("Berlin", Status.Active) },
             s_places,
             type,
             new TabularExportOptions
@@ -128,7 +133,8 @@ public sealed partial class BehaviorTests
     )
     {
         // Act
-        var report = await Export.ExportAsync(new[] { new Place("Berlin", Status.Active) },
+        var report = await Export.ExportAsync(
+            new[] { new Place("Berlin", Status.Active) },
             s_places,
             type,
             new TabularExportOptions { WriteHeader = true },
@@ -148,7 +154,8 @@ public sealed partial class BehaviorTests
     public async Task MissingValueTranslation_OfAValueThatDoesNotOccur_DoesNotMatter()
     {
         // Act
-        var report = await CsvInstance.ExportAsync(s_activeThenSuspended.Take(3),
+        var report = await CsvInstance.ExportAsync(
+            s_activeThenSuspended.Take(3),
             s_places,
             new MemoryStream(),
             new CsvExportOptions { Translations = WithoutKey("status.Suspended") },
@@ -162,14 +169,16 @@ public sealed partial class BehaviorTests
     public async Task MissingValueTranslation_OfAnOccurringValue_FailsAtItsRow()
     {
         // Act
-        var report = await CsvInstance.ExportAsync(s_activeThenSuspended,
+        var report = await CsvInstance.ExportAsync(
+            s_activeThenSuspended,
             s_places,
             new MemoryStream(),
             new CsvExportOptions { Translations = WithoutKey("status.Suspended") },
             Token);
 
         // Assert
-        Assert.Equal((TabularErrorCodes.Translation.Missing, 4L),
+        Assert.Equal(
+            (TabularErrorCodes.Translation.Missing, 4L),
             (report.FatalError!.Code, report.FatalError.Location.RowNumber!.Value));
     }
 
@@ -177,7 +186,8 @@ public sealed partial class BehaviorTests
     public async Task MissingValueTranslation_FallsBackToTheFixedTextWhenAllowed()
     {
         // Act
-        var report = await CsvInstance.ExportAsync(s_activeThenSuspended,
+        var report = await CsvInstance.ExportAsync(
+            s_activeThenSuspended,
             s_places,
             new CsvExportOptions
             {
@@ -194,7 +204,8 @@ public sealed partial class BehaviorTests
     public async Task MissingValueTranslation_OfAnUnselectedField_DoesNotMatter()
     {
         // Act
-        var report = await CsvInstance.ExportAsync(s_activeThenSuspended,
+        var report = await CsvInstance.ExportAsync(
+            s_activeThenSuspended,
             s_places,
             new MemoryStream(),
             new CsvExportOptions
@@ -212,7 +223,8 @@ public sealed partial class BehaviorTests
     public async Task TranslationCollision_IsAConfigurationErrorOfTheExport()
     {
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Place("X", Status.Active) },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Place("X", Status.Active) },
             s_places,
             new MemoryStream(),
             new CsvExportOptions { Translations = s_collidingGerman },
@@ -226,13 +238,15 @@ public sealed partial class BehaviorTests
     public async Task TranslationCollision_IsAConfigurationErrorOfTheImport()
     {
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8("X,Aktiv"),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8("X,Aktiv"),
             s_places,
             new CsvImportOptions { Translations = s_collidingGerman },
             Token);
 
         // Assert
-        Assert.Equal(TabularErrorCodes.Configuration.Invalid,
+        Assert.Equal(
+            TabularErrorCodes.Configuration.Invalid,
             Assert.Single(report.Errors)
                 .Code);
     }
@@ -250,7 +264,8 @@ public sealed partial class BehaviorTests
         };
 
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8("X,Aktiv\nX,Active\nX,active"),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8("X,Aktiv\nX,Active\nX,active"),
             s_places,
             new CsvImportOptions { Translations = valid },
             Token);

@@ -29,7 +29,28 @@ public static class TabularDatabase
     {
         ArgumentNullException.ThrowIfNull(factory);
 
-        return new TabularDatabase<TContext>(null, factory);
+        return new TabularDatabase<TContext>(
+            null,
+            async token => await factory
+                .CreateDbContextAsync(token)
+                .ConfigureAwait(false));
+    }
+
+    /// <summary>Describes a database through a function; every call creates its own context and disposes it.</summary>
+    /// <typeparam name="TContext">The context type.</typeparam>
+    /// <param name="factory">Creates a fresh context per call; Tabular disposes it.</param>
+    /// <returns>The description.</returns>
+    public static TabularDatabase<TContext> ForFactory<TContext>(
+        Func<CancellationToken, Task<TContext>> factory
+    )
+        where TContext : DbContext
+    {
+        ArgumentNullException.ThrowIfNull(factory);
+
+        return new TabularDatabase<TContext>(
+            null,
+            async token => await factory(token)
+                .ConfigureAwait(false));
     }
 }
 
@@ -43,12 +64,12 @@ public sealed class TabularDatabase<TContext> : IContextSource
     where TContext : DbContext
 {
     private readonly TContext? _context;
-    private readonly IDbContextFactory<TContext>? _factory;
+    private readonly Func<CancellationToken, Task<TContext>>? _factory;
     private int _reserved;
 
     internal TabularDatabase(
         TContext? context,
-        IDbContextFactory<TContext>? factory
+        Func<CancellationToken, Task<TContext>>? factory
     )
     {
         _context = context;
@@ -66,8 +87,7 @@ public sealed class TabularDatabase<TContext> : IContextSource
             return (_context, false);
         }
 
-        return (await _factory!
-            .CreateDbContextAsync(cancellationToken)
+        return (await _factory!(cancellationToken)
             .ConfigureAwait(false), true);
     }
 
@@ -221,7 +241,8 @@ public sealed class TabularDatabase<TContext> : IContextSource
     {
         ArgumentNullException.ThrowIfNull(set);
         ArgumentNullException.ThrowIfNull(match);
-        var definition = new TargetDefinition<TContext, TDto, TEntity>(this,
+        var definition = new TargetDefinition<TContext, TDto, TEntity>(
+            this,
             TargetKind.Lookup,
             set,
             match,
@@ -229,7 +250,8 @@ public sealed class TabularDatabase<TContext> : IContextSource
             null,
             new TabularWriteErrors());
 
-        return new TabularLookupTarget<TDto, TEntity>(new TargetView(definition, new TabularWriteOptions(), null),
+        return new TabularLookupTarget<TDto, TEntity>(
+            new TargetView(definition, new TabularWriteOptions(), null),
             match.SourceKey);
     }
 
@@ -246,7 +268,8 @@ public sealed class TabularDatabase<TContext> : IContextSource
         ArgumentNullException.ThrowIfNull(set);
         var assignment = new TabularWriteErrors();
         errors?.Invoke(assignment);
-        var definition = new TargetDefinition<TContext, TDto, TEntity>(this,
+        var definition = new TargetDefinition<TContext, TDto, TEntity>(
+            this,
             kind,
             set,
             match,
@@ -254,7 +277,8 @@ public sealed class TabularDatabase<TContext> : IContextSource
             update,
             assignment);
 
-        return new TabularWriteTarget<TDto, TEntity>(new TargetView(definition, new TabularWriteOptions(), null),
+        return new TabularWriteTarget<TDto, TEntity>(
+            new TargetView(definition, new TabularWriteOptions(), null),
             match?.SourceKey);
     }
 }

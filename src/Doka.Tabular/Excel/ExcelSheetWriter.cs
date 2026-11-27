@@ -61,7 +61,8 @@ internal sealed partial class ExcelSheetWriter : ITableWriter
 
             if (column is { IsGap: false, Header: { } header })
             {
-                _widths[position] = Math.Max(_widths[position],
+                _widths[position] = Math.Max(
+                    _widths[position],
                     Math.Min(header.Length + 2, plan.Layout.MaximumAutoWidth));
             }
 
@@ -172,7 +173,8 @@ internal sealed partial class ExcelSheetWriter : ITableWriter
                 .ConfigureAwait(false);
         }
 
-        _workbook.SheetCompleted(_plan,
+        _workbook.SheetCompleted(
+            _plan,
             _index,
             filter && !table
                 ? range
@@ -208,28 +210,32 @@ internal sealed partial class ExcelSheetWriter : ITableWriter
     {
         if (row > ExcelWorkbookWriter.MaxRows)
         {
-            throw new TabularRowException(TabularError.Create(TabularErrorCodes.Schema.LimitExceeded,
-                TabularErrorKind.Data,
-                "The sheet exceeds 1,048,576 rows.",
-                new TabularErrorLocation
-                {
-                    RowNumber = row,
-                    RecordNumber = recordNumber,
-                    SheetName = _plan.Name,
-                }));
+            throw new TabularRowException(
+                TabularError.Create(
+                    TabularErrorCodes.Schema.LimitExceeded,
+                    TabularErrorKind.Data,
+                    "The sheet exceeds 1,048,576 rows.",
+                    new TabularErrorLocation
+                    {
+                        RowNumber = row,
+                        RecordNumber = recordNumber,
+                        SheetName = _plan.Name,
+                    }));
         }
 
         if (AllEmpty(cells))
         {
-            throw new TabularRowException(TabularError.Create(TabularErrorCodes.Conversion.MissingRepresentation,
-                TabularErrorKind.Data,
-                "Every field of the record is empty; Excel stores no cell, and the import skips the row.",
-                new TabularErrorLocation
-                {
-                    RowNumber = row,
-                    RecordNumber = recordNumber,
-                    SheetName = _plan.Name,
-                }));
+            throw new TabularRowException(
+                TabularError.Create(
+                    TabularErrorCodes.Conversion.MissingRepresentation,
+                    TabularErrorKind.Data,
+                    "Every field of the record is empty; Excel stores no cell, and the import skips the row.",
+                    new TabularErrorLocation
+                    {
+                        RowNumber = row,
+                        RecordNumber = recordNumber,
+                        SheetName = _plan.Name,
+                    }));
         }
 
         for (var position = 0; position < cells.Count; position++)
@@ -238,16 +244,18 @@ internal sealed partial class ExcelSheetWriter : ITableWriter
                 && (text.Length > ExcelWorkbookWriter.MaxCellCharacters
                     || text.Span.Count('\n') > ExcelWorkbookWriter.MaxLineBreaks))
             {
-                throw new TabularRowException(TabularError.Create(TabularErrorCodes.Schema.LimitExceeded,
-                    TabularErrorKind.Data,
-                    "A cell text exceeds 32,767 characters or 253 line breaks.",
-                    new TabularErrorLocation
-                    {
-                        RowNumber = row,
-                        RecordNumber = recordNumber,
-                        SheetName = _plan.Name,
-                        ColumnKey = _plan.Columns[position].Field?.Key,
-                    }));
+                throw new TabularRowException(
+                    TabularError.Create(
+                        TabularErrorCodes.Schema.LimitExceeded,
+                        TabularErrorKind.Data,
+                        "A cell text exceeds 32,767 characters or 253 line breaks.",
+                        new TabularErrorLocation
+                        {
+                            RowNumber = row,
+                            RecordNumber = recordNumber,
+                            SheetName = _plan.Name,
+                            ColumnKey = _plan.Columns[position].Field?.Key,
+                        }));
             }
         }
     }
@@ -299,7 +307,8 @@ internal sealed partial class ExcelSheetWriter : ITableWriter
             if (!_plan.Columns[position].IsGap
                 && row[position].Kind == OutputKind.Text)
             {
-                _widths[position] = Math.Max(_widths[position],
+                _widths[position] = Math.Max(
+                    _widths[position],
                     Math.Min(row[position].Text.Length + 2, _plan.Layout.MaximumAutoWidth));
             }
         }
@@ -342,7 +351,8 @@ internal sealed partial class ExcelSheetWriter : ITableWriter
             xml.WriteStartElement("tableParts", MainNamespace);
             xml.WriteAttributeString("count", "1");
             xml.WriteStartElement("tablePart", MainNamespace);
-            xml.WriteAttributeString("id",
+            xml.WriteAttributeString(
+                "id",
                 "http://schemas.openxmlformats.org/officeDocument/2006/relationships",
                 "rId1");
 
@@ -389,7 +399,8 @@ internal sealed partial class ExcelSheetWriter : ITableWriter
     {
         var number = id.ToString(CultureInfo.InvariantCulture);
         await _workbook
-            .WriteEntryAsync($"xl/worksheets/_rels/sheet{_index}.xml.rels",
+            .WriteEntryAsync(
+                $"xl/worksheets/_rels/sheet{_index}.xml.rels",
                 ExcelWorkbookWriter.Raw(
                     "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\">"
                     + $"<Relationship Id=\"rId1\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/table\" Target=\"../tables/table{number}.xml\"/>"
@@ -398,7 +409,8 @@ internal sealed partial class ExcelSheetWriter : ITableWriter
             .ConfigureAwait(false);
 
         await _workbook
-            .WriteEntryAsync($"xl/tables/table{number}.xml",
+            .WriteEntryAsync(
+                $"xl/tables/table{number}.xml",
                 TableXml(id, range, filter),
                 cancellationToken)
             .ConfigureAwait(false);
@@ -455,7 +467,8 @@ internal sealed partial class ExcelSheetWriter : ITableWriter
         _xml = xml;
         xml.WriteStartDocument(standalone: true);
         xml.WriteStartElement("worksheet", MainNamespace);
-        xml.WriteAttributeString("xmlns",
+        xml.WriteAttributeString(
+            "xmlns",
             "r",
             null,
             "http://schemas.openxmlformats.org/officeDocument/2006/relationships");

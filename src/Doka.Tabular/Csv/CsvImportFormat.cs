@@ -46,7 +46,8 @@ internal sealed class CsvImportFormat : IImportFormat
         if (ContentSignatures.IsZip(head.Span)
             || ContentSignatures.IsCfb(head.Span))
         {
-            return (null, TabularError.Create(TabularErrorCodes.Schema.FormatMismatch,
+            return (null, TabularError.Create(
+                TabularErrorCodes.Schema.FormatMismatch,
                 TabularErrorKind.Data,
                 ContentSignatures.IsZip(head.Span)
                     ? "CSV was specified, but the content is a ZIP container (for example XLSX)."

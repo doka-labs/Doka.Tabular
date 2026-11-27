@@ -12,7 +12,8 @@ public sealed partial class TabularJournal
     public Task<TabularJournalResult> DeleteExportLogsAsync(
         DateTimeOffset completedBefore,
         CancellationToken cancellationToken
-    ) => RunAsync("export",
+    ) => RunAsync(
+        "export",
         async context =>
         {
             var deleted = await context
@@ -70,7 +71,8 @@ public sealed partial class TabularJournal
         ArgumentNullException.ThrowIfNull(store);
         ArgumentNullException.ThrowIfNull(options);
 
-        return RunAsync("export",
+        return RunAsync(
+            "export",
             async context =>
             {
                 var log = await context
@@ -98,7 +100,8 @@ public sealed partial class TabularJournal
     {
         ArgumentNullException.ThrowIfNull(store);
 
-        return RunAsync("export",
+        return RunAsync(
+            "export",
             async context =>
             {
                 var now = Options.TimeProvider.GetUtcNow();
@@ -136,7 +139,8 @@ public sealed partial class TabularJournal
                     }
                 }
 
-                return new TabularJournalResult(first is null
+                return new TabularJournalResult(
+                    first is null
                         ? JournalCallStatus.Succeeded
                         : JournalCallStatus.Failed,
                     first,
@@ -168,8 +172,10 @@ public sealed partial class TabularJournal
             context.Entry(log)
                 .State = EntityState.Detached;
 
-            return new TabularJournalResult(JournalCallStatus.Failed,
-                TabularError.Create(exception is DbUpdateConcurrencyException
+            return new TabularJournalResult(
+                JournalCallStatus.Failed,
+                TabularError.Create(
+                    exception is DbUpdateConcurrencyException
                         ? TabularErrorCodes.Persistence.Conflict
                         : TabularErrorCodes.Persistence.WriteFailed,
                     TabularErrorKind.Technical,
@@ -194,8 +200,10 @@ public sealed partial class TabularJournal
         if (!allowUnfinished
             && log.Status is TabularExportLogStatus.Generating or TabularExportLogStatus.Storing)
         {
-            return new TabularJournalResult(JournalCallStatus.Conflict,
-                TabularError.Create(TabularErrorCodes.Persistence.Conflict,
+            return new TabularJournalResult(
+                JournalCallStatus.Conflict,
+                TabularError.Create(
+                    TabularErrorCodes.Persistence.Conflict,
                     TabularErrorKind.Technical,
                     "The export is still running; delete it after it ended."));
         }
@@ -218,8 +226,10 @@ public sealed partial class TabularJournal
         }
         catch (Exception exception) when (exception is not OutOfMemoryException)
         {
-            return new TabularJournalResult(JournalCallStatus.Failed,
-                TabularError.Create(TabularErrorCodes.Io.Failed,
+            return new TabularJournalResult(
+                JournalCallStatus.Failed,
+                TabularError.Create(
+                    TabularErrorCodes.Io.Failed,
                     TabularErrorKind.Technical,
                     "The storage adapter failed to delete the file; the export stays unavailable."));
         }

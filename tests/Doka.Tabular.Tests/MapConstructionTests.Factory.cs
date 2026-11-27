@@ -17,7 +17,8 @@ public sealed partial class MapConstructionTests
             .Build());
 
         // Assert
-        Assert.DoesNotContain("Not ready.",
+        Assert.DoesNotContain(
+            "Not ready.",
             Assert.Single(exception.Errors)
                 .Message,
             StringComparison.Ordinal);

@@ -21,7 +21,8 @@ internal static class MapStructureValidator
             ValidateField(field, errors);
         }
 
-        HeaderText.AddIndistinct(fields
+        HeaderText.AddIndistinct(
+            fields
                 .Where(field => field.IsExported)
                 .Select(field => (field, HeaderText.Fixed(field))),
             errors);
@@ -32,14 +33,15 @@ internal static class MapStructureValidator
             .GroupBy(field => field.Key)
             .Where(group => group.Count() > 1))
         {
-            errors.Add(TabularError.Configuration(
-                $"The key {group.Key} is used by {string.Join(", ", group.Select(field => field.Path.Value))}; keys must be unique across the map.",
-                new TabularErrorLocation
-                {
-                    ColumnKey = group.Key,
-                    PropertyPath = group.First()
-                        .Path,
-                }));
+            errors.Add(
+                TabularError.Configuration(
+                    $"The key {group.Key} is used by {string.Join(", ", group.Select(field => field.Path.Value))}; keys must be unique across the map.",
+                    new TabularErrorLocation
+                    {
+                        ColumnKey = group.Key,
+                        PropertyPath = group.First()
+                            .Path,
+                    }));
         }
 
         return errors;
@@ -58,9 +60,10 @@ internal static class MapStructureValidator
             .GroupBy(member => member.Name)
             .Where(group => group.Count() > 1))
         {
-            errors.Add(TabularError.Configuration(
-                $"The property {group.Key} is mapped more than once.",
-                new TabularErrorLocation { PropertyPath = Combine(path, group.Key) }));
+            errors.Add(
+                TabularError.Configuration(
+                    $"The property {group.Key} is mapped more than once.",
+                    new TabularErrorLocation { PropertyPath = Combine(path, group.Key) }));
         }
 
         // WHY: Indexed access reads the list without an enumerator through the interface.
@@ -77,15 +80,18 @@ internal static class MapStructureValidator
             if (member is ColumnMember or ComposeMember
                 && member.Kind.Type != member.Property.PropertyType)
             {
-                errors.Add(TabularError.Configuration(
-                    $"The field {member.Name} has the type {member.Property.PropertyType.Name}, the column maps {member.Kind.Type.Name}; use Convert or a factory.",
-                    new TabularErrorLocation { PropertyPath = memberPath }));
+                errors.Add(
+                    TabularError.Configuration(
+                        $"The field {member.Name} has the type {member.Property.PropertyType.Name}, the column maps {member.Kind.Type.Name}; use Convert or a factory.",
+                        new TabularErrorLocation { PropertyPath = memberPath }));
             }
 
             if (member is ComposeMember { Parts.Count: < 2 or > 4 })
             {
-                errors.Add(TabularError.Configuration("A composed value has 2 to 4 parts.",
-                    new TabularErrorLocation { PropertyPath = memberPath }));
+                errors.Add(
+                    TabularError.Configuration(
+                        "A composed value has 2 to 4 parts.",
+                        new TabularErrorLocation { PropertyPath = memberPath }));
             }
 
             if (member is NestedMember nested)
@@ -118,9 +124,10 @@ internal static class MapStructureValidator
         {
             if (!known.Contains(target))
             {
-                errors.Add(TabularError.Configuration(
-                    $"The inclusion refers to {target}, which is not a field of the included map.",
-                    new TabularErrorLocation { PropertyPath = path }));
+                errors.Add(
+                    TabularError.Configuration(
+                        $"The inclusion refers to {target}, which is not a field of the included map.",
+                        new TabularErrorLocation { PropertyPath = path }));
             }
         }
     }

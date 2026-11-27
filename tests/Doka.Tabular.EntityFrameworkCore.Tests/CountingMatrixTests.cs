@@ -73,10 +73,11 @@ public sealed class CountingMatrixTests
         }
 
         var faults = new TransactionFaults(failure);
-        await using var context = new TabularTestContext(new DbContextOptionsBuilder<TabularTestContext>()
-            .UseSqlite(connection)
-            .AddInterceptors(faults)
-            .Options);
+        await using var context = new TabularTestContext(
+            new DbContextOptionsBuilder<TabularTestContext>()
+                .UseSqlite(connection)
+                .AddInterceptors(faults)
+                .Options);
 
         var transaction = joined
             ? await context.Database.BeginTransactionAsync(Token)
@@ -85,7 +86,8 @@ public sealed class CountingMatrixTests
         using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(Token);
         var target = TabularDatabase
             .ForContext(context)
-            .PrepareUpsert<UserDto, User>(set: users => users.Users,
+            .PrepareUpsert<UserDto, User>(
+                set: users => users.Users,
                 match: TestMaps.UserMatch,
                 create: dto =>
                 {
@@ -110,20 +112,22 @@ public sealed class CountingMatrixTests
                 },
                 update: (_, _) => { },
                 errors: errors => errors.Expect<InvalidUserException>(TestMaps.UserInvalid))
-            .WithOptions(joined
-                ? new TabularWriteOptions { JoinExistingTransaction = true }
-                : new TabularWriteOptions { CommitGroupSize = groupSize });
+            .WithOptions(
+                joined
+                    ? new TabularWriteOptions { JoinExistingTransaction = true }
+                    : new TabularWriteOptions { CommitGroupSize = groupSize });
 
         // Act
         // WHY: A joined import ends with the commit of the application, so the import and that commit form one action.
         var report = workbook
             ? await ImportWorkbookAsync(target, strategy, cancellation.Token)
-            : Counts.Of(await new CsvFormat(new CsvFormatOptions()).ImportAsync(
-                TestMaps.Csv([.. TestMaps.Rows(Rows)]),
-                TestMaps.Users,
-                target,
-                new CsvImportOptions { Strategy = strategy },
-                cancellation.Token));
+            : Counts.Of(
+                await new CsvFormat(new CsvFormatOptions()).ImportAsync(
+                    TestMaps.Csv([.. TestMaps.Rows(Rows)]),
+                    TestMaps.Users,
+                    target,
+                    new CsvImportOptions { Strategy = strategy },
+                    cancellation.Token));
 
         faults.Armed = false;
         if (transaction is not null)
@@ -157,7 +161,8 @@ public sealed class CountingMatrixTests
 
         Assert.True(!mustInject || faults.Injected > 0, label + " injected=0");
         Assert.True(stored >= certain && stored <= certain + report.RowsUncertain, label);
-        Assert.True(report.RowsImported
+        Assert.True(
+            report.RowsImported
             + report.RowsPendingCommit
             + report.RowsUncertain
             + report.RowsRejected
@@ -165,12 +170,14 @@ public sealed class CountingMatrixTests
             <= report.RowsRead,
             label);
 
-        Assert.True(report.RowsUncertain == 0
+        Assert.True(
+            report.RowsUncertain == 0
             || report.FatalError?.Code == TabularErrorCodes.Persistence.CommitUnknown
             || report.FatalError?.Code == TabularErrorCodes.Persistence.RollbackUnknown,
             label);
 
-        Assert.True(rowEvent != RowEvent.None
+        Assert.True(
+            rowEvent != RowEvent.None
             || failure != Failure.None
             || (report.Status == ReportStatus.Succeeded && stored == Rows),
             label);
@@ -199,12 +206,14 @@ public sealed class CountingMatrixTests
         sheets.Add(TabularSheetName.Create("First"), TestMaps.Users, target);
         sheets.Add(TabularSheetName.Create("Second"), TestMaps.Users, target);
 
-        var report = await excel.ImportAsync(file,
+        var report = await excel.ImportAsync(
+            file,
             sheets.Build(),
             new ExcelWorkbookImportOptions { Strategy = strategy },
             cancellationToken);
 
-        return new Counts(report.Status,
+        return new Counts(
+            report.Status,
             report.RowsRead,
             report.RowsImported,
             report.RowsPendingCommit,
@@ -234,7 +243,8 @@ public sealed class CountingMatrixTests
     {
         public static Counts Of(
             ImportReport<UserDto> report
-        ) => new(report.Status,
+        ) => new(
+            report.Status,
             report.RowsRead,
             report.RowsImported,
             report.RowsPendingCommit,

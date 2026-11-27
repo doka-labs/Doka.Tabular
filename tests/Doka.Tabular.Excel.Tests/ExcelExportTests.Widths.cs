@@ -29,7 +29,8 @@ public sealed partial class ExcelExportTests
             .Descendants<Column>()
             .ToList();
 
-        Assert.Equal((60d, 24d),
+        Assert.Equal(
+            (60d, 24d),
             (columns.Single(column => column.Min!.Value == 1)
                     .Width!.Value,
                 columns.Single(column => column.Min!.Value == 2)

@@ -68,7 +68,8 @@ internal sealed class ExcelImportFormat : IImportFormat
         ExcelPackage package,
         ExcelVariant? expected
     ) => expected is { } wanted && wanted != package.DetectedVariant
-        ? TabularError.Create(TabularErrorCodes.Schema.FormatMismatch,
+        ? TabularError.Create(
+            TabularErrorCodes.Schema.FormatMismatch,
             TabularErrorKind.Data,
             $"The workbook is {package.DetectedVariant}, but {wanted} was expected.")
         : null;
@@ -84,7 +85,8 @@ internal sealed class ExcelImportFormat : IImportFormat
             var found = package.Sheets.FirstOrDefault(sheet => sheet.Name == name);
 
             return found is null
-                ? (null, TabularError.Create(TabularErrorCodes.Schema.MissingSheet,
+                ? (null, TabularError.Create(
+                    TabularErrorCodes.Schema.MissingSheet,
                     TabularErrorKind.Data,
                     $"The sheet {name} does not exist; the workbook contains: {names}.",
                     new TabularErrorLocation { SheetName = name }))

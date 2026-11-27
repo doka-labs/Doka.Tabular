@@ -54,7 +54,8 @@ public sealed partial class ExcelFormat
         var settings = ImportSettingsOf(call, destination?.SourceKeys);
         var startRow = call.StartRow ?? 1;
         CheckImport(call, startRow, settings, problems);
-        var context = new ConversionContext(TabularFormatKind.Excel,
+        var context = new ConversionContext(
+            TabularFormatKind.Excel,
             settings.Culture,
             settings.TrimFields,
             settings.Translations,
@@ -63,20 +64,23 @@ public sealed partial class ExcelFormat
         var format = new ExcelImportFormat(
             call.SheetName,
             call.ExpectedVariant,
-            new ExcelReadSettings(startRow,
+            new ExcelReadSettings(
+                startRow,
                 call.EndRow,
                 call.VisibleRowsOnly ?? false,
                 settings.Binding != ColumnBinding.ByIndex),
             _runtime.Limits);
 
-        using var scope = _runtime.Scope("import",
+        using var scope = _runtime.Scope(
+            "import",
             "excel",
             settings.Strategy == ImportStrategy.Strict
                 ? "strict"
                 : "partial");
 
         return await ImportRunner
-            .RunAsync(input,
+            .RunAsync(
+                input,
                 format,
                 shape,
                 settings,
@@ -117,8 +121,9 @@ public sealed partial class ExcelFormat
             || call.EndRow < startRow
             || call.EndRow > ExcelWorkbookWriter.MaxRows)
         {
-            problems.Add(TabularError.Configuration(
-                "StartRow and EndRow must lie within the sheet and EndRow must not precede StartRow."));
+            problems.Add(
+                TabularError.Configuration(
+                    "StartRow and EndRow must lie within the sheet and EndRow must not precede StartRow."));
         }
 
         if (ErrorCollector.LimitProblem(settings.MaxErrorDetails) is { } limitProblem)
@@ -141,7 +146,8 @@ public sealed partial class ExcelFormat
         var call = Merge(options);
         var errors = new ErrorCollector(call.MaxErrorDetails);
         var layout = call.Layout ?? new ExcelLayoutOptions();
-        using var scope = _runtime.Scope("export",
+        using var scope = _runtime.Scope(
+            "export",
             "excel",
             layout.Mode == ExcelLayoutMode.Table
                 ? "table"
@@ -155,8 +161,9 @@ public sealed partial class ExcelFormat
 
         if (source is null)
         {
-            configuration.Add(TabularError.Configuration(
-                "The query does not support asynchronous enumeration; it would be read synchronously."));
+            configuration.Add(
+                TabularError.Configuration(
+                    "The query does not support asynchronous enumeration; it would be read synchronously."));
         }
 
         CheckTarget(target, configuration);
@@ -165,7 +172,8 @@ public sealed partial class ExcelFormat
         var sheetName = call.SheetName ?? TabularSheetName.Create("Export");
         var sheetPlan = plan is null
             ? null
-            : ExcelLayoutValidation.Plan(sheetName,
+            : ExcelLayoutValidation.Plan(
+                sheetName,
                 layout,
                 plan.Columns,
                 plan.ExportKeys,
@@ -187,7 +195,8 @@ public sealed partial class ExcelFormat
                 .ProduceAsync;
 
         return await ExportRunner
-            .RunAsync(target,
+            .RunAsync(
+                target,
                 produce,
                 errors,
                 scope,
@@ -211,7 +220,8 @@ public sealed partial class ExcelFormat
 
     private static ConversionContext ExportContext(
         ExportSettings settings
-    ) => new(TabularFormatKind.Excel,
+    ) => new(
+        TabularFormatKind.Excel,
         settings.Culture,
         false,
         settings.Translations,
@@ -228,8 +238,9 @@ public sealed partial class ExcelFormat
                 || extension.Equals(".xlsm", StringComparison.OrdinalIgnoreCase)
                 || extension.Equals(".xlsb", StringComparison.OrdinalIgnoreCase)))
         {
-            errors.Add(TabularError.Configuration(
-                "The export writes XLSX; a target path ending in .xls, .xlsm, or .xlsb is rejected."));
+            errors.Add(
+                TabularError.Configuration(
+                    "The export writes XLSX; a target path ending in .xls, .xlsm, or .xlsb is rejected."));
         }
     }
 
@@ -320,7 +331,8 @@ public sealed partial class ExcelFormat
                 .ConfigureAwait(false))
             {
                 outcome = await ExportEngine
-                    .WriteTableAsync(Source,
+                    .WriteTableAsync(
+                        Source,
                         Plan,
                         WriteHeader,
                         sheet,

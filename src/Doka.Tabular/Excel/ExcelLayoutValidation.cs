@@ -58,18 +58,22 @@ internal static class ExcelLayoutValidation
         if (layout.StartColumn > ExcelWorkbookWriter.MaxColumns
             || layout.StartColumn - 1L + columns.Count > ExcelWorkbookWriter.MaxColumns)
         {
-            errors.Add(TabularError.Create(TabularErrorCodes.Schema.LimitExceeded,
-                TabularErrorKind.Configuration,
-                "The output exceeds 16,384 columns.",
-                location));
+            errors.Add(
+                TabularError.Create(
+                    TabularErrorCodes.Schema.LimitExceeded,
+                    TabularErrorKind.Configuration,
+                    "The output exceeds 16,384 columns.",
+                    location));
         }
 
         if (layout.StartRow > ExcelWorkbookWriter.MaxRows)
         {
-            errors.Add(TabularError.Create(TabularErrorCodes.Schema.LimitExceeded,
-                TabularErrorKind.Configuration,
-                "The start row leaves no room in the sheet.",
-                location));
+            errors.Add(
+                TabularError.Create(
+                    TabularErrorCodes.Schema.LimitExceeded,
+                    TabularErrorKind.Configuration,
+                    "The start row leaves no room in the sheet.",
+                    location));
         }
     }
 
@@ -102,9 +106,10 @@ internal static class ExcelLayoutValidation
                 : null,
         };
 
-        errors.AddRange(problems
-            .OfType<string>()
-            .Select(problem => TabularError.Configuration(problem, location)));
+        errors.AddRange(
+            problems
+                .OfType<string>()
+                .Select(problem => TabularError.Configuration(problem, location)));
     }
 
     /// <summary>
@@ -166,14 +171,16 @@ internal static class ExcelLayoutValidation
                         .Count('\n')
                     > ExcelWorkbookWriter.MaxLineBreaks))
             {
-                errors.Add(TabularError.Create(TabularErrorCodes.Schema.LimitExceeded,
-                    TabularErrorKind.Configuration,
-                    "A header exceeds 32,767 characters or 253 line breaks.",
-                    new TabularErrorLocation
-                    {
-                        SheetName = location.SheetName,
-                        ColumnIndex = columns[position].Position,
-                    }));
+                errors.Add(
+                    TabularError.Create(
+                        TabularErrorCodes.Schema.LimitExceeded,
+                        TabularErrorKind.Configuration,
+                        "A header exceeds 32,767 characters or 253 line breaks.",
+                        new TabularErrorLocation
+                        {
+                            SheetName = location.SheetName,
+                            ColumnIndex = columns[position].Position,
+                        }));
             }
         }
     }
@@ -212,9 +219,10 @@ internal static class ExcelLayoutValidation
                 : null,
         };
 
-        errors.AddRange(problems
-            .OfType<string>()
-            .Select(problem => TabularError.Configuration(problem, location)));
+        errors.AddRange(
+            problems
+                .OfType<string>()
+                .Select(problem => TabularError.Configuration(problem, location)));
     }
 }
 
@@ -234,9 +242,10 @@ internal sealed class ExcelTableNames
         {
             if (!_used.Add(requested))
             {
-                errors.Add(TabularError.Configuration(
-                    $"The table name {requested} is used more than once in the workbook.",
-                    location));
+                errors.Add(
+                    TabularError.Configuration(
+                        $"The table name {requested} is used more than once in the workbook.",
+                        location));
             }
 
             return requested;
@@ -245,9 +254,10 @@ internal sealed class ExcelTableNames
         while (true)
         {
             _automatic++;
-            var candidate = ExcelTableName.Automatic(_automatic == 1
-                ? "TabularExport"
-                : $"TabularExport_{_automatic.ToString(CultureInfo.InvariantCulture)}");
+            var candidate = ExcelTableName.Automatic(
+                _automatic == 1
+                    ? "TabularExport"
+                    : $"TabularExport_{_automatic.ToString(CultureInfo.InvariantCulture)}");
 
             if (_used.Add(candidate))
             {

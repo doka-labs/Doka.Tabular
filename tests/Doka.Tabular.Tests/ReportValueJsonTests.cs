@@ -15,7 +15,8 @@ public sealed class ReportValueJsonTests
     public void Values_RoundTripAsJsonStrings()
     {
         // Arrange
-        var values = new ReportValues(TabularErrorCodes.Conversion.OutOfRange,
+        var values = new ReportValues(
+            TabularErrorCodes.Conversion.OutOfRange,
             TabularErrorCode.Create("contact.invalid"),
             TabularSheetName.Create("Contacts"),
             TabularPropertyPath.FromText("Address.PostalCode"));
@@ -69,22 +70,26 @@ public sealed class ReportValueJsonTests
         var root = json.RootElement;
         var location = root.GetProperty("Location");
 
-        Assert.Equal(error.Code.Value,
+        Assert.Equal(
+            error.Code.Value,
             root
                 .GetProperty("Code")
                 .GetString());
 
-        Assert.Equal("Sheet1",
+        Assert.Equal(
+            "Sheet1",
             location
                 .GetProperty("SheetName")
                 .GetString());
 
-        Assert.Equal("Count",
+        Assert.Equal(
+            "Count",
             location
                 .GetProperty("PropertyPath")
                 .GetString());
 
-        Assert.Equal("count",
+        Assert.Equal(
+            "count",
             location
                 .GetProperty("ColumnKey")
                 .GetString(),

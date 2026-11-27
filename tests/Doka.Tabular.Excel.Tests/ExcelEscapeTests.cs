@@ -37,7 +37,8 @@ public sealed class ExcelEscapeTests
 
         // Assert
         Assert.DoesNotContain(absent, Entry(file!, "xl/worksheets/"), StringComparison.Ordinal);
-        Assert.Equal(text,
+        Assert.Equal(
+            text,
             Assert.Single(report.Items!)
                 .Name);
     }
@@ -54,7 +55,8 @@ public sealed class ExcelEscapeTests
         var header = $"A{(char)character}B";
 
         // Act
-        var (report, file) = await ExcelInstance.ExportAsync(new[] { new Row(1, "x") },
+        var (report, file) = await ExcelInstance.ExportAsync(
+            new[] { new Row(1, "x") },
             Rows(header),
             new ExcelExportOptions
             {
@@ -88,7 +90,8 @@ public sealed class ExcelEscapeTests
         var report = await ExcelInstance.ImportAsync(file, Rows("Name"), Token);
 
         // Assert
-        Assert.Equal(expected,
+        Assert.Equal(
+            expected,
             Assert.Single(report.Items!)
                 .Name);
     }
@@ -106,7 +109,8 @@ public sealed class ExcelEscapeTests
 
         // Assert
         Assert.Contains("_xD800_", Entry(file!, "xl/worksheets/"), StringComparison.Ordinal);
-        Assert.Equal(text,
+        Assert.Equal(
+            text,
             Assert.Single(report.Items!)
                 .Name);
     }

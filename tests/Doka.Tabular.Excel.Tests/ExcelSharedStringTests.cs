@@ -15,7 +15,8 @@ public sealed class ExcelSharedStringTests
     )
     {
         // Arrange
-        var file = RawWorkbook.Create("""<row r="1"><c r="A1" t="s"><v>0</v></c></row>""",
+        var file = RawWorkbook.Create(
+            """<row r="1"><c r="A1" t="s"><v>0</v></c></row>""",
             $"<si><t>{new string('a', length)}</t></si>");
 
         // Act
@@ -36,7 +37,8 @@ public sealed class ExcelSharedStringTests
     {
         // Arrange
         // WHY: Each escape stores one character in seven, so the stored text is far beyond the limit in both cases.
-        var file = RawWorkbook.Create("""<row r="1"><c r="A1" t="s"><v>0</v></c></row>""",
+        var file = RawWorkbook.Create(
+            """<row r="1"><c r="A1" t="s"><v>0</v></c></row>""",
             $"<si><t>{string.Concat(Enumerable.Repeat("_x0041_", characters))}</t></si>");
 
         // Act
@@ -44,7 +46,8 @@ public sealed class ExcelSharedStringTests
         await using var owned = package;
 
         // Assert
-        Assert.Equal(held
+        Assert.Equal(
+            held
                 ? new string('A', characters)
                 : null,
             package!.SharedStrings[0]);
@@ -54,7 +57,8 @@ public sealed class ExcelSharedStringTests
     public async Task RichTextSharedString_IsJudgedByTheLengthOfAllRuns()
     {
         // Arrange
-        var file = RawWorkbook.Create("""<row r="1"><c r="A1" t="s"><v>0</v></c></row>""",
+        var file = RawWorkbook.Create(
+            """<row r="1"><c r="A1" t="s"><v>0</v></c></row>""",
             "<si><r><t>aaaaaa</t></r><r><t>bbbbbb</t></r></si>");
 
         // Act
@@ -67,7 +71,8 @@ public sealed class ExcelSharedStringTests
 
     private static ResourceLimits Limits(
         long maxFieldCharacters
-    ) => new(ResourceLimits.DefaultBufferBytes,
+    ) => new(
+        ResourceLimits.DefaultBufferBytes,
         ResourceLimits.DefaultBufferBytes,
         true,
         Path.GetTempPath(),

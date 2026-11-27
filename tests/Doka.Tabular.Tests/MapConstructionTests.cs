@@ -49,7 +49,9 @@ public sealed partial class MapConstructionTests
         var report = await Import.ImportAsync(Create(type, line), type, map, Token);
 
         // Assert
-        Assert.Equal(new MyImportDto(Guid.Parse("d93f16aa-3667-4b95-a814-d4275dbd0554"),
+        Assert.Equal(
+            new MyImportDto(
+                Guid.Parse("d93f16aa-3667-4b95-a814-d4275dbd0554"),
                 "ada@example.org",
                 "Ada",
                 "Lovelace",
@@ -68,9 +70,10 @@ public sealed partial class MapConstructionTests
             .Build());
 
         // Assert
-        var error = Assert.Single(Assert
-            .IsType<TabularConfigurationException>(exception)
-            .Errors);
+        var error = Assert.Single(
+            Assert
+                .IsType<TabularConfigurationException>(exception)
+                .Errors);
 
         Assert.Equal(TabularErrorCodes.Configuration.Invalid, error.Code);
         Assert.Equal("Email", error.Location.PropertyPath?.Value);
@@ -117,7 +120,8 @@ public sealed partial class MapConstructionTests
         // Arrange
         var rows = Enumerable
             .Range(1, 500)
-            .Select(number => new MyImportDto(Guid.NewGuid(),
+            .Select(number => new MyImportDto(
+                Guid.NewGuid(),
                 $"u{number}@example.org",
                 "F",
                 "L",
@@ -143,7 +147,8 @@ public sealed partial class MapConstructionTests
         // action.
         var singleFirst = await Export.ExportAsync(rows, s_userMap, type, first, Token);
         var singleSecond = await Export.ExportAsync(rows, s_userMap, type, second, Token);
-        var parallel = await Task.WhenAll(Export.ExportAsync(rows, s_userMap, type, first, Token),
+        var parallel = await Task.WhenAll(
+            Export.ExportAsync(rows, s_userMap, type, first, Token),
             Export.ExportAsync(rows, s_userMap, type, second, Token));
 
         // Assert
@@ -252,7 +257,8 @@ public sealed partial class MapConstructionTests
         bool IsActive = true
     );
 
-    [SuppressMessage("Naming",
+    [SuppressMessage(
+        "Naming",
         "CA1708:Identifiers should differ by more than case",
         Justification = "The binding case needs two properties that differ only by case.")]
     public sealed record AmbiguousCandidates(

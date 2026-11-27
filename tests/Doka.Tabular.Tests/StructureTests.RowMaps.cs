@@ -9,21 +9,24 @@ public sealed partial class StructureTests
     {
         // Arrange
         var rows = RowMap.Create();
-        var user = rows.Add(TabularMap
-            .For<Person>()
-            .Column(x => x.Name, index: 0)
-            .Build());
+        var user = rows.Add(
+            TabularMap
+                .For<Person>()
+                .Column(x => x.Name, index: 0)
+                .Build());
 
-        var address = rows.Add(TabularMap
-            .For<Located>()
-            .Column(x => x.City, index: 1, configure: c => c.Required())
-            .Column(x => x.PostalCode, index: 2)
-            .Build());
+        var address = rows.Add(
+            TabularMap
+                .For<Located>()
+                .Column(x => x.City, index: 1, configure: c => c.Required())
+                .Column(x => x.PostalCode, index: 2)
+                .Build());
 
         var map = rows.Build();
 
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8("Ada,Dresden,01067\nBob,,53111"),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8("Ada,Dresden,01067\nBob,,53111"),
             map,
             new CsvImportOptions { Strategy = ImportStrategy.Partial },
             Token);
@@ -33,7 +36,8 @@ public sealed partial class StructureTests
         Assert.Equal(2, row.Items.Count);
         Assert.Same(row.Items[0], row.Get(user));
         Assert.Same(row.Items[1], row.Get(address));
-        Assert.Equal(2L,
+        Assert.Equal(
+            2L,
             Assert.Single(report.Errors)
                 .Location.RecordNumber);
     }
@@ -43,19 +47,22 @@ public sealed partial class StructureTests
     {
         // Arrange
         var rows = RowMap.Create();
-        _ = rows.Add(TabularMap
-            .For<Person>()
-            .Column(x => x.Name, index: 0)
-            .Build());
+        _ = rows.Add(
+            TabularMap
+                .For<Person>()
+                .Column(x => x.Name, index: 0)
+                .Build());
 
-        _ = rows.Add(TabularMap
-            .For<Located>()
-            .Column(x => x.City, index: 1, configure: c => c.Required())
-            .Column(x => x.PostalCode, index: 2)
-            .Build());
+        _ = rows.Add(
+            TabularMap
+                .For<Located>()
+                .Column(x => x.City, index: 1, configure: c => c.Required())
+                .Column(x => x.PostalCode, index: 2)
+                .Build());
 
         var map = rows.Build();
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8("Ada,Dresden,01067\nBob,,53111"),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8("Ada,Dresden,01067\nBob,,53111"),
             map,
             new CsvImportOptions { Strategy = ImportStrategy.Partial },
             Token);
@@ -75,13 +82,15 @@ public sealed partial class StructureTests
     {
         // Arrange
         var rows = RowMap.Create();
-        var billing = rows.Add(s_located,
+        var billing = rows.Add(
+            s_located,
             e => e
                 .StartIndex(0)
                 .KeyPrefix(ColumnKey.Create("billing"))
                 .HeaderPrefix("Rechnungs-"));
 
-        var shipping = rows.Add(s_located,
+        var shipping = rows.Add(
+            s_located,
             e => e
                 .StartIndex(2)
                 .KeyPrefix(ColumnKey.Create("shipping"))
@@ -101,7 +110,8 @@ public sealed partial class StructureTests
         var (_, file) =
             await Export.ExportAsync(source, export, type, new TabularExportOptions { WriteHeader = true }, Token);
 
-        var reimport = await Import.ImportAsync(file!,
+        var reimport = await Import.ImportAsync(
+            file!,
             type,
             map,
             new TabularImportOptions { Binding = ColumnBinding.ByHeaderName },
@@ -110,7 +120,8 @@ public sealed partial class StructureTests
         // Assert
         Assert.Equal(["Rechnungs-Ort", "Rechnungs-PLZ", "Liefer-Ort", "Liefer-PLZ"], Cells(type, file!)[0]);
         var row = Assert.Single(reimport.Items!);
-        Assert.Equal(("Dresden", "Bonn"),
+        Assert.Equal(
+            ("Dresden", "Bonn"),
             (row.Get(billing)
                 .City, row.Get(shipping)
                 .City));
@@ -122,7 +133,8 @@ public sealed partial class StructureTests
         // Arrange
         var rows = RowMap.Create();
         var billing = rows.Add(s_located, e => e.KeyPrefix(ColumnKey.Create("billing")));
-        var shipping = rows.Add(s_located,
+        var shipping = rows.Add(
+            s_located,
             e => e
                 .StartIndex(2)
                 .KeyPrefix(ColumnKey.Create("shipping")));
@@ -164,7 +176,8 @@ public sealed partial class StructureTests
     {
         // Arrange
         var reversed = RowMap.Create();
-        var second = reversed.Add(s_located,
+        var second = reversed.Add(
+            s_located,
             e => e
                 .StartIndex(2)
                 .KeyPrefix(ColumnKey.Create("shipping")));
@@ -172,13 +185,15 @@ public sealed partial class StructureTests
         var first = reversed.Add(s_located, e => e.KeyPrefix(ColumnKey.Create("billing")));
 
         // Act
-        var swapped = await Import.ImportAsync(Create(type, ["Dresden", "01067", "Bonn", "53111"]),
+        var swapped = await Import.ImportAsync(
+            Create(type, ["Dresden", "01067", "Bonn", "53111"]),
             type,
             reversed.Build(),
             Token);
 
         // Assert
-        Assert.Equal(("Dresden", "Bonn"),
+        Assert.Equal(
+            ("Dresden", "Bonn"),
             (swapped.Items![0]
                 .Get(first)
                 .City, swapped
@@ -186,7 +201,8 @@ public sealed partial class StructureTests
                 .Get(second)
                 .City));
 
-        Assert.Equal("Bonn",
+        Assert.Equal(
+            "Bonn",
             ((Located)swapped
                 .Items[0]
                 .Items[0]).City);
@@ -205,7 +221,8 @@ public sealed partial class StructureTests
         var report = await Import.ImportAsync(Create(type, [7, "Ada", "Dresden"]), type, map, Token);
 
         // Assert
-        Assert.Equal((7, 7),
+        Assert.Equal(
+            (7, 7),
             (report.Items![0]
                 .Get(user)
                 .Id, report

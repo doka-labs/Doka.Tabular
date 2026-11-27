@@ -164,14 +164,16 @@ internal abstract class TimeConverterBase<TValue> : ValueConverter<TValue>
         {
             try
             {
-                AddDate(calendar.ToDateTime(dateYear,
-                    month,
-                    1,
-                    0,
-                    0,
-                    0,
-                    0,
-                    dateEra));
+                AddDate(
+                    calendar.ToDateTime(
+                        dateYear,
+                        month,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        dateEra));
             }
             catch (ArgumentOutOfRangeException)
             {
@@ -271,9 +273,10 @@ internal abstract class TimeConverterBase<TValue> : ValueConverter<TValue>
 
         // WHY: A standard format stands for a pattern of the culture, which may lack parts the checked format has.
         if (format.Length == 1
-            && FormatProblem(CulturePatterns
-                .For(culture.DateTimeFormat)
-                .SpecOf(format[0])) is { } problem)
+            && FormatProblem(
+                CulturePatterns
+                    .For(culture.DateTimeFormat)
+                    .SpecOf(format[0])) is { } problem)
         {
             return Fail(ConversionFailure.InvalidFormat(problem), out value, out failure);
         }

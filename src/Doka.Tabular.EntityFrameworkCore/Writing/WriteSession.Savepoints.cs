@@ -12,9 +12,11 @@ internal sealed partial class WriteSession
         if (!await TryRollBackRowAsync(savepoint)
             .ConfigureAwait(false))
         {
-            return new RowOutcome(false,
+            return new RowOutcome(
+                false,
                 null,
-                TabularError.Create(TabularErrorCodes.Persistence.RollbackUnknown,
+                TabularError.Create(
+                    TabularErrorCodes.Persistence.RollbackUnknown,
                     TabularErrorKind.Technical,
                     "Resetting the row was not confirmed."),
                 false) { ResetUnconfirmed = true };
@@ -29,9 +31,11 @@ internal sealed partial class WriteSession
         // context unusable for the next row.
         catch (Exception exception) when (exception is not OutOfMemoryException)
         {
-            return new RowOutcome(false,
+            return new RowOutcome(
+                false,
                 null,
-                TabularError.Create(TabularErrorCodes.Persistence.ContextRestoreFailed,
+                TabularError.Create(
+                    TabularErrorCodes.Persistence.ContextRestoreFailed,
                     TabularErrorKind.Technical,
                     "The EF state of the rejected row could not be reset."),
                 false);

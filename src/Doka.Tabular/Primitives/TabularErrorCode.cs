@@ -39,7 +39,8 @@ public sealed class TabularErrorCode : IEquatable<TabularErrorCode>
         if (value.Length == 0
             || value.Any(char.IsWhiteSpace))
         {
-            throw new ArgumentException("An error code must be non-empty and must not contain white space.",
+            throw new ArgumentException(
+                "An error code must be non-empty and must not contain white space.",
                 nameof(value));
         }
 

@@ -25,7 +25,8 @@ public abstract partial class ImportSpecification
         await using var database = await _provider.CreateAsync(Token);
 
         // Act
-        var report = await s_csv.ImportAsync(TestMaps.Csv([.. TestMaps.Rows(3)]),
+        var report = await s_csv.ImportAsync(
+            TestMaps.Csv([.. TestMaps.Rows(3)]),
             TestMaps.Users,
             TestMaps.Upsert(TabularDatabase.ForFactory(database.Factory)),
             Token);
@@ -50,7 +51,8 @@ public abstract partial class ImportSpecification
         lines[3] = "4,user3@example.org,User 4";
 
         // Act
-        var report = await s_csv.ImportAsync(TestMaps.Csv([.. lines]),
+        var report = await s_csv.ImportAsync(
+            TestMaps.Csv([.. lines]),
             TestMaps.Users,
             TestMaps.Upsert(TabularDatabase.ForFactory(database.Factory)),
             Token);
@@ -75,7 +77,8 @@ public abstract partial class ImportSpecification
         lines[1] = "2,user1@example.org,User 2";
 
         // Act
-        var report = await s_csv.ImportAsync(TestMaps.Csv([.. lines]),
+        var report = await s_csv.ImportAsync(
+            TestMaps.Csv([.. lines]),
             TestMaps.Users,
             TestMaps.Upsert(TabularDatabase.ForFactory(database.Factory)),
             Partial,
@@ -133,7 +136,8 @@ public abstract partial class ImportSpecification
 
         var target = TabularDatabase
             .ForFactory(database.Factory)
-            .PrepareInsert<UserDto, User>(set: context => context.Users,
+            .PrepareInsert<UserDto, User>(
+                set: context => context.Users,
                 create: dto => User.Create(dto.PersonnelNumber, dto.Email, dto.Name))
             .WithOptions(new TabularWriteOptions { CommitGroupSize = groupSize });
 
@@ -171,7 +175,8 @@ public abstract partial class ImportSpecification
             .WithOptions(new TabularWriteOptions { CommitGroupSize = 2 });
 
         // Act
-        var report = await s_csv.ImportAsync(TestMaps.Csv([.. TestMaps.Rows(5)]),
+        var report = await s_csv.ImportAsync(
+            TestMaps.Csv([.. TestMaps.Rows(5)]),
             TestMaps.Users,
             target,
             Partial,
@@ -246,7 +251,8 @@ public abstract partial class ImportSpecification
         var name = new string('x', 41);
 
         // Act
-        var report = await s_csv.ImportAsync(TestMaps.Csv($"1,new@example.org,{name}", "2,user2@example.org,User 2"),
+        var report = await s_csv.ImportAsync(
+            TestMaps.Csv($"1,new@example.org,{name}", "2,user2@example.org,User 2"),
             TestMaps.Users,
             TestMaps.Upsert(TabularDatabase.ForFactory(database.Factory)),
             Partial,
@@ -254,7 +260,8 @@ public abstract partial class ImportSpecification
 
         // Assert
         Assert.Equal(ReportStatus.CompletedWithErrors, report.Status);
-        Assert.Equal(TestMaps.UserInvalid,
+        Assert.Equal(
+            TestMaps.UserInvalid,
             Assert.Single(report.Errors)
                 .Code);
 

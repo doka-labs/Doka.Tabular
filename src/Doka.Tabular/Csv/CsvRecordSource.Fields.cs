@@ -72,9 +72,11 @@ internal sealed partial class CsvRecordSource
         await SkipLineAsync(cancellationToken)
             .ConfigureAwait(false);
 
-        return RecordReadResult.Broken(SyntaxError(fieldLine,
-            _cells.Count - 1,
-            "Characters follow the closing quote of a field."));
+        return RecordReadResult.Broken(
+            SyntaxError(
+                fieldLine,
+                _cells.Count - 1,
+                "Characters follow the closing quote of a field."));
     }
 
     /// <summary>Reads the text up to the closing quote; a result is returned only when the field cannot be read.</summary>
@@ -95,9 +97,11 @@ internal sealed partial class CsvRecordSource
                 _ended = true;
 
                 return _settings.AllowLineBreaksInFields
-                    ? RecordReadResult.FatalError(SyntaxError(fieldLine,
-                        column,
-                        "A quoted field is not closed before the end of the input."))
+                    ? RecordReadResult.FatalError(
+                        SyntaxError(
+                            fieldLine,
+                            column,
+                            "A quoted field is not closed before the end of the input."))
                     : RecordReadResult.Broken(SyntaxError(fieldLine, column, "A quoted field is not closed."));
             }
 
@@ -148,9 +152,11 @@ internal sealed partial class CsvRecordSource
             await FinishLineBreakAsync(character, cancellationToken)
                 .ConfigureAwait(false);
 
-            return RecordReadResult.Broken(SyntaxError(recordLine,
-                column,
-                "A line break inside a quoted field is not allowed."));
+            return RecordReadResult.Broken(
+                SyntaxError(
+                    recordLine,
+                    column,
+                    "A line break inside a quoted field is not allowed."));
         }
 
         Append([character], start);
@@ -221,9 +227,11 @@ internal sealed partial class CsvRecordSource
             await SkipLineAsync(cancellationToken)
                 .ConfigureAwait(false);
 
-            return RecordReadResult.Broken(SyntaxError(fieldLine,
-                _cells.Count,
-                "A quote appears inside an unquoted field."));
+            return RecordReadResult.Broken(
+                SyntaxError(
+                    fieldLine,
+                    _cells.Count,
+                    "A quote appears inside an unquoted field."));
         }
     }
 }

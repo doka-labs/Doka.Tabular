@@ -21,7 +21,8 @@ public sealed class MeetingTests
         // ReSharper disable once AccessToDisposedClosure
         // WHY: The participants are awaited in the act, before the captured meeting is disposed.
         var second = meeting.JoinAsync(() => ArriveAsync(meeting), Token);
-        var failing = meeting.JoinAsync<int>(() => throw new InvalidOperationException("Failed before the meeting."),
+        var failing = meeting.JoinAsync<int>(
+            () => throw new InvalidOperationException("Failed before the meeting."),
             Token);
 
         var exception = await Record.ExceptionAsync(() => Task.WhenAll(first, second, failing));

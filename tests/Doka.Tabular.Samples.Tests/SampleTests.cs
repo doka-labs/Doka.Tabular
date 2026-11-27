@@ -35,12 +35,14 @@ public sealed class SampleTests
 
         // Assert
         Assert.Contains("A-03;0", output, StringComparison.Ordinal);
-        Assert.Contains("Excel export: 200 application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        Assert.Contains(
+            "Excel export: 200 application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             output,
             StringComparison.Ordinal);
 
         Assert.Contains("Streamed CSV export: 200 Artikel;Bestand|A-01;12|A-03;0", output, StringComparison.Ordinal);
-        Assert.Contains("Streamed export with an unknown column: 422 {\"status\":\"Failed\"",
+        Assert.Contains(
+            "Streamed export with an unknown column: 422 {\"status\":\"Failed\"",
             output,
             StringComparison.Ordinal);
 
@@ -55,7 +57,8 @@ public sealed class SampleTests
 
         // Assert
         Assert.Contains("Import CompletedWithErrors: 2 imported, 1 rejected", output, StringComparison.Ordinal);
-        Assert.Contains("/out/customers-streamed.csv, /out/customers.csv, /review/customers.csv",
+        Assert.Contains(
+            "/out/customers-streamed.csv, /out/customers.csv, /review/customers.csv",
             output,
             StringComparison.Ordinal);
     }
@@ -79,11 +82,13 @@ public sealed class SampleTests
         var output = await RunAsync(EntityFrameworkCoreSample.RunAsync);
 
         // Assert
-        Assert.Contains("Strict upsert: Failed, imported 0, errors user.duplicateEmail in record 3",
+        Assert.Contains(
+            "Strict upsert: Failed, imported 0, errors user.duplicateEmail in record 3",
             output,
             StringComparison.Ordinal);
 
-        Assert.Contains("Partial upsert: CompletedWithErrors, imported 3, rejected 1",
+        Assert.Contains(
+            "Partial upsert: CompletedWithErrors, imported 3, rejected 1",
             output,
             StringComparison.Ordinal);
 
@@ -110,7 +115,8 @@ public sealed class SampleTests
 
         // Assert
         Assert.Contains("Annual report: Succeeded, 5 rows", output, StringComparison.Ordinal);
-        Assert.Contains("One transaction: Failed; Kunden Failed (0), Bestellungen Failed; stored customers 0, orders 0",
+        Assert.Contains(
+            "One transaction: Failed; Kunden Failed (0), Bestellungen Failed; stored customers 0, orders 0",
             output,
             StringComparison.Ordinal);
 
@@ -127,7 +133,8 @@ public sealed class SampleTests
         var output = await RunAsync(JournalsSample.RunAsync);
 
         // Assert
-        Assert.Contains("customers-copy.csv: Succeeded, decision Skipped, existing True",
+        Assert.Contains(
+            "customers-copy.csv: Succeeded, decision Skipped, existing True",
             output,
             StringComparison.Ordinal);
 
@@ -138,7 +145,8 @@ public sealed class SampleTests
 
         Assert.Contains("Download now: Kunden.csv with 1,Ada|2,Grace|3,Linus", output, StringComparison.Ordinal);
         Assert.Contains("Download after seven days: not found", output, StringComparison.Ordinal);
-        Assert.Contains("Cleanup: 1 expired export deleted, 5 import logs deleted, files left 0",
+        Assert.Contains(
+            "Cleanup: 1 expired export deleted, 5 import logs deleted, files left 0",
             output,
             StringComparison.Ordinal);
     }

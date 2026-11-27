@@ -28,13 +28,15 @@ internal static class CompletionRunner
         {
             return limit.IsCancellationRequested
                 ? Exceeded()
-                : TabularError.Create(TabularErrorCodes.Callback.Failed,
+                : TabularError.Create(
+                    TabularErrorCodes.Callback.Failed,
                     TabularErrorKind.Technical,
                     "The completion function threw an exception.");
         }
     }
 
-    private static TabularError Exceeded() => TabularError.Create(TabularErrorCodes.Callback.Failed,
+    private static TabularError Exceeded() => TabularError.Create(
+        TabularErrorCodes.Callback.Failed,
         TabularErrorKind.Technical,
         "The completion function exceeded CompletionTimeout.");
 }

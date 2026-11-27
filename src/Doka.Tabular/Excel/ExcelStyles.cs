@@ -239,7 +239,8 @@ internal sealed class ExcelStyleRegistry
     {
         if (index < 2)
         {
-            writer.WriteAttributeString("patternType",
+            writer.WriteAttributeString(
+                "patternType",
                 index == 0
                     ? "none"
                     : "gray125");
@@ -317,7 +318,8 @@ internal sealed class ExcelStyleRegistry
         writer.WriteStartElement("alignment", Ns);
         if (style.Horizontal is { } horizontal)
         {
-            writer.WriteAttributeString("horizontal",
+            writer.WriteAttributeString(
+                "horizontal",
                 horizontal
                     .ToString()
                     .ToLowerInvariant());
@@ -325,7 +327,8 @@ internal sealed class ExcelStyleRegistry
 
         if (style.Vertical is { } vertical)
         {
-            writer.WriteAttributeString("vertical",
+            writer.WriteAttributeString(
+                "vertical",
                 vertical
                     .ToString()
                     .ToLowerInvariant());

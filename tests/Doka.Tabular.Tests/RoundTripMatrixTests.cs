@@ -70,14 +70,16 @@ public sealed class RoundTripMatrixTests
         yield return Case.Of("double", [0.1, -1.5e-7, 1e21, double.MaxValue, double.Epsilon, 1.0 / 3]);
         yield return Case.Of("double exponent", [1e21, -2.5e-30], c => c.AllowExponent());
         yield return Case.Of("double percent", [0.125, -1.5], c => c.TextStyle(NumberTextStyle.Percent));
-        yield return Case.Of("double non-finite",
+        yield return Case.Of(
+            "double non-finite",
             [double.NaN, double.PositiveInfinity, double.NegativeInfinity, 1.5],
             c => c.NonFiniteValues());
 
         yield return Case.Of("float", [0.1f, float.MaxValue, -3.4e-38f]);
         yield return Case.Of("Half", [(Half)0.1, Half.MaxValue, Half.Epsilon]);
         yield return Case.Of("bool", [true, false]);
-        yield return Case.Of("bool texts",
+        yield return Case.Of(
+            "bool texts",
             [true, false],
             c => c
                 .TrueText("ja")
@@ -90,14 +92,16 @@ public sealed class RoundTripMatrixTests
         yield return Case.Of("char", ['a', ',', '"', 'ü']);
         yield return Case.Of("Rune", [new Rune('a'), new Rune(0x1F600)]);
         yield return Case.Of("Guid", [Guid.Empty, new Guid("3f2504e0-4f89-11d3-9a0c-0305e82c3301")]);
-        yield return Case.Of("Guid braces",
+        yield return Case.Of(
+            "Guid braces",
             [new Guid("3f2504e0-4f89-11d3-9a0c-0305e82c3301")],
             c => c
                 .GuidExportFormat("B")
                 .AcceptGuidFormats("B"));
 
         yield return Case.Of("enum", [State.Open, State.InWork, State.Closed]);
-        yield return Case.Of("enum number",
+        yield return Case.Of(
+            "enum number",
             [State.Open, State.Closed],
             c => c
                 .ExportAsNumber()
@@ -108,30 +112,36 @@ public sealed class RoundTripMatrixTests
         yield return Case.Of("flags separator", [Rights.Read | Rights.Delete], c => c.FlagsSeparator(';'));
         yield return Case.Of("DateOnly", [new DateOnly(2024, 2, 29), DateOnly.MinValue, DateOnly.MaxValue]);
         yield return Case.Of("DateOnly format", [new DateOnly(2024, 2, 29)], c => c.Format("dd.MM.yyyy"));
-        yield return Case.Of("TimeOnly",
+        yield return Case.Of(
+            "TimeOnly",
             [new TimeOnly(0, 0), new TimeOnly(23, 59, 59, 999).Add(TimeSpan.FromTicks(9999))]);
 
         yield return Case.Of("TimeOnly format", [new TimeOnly(14, 30)], c => c.Format("HH:mm"));
         yield return Case.Of("TimeOnly 12h", [new TimeOnly(1, 30), new TimeOnly(13, 30)], c => c.Format("hh:mm tt"));
-        yield return Case.Of("DateTime",
-        [
-            new DateTime(2024,
-                2,
-                29,
-                14,
-                30,
-                15,
-                123).AddTicks(4567),
-            new DateTime(1900, 1, 1), new DateTime(9999, 12, 31),
-        ]);
+        yield return Case.Of(
+            "DateTime",
+            [
+                new DateTime(
+                    2024,
+                    2,
+                    29,
+                    14,
+                    30,
+                    15,
+                    123).AddTicks(4567),
+                new DateTime(1900, 1, 1), new DateTime(9999, 12, 31),
+            ]);
 
-        yield return Case.Of("DateTime format",
+        yield return Case.Of(
+            "DateTime format",
             [new DateTime(2024, 2, 29, 14, 30, 0)],
             c => c.Format("yyyy-MM-dd HH:mm"));
 
-        yield return Case.Of("DateTime rounded",
+        yield return Case.Of(
+            "DateTime rounded",
             [
-                new DateTime(2024,
+                new DateTime(
+                    2024,
                     2,
                     29,
                     14,
@@ -142,9 +152,11 @@ public sealed class RoundTripMatrixTests
             c => c.Rounding(TimeSpan.FromSeconds(1)),
             [new DateTime(2024, 2, 29, 14, 30, 16)]);
 
-        yield return Case.Of("DateTime UTC",
+        yield return Case.Of(
+            "DateTime UTC",
             [
-                new DateTime(2024,
+                new DateTime(
+                    2024,
                     2,
                     29,
                     14,
@@ -154,16 +166,19 @@ public sealed class RoundTripMatrixTests
             ],
             c => c.ExcelAsUtc());
 
-        yield return Case.Of("DateTime file zone",
+        yield return Case.Of(
+            "DateTime file zone",
             [
-                new DateTime(2024,
+                new DateTime(
+                    2024,
                     7,
                     1,
                     12,
                     0,
                     0,
                     DateTimeKind.Utc),
-                new DateTime(2024,
+                new DateTime(
+                    2024,
                     1,
                     1,
                     12,
@@ -173,21 +188,25 @@ public sealed class RoundTripMatrixTests
             ],
             c => c.FileTimeZone(TimeZoneInfo.FindSystemTimeZoneById("Europe/Berlin")));
 
-        yield return Case.Of("DateTimeOffset",
-        [
-            new DateTimeOffset(2024,
-                2,
-                29,
-                14,
-                30,
-                0,
-                TimeSpan.FromHours(2)),
-            DateTimeOffset.MinValue, DateTimeOffset.MaxValue,
-        ]);
-
-        yield return Case.Of("DateTimeOffset format",
+        yield return Case.Of(
+            "DateTimeOffset",
             [
-                new DateTimeOffset(2024,
+                new DateTimeOffset(
+                    2024,
+                    2,
+                    29,
+                    14,
+                    30,
+                    0,
+                    TimeSpan.FromHours(2)),
+                DateTimeOffset.MinValue, DateTimeOffset.MaxValue,
+            ]);
+
+        yield return Case.Of(
+            "DateTimeOffset format",
+            [
+                new DateTimeOffset(
+                    2024,
                     2,
                     29,
                     14,
@@ -197,9 +216,11 @@ public sealed class RoundTripMatrixTests
             ],
             c => c.Format("yyyy-MM-dd HH:mm:ss zzz"));
 
-        yield return Case.Of("DateTimeOffset file zone",
+        yield return Case.Of(
+            "DateTimeOffset file zone",
             [
-                new DateTimeOffset(2024,
+                new DateTimeOffset(
+                    2024,
                     7,
                     1,
                     12,
@@ -212,7 +233,8 @@ public sealed class RoundTripMatrixTests
         yield return Case.Of("DateOnly short", [new DateOnly(2024, 2, 29)], c => c.Format("d"));
         yield return Case.Of("DateTime general", [new DateTime(2024, 2, 29, 14, 30, 15)], c => c.Format("G"));
         yield return Case.Of("TimeOnly short", [new TimeOnly(14, 30)], c => c.Format("t"));
-        yield return Case.Of("decimal C",
+        yield return Case.Of(
+            "decimal C",
             [12.5m, -1234.5m],
             c => c
                 .TextStyle(NumberTextStyle.Currency)
@@ -220,10 +242,12 @@ public sealed class RoundTripMatrixTests
                 .Rounding(2));
 
         yield return Case.Of("float non-finite", [float.NaN, float.NegativeInfinity], c => c.NonFiniteValues());
-        yield return Case.Of("TimeSpan",
+        yield return Case.Of(
+            "TimeSpan",
             [TimeSpan.Zero, TimeSpan.FromHours(27), TimeSpan.FromTicks(-1234567), TimeSpan.MaxValue]);
 
-        yield return Case.Of("TimeSpan hours",
+        yield return Case.Of(
+            "TimeSpan hours",
             [TimeSpan.FromHours(27), TimeSpan.FromMinutes(-90)],
             c => c.ExcelDuration(ExcelDurationUnit.Hours));
 
@@ -231,7 +255,8 @@ public sealed class RoundTripMatrixTests
         yield return Case.Of<int?>("int?", [1, null]);
         yield return Case.Of("string? null text", ["Ada", null, ""], c => c.NullText("-"));
         yield return Case.Of<DateOnly?>("DateOnly?", [new DateOnly(2024, 1, 1), null]);
-        yield return Case.Of("custom",
+        yield return Case.Of(
+            "custom",
             [new Code("A-1"), new Code("x")],
             c => c.Convert(text => new Code(text), code => code.Text));
     }
@@ -296,7 +321,8 @@ public sealed class RoundTripMatrixTests
                 map = TabularMap
                     .For<Cell<T>>()
                     .Column(x => x.Key, index: 0)
-                    .Column(x => x.Item,
+                    .Column(
+                        x => x.Item,
                         index: 1,
                         configure: c =>
                         {
@@ -332,7 +358,8 @@ public sealed class RoundTripMatrixTests
 
             file.Position = 0;
             var imported = form == Form.Csv
-                ? await CsvInstance.ImportAsync(file,
+                ? await CsvInstance.ImportAsync(
+                    file,
                     map,
                     new CsvImportOptions
                     {
@@ -340,7 +367,8 @@ public sealed class RoundTripMatrixTests
                         TrimFields = trims,
                     },
                     Token)
-                : await ExcelInstance.Format.ImportAsync(file,
+                : await ExcelInstance.Format.ImportAsync(
+                    file,
                     map,
                     new ExcelImportOptions
                     {

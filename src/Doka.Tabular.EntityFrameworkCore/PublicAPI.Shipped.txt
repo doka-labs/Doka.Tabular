@@ -196,16 +196,16 @@ Doka.Tabular.EntityFrameworkCore.TabularJournalResult.Status.get -> Doka.Tabular
 Doka.Tabular.EntityFrameworkCore.TabularJournalSettings
 Doka.Tabular.EntityFrameworkCore.TabularJournalSettings.ExportEnabled.get -> bool
 Doka.Tabular.EntityFrameworkCore.TabularJournalSettings.ExportEnabled.set -> void
-Doka.Tabular.EntityFrameworkCore.TabularJournalSettings.IgnoreScopeCase.get -> bool
-Doka.Tabular.EntityFrameworkCore.TabularJournalSettings.IgnoreScopeCase.set -> void
+Doka.Tabular.EntityFrameworkCore.TabularJournalSettings.IgnoreImportScopeCase.get -> bool
+Doka.Tabular.EntityFrameworkCore.TabularJournalSettings.IgnoreImportScopeCase.set -> void
 Doka.Tabular.EntityFrameworkCore.TabularJournalSettings.ImportEnabled.get -> bool
 Doka.Tabular.EntityFrameworkCore.TabularJournalSettings.ImportEnabled.set -> void
 Doka.Tabular.EntityFrameworkCore.TabularJournalSettings.TablePrefix.get -> string!
 Doka.Tabular.EntityFrameworkCore.TabularJournalSettings.TablePrefix.set -> void
 Doka.Tabular.EntityFrameworkCore.TabularJournalSettings.TabularJournalSettings() -> void
 Doka.Tabular.EntityFrameworkCore.TabularJournalTables
-Doka.Tabular.EntityFrameworkCore.TabularJournalTables.IgnoreScopeCase.get -> bool
-Doka.Tabular.EntityFrameworkCore.TabularJournalTables.IgnoreScopeCase.set -> void
+Doka.Tabular.EntityFrameworkCore.TabularJournalTables.IgnoreImportScopeCase.get -> bool
+Doka.Tabular.EntityFrameworkCore.TabularJournalTables.IgnoreImportScopeCase.set -> void
 Doka.Tabular.EntityFrameworkCore.TabularJournalTables.TablePrefix.get -> string!
 Doka.Tabular.EntityFrameworkCore.TabularJournalTables.TablePrefix.set -> void
 Doka.Tabular.EntityFrameworkCore.TabularJournalTables.TabularJournalTables() -> void
@@ -286,6 +286,7 @@ static Doka.Tabular.EntityFrameworkCore.JournalScope.operator !=(Doka.Tabular.En
 static Doka.Tabular.EntityFrameworkCore.JournalScope.operator ==(Doka.Tabular.EntityFrameworkCore.JournalScope? left, Doka.Tabular.EntityFrameworkCore.JournalScope? right) -> bool
 static Doka.Tabular.EntityFrameworkCore.TabularDatabase.ForContext<TContext>(TContext! context) -> Doka.Tabular.EntityFrameworkCore.TabularDatabase<TContext!>!
 static Doka.Tabular.EntityFrameworkCore.TabularDatabase.ForFactory<TContext>(Microsoft.EntityFrameworkCore.IDbContextFactory<TContext!>! factory) -> Doka.Tabular.EntityFrameworkCore.TabularDatabase<TContext!>!
+static Doka.Tabular.EntityFrameworkCore.TabularDatabase.ForFactory<TContext>(System.Func<System.Threading.CancellationToken, System.Threading.Tasks.Task<TContext!>!>! factory) -> Doka.Tabular.EntityFrameworkCore.TabularDatabase<TContext!>!
 static Doka.Tabular.EntityFrameworkCore.TabularDestination.For(Doka.Tabular.RowMap! map) -> Doka.Tabular.EntityFrameworkCore.TabularDestinationBuilder!
 static Doka.Tabular.EntityFrameworkCore.TabularExportLogOptions.operator !=(Doka.Tabular.EntityFrameworkCore.TabularExportLogOptions? left, Doka.Tabular.EntityFrameworkCore.TabularExportLogOptions? right) -> bool
 static Doka.Tabular.EntityFrameworkCore.TabularExportLogOptions.operator ==(Doka.Tabular.EntityFrameworkCore.TabularExportLogOptions? left, Doka.Tabular.EntityFrameworkCore.TabularExportLogOptions? right) -> bool

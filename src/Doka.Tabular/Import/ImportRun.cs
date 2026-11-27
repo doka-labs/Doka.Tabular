@@ -108,9 +108,11 @@ internal sealed partial class ImportRun<TItem> : IAsyncDisposable
             or NotSupportedException
             or ObjectDisposedException)
         {
-            _errors.AddFatal(TabularError.Create(TabularErrorCodes.Io.Failed,
-                TabularErrorKind.Technical,
-                "Reading the input failed."));
+            _errors.AddFatal(
+                TabularError.Create(
+                    TabularErrorCodes.Io.Failed,
+                    TabularErrorKind.Technical,
+                    "Reading the input failed."));
 
             return await FinishAsync()
                 .ConfigureAwait(false);
@@ -156,7 +158,8 @@ internal sealed partial class ImportRun<TItem> : IAsyncDisposable
         }
 
         _prepared = await PreparedInput
-            .CreateAsync(stream,
+            .CreateAsync(
+                stream,
                 _format.NeedsSeekableInput,
                 _sink is { RequiresInputHash: true },
                 _limits,
@@ -209,7 +212,9 @@ internal sealed partial class ImportRun<TItem> : IAsyncDisposable
             && configuration.Count == 0)
         {
             var preparation = await _sink
-                .PrepareAsync(new ImportSinkStart(_settings.Strategy,
+                .PrepareAsync(
+                    new ImportSinkStart(
+                        _settings.Strategy,
                         false,
                         _scope.OperationId,
                         _scope.Time),
@@ -252,7 +257,8 @@ internal sealed partial class ImportRun<TItem> : IAsyncDisposable
 
         try
         {
-            _ownedFile = new FileStream(path,
+            _ownedFile = new FileStream(
+                path,
                 FileMode.Open,
                 FileAccess.Read,
                 FileShare.Read,
@@ -270,9 +276,11 @@ internal sealed partial class ImportRun<TItem> : IAsyncDisposable
         }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
         {
-            _errors.AddFatal(TabularError.Create(TabularErrorCodes.Io.Failed,
-                TabularErrorKind.Technical,
-                "The input file could not be opened."));
+            _errors.AddFatal(
+                TabularError.Create(
+                    TabularErrorCodes.Io.Failed,
+                    TabularErrorKind.Technical,
+                    "The input file could not be opened."));
 
             return null;
         }
@@ -374,7 +382,8 @@ internal sealed partial class ImportRun<TItem> : IAsyncDisposable
         }
 
         _written = await sink
-            .WriteAsync(rows,
+            .WriteAsync(
+                rows,
                 new ImportSinkWrite(_settings.Strategy, _outcome.Aborted, true),
                 _cancellationToken)
             .ConfigureAwait(false);

@@ -59,7 +59,8 @@ public sealed class TabularTargetValues
 
         return _values.TryGetValue(value, out var result)
             ? (TValue)result!
-            : throw new ArgumentException("The value belongs to a target that is not bound before this one.",
+            : throw new ArgumentException(
+                "The value belongs to a target that is not bound before this one.",
                 nameof(value));
     }
 

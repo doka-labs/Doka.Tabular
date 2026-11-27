@@ -7,7 +7,9 @@ namespace Doka.Tabular.EntityFrameworkCore;
 /// <summary>Entity types of the journals: shared-type entities named per journal, so several journals use the same CLR types.</summary>
 internal static class JournalModel
 {
-    public const string IgnoreScopeCaseAnnotation = "DokaTabular:IgnoreScopeCase";
+    // WHY: The value keeps its 1.0.0-rc.1 spelling, so the EF model of an application does not change with the
+    // rename of the public setting.
+    public const string IgnoreImportScopeCaseAnnotation = "DokaTabular:IgnoreScopeCase";
 
     public static string ImportLog(
         JournalName name
@@ -29,7 +31,8 @@ internal static class JournalModel
         if (prefix.Length > 32
             || !prefix.All(character => char.IsAsciiLetterOrDigit(character) || character == '_'))
         {
-            throw new ArgumentException("A table prefix has at most 32 ASCII letters, digits, or underscores.",
+            throw new ArgumentException(
+                "A table prefix has at most 32 ASCII letters, digits, or underscores.",
                 nameof(prefix));
         }
     }
@@ -38,17 +41,18 @@ internal static class JournalModel
         ModelBuilder modelBuilder,
         JournalName name,
         string prefix,
-        bool ignoreScopeCase
+        bool ignoreImportScopeCase
     )
     {
-        var comparison = ignoreScopeCase
+        var comparison = ignoreImportScopeCase
             ? "true"
             : "false";
 
         if (Registered(modelBuilder, ImportLog(name), prefix + "ImportLogs"))
         {
             var claim = modelBuilder.Model.FindEntityType(ImportClaim(name))!;
-            if (!Equals(claim.FindAnnotation(IgnoreScopeCaseAnnotation)
+            if (!Equals(
+                claim.FindAnnotation(IgnoreImportScopeCaseAnnotation)
                     ?.Value,
                 comparison))
             {
@@ -60,7 +64,8 @@ internal static class JournalModel
         }
 
         modelBuilder.SharedTypeEntity<TabularImportLog>(ImportLog(name), log => ImportLogTable(log, prefix));
-        modelBuilder.SharedTypeEntity<TabularImportClaim>(ImportClaim(name),
+        modelBuilder.SharedTypeEntity<TabularImportClaim>(
+            ImportClaim(name),
             claim => ImportClaimTable(claim, prefix, comparison));
     }
 
@@ -101,7 +106,7 @@ internal static class JournalModel
     private static void ImportClaimTable(
         EntityTypeBuilder<TabularImportClaim> claim,
         string prefix,
-        string ignoreScopeCase
+        string ignoreImportScopeCase
     )
     {
         claim.ToTable(prefix + "ImportClaims");
@@ -124,7 +129,7 @@ internal static class JournalModel
             .Property<Guid>("Version")
             .IsConcurrencyToken();
 
-        claim.HasAnnotation(IgnoreScopeCaseAnnotation, ignoreScopeCase);
+        claim.HasAnnotation(IgnoreImportScopeCaseAnnotation, ignoreImportScopeCase);
     }
 
     public static void AddExport(
@@ -220,16 +225,19 @@ internal static class JournalModel
     // WHY: SQLite cannot compare or order DateTimeOffset values in queries; UTC DateTime values compare on every provider.
     private static void Time(
         PropertyBuilder<DateTimeOffset> property
-    ) => property.HasConversion(new ValueConverter<DateTimeOffset, DateTime>(value => value.UtcDateTime,
-        value => new DateTimeOffset(DateTime.SpecifyKind(value, DateTimeKind.Utc))));
+    ) => property.HasConversion(
+        new ValueConverter<DateTimeOffset, DateTime>(
+            value => value.UtcDateTime,
+            value => new DateTimeOffset(DateTime.SpecifyKind(value, DateTimeKind.Utc))));
 
     private static void Time(
         PropertyBuilder<DateTimeOffset?> property
-    ) => property.HasConversion(new ValueConverter<DateTimeOffset?, DateTime?>(
-        value => value == null
-            ? null
-            : value.Value.UtcDateTime,
-        value => value == null
-            ? null
-            : new DateTimeOffset(DateTime.SpecifyKind(value.Value, DateTimeKind.Utc))));
+    ) => property.HasConversion(
+        new ValueConverter<DateTimeOffset?, DateTime?>(
+            value => value == null
+                ? null
+                : value.Value.UtcDateTime,
+            value => value == null
+                ? null
+                : new DateTimeOffset(DateTime.SpecifyKind(value.Value, DateTimeKind.Utc))));
 }

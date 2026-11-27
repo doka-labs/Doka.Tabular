@@ -104,7 +104,8 @@ public sealed partial class CsvOverloadTests : IDisposable
 
         // Assert
         Assert.Equal(ReportStatus.Succeeded, outcome.Report.Status);
-        Assert.Equal(call.WithOptions
+        Assert.Equal(
+            call.WithOptions
                 ? NameColumn
                 : BothColumns,
             Encoding.UTF8.GetString(await arguments.WrittenAsync(call.Target, outcome)));
@@ -159,7 +160,8 @@ public sealed partial class CsvOverloadTests : IDisposable
         var exception = await Record.ExceptionAsync(() => call.Run(arguments.Without(parameter)));
 
         // Assert
-        Assert.Equal(parameter,
+        Assert.Equal(
+            parameter,
             Assert.IsType<ArgumentNullException>(exception)
                 .ParamName);
     }
@@ -198,12 +200,14 @@ public sealed partial class CsvOverloadTests : IDisposable
 
         // Assert
         Assert.Equal([MissingCity], outcome.Errors);
-        Assert.Equal(call.WithOptions
+        Assert.Equal(
+            call.WithOptions
                 ? ["Ada"]
                 : [],
             outcome.Names);
 
-        Assert.Equal(call.WithOptions
+        Assert.Equal(
+            call.WithOptions
                 ? 1
                 : 0,
             outcome.RowsImported);
@@ -245,19 +249,22 @@ public sealed partial class CsvOverloadTests : IDisposable
         var exception = await Record.ExceptionAsync(() => call.Run(arguments.Without(parameter)));
 
         // Assert
-        Assert.Equal(parameter,
+        Assert.Equal(
+            parameter,
             Assert.IsType<ArgumentNullException>(exception)
                 .ParamName);
     }
 
     private Task<ExportArguments<CsvExportOptions>> CreateExportAsync()
-        => ExportArguments<CsvExportOptions>.CreateAsync(s_exportOptions,
+        => ExportArguments<CsvExportOptions>.CreateAsync(
+            s_exportOptions,
             Path.Combine(_directory, "residents.csv"),
             Token);
 
     private Task<ImportArguments<CsvImportOptions>> CreateImportAsync(
         byte[] input
-    ) => ImportArguments<CsvImportOptions>.CreateAsync(s_importOptions,
+    ) => ImportArguments<CsvImportOptions>.CreateAsync(
+        s_importOptions,
         input,
         Path.Combine(_directory, "residents.csv"),
         Token);

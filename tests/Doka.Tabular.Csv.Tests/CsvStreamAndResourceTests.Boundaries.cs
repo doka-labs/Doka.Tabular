@@ -26,7 +26,8 @@ public sealed partial class CsvStreamAndResourceTests
         {
             Assert.Equal(ReportStatus.Succeeded, report.Status);
             Assert.Equal(size, file!.Length);
-            Assert.Equal(spills,
+            Assert.Equal(
+                spills,
                 Directory.GetFiles(_directory)
                     .Length
                 == 1);
@@ -43,12 +44,13 @@ public sealed partial class CsvStreamAndResourceTests
     {
         // Arrange
         var size = await SizeAsync();
-        var format = new CsvFormat(new CsvFormatOptions
-        {
-            OutputBufferBytes = size + bufferOffset,
-            AllowSpill = false,
-            TemporaryDirectory = _directory,
-        });
+        var format = new CsvFormat(
+            new CsvFormatOptions
+            {
+                OutputBufferBytes = size + bufferOffset,
+                AllowSpill = false,
+                TemporaryDirectory = _directory,
+            });
 
         // Act
         var (report, file) = await format.ExportAsync(Rows(500), s_map, Token);
@@ -56,7 +58,8 @@ public sealed partial class CsvStreamAndResourceTests
         // Assert
         await using (file)
         {
-            Assert.Equal(succeeds
+            Assert.Equal(
+                succeeds
                     ? null
                     : TabularErrorCodes.Resource.LimitExceeded,
                 report.FatalError?.Code);
@@ -76,12 +79,13 @@ public sealed partial class CsvStreamAndResourceTests
     {
         // Arrange
         var size = await SizeAsync();
-        var format = new CsvFormat(new CsvFormatOptions
-        {
-            OutputBufferBytes = 0,
-            MaxTemporaryBytes = size + limitOffset,
-            TemporaryDirectory = _directory,
-        });
+        var format = new CsvFormat(
+            new CsvFormatOptions
+            {
+                OutputBufferBytes = 0,
+                MaxTemporaryBytes = size + limitOffset,
+                TemporaryDirectory = _directory,
+            });
 
         // Act
         var (report, file) = await format.ExportAsync(Rows(500), s_map, Token);
@@ -89,12 +93,14 @@ public sealed partial class CsvStreamAndResourceTests
         // Assert
         await using (file)
         {
-            Assert.Equal(succeeds
+            Assert.Equal(
+                succeeds
                     ? null
                     : TabularErrorCodes.Resource.LimitExceeded,
                 report.FatalError?.Code);
 
-            Assert.Equal(succeeds
+            Assert.Equal(
+                succeeds
                     ? 1
                     : 0,
                 Directory.GetFiles(_directory)

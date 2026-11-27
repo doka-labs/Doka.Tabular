@@ -36,7 +36,8 @@ public sealed class JournalName : IEquatable<JournalName>
         if (value.Length > 64
             || !value.All(character => char.IsAsciiLetterOrDigit(character) || character is '-' or '_'))
         {
-            throw new ArgumentException("A journal name has 1 to 64 ASCII letters, digits, hyphens, or underscores.",
+            throw new ArgumentException(
+                "A journal name has 1 to 64 ASCII letters, digits, hyphens, or underscores.",
                 nameof(value));
         }
 

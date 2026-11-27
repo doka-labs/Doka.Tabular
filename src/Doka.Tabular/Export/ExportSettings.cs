@@ -41,23 +41,26 @@ internal sealed class ExportShape<TSource>
 
     public static ExportShape<TabularRow> ForRowMap(
         RowMap map
-    ) => new(map
-        .Roles
-        .Select(role
-            => new ExportRole(role.Model, role.Embedding, source => ((TabularRow)source).Items[role.Ordinal]))
-        .ToArray());
+    ) => new(
+        map
+            .Roles
+            .Select(role
+                => new ExportRole(role.Model, role.Embedding, source => ((TabularRow)source).Items[role.Ordinal]))
+            .ToArray());
 
     public static ExportShape<T> ForRowExport<T>(
         RowExportMap<T> map
-    ) => new(map
-        .Map
-        .Roles
-        .Where(role => map.Bindings.ContainsKey(role.Ordinal))
-        .Select(role => new ExportRole(role.Model,
-            role.Embedding,
-            source => map
-                .Bindings[role.Ordinal]((T)source)))
-        .ToArray());
+    ) => new(
+        map
+            .Map
+            .Roles
+            .Where(role => map.Bindings.ContainsKey(role.Ordinal))
+            .Select(role => new ExportRole(
+                role.Model,
+                role.Embedding,
+                source => map
+                    .Bindings[role.Ordinal]((T)source)))
+            .ToArray());
 }
 
 /// <summary>One output column of a call.</summary>

@@ -13,17 +13,20 @@ internal readonly record struct NumberSymbols(
         NumberTextStyle style
     ) => style switch
     {
-        NumberTextStyle.Currency => new NumberSymbols(format.CurrencyDecimalSeparator,
+        NumberTextStyle.Currency => new NumberSymbols(
+            format.CurrencyDecimalSeparator,
             format.CurrencyGroupSeparator,
             format.CurrencyGroupSizes,
             NumberAffixes.Of(amount => amount.ToString("C0", format))),
 
         // WHY: The P format writes with the percent separators, which can differ from the number ones.
-        NumberTextStyle.Percent => new NumberSymbols(format.PercentDecimalSeparator,
+        NumberTextStyle.Percent => new NumberSymbols(
+            format.PercentDecimalSeparator,
             format.PercentGroupSeparator,
             format.PercentGroupSizes,
             NumberAffixes.Of(amount => (amount / 100m).ToString("P0", format))),
-        _ => new NumberSymbols(format.NumberDecimalSeparator,
+        _ => new NumberSymbols(
+            format.NumberDecimalSeparator,
             format.NumberGroupSeparator,
             format.NumberGroupSizes,
             null),

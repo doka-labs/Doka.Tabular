@@ -5,7 +5,8 @@ namespace Doka.Tabular;
 /// <summary>Conversion between Excel serial numbers and ticks for the 1900 and 1904 date systems.</summary>
 internal static class ExcelDates
 {
-    private static readonly DateTime s_base1900 = new(1899,
+    private static readonly DateTime s_base1900 = new(
+        1899,
         12,
         31,
         0,
@@ -13,7 +14,8 @@ internal static class ExcelDates
         0,
         DateTimeKind.Unspecified);
 
-    private static readonly DateTime s_base1904 = new(1904,
+    private static readonly DateTime s_base1904 = new(
+        1904,
         1,
         1,
         0,
@@ -142,7 +144,8 @@ internal static class ExcelDates
         var exact = ExactDecimal.FromDouble(days);
         var scale = BigInteger.Pow(10, Math.Max(0, -exact.Exponent));
 
-        return new ExactDecimal(false,
+        return new ExactDecimal(
+            false,
             exact.Mantissa * TimeSpan.TicksPerDay * BigInteger.Pow(10, Math.Max(0, exact.Exponent))
             + origin.Ticks * scale,
             Math.Min(0, exact.Exponent));

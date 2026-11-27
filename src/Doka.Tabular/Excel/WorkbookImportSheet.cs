@@ -77,11 +77,14 @@ internal sealed class WorkbookImportSheet<T> : WorkbookImportSheet
         if (startRow < 1
             || Options.EndRow < startRow)
         {
-            errors.Add(TabularError.Configuration("StartRow and EndRow must lie within the sheet.",
-                new TabularErrorLocation { SheetName = Name }));
+            errors.Add(
+                TabularError.Configuration(
+                    "StartRow and EndRow must lie within the sheet.",
+                    new TabularErrorLocation { SheetName = Name }));
         }
 
-        var context = new ConversionContext(TabularFormatKind.Excel,
+        var context = new ConversionContext(
+            TabularFormatKind.Excel,
             settings.Culture,
             settings.TrimFields,
             settings.Translations,
@@ -94,19 +97,22 @@ internal sealed class WorkbookImportSheet<T> : WorkbookImportSheet
         }
 
         var plan = ImportPlan<T>.Prepare(_shape, settings, context, sheetErrors);
-        errors.AddRange(sheetErrors.Select(error => error.Location.SheetName is null
-            ? error.WithLocation(new TabularErrorLocation
-            {
-                SheetName = Name,
-                ColumnKey = error.Location.ColumnKey,
-                PropertyPath = error.Location.PropertyPath,
-            })
-            : error));
+        errors.AddRange(
+            sheetErrors.Select(error => error.Location.SheetName is null
+                ? error.WithLocation(
+                    new TabularErrorLocation
+                    {
+                        SheetName = Name,
+                        ColumnKey = error.Location.ColumnKey,
+                        PropertyPath = error.Location.PropertyPath,
+                    })
+                : error));
 
         return new Prepared(plan, _destination?.CreateSink(call))
         {
             Name = Name,
-            ReadSettings = new ExcelReadSettings(startRow,
+            ReadSettings = new ExcelReadSettings(
+                startRow,
                 Options.EndRow,
                 Options.VisibleRowsOnly ?? false,
                 settings.Binding != ColumnBinding.ByIndex),
@@ -166,7 +172,8 @@ internal sealed class WorkbookImportSheet<T> : WorkbookImportSheet
             TableOutcome<T> outcome
         ) => new(this, outcome)
         {
-            Counts = new TableCounts(outcome.RowsRead,
+            Counts = new TableCounts(
+                outcome.RowsRead,
                 outcome.RowsRejected,
                 outcome.HadDataErrors,
                 outcome.Aborted,
@@ -178,7 +185,9 @@ internal sealed class WorkbookImportSheet<T> : WorkbookImportSheet
         public override object EmptyReport(
             ReportStatus status,
             TabularReportDiagnostics diagnostics
-        ) => new ImportReport<T>(new ImportReportData(status,
+        ) => new ImportReport<T>(
+            new ImportReportData(
+                status,
                 false,
                 0,
                 0,
@@ -320,7 +329,8 @@ internal sealed class WorkbookImportSheet<T> : WorkbookImportSheet
                 }
 
                 // WHY: A technical end of the writing phase fails the sheet; one after a confirmed commit does not.
-                return new SinkCounts(outcome.RowsImported,
+                return new SinkCounts(
+                    outcome.RowsImported,
                     outcome.RowsPendingCommit,
                     outcome.RowsSkipped,
                     outcome.RowsUncertain,

@@ -103,21 +103,23 @@ public sealed partial class TabularImport
 
         var diagnostics = new TabularReportDiagnostics(Guid.NewGuid());
 
-        return Task.FromResult(new ImportReport<TItem>(
-            new ImportReportData(ReportStatus.Failed,
-                false,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                errors.Snapshot(),
-                errors.TotalCount,
-                errors.OmittedCount,
-                null,
-                diagnostics,
-                null),
-            []));
+        return Task.FromResult(
+            new ImportReport<TItem>(
+                new ImportReportData(
+                    ReportStatus.Failed,
+                    false,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    errors.Snapshot(),
+                    errors.TotalCount,
+                    errors.OmittedCount,
+                    null,
+                    diagnostics,
+                    null),
+                []));
     }
 }

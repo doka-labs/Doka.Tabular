@@ -74,12 +74,14 @@ public sealed partial class DestinationOverloadTests : IDisposable
         var overloads = OverloadSurface
             .DestinationNames(typeof(CsvFormat))
             .Select(name => $"Csv {name}")
-            .Concat(OverloadSurface
-                .DestinationNames(typeof(ExcelFormat))
-                .Select(name => $"Excel {name}"))
-            .Concat(OverloadSurface
-                .DestinationNames(typeof(TabularImport))
-                .Select(name => $"Tabular {name}"))
+            .Concat(
+                OverloadSurface
+                    .DestinationNames(typeof(ExcelFormat))
+                    .Select(name => $"Excel {name}"))
+            .Concat(
+                OverloadSurface
+                    .DestinationNames(typeof(TabularImport))
+                    .Select(name => $"Tabular {name}"))
             .Order();
 
         // Assert
@@ -126,12 +128,14 @@ public sealed partial class DestinationOverloadTests : IDisposable
 
         // Assert
         Assert.Equal([InvalidPersonnelNumber], outcome.Errors);
-        Assert.Equal(call.WithOptions
+        Assert.Equal(
+            call.WithOptions
                 ? 1
                 : 0,
             outcome.RowsImported);
 
-        Assert.Equal(call.WithOptions
+        Assert.Equal(
+            call.WithOptions
                 ? ["Ada"]
                 : [],
             await NamesAsync(context));
@@ -172,7 +176,8 @@ public sealed partial class DestinationOverloadTests : IDisposable
         var call = s_imports.Single(entry => entry.Name == overload);
         await using var database = await SqliteFile.OpenAsync(Token);
         await using var context = await CreateContextAsync(database);
-        var arguments = await DestinationArguments.CreateAsync(context,
+        var arguments = await DestinationArguments.CreateAsync(
+            context,
             TabularType.Csv,
             s_validUsers,
             _directory,
@@ -182,7 +187,8 @@ public sealed partial class DestinationOverloadTests : IDisposable
         var exception = await Record.ExceptionAsync(() => call.Run(arguments.Without(parameter)));
 
         // Assert
-        Assert.Equal(parameter,
+        Assert.Equal(
+            parameter,
             Assert.IsType<ArgumentNullException>(exception)
                 .ParamName);
     }
@@ -199,9 +205,10 @@ public sealed partial class DestinationOverloadTests : IDisposable
         SqliteFile database
     )
     {
-        var context = new TabularTestContext(new DbContextOptionsBuilder<TabularTestContext>()
-            .UseSqlite(database.Connection)
-            .Options);
+        var context = new TabularTestContext(
+            new DbContextOptionsBuilder<TabularTestContext>()
+                .UseSqlite(database.Connection)
+                .Options);
 
         await context.Database.EnsureCreatedAsync(Token);
 
@@ -279,7 +286,8 @@ public sealed partial class DestinationOverloadTests : IDisposable
 
         private static DestinationOutcome From<T>(
             ImportReport<T> report
-        ) => new(report.Status,
+        ) => new(
+            report.Status,
             report.RowsImported,
             [.. report.Errors.Select(error => $"{error.Code.Value} row {error.Location.RowNumber}")]);
     }
@@ -321,7 +329,8 @@ public sealed partial class DestinationOverloadTests : IDisposable
             CancellationToken cancellationToken
         )
         {
-            var export = await new TabularExport(s_csv, s_excel).ExportAsync(users,
+            var export = await new TabularExport(s_csv, s_excel).ExportAsync(
+                users,
                 TestMaps.Users,
                 type,
                 cancellationToken);

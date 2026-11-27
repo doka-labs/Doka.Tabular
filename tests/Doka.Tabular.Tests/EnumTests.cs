@@ -7,7 +7,8 @@ namespace Doka.Tabular.Tests;
 /// <summary>Enum texts, aliases, numeric input, and flags.</summary>
 public sealed partial class EnumTests
 {
-    [SuppressMessage("Design",
+    [SuppressMessage(
+        "Design",
         "CA1069:Enums values should not be duplicated",
         Justification = "The alias case needs two members with the same value.")]
     public enum AliasStatus
@@ -162,7 +163,8 @@ public sealed partial class EnumTests
         object? cell,
         TabularMap<Value<T>>? map = null,
         TabularImportOptions? options = null
-    ) => await Import.ImportAsync(Create(type, [1, cell]),
+    ) => await Import.ImportAsync(
+        Create(type, [1, cell]),
         type,
         map ?? Map<T>(),
         options ?? new TabularImportOptions(),
@@ -173,7 +175,8 @@ public sealed partial class EnumTests
         ImportReport<Value<T>> report
     )
     {
-        Assert.True(report.Status == ReportStatus.Succeeded,
+        Assert.True(
+            report.Status == ReportStatus.Succeeded,
             string.Join(" | ", report.Errors.Select(error => error.Code.Value)));
 
         return Assert.Single(report.Items!)
@@ -188,7 +191,8 @@ public sealed partial class EnumTests
         TabularExportOptions? options = null
     )
     {
-        var (report, file) = await Export.ExportAsync(new[] { new Value<T>(1, value) },
+        var (report, file) = await Export.ExportAsync(
+            new[] { new Value<T>(1, value) },
             map ?? Map<T>(),
             type,
             options ?? new TabularExportOptions(),
@@ -285,7 +289,8 @@ public sealed partial class EnumTests
         };
 
         // Act
-        var both = await Task.WhenAll(ExportTextAsync(type, OrderBy.Ascending, translated, german),
+        var both = await Task.WhenAll(
+            ExportTextAsync(type, OrderBy.Ascending, translated, german),
             ExportTextAsync(type, OrderBy.Ascending, translated, english));
 
         // Assert
@@ -296,13 +301,15 @@ public sealed partial class EnumTests
     public async Task ThrowingTranslationKeyFunction_IsAConfigurationErrorOfTheImport()
     {
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8("1,Up"),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8("1,Up"),
             s_throwingKeys,
             new CsvImportOptions { Translations = s_upTranslation },
             Token);
 
         // Assert
-        Assert.Equal(TabularErrorKind.Configuration,
+        Assert.Equal(
+            TabularErrorKind.Configuration,
             Assert.Single(report.Errors)
                 .Kind);
     }
@@ -311,14 +318,16 @@ public sealed partial class EnumTests
     public async Task ThrowingTranslationKeyFunction_IsAConfigurationErrorOfTheExport()
     {
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Value<OrderBy>(1, OrderBy.Ascending) },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Value<OrderBy>(1, OrderBy.Ascending) },
             s_throwingKeys,
             new MemoryStream(),
             new CsvExportOptions { Translations = s_upTranslation },
             Token);
 
         // Assert
-        Assert.Equal(TabularErrorKind.Configuration,
+        Assert.Equal(
+            TabularErrorKind.Configuration,
             Assert.Single(report.Errors)
                 .Kind);
     }
@@ -330,7 +339,8 @@ public sealed partial class EnumTests
     )
     {
         // Act
-        var report = await ReadAsync<ContactStatus>(type,
+        var report = await ReadAsync<ContactStatus>(
+            type,
             type == TabularType.Csv
                 ? "1"
                 : 1);
@@ -346,7 +356,8 @@ public sealed partial class EnumTests
     )
     {
         // Act
-        var report = await ReadAsync(type,
+        var report = await ReadAsync(
+            type,
             type == TabularType.Csv
                 ? "1"
                 : 1,
@@ -432,7 +443,8 @@ public sealed partial class EnumTests
     )
     {
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8($"1,\"{text}\""),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8($"1,\"{text}\""),
             Map<Small>(c => c.AllowNumericInput()),
             new CsvImportOptions { Culture = CultureInfo.GetCultureInfo(culture) },
             Token);
@@ -497,13 +509,15 @@ public sealed partial class EnumTests
     public async Task NumberShapedTextAfterTheTrimOfTheCall_OfAnotherValue_FailsBeforeTheFirstRow()
     {
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8("1,1"),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8("1,1"),
             Map<SpacedNumbered>(c => c.AllowNumericInput()),
             new CsvImportOptions { TrimFields = true },
             Token);
 
         // Assert
-        Assert.Equal((TabularErrorCodes.Configuration.Invalid, 0L),
+        Assert.Equal(
+            (TabularErrorCodes.Configuration.Invalid, 0L),
             (Assert.Single(report.Errors)
                 .Code, report.RowsRead));
     }
@@ -514,7 +528,8 @@ public sealed partial class EnumTests
         // Act
         var exception = Record.Exception(() => Map<SpacedNumbered>(c => c
             .Trim()
-            .Convert(value => value,
+            .Convert(
+                value => value,
                 value => value,
                 configure: b => b.AllowNumericInput())));
 
@@ -567,7 +582,8 @@ public sealed partial class EnumTests
             .TranslationKeys(value => $"order.{value}"));
 
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8("1,2"),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8("1,2"),
             translated,
             new CsvImportOptions
             {
@@ -576,7 +592,8 @@ public sealed partial class EnumTests
             Token);
 
         // Assert
-        Assert.Equal((TabularErrorCodes.Configuration.Invalid, 0L),
+        Assert.Equal(
+            (TabularErrorCodes.Configuration.Invalid, 0L),
             (Assert.Single(report.Errors)
                 .Code, report.RowsRead));
     }
@@ -627,7 +644,8 @@ public sealed partial class EnumTests
         var report = await CsvInstance.ExportAsync(s_activeAlias, s_aliasKeys, new MemoryStream(), options, Token);
 
         // Assert
-        Assert.Equal((ReportStatus.Failed, TabularErrorKind.Configuration, 0L),
+        Assert.Equal(
+            (ReportStatus.Failed, TabularErrorKind.Configuration, 0L),
             (report.Status, report.Errors[0].Kind, report.RowsRead));
     }
 
@@ -635,7 +653,8 @@ public sealed partial class EnumTests
     public async Task AliasesWithTranslationKeys_WriteTheirTranslation()
     {
         // Act
-        var (report, file) = await CsvInstance.ExportAsync(s_activeAlias,
+        var (report, file) = await CsvInstance.ExportAsync(
+            s_activeAlias,
             s_aliasKeys,
             new CsvExportOptions { Translations = new Dictionary<string, string> { ["status.one"] = "On" } },
             Token);
@@ -662,7 +681,8 @@ public sealed partial class EnumTests
     )
     {
         // Act
-        var (_, text) = await ExportTextAsync(type,
+        var (_, text) = await ExportTextAsync(
+            type,
             AliasStatus.Active,
             Map<AliasStatus>(c => c.ExportAlias(nameof(AliasStatus.Enabled))));
 
@@ -677,7 +697,8 @@ public sealed partial class EnumTests
     )
     {
         // Act
-        var (_, text) = await ExportTextAsync(type,
+        var (_, text) = await ExportTextAsync(
+            type,
             AliasStatus.Active,
             Map<AliasStatus>(c => c.ExportAlias(nameof(AliasStatus.Active))));
 

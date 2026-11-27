@@ -65,7 +65,8 @@ public sealed partial class EnumTests
     )
     {
         // Act
-        var (_, text) = await ExportTextAsync(type,
+        var (_, text) = await ExportTextAsync(
+            type,
             Permissions.Read | Permissions.Write,
             Map<Permissions>(c => c.FlagsSeparator('|')));
 
@@ -203,7 +204,8 @@ public sealed partial class EnumTests
     public async Task Flags_CombinedMembers_PartOfAMember_FailsTheExportAtItsRow()
     {
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Value<Combined>(4, (Combined)1) },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Value<Combined>(4, (Combined)1) },
             Map<Combined>(),
             new MemoryStream(),
             Token);
@@ -247,7 +249,8 @@ public sealed partial class EnumTests
     public async Task FlagsZeroWithoutMember_FailsTheExportWithoutAText()
     {
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Value<NoZero>(1, 0) },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Value<NoZero>(1, 0) },
             Map<NoZero>(),
             new MemoryStream(),
             Token);
@@ -271,7 +274,8 @@ public sealed partial class EnumTests
         };
 
         // Act
-        var (_, text) = await ExportTextAsync(TabularType.Csv,
+        var (_, text) = await ExportTextAsync(
+            TabularType.Csv,
             (NoZero)0,
             Map<NoZero>(c => c.TranslationKeys(value => $"p.{value}")),
             options);
@@ -294,7 +298,8 @@ public sealed partial class EnumTests
     public async Task Flags_EmptyTranslationOfZeroWithoutMember_IsAConfigurationError()
     {
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Value<NoZero>(1, NoZero.Read) },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Value<NoZero>(1, NoZero.Read) },
             Map<NoZero>(c => c.TranslationKeys(value => $"p.{value}")),
             new MemoryStream(),
             new CsvExportOptions
@@ -316,7 +321,8 @@ public sealed partial class EnumTests
     public async Task Flags_TranslationContainingTheSeparator_IsAConfigurationError()
     {
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Value<Permissions>(1, Permissions.Read) },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Value<Permissions>(1, Permissions.Read) },
             Map<Permissions>(c => c.TranslationKeys(value => $"p.{value}")),
             new MemoryStream(),
             new CsvExportOptions { Translations = s_permissionTexts },
@@ -330,7 +336,8 @@ public sealed partial class EnumTests
     public async Task Flags_TranslationWithoutTheChosenSeparator_IsWritten()
     {
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Value<Permissions>(1, Permissions.Read) },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Value<Permissions>(1, Permissions.Read) },
             Map<Permissions>(c => c
                 .TranslationKeys(value => $"p.{value}")
                 .FlagsSeparator('|')),

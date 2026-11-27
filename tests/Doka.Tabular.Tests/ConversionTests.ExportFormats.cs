@@ -69,7 +69,8 @@ public sealed partial class ConversionTests
     )
     {
         // Act
-        var (report, file) = await Export.ExportAsync(new[] { new Value<decimal>(-12.5m) },
+        var (report, file) = await Export.ExportAsync(
+            new[] { new Value<decimal>(-12.5m) },
             Map<decimal>(c => c
                 .Culture(NegativeCurrency(pattern))
                 .ExportFormat("C2")),
@@ -90,7 +91,8 @@ public sealed partial class ConversionTests
     )
     {
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Value<int>(-12) },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Value<int>(-12) },
             Map<int>(c => c
                 .Culture(NegativeCurrency(pattern))
                 .ExportFormat("C0")),
@@ -110,7 +112,8 @@ public sealed partial class ConversionTests
     )
     {
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Value<double>(-12.5) },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Value<double>(-12.5) },
             Map<double>(c => c
                 .Culture(NegativeCurrency(pattern))
                 .ExportFormat("C2")),
@@ -130,7 +133,8 @@ public sealed partial class ConversionTests
     )
     {
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Value<decimal>(-12.5m) },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Value<decimal>(-12.5m) },
             Map<decimal>(c => c
                 .Culture(NegativeCurrency(pattern))
                 .ExportFormat("C0")),
@@ -227,7 +231,8 @@ public sealed partial class ConversionTests
     public async Task ExportFormatThatChangesTheValue_StaysAPrecisionLoss()
     {
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Value<decimal>(12.5m) },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Value<decimal>(12.5m) },
             Map<decimal>(c => c
                 .Culture(s_english)
                 .ExportFormat("C0")),

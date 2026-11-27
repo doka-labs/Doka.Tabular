@@ -61,7 +61,8 @@ public sealed partial class ConversionTests
     {
         // Act
         // WHY: Half.MaxValue 65504 rounded to one significant digit is 70000, above the range of Half.
-        var (report, _) = await Export.ExportAsync(new[] { new Value<Half>(Half.MaxValue) },
+        var (report, _) = await Export.ExportAsync(
+            new[] { new Value<Half>(Half.MaxValue) },
             Map<Half>(c => c.SignificantDigitsRounding(1)),
             type,
             Token);
@@ -120,7 +121,8 @@ public sealed partial class ConversionTests
 
         // Assert
         Assert.Equal(ReportStatus.Succeeded, export.Status);
-        Assert.Equal(2.3e-308,
+        Assert.Equal(
+            2.3e-308,
             Assert.Single(report.Items!)
                 .Item);
     }
@@ -145,7 +147,8 @@ public sealed partial class ConversionTests
     )
     {
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Value<float>(0.1f) },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Value<float>(0.1f) },
             Map<float>(c => c.ExportFormat(format)),
             new MemoryStream(),
             Token);
@@ -158,7 +161,8 @@ public sealed partial class ConversionTests
     public async Task Float_WithAnExportFormat_IsFormattedWithItsOwnPrecision()
     {
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Value<float>(0.1f) },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Value<float>(0.1f) },
             Map<float>(c => c.ExportFormat("F1")),
             new MemoryStream(),
             Token);
@@ -172,7 +176,8 @@ public sealed partial class ConversionTests
     {
         // Act
         // WHY: The round trip of the own output is the checked contract, so export and reimport form one action.
-        var (export, file) = await ExcelInstance.ExportAsync(new[] { new Value<float>(0.1f), new Value<float>(1.2f) },
+        var (export, file) = await ExcelInstance.ExportAsync(
+            new[] { new Value<float>(0.1f), new Value<float>(1.2f) },
             Map<float>(),
             Token);
 
@@ -212,7 +217,8 @@ public sealed partial class ConversionTests
     public async Task DecimalRoundingBeyondTheRange_IsAnError()
     {
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Value<decimal>(decimal.MaxValue) },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Value<decimal>(decimal.MaxValue) },
             Map<decimal>(c => c.SignificantDigitsRounding(1)),
             new MemoryStream(),
             Token);
@@ -225,7 +231,8 @@ public sealed partial class ConversionTests
     public async Task Guid_WithTrimDisabled_RejectsSurroundingSpaces()
     {
         // Act
-        var report = await ReadAsync(TabularType.Csv,
+        var report = await ReadAsync(
+            TabularType.Csv,
             " 6f9619ff-8b86-d011-b42d-00c04fc964ff ",
             Map<Guid>(c => c.Trim(false)));
 

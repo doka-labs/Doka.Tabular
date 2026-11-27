@@ -31,7 +31,8 @@ public sealed class ArticlesController : ControllerBase
     private static readonly TabularMap<Article> s_map = TabularMap
         .For<Article>()
         .Column(x => x.Number, index: 0, key: ColumnKey.Create("number"), configure: c => c.Header("Artikel"))
-        .Column(x => x.Stock,
+        .Column(
+            x => x.Stock,
             index: 1,
             key: ColumnKey.Create("stock"),
             configure: c => c
@@ -64,11 +65,12 @@ public sealed class ArticlesController : ControllerBase
 
         // File(...) disposes the stream after sending.
         return file is null
-            ? UnprocessableEntity(new
-            {
-                report.Status,
-                Errors = report.Errors.Select(error => error.Code.Value),
-            })
+            ? UnprocessableEntity(
+                new
+                {
+                    report.Status,
+                    Errors = report.Errors.Select(error => error.Code.Value),
+                })
             : File(file, request.Type.ContentType, $"articles{request.Type.FileExtension}");
     }
 
@@ -81,7 +83,8 @@ public sealed class ArticlesController : ControllerBase
         Response.ContentType = request.Type.ContentType;
         Response.Headers.ContentDisposition = $"attachment; filename=\"articles{request.Type.FileExtension}\"";
 
-        var report = await _export.ExportAsync(s_articles,
+        var report = await _export.ExportAsync(
+            s_articles,
             s_map,
             Response.Body,
             request.Type,
@@ -102,11 +105,12 @@ public sealed class ArticlesController : ControllerBase
         }
 
         Response.Clear();
-        await UnprocessableEntity(new
-            {
-                report.Status,
-                Errors = report.Errors.Select(error => error.Code.Value),
-            })
+        await UnprocessableEntity(
+                new
+                {
+                    report.Status,
+                    Errors = report.Errors.Select(error => error.Code.Value),
+                })
             .ExecuteResultAsync(ControllerContext);
     }
 
@@ -118,22 +122,24 @@ public sealed class ArticlesController : ControllerBase
     )
     {
         await using var source = file.OpenReadStream();
-        var report = await _import.ImportAsync(source,
+        var report = await _import.ImportAsync(
+            source,
             type,
             s_map,
             new TabularImportOptions { Strategy = ImportStrategy.Partial },
             cancellationToken);
 
-        return Ok(new
-        {
-            report.Status,
-            report.Items,
-            Errors = report.Errors.Select(error => new
+        return Ok(
+            new
             {
-                error.Code.Value,
-                error.Location.RecordNumber,
-            }),
-        });
+                report.Status,
+                report.Items,
+                Errors = report.Errors.Select(error => new
+                {
+                    error.Code.Value,
+                    error.Location.RecordNumber,
+                }),
+            });
     }
 
     /// <summary>Settings of the inner CSV part apply only when the call exports CSV; Excel ignores them.</summary>
@@ -198,26 +204,30 @@ public static class ControllerSample
             using var client = new HttpClient();
             client.BaseAddress = new Uri(address);
 
-            var csv = await client.PostAsJsonAsync("articles/export",
+            var csv = await client.PostAsJsonAsync(
+                "articles/export",
                 new ArticleExportRequest(TabularType.Csv, ';'),
                 cancellationToken);
 
             await output.WriteLineAsync($"CSV export: {(int)csv.StatusCode}");
             await output.WriteLineAsync(await csv.Content.ReadAsStringAsync(cancellationToken));
-            var excel = await client.PostAsJsonAsync("articles/export",
+            var excel = await client.PostAsJsonAsync(
+                "articles/export",
                 new ArticleExportRequest(TabularType.Excel, ';'),
                 cancellationToken);
 
             await output.WriteLineAsync($"Excel export: {(int)excel.StatusCode} {excel.Content.Headers.ContentType}");
 
-            var streamed = await client.PostAsJsonAsync("articles/export/stream",
+            var streamed = await client.PostAsJsonAsync(
+                "articles/export/stream",
                 new ArticleExportRequest(TabularType.Csv, ';'),
                 cancellationToken);
 
             await output.WriteLineAsync(
                 $"Streamed CSV export: {(int)streamed.StatusCode} {(await streamed.Content.ReadAsStringAsync(cancellationToken)).ReplaceLineEndings("|")}");
 
-            var rejected = await client.PostAsJsonAsync("articles/export/stream",
+            var rejected = await client.PostAsJsonAsync(
+                "articles/export/stream",
                 new ArticleExportRequest(TabularType.Csv, ';', ["unknown"]),
                 cancellationToken);
 

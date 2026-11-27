@@ -42,9 +42,10 @@ internal static class PropertyText
             }
             else
             {
-                builder.Append(char.IsSurrogate(character)
-                    ? 'x'
-                    : character);
+                builder.Append(
+                    char.IsSurrogate(character)
+                        ? 'x'
+                        : character);
             }
         }
 

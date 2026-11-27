@@ -80,7 +80,8 @@ public abstract partial class JournalSpecification
         Assert.Equal((JournalCallStatus.Succeeded, 1L), (done.Status, done.Count));
         Assert.Empty(retained.Store.Files);
         await using var check = await database.ContextAsync();
-        Assert.Equal(TabularExportLogStatus.Deleted,
+        Assert.Equal(
+            TabularExportLogStatus.Deleted,
             (await retained
                 .Journal
                 .QueryExports(check)
@@ -91,13 +92,15 @@ public abstract partial class JournalSpecification
         TestDatabase database
     )
     {
-        var time = new FakeTimeProvider(new DateTimeOffset(2026,
-            11,
-            17,
-            8,
-            0,
-            0,
-            TimeSpan.Zero));
+        var time = new FakeTimeProvider(
+            new DateTimeOffset(
+                2026,
+                11,
+                17,
+                8,
+                0,
+                0,
+                TimeSpan.Zero));
 
         var journal = TabularJournal
             .ForFactory(database.Factory)
@@ -113,7 +116,8 @@ public abstract partial class JournalSpecification
         var store = new MemoryFileStore();
 
         // Act
-        var report = await s_csv.ExportAsync(new[] { new UserDto(1, "a@example.org", "A") },
+        var report = await s_csv.ExportAsync(
+            new[] { new UserDto(1, "a@example.org", "A") },
             TestMaps.Users,
             TabularFileTarget.To(store, "users.csv"),
             Token);
@@ -135,7 +139,8 @@ public abstract partial class JournalSpecification
             .AddDays(7);
 
         public Task<ExportReport> ExportAsync() => new CsvFormat(new CsvFormatOptions { TimeProvider = Time })
-            .ExportAsync(new[] { new UserDto(1, "a@example.org", "A") },
+            .ExportAsync(
+                new[] { new UserDto(1, "a@example.org", "A") },
                 TestMaps.Users,
                 TabularFileTarget
                     .To(Store, "users.csv")

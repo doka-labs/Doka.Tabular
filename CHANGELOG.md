@@ -4,6 +4,16 @@ All notable changes to this project are documented in this file. The format foll
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-11-27
+
+### Added
+
+- `Doka.Tabular.EntityFrameworkCore`: `TabularDatabase.ForFactory` also takes a function `Func<CancellationToken, Task<TContext>>`, like `TabularJournal.ForFactory`.
+
+### Changed
+
+- `Doka.Tabular.EntityFrameworkCore`: `TabularJournalSettings.IgnoreScopeCase` and `TabularJournalTables.IgnoreScopeCase` are renamed to `IgnoreImportScopeCase`, because the setting applies to import scopes only.
+
 ## [1.0.0-rc.1] - 2026-11-26
 
 ### Added
@@ -16,5 +26,6 @@ All notable changes to this project are documented in this file. The format foll
 - `Doka.Tabular.EntityFrameworkCore`: insert, upsert and lookup targets for EF Core with savepoints per row, commit groups, several targets per row and exports from queries.
 - `Doka.Tabular.EntityFrameworkCore`: import journals that detect a file imported twice and recover uncertain imports from their commit evidence, and export journals for stored files with retention.
 
-[Unreleased]: https://github.com/doka-labs/Doka.Tabular/compare/v1.0.0-rc.1...HEAD
+[Unreleased]: https://github.com/doka-labs/Doka.Tabular/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/doka-labs/Doka.Tabular/releases/tag/v1.0.0
 [1.0.0-rc.1]: https://github.com/doka-labs/Doka.Tabular/releases/tag/v1.0.0-rc.1

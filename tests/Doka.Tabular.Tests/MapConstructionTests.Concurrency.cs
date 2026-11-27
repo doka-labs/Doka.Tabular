@@ -33,16 +33,19 @@ public sealed partial class MapConstructionTests
         Func<string, bool> emailRule
     ) => TabularMap
         .For<Invoice>()
-        .Column(x => x.Email,
+        .Column(
+            x => x.Email,
             index: 0,
             key: ColumnKey.Create("email"),
             configure: c => c
                 .HeaderTranslationKey("email")
                 .Validate(emailRule, alsoOnExport: true))
-        .Nested(x => x.Billing,
+        .Nested(
+            x => x.Billing,
             TabularMap
                 .For<Place>()
-                .Column(x => x.City,
+                .Column(
+                    x => x.City,
                     index: 0,
                     key: ColumnKey.Create("city"),
                     configure: c => c.HeaderTranslationKey("city"))
@@ -51,11 +54,14 @@ public sealed partial class MapConstructionTests
                 .StartIndex(1)
                 .KeyPrefix(ColumnKey.Create("billing"))
                 .HeaderPrefixTranslationKey("billing"))
-        .Compose(x => x.Amount,
-            c => c.Field<long>(index: 2,
+        .Compose(
+            x => x.Amount,
+            c => c.Field<long>(
+                index: 2,
                 key: ColumnKey.Create("minor"),
                 configure: f => f.HeaderTranslationKey("minor")),
-            c => c.Field<string>(index: 3,
+            c => c.Field<string>(
+                index: 3,
                 key: ColumnKey.Create("currency"),
                 configure: f => f.HeaderTranslationKey("currency")),
             read: (minor, currency) => new Price(minor, currency),

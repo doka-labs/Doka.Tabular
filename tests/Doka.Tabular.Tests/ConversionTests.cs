@@ -17,7 +17,8 @@ public sealed partial class ConversionTests
     private static readonly TabularMap<Flag> s_ownFlagTexts = TabularMap
         .For<Flag>()
         .Column(x => x.Key, index: 0)
-        .Column(x => x.Value,
+        .Column(
+            x => x.Value,
             index: 1,
             configure: c => c
                 .TrueText("Ja")
@@ -32,7 +33,8 @@ public sealed partial class ConversionTests
 
     private static readonly TabularMap<Customer> s_customers = TabularMap
         .For<Customer>()
-        .Column(x => x.Number,
+        .Column(
+            x => x.Number,
             index: 0,
             configure: c => c.Convert<string, CustomerNumber>(
                 read: text => text.StartsWith("K-", StringComparison.Ordinal)
@@ -54,7 +56,8 @@ public sealed partial class ConversionTests
         object? cell,
         TabularMap<Value<T>>? map = null,
         CultureInfo? culture = null
-    ) => await Import.ImportAsync(Create(type, [cell]),
+    ) => await Import.ImportAsync(
+        Create(type, [cell]),
         type,
         map ?? Map<T>(),
         new TabularImportOptions { Culture = culture },
@@ -65,7 +68,8 @@ public sealed partial class ConversionTests
         ImportReport<Value<T>> report
     )
     {
-        Assert.True(report.Status == ReportStatus.Succeeded,
+        Assert.True(
+            report.Status == ReportStatus.Succeeded,
             string.Join(" | ", report.Errors.Select(error => error.Code.Value)));
 
         return Assert.Single(report.Items!)
@@ -328,7 +332,8 @@ public sealed partial class ConversionTests
         var rounded = Map<decimal>(c => c.Rounding(2));
 
         // Act
-        var (_, file) = await CsvInstance.ExportAsync(new[] { new Value<decimal>(1.245m), new Value<decimal>(1.255m) },
+        var (_, file) = await CsvInstance.ExportAsync(
+            new[] { new Value<decimal>(1.245m), new Value<decimal>(1.255m) },
             rounded,
             Token);
 
@@ -340,7 +345,8 @@ public sealed partial class ConversionTests
     public async Task Double_IsWrittenAsTheShortestTextThatReadsBack()
     {
         // Act
-        var (_, file) = await CsvInstance.ExportAsync(new[] { new Value<double>(0.1), new Value<double>(-0d) },
+        var (_, file) = await CsvInstance.ExportAsync(
+            new[] { new Value<double>(0.1), new Value<double>(-0d) },
             Map<double>(),
             Token);
 
@@ -352,7 +358,8 @@ public sealed partial class ConversionTests
     public async Task DoubleNaN_FailsTheExportByDefault()
     {
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Value<double>(double.NaN) },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Value<double>(double.NaN) },
             Map<double>(),
             new MemoryStream(),
             Token);
@@ -390,7 +397,8 @@ public sealed partial class ConversionTests
         // Act
         // WHY: The round trip of the own output is the checked contract, so export and reimport form one action.
         var (_, file) =
-            await ExcelInstance.ExportAsync(new[] { new Value<decimal>(0.1m), new Value<decimal>(1000000000000000m) },
+            await ExcelInstance.ExportAsync(
+                new[] { new Value<decimal>(0.1m), new Value<decimal>(1000000000000000m) },
                 map,
                 Token);
 
@@ -404,7 +412,8 @@ public sealed partial class ConversionTests
     public async Task ExcelDecimal_WithMoreThan15Digits_IsAPrecisionLossOfItsColumn()
     {
         // Act
-        var report = await ExcelInstance.ExportAsync(new[] { new Value<decimal>(1234567890123456m) },
+        var report = await ExcelInstance.ExportAsync(
+            new[] { new Value<decimal>(1234567890123456m) },
             Map<decimal>(),
             new MemoryStream(),
             Token);
@@ -418,7 +427,8 @@ public sealed partial class ConversionTests
     public async Task ExcelDecimal_AsText_KeepsEveryDigit()
     {
         // Act
-        var report = await ExcelInstance.ExportAsync(new[] { new Value<decimal>(1234567890123456m) },
+        var report = await ExcelInstance.ExportAsync(
+            new[] { new Value<decimal>(1234567890123456m) },
             Map<decimal>(c => c.ExcelAsText()),
             Token);
 
@@ -430,7 +440,8 @@ public sealed partial class ConversionTests
     public async Task ExcelULongMaximum_AsANumberCell_FailsTheExport()
     {
         // Act
-        var report = await ExcelInstance.ExportAsync(new[] { new Value<ulong>(ulong.MaxValue) },
+        var report = await ExcelInstance.ExportAsync(
+            new[] { new Value<ulong>(ulong.MaxValue) },
             Map<ulong>(),
             new MemoryStream(),
             Token);
@@ -458,7 +469,8 @@ public sealed partial class ConversionTests
             : Map<string>();
 
         // Act
-        var report = await ReadAsync(TabularType.Excel,
+        var report = await ReadAsync(
+            TabularType.Excel,
             cell,
             map,
             culture is null
@@ -542,7 +554,8 @@ public sealed partial class ConversionTests
     public async Task NullText_EqualToARealValue_FailsTheExport()
     {
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Value<string?>("NULL") },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Value<string?>("NULL") },
             Map<string?>(c => c.NullText("NULL")),
             new MemoryStream(),
             Token);
@@ -575,12 +588,14 @@ public sealed partial class ConversionTests
         var value = Guid.Parse("D93F16AA36674B95A814D4275DBD0554");
 
         // Act
-        var (_, file) = await CsvInstance.ExportAsync(new[] { new Value<Guid>(value), new Value<Guid>(Guid.Empty) },
+        var (_, file) = await CsvInstance.ExportAsync(
+            new[] { new Value<Guid>(value), new Value<Guid>(Guid.Empty) },
             Map<Guid>(),
             Token);
 
         // Assert
-        Assert.Equal([["d93f16aa-3667-4b95-a814-d4275dbd0554"], ["00000000-0000-0000-0000-000000000000"]],
+        Assert.Equal(
+            [["d93f16aa-3667-4b95-a814-d4275dbd0554"], ["00000000-0000-0000-0000-000000000000"]],
             Cells(TabularType.Csv, file!));
     }
 
@@ -611,7 +626,8 @@ public sealed partial class ConversionTests
     )
     {
         // Act
-        var report = await Import.ImportAsync(Create(type, ["K-1"], ["X-2"], ["K-3"]),
+        var report = await Import.ImportAsync(
+            Create(type, ["K-1"], ["X-2"], ["K-3"]),
             type,
             s_customers,
             new TabularImportOptions { Strategy = ImportStrategy.Partial },
@@ -619,7 +635,8 @@ public sealed partial class ConversionTests
 
         // Assert
         Assert.Equal(["K-1", "K-3"], report.Items!.Select(item => item.Number.Text));
-        Assert.Equal("customer.invalid",
+        Assert.Equal(
+            "customer.invalid",
             Assert.Single(report.Errors)
                 .Code.Value);
     }
@@ -775,7 +792,8 @@ public sealed partial class ConversionTests
         var exception = Record.Exception(() => TabularMap
             .For<Flag>()
             .Column(x => x.Key, index: 0)
-            .Column(x => x.Value,
+            .Column(
+                x => x.Value,
                 index: 1,
                 configure: c =>
                 {
@@ -802,7 +820,8 @@ public sealed partial class ConversionTests
         var exception = Record.Exception(() => TabularMap
             .For<Flag>()
             .Column(x => x.Key, index: 0)
-            .Column(x => x.Value,
+            .Column(
+                x => x.Value,
                 index: 1,
                 configure: c => c
                     .TrueText(" false ")
@@ -824,13 +843,15 @@ public sealed partial class ConversionTests
             .Build();
 
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8("1,true"),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8("1,true"),
             map,
             new CsvImportOptions { TrimFields = true },
             Token);
 
         // Assert
-        Assert.Equal((ReportStatus.Failed, 0L, TabularErrorKind.Configuration),
+        Assert.Equal(
+            (ReportStatus.Failed, 0L, TabularErrorKind.Configuration),
             (report.Status, report.RowsRead, report.Errors[0].Kind));
     }
 
@@ -841,7 +862,8 @@ public sealed partial class ConversionTests
         var exception = Record.Exception(() => TabularMap
             .For<Flag>()
             .Column(x => x.Key, index: 0)
-            .Column(x => x.Value,
+            .Column(
+                x => x.Value,
                 index: 1,
                 configure: c => c
                     .Trim()
@@ -859,11 +881,13 @@ public sealed partial class ConversionTests
         var exception = Record.Exception(() => TabularMap
             .For<Flag>()
             .Column(x => x.Key, index: 0)
-            .Column(x => x.Value,
+            .Column(
+                x => x.Value,
                 index: 1,
                 configure: c => c
                     .Trim(false)
-                    .Convert(value => value,
+                    .Convert(
+                        value => value,
                         value => value,
                         configure: b => b
                             .Trim()
@@ -883,14 +907,16 @@ public sealed partial class ConversionTests
     )
     {
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Flag(1, false) },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Flag(1, false) },
             s_translatedFlags,
             new MemoryStream(),
             new CsvExportOptions { Translations = FlagTranslations(trueTranslation, falseTranslation) },
             Token);
 
         // Assert
-        Assert.Equal((ReportStatus.Failed, 0L, TabularErrorKind.Configuration),
+        Assert.Equal(
+            (ReportStatus.Failed, 0L, TabularErrorKind.Configuration),
             (report.Status, report.RowsRead, report.Errors[0].Kind));
     }
 
@@ -903,13 +929,15 @@ public sealed partial class ConversionTests
     )
     {
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8("1,X"),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8("1,X"),
             s_translatedFlags,
             new CsvImportOptions { Translations = FlagTranslations(trueTranslation, falseTranslation) },
             Token);
 
         // Assert
-        Assert.Equal((ReportStatus.Failed, 0L, TabularErrorKind.Configuration),
+        Assert.Equal(
+            (ReportStatus.Failed, 0L, TabularErrorKind.Configuration),
             (report.Status, report.RowsRead, report.Errors[0].Kind));
     }
 

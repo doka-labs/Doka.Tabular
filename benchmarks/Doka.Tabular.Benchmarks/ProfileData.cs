@@ -11,7 +11,8 @@ public static class ProfileData
     // escape, quote, and encode; the characters beyond ASCII are given as codes, so the source stays ASCII.
     private static readonly string s_textAlphabet =
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 -_.,;:\"'"
-        + new string([
+        + new string(
+        [
             (char)0x00E4, (char)0x00F6, (char)0x00FC, (char)0x00DF, (char)0x00E9, (char)0x00E8, (char)0x4E2D,
             (char)0x6587,
         ]);
@@ -68,7 +69,8 @@ public static class ProfileData
     )
     {
         var random = new Random(profile.Seed);
-        var start = new DateTime(2024,
+        var start = new DateTime(
+            2024,
             1,
             1,
             0,
@@ -79,7 +81,8 @@ public static class ProfileData
         for (var index = 1; index <= profile.Rows; index++)
         {
             var offset = TimeSpan.FromHours(random.Next(-12, 15));
-            yield return new ConversionRow(index,
+            yield return new ConversionRow(
+                index,
                 random.Next(-1_000_000, 1_000_000) / 100m,
                 random.Next(0, 1_001) / 1000m,
                 new DateTimeOffset(start.AddMinutes(random.Next(0, 525_600)), offset),
@@ -107,15 +110,17 @@ public static class ProfileData
         foreach (var row in Standard(profile))
         {
             var broken = errors.Next(1_000) < profile.ErrorsPerThousand;
-            rows.Add(new ErrorSourceRow(row.Id,
-                row.Name,
-                broken
-                    ? "invalid"
-                    : row.Amount.ToString(CultureInfo.InvariantCulture),
-                row.Date,
-                row.Active,
-                row.PostalCode,
-                row.Key));
+            rows.Add(
+                new ErrorSourceRow(
+                    row.Id,
+                    row.Name,
+                    broken
+                        ? "invalid"
+                        : row.Amount.ToString(CultureInfo.InvariantCulture),
+                    row.Date,
+                    row.Active,
+                    row.PostalCode,
+                    row.Key));
 
             if (broken)
             {
@@ -143,7 +148,8 @@ public static class ProfileData
         var key = new byte[16];
         random.NextBytes(key);
 
-        return new ProfileRow(index,
+        return new ProfileRow(
+            index,
             name,
             random.Next(0, 1_000_000) / 100m,
             new DateOnly(2024, 1, 1).AddDays(random.Next(365)),

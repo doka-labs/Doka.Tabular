@@ -60,7 +60,7 @@ internal static class JournalStore
     {
         var ignoreCase = JournalModel
                 .Find(context, JournalModel.ImportClaim(name))
-                ?.FindAnnotation(JournalModel.IgnoreScopeCaseAnnotation)
+                ?.FindAnnotation(JournalModel.IgnoreImportScopeCaseAnnotation)
                 ?.Value as string
             == "true";
 

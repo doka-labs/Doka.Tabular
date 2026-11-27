@@ -36,7 +36,8 @@ internal sealed class DateTimeOffsetConverter : TimestampConverterBase<DateTimeO
         }
 
         return TryInstantOf(timestamp, settings, out var instant, out failure)
-            && TryRoundOnUtcAxis(instant,
+            && TryRoundOnUtcAxis(
+                instant,
                 timestamp.Excess,
                 settings.TimeRounding,
                 timestamp.Offset is null
@@ -86,7 +87,8 @@ internal sealed class DateTimeOffsetConverter : TimestampConverterBase<DateTimeO
     )
     {
         rounded = instant;
-        if (!TryRoundTicks(instant.UtcTicks,
+        if (!TryRoundTicks(
+            instant.UtcTicks,
             excess,
             rounding,
             DateTime.MaxValue.Ticks,
@@ -117,7 +119,8 @@ internal sealed class DateTimeOffsetConverter : TimestampConverterBase<DateTimeO
         ConversionContext context,
         out DateTimeOffset value,
         out ConversionFailure failure
-    ) => Fail(ConversionFailure.Unsupported("A DateTimeOffset is stored as ISO text, not as a native Excel number."),
+    ) => Fail(
+        ConversionFailure.Unsupported("A DateTimeOffset is stored as ISO text, not as a native Excel number."),
         out value,
         out failure);
 
@@ -132,7 +135,8 @@ internal sealed class DateTimeOffsetConverter : TimestampConverterBase<DateTimeO
         failure = default;
 
         // WHY: The rounded instant must also be a valid local time at its offset.
-        if (!ExcelDates.TryRoundTicks(value.UtcTicks,
+        if (!ExcelDates.TryRoundTicks(
+            value.UtcTicks,
             settings.TimeRounding,
             Math.Max(0, -value.Offset.Ticks),
             Math.Min(DateTime.MaxValue.Ticks, DateTime.MaxValue.Ticks - value.Offset.Ticks),

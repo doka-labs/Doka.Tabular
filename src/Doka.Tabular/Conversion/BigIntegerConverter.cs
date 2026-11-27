@@ -28,7 +28,8 @@ internal sealed class BigIntegerConverter : ValueConverter<BigInteger>
         if (parsed.HadDecimalPoint
             && !settings.AllowDecimalPoint)
         {
-            return Fail(ConversionFailure.InvalidFormat("A decimal point is not allowed for an integer field."),
+            return Fail(
+                ConversionFailure.InvalidFormat("A decimal point is not allowed for an integer field."),
                 out value,
                 out failure);
         }
@@ -73,7 +74,8 @@ internal sealed class BigIntegerConverter : ValueConverter<BigInteger>
         TextBuffer output,
         out OutputCell cell,
         out ConversionFailure failure
-    ) => NumberRules.TryExcelNumber((double)value,
+    ) => NumberRules.TryExcelNumber(
+        (double)value,
         new ExactDecimal(value.Sign < 0, BigInteger.Abs(value), 0),
         settings,
         out cell,

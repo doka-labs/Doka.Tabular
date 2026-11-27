@@ -7,7 +7,8 @@ public abstract class MultiTargetSpecification
 
     private static readonly TabularMap<AddressDto> s_addressMap = TabularMap
         .For<AddressDto>()
-        .Column(x => x.PersonnelNumber,
+        .Column(
+            x => x.PersonnelNumber,
             index: 0,
             key: ColumnKey.Create("addressPersonnelNumber"),
             configure: c => c.ImportOnly())
@@ -49,7 +50,8 @@ public abstract class MultiTargetSpecification
         await using var context = await database.ContextAsync();
         var pairs = await context
             .Users
-            .Join(context.Addresses,
+            .Join(
+                context.Addresses,
                 user => user.Id,
                 address => address.UserId,
                 (user, address) => new
@@ -81,7 +83,8 @@ public abstract class MultiTargetSpecification
 
         // Assert
         Assert.Equal(ReportStatus.CompletedWithErrors, report.Status);
-        Assert.Equal(2L,
+        Assert.Equal(
+            2L,
             Assert.Single(report.Errors)
                 .Location.RecordNumber);
 
@@ -125,7 +128,8 @@ public abstract class MultiTargetSpecification
         var addressMap = TabularMap
             .For<AliasAddressDto>()
             .Column(x => x.TenantId, index: 0, key: ColumnKey.Create("addressTenantId"), configure: c => c.ImportOnly())
-            .Column(x => x.ExternalId,
+            .Column(
+                x => x.ExternalId,
                 index: 1,
                 key: ColumnKey.Create("addressExternalId"),
                 configure: c => c.ImportOnly())
@@ -157,7 +161,8 @@ public abstract class MultiTargetSpecification
             .Build();
 
         // Act
-        var report = await s_csv.ImportAsync(TestMaps.Csv("7,ext-2,Hamburg", "7,ext-1,Berlin"),
+        var report = await s_csv.ImportAsync(
+            TestMaps.Csv("7,ext-2,Hamburg", "7,ext-1,Berlin"),
             rowMap,
             destination,
             new CsvImportOptions { Strategy = ImportStrategy.Partial },
@@ -165,7 +170,8 @@ public abstract class MultiTargetSpecification
 
         // Assert
         Assert.Equal(ReportStatus.CompletedWithErrors, report.Status);
-        Assert.Equal(TabularErrorCodes.Lookup.NotFound,
+        Assert.Equal(
+            TabularErrorCodes.Lookup.NotFound,
             Assert.Single(report.Errors)
                 .Code);
 

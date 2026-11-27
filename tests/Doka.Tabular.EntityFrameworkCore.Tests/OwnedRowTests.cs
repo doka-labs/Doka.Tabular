@@ -59,7 +59,8 @@ public sealed class OwnedRowTests
 
         var target = TabularDatabase
             .ForContext(context)
-            .PrepareUpsert<OwnerDto, Owner>(set: owners => owners.Owners,
+            .PrepareUpsert<OwnerDto, Owner>(
+                set: owners => owners.Owners,
                 match: match,
                 create: dto => new Owner(dto.Number, dto.Note),
                 update: (owner, dto) =>
@@ -74,7 +75,8 @@ public sealed class OwnedRowTests
                 errors: errors => errors.Expect<RejectedOwnerException>(TabularErrorCode.Create("owner.rejected")));
 
         // Act
-        var report = await new CsvFormat(new CsvFormatOptions()).ImportAsync(TestInput.Utf8("1,REJECTED\n2,saved"),
+        var report = await new CsvFormat(new CsvFormatOptions()).ImportAsync(
+            TestInput.Utf8("1,REJECTED\n2,saved"),
             map,
             target,
             new CsvImportOptions { Strategy = ImportStrategy.Partial },
@@ -93,7 +95,8 @@ public sealed class OwnedRowTests
                 .Include(owner => owner.Tags)
                 .OrderBy(owner => owner.Number)
                 .ToListAsync(Token))
-            .Select(owner => string.Join("|",
+            .Select(owner => string.Join(
+                "|",
                 owner
                     .Tags
                     .Select(tag => tag.Name)
@@ -138,8 +141,10 @@ public sealed class OwnedRowTests
         var data = TabularDatabase.ForContext(context);
         var destination = TabularDestination
             .For(rowMap)
-            .Bind(ownerRole,
-                data.PrepareInsert<OwnerDto, Owner>(set: owners => owners.Owners,
+            .Bind(
+                ownerRole,
+                data.PrepareInsert<OwnerDto, Owner>(
+                    set: owners => owners.Owners,
                     create: dto =>
                     {
                         var owner = new Owner(dto.Number, dto.Note);
@@ -148,21 +153,25 @@ public sealed class OwnedRowTests
                         return owner;
                     },
                     errors: errors => errors.Database(_ => TabularErrorCode.Create("owner.rejected"))))
-            .Bind(noteRole,
-                data.PrepareInsert<NoteDto, NoteEntry>(set: notes => notes.Notes,
+            .Bind(
+                noteRole,
+                data.PrepareInsert<NoteDto, NoteEntry>(
+                    set: notes => notes.Notes,
                     create: dto => new NoteEntry { Text = dto.Text },
                     errors: errors => errors.Database(_ => TabularErrorCode.Create("note.rejected"))))
             .Build();
 
         // Act
-        var report = await new CsvFormat(new CsvFormatOptions()).ImportAsync(TestInput.Utf8("1,BAD,n"),
+        var report = await new CsvFormat(new CsvFormatOptions()).ImportAsync(
+            TestInput.Utf8("1,BAD,n"),
             rowMap,
             destination,
             new CsvImportOptions { Strategy = ImportStrategy.Partial },
             Token);
 
         // Assert
-        Assert.Equal("owner.rejected",
+        Assert.Equal(
+            "owner.rejected",
             Assert.Single(report.Errors)
                 .Code.Value);
     }
@@ -192,7 +201,8 @@ public sealed class OwnedRowTests
         var (rowMap, destination) = WriterAndFinder(context, lookup, writerFirst);
 
         // Act
-        var report = await new CsvFormat(new CsvFormatOptions()).ImportAsync(TestInput.Utf8("1,BAD"),
+        var report = await new CsvFormat(new CsvFormatOptions()).ImportAsync(
+            TestInput.Utf8("1,BAD"),
             rowMap,
             destination,
             new CsvImportOptions { Strategy = ImportStrategy.Partial },
@@ -200,7 +210,8 @@ public sealed class OwnedRowTests
 
         // Assert
         Assert.Null(report.FatalError);
-        Assert.Equal("owner.rejected",
+        Assert.Equal(
+            "owner.rejected",
             Assert.Single(report.Errors)
                 .Code.Value);
     }
@@ -225,7 +236,8 @@ public sealed class OwnedRowTests
             .Part(dto => dto.Number, owner => owner.Number)
             .Build();
 
-        var writer = data.PrepareUpsert<OwnerDto, Owner>(set: owners => owners.Owners,
+        var writer = data.PrepareUpsert<OwnerDto, Owner>(
+            set: owners => owners.Owners,
             match: match,
             create: dto => new Owner(dto.Number, dto.Note),
             update: (owner, dto) => owner.Profile.Note = dto.Note,
@@ -245,7 +257,8 @@ public sealed class OwnedRowTests
         }
         else
         {
-            var finder = data.PrepareInsert<OwnerDto, Owner>(set: owners => owners.Owners,
+            var finder = data.PrepareInsert<OwnerDto, Owner>(
+                set: owners => owners.Owners,
                 match: match,
                 create: dto => new Owner(dto.Number, dto.Note));
 
@@ -427,7 +440,8 @@ public sealed class OwnedRowTests
             owners.OwnsOne(owner => owner.Profile);
 
             // WHY: SQLite generates values only for a single-column integer key, not for the default composite key.
-            owners.OwnsMany(owner => owner.Tags,
+            owners.OwnsMany(
+                owner => owner.Tags,
                 tags =>
                 {
                     tags.Property<int>("Id");

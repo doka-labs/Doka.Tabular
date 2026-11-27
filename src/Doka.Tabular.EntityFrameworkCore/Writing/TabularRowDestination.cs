@@ -62,7 +62,8 @@ public sealed class TabularRowDestination : TabularImportDestination<TabularRow>
 
     internal override IImportSink<TabularRow> CreateSink(
         ImportCall call
-    ) => new WriteSink<TabularRow>(call,
+    ) => new WriteSink<TabularRow>(
+        call,
         _targets[0].Definition.Database,
         _targets,
         _options,

@@ -12,7 +12,8 @@ public sealed partial class TabularJournal
     public Task<ImportRecoveryResult> RecoverImportAsync(
         Guid importId,
         CancellationToken cancellationToken
-    ) => RunAsync("import",
+    ) => RunAsync(
+        "import",
         async context =>
         {
             var (log, claim) = await LoadAsync(context, importId, cancellationToken)
@@ -42,7 +43,8 @@ public sealed partial class TabularJournal
             if (claim is null
                 || claim.CurrentImportId != importId)
             {
-                return new ImportRecoveryResult(JournalCallStatus.Succeeded,
+                return new ImportRecoveryResult(
+                    JournalCallStatus.Succeeded,
                     log.RowsImported > 0
                         ? ImportRecoveryState.Imported
                         : ImportRecoveryState.NoChanges,
@@ -99,7 +101,8 @@ public sealed partial class TabularJournal
         ArgumentException.ThrowIfNullOrWhiteSpace(resolution.Reason);
         ArgumentOutOfRangeException.ThrowIfGreaterThan(resolution.Reason.Length, 1000, nameof(resolution));
 
-        return RunAsync("import",
+        return RunAsync(
+            "import",
             async context =>
             {
                 var (log, claim) = await LoadAsync(context, importId, cancellationToken)
@@ -164,7 +167,8 @@ public sealed partial class TabularJournal
                         "The claim of the import is not unresolved; it may hold commit evidence or was resolved before.");
                 }
 
-                claim.Set(resolution.Outcome == ImportResolutionOutcome.NoChanges
+                claim.Set(
+                    resolution.Outcome == ImportResolutionOutcome.NoChanges
                         ? ImportClaimState.Released
                         : ImportClaimState.Imported,
                     now);
@@ -212,7 +216,8 @@ public sealed partial class TabularJournal
     public Task<TabularJournalResult> DeleteImportLogsAsync(
         DateTimeOffset completedBefore,
         CancellationToken cancellationToken
-    ) => RunAsync("import",
+    ) => RunAsync(
+        "import",
         async context =>
         {
             var claims = context.Set<TabularImportClaim>(JournalModel.ImportClaim(Name));

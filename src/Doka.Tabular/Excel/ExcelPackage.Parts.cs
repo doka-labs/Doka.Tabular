@@ -18,7 +18,8 @@ internal sealed partial class ExcelPackage
             return result;
         }
 
-        await using var stream = new ExpansionCountingStream(await entry
+        await using var stream = new ExpansionCountingStream(
+            await entry
                 .OpenAsync(cancellationToken)
                 .ConfigureAwait(false),
             budget);
@@ -97,7 +98,8 @@ internal sealed partial class ExcelPackage
             return result;
         }
 
-        await using var stream = new ExpansionCountingStream(await entry
+        await using var stream = new ExpansionCountingStream(
+            await entry
                 .OpenAsync(cancellationToken)
                 .ConfigureAwait(false),
             budget);

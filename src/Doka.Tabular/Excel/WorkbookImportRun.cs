@@ -171,14 +171,16 @@ internal sealed partial class WorkbookImportRun
                 .Count()
             > 1)
         {
-            _configuration.Add(TabularError.Configuration(
-                "A strict workbook import over several databases cannot be atomic; use one TabularDatabase or TransactionPerSheet."));
+            _configuration.Add(
+                TabularError.Configuration(
+                    "A strict workbook import over several databases cannot be atomic; use one TabularDatabase or TransactionPerSheet."));
         }
 
         if (_journals.Count > 1)
         {
-            _configuration.Add(TabularError.Configuration(
-                "One file has one import log; only one write target of a workbook may have an import log."));
+            _configuration.Add(
+                TabularError.Configuration(
+                    "One file has one import log; only one write target of a workbook may have an import log."));
         }
 
         // WHY: Only the database of the import log writes the commit evidence together with its data; a commit in
@@ -191,8 +193,9 @@ internal sealed partial class WorkbookImportRun
                 .Count()
             > 1)
         {
-            _configuration.Add(TabularError.Configuration(
-                "A workbook with an import log writes to one TabularDatabase; the log cannot prove commits in another one."));
+            _configuration.Add(
+                TabularError.Configuration(
+                    "A workbook with an import log writes to one TabularDatabase; the log cannot prove commits in another one."));
         }
     }
 
@@ -210,7 +213,9 @@ internal sealed partial class WorkbookImportRun
             }
 
             var preparation = await sink
-                .PrepareAsync(new ImportSinkStart(_strategy,
+                .PrepareAsync(
+                    new ImportSinkStart(
+                        _strategy,
                         true,
                         _scope.OperationId,
                         _scope.Time),
@@ -243,9 +248,11 @@ internal sealed partial class WorkbookImportRun
             }
             catch (Exception exception) when (exception is not OutOfMemoryException)
             {
-                _errors.AddFatal(TabularError.Create(TabularErrorCodes.Persistence.OperationFailed,
-                    TabularErrorKind.Technical,
-                    "The own data context of the import could not be released."));
+                _errors.AddFatal(
+                    TabularError.Create(
+                        TabularErrorCodes.Persistence.OperationFailed,
+                        TabularErrorKind.Technical,
+                        "The own data context of the import could not be released."));
             }
         }
     }
@@ -257,9 +264,11 @@ internal sealed partial class WorkbookImportRun
             return;
         }
 
-        _errors.AddFatal(TabularError.Create(TabularErrorCodes.Io.Failed,
-            TabularErrorKind.Technical,
-            "An own temporary file could not be deleted."));
+        _errors.AddFatal(
+            TabularError.Create(
+                TabularErrorCodes.Io.Failed,
+                TabularErrorKind.Technical,
+                "An own temporary file could not be deleted."));
 
         _scope.CleanupFailed();
     }

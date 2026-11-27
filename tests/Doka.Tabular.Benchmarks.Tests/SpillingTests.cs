@@ -14,29 +14,35 @@ public sealed class SpillingTests
         // spill to temporary files; the other run forbids spilling with buffers large enough for the whole file.
         const long small = 64 * 1024;
         const long enough = 1L << 31;
-        var spilling = new ProfileFormats(new CsvFormat(new CsvFormatOptions
-            {
-                ImportBufferBytes = small,
-                OutputBufferBytes = small,
-            }),
-            new ExcelFormat(new ExcelFormatOptions
-            {
-                ImportBufferBytes = small,
-                OutputBufferBytes = small,
-            }));
+        var spilling = new ProfileFormats(
+            new CsvFormat(
+                new CsvFormatOptions
+                {
+                    ImportBufferBytes = small,
+                    OutputBufferBytes = small,
+                }),
+            new ExcelFormat(
+                new ExcelFormatOptions
+                {
+                    ImportBufferBytes = small,
+                    OutputBufferBytes = small,
+                }));
 
-        var inMemory = new ProfileFormats(new CsvFormat(new CsvFormatOptions
-            {
-                ImportBufferBytes = enough,
-                OutputBufferBytes = enough,
-                AllowSpill = false,
-            }),
-            new ExcelFormat(new ExcelFormatOptions
-            {
-                ImportBufferBytes = enough,
-                OutputBufferBytes = enough,
-                AllowSpill = false,
-            }));
+        var inMemory = new ProfileFormats(
+            new CsvFormat(
+                new CsvFormatOptions
+                {
+                    ImportBufferBytes = enough,
+                    OutputBufferBytes = enough,
+                    AllowSpill = false,
+                }),
+            new ExcelFormat(
+                new ExcelFormatOptions
+                {
+                    ImportBufferBytes = enough,
+                    OutputBufferBytes = enough,
+                    AllowSpill = false,
+                }));
 
         var spilled = await ProfileRun.PrepareAsync(ProfileRuns.Profile(id), spilling, ProfileRuns.Token);
         var held = await ProfileRun.PrepareAsync(ProfileRuns.Profile(id), inMemory, ProfileRuns.Token);

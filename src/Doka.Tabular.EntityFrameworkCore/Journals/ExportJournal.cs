@@ -20,7 +20,8 @@ public static class TabularFileTargetExtensions
         ArgumentNullException.ThrowIfNull(options);
         ArgumentNullException.ThrowIfNull(options.Scope);
         ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(options.CompletionTimeout, TimeSpan.Zero, nameof(options));
-        ArgumentOutOfRangeException.ThrowIfGreaterThan(options.CompletionTimeout,
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(
+            options.CompletionTimeout,
             CompletionRunner.MaxTimeout,
             nameof(options));
 
@@ -63,7 +64,8 @@ internal sealed class ExportJournalHook : IExportJournalHook
         CancellationToken cancellationToken
     )
     {
-        var log = new TabularExportLog(Guid.NewGuid(),
+        var log = new TabularExportLog(
+            Guid.NewGuid(),
             _options.Scope,
             start.FileName,
             start.Format == "excel"
@@ -108,7 +110,8 @@ internal sealed class ExportJournalHook : IExportJournalHook
         public override Task MarkReadyAsync(
             TabularStoredFile file,
             CancellationToken cancellationToken
-        ) => UpdateAsync(log => log.MarkReady(file, _start.Time.GetUtcNow(), _start.Retention),
+        ) => UpdateAsync(
+            log => log.MarkReady(file, _start.Time.GetUtcNow(), _start.Retention),
             null,
             cancellationToken);
 
@@ -123,7 +126,9 @@ internal sealed class ExportJournalHook : IExportJournalHook
         ) => _options.OnCompletedAsync is { } completed
             ? await CompletionRunner
                 .RunAsync(
-                    token => completed(new TabularExportCompleted(_start.OperationId,
+                    token => completed(
+                        new TabularExportCompleted(
+                            _start.OperationId,
                             ExportId,
                             _options.Scope,
                             report,

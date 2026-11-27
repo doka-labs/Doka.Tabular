@@ -100,22 +100,24 @@ public sealed partial class TabularExport
             errors.Add(limitProblem);
         }
 
-        var report = new ExportReport(new ExportReportData(ReportStatus.Failed,
-            false,
-            0,
-            0,
-            errors.Snapshot(),
-            errors.TotalCount,
-            errors.OmittedCount,
-            errors.Fatal,
-            target is PathExportTarget
-                ? PathOutputState.NotPublished
-                : null,
-            target is StreamExportTarget
-                ? StreamOutputState.NotWritten
-                : null,
-            null,
-            new TabularReportDiagnostics(Guid.NewGuid())));
+        var report = new ExportReport(
+            new ExportReportData(
+                ReportStatus.Failed,
+                false,
+                0,
+                0,
+                errors.Snapshot(),
+                errors.TotalCount,
+                errors.OmittedCount,
+                errors.Fatal,
+                target is PathExportTarget
+                    ? PathOutputState.NotPublished
+                    : null,
+                target is StreamExportTarget
+                    ? StreamOutputState.NotWritten
+                    : null,
+                null,
+                new TabularReportDiagnostics(Guid.NewGuid())));
 
         return new ExportRunResult(report, null);
     }

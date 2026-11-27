@@ -128,7 +128,8 @@ internal sealed partial class WriteSession
         // factories through unchanged, so any other exception is a failure of the database operation.
         catch (Exception exception) when (exception is not OutOfMemoryException)
         {
-            _sessionFatal = TabularError.Create(TabularErrorCodes.Persistence.OperationFailed,
+            _sessionFatal = TabularError.Create(
+                TabularErrorCodes.Persistence.OperationFailed,
                 TabularErrorKind.Technical,
                 "Opening the context or checking the transaction failed.");
         }
@@ -250,8 +251,9 @@ internal sealed partial class WriteSession
         if (database.CreateExecutionStrategy()
             .RetriesOnFailure)
         {
-            _sessionErrors.Add(TabularError.Configuration(
-                "The execution strategy of the context retries blocks; provide a context without retrying strategy for the import."));
+            _sessionErrors.Add(
+                TabularError.Configuration(
+                    "The execution strategy of the context retries blocks; provide a context without retrying strategy for the import."));
         }
 
         var current = database.CurrentTransaction;
@@ -265,8 +267,9 @@ internal sealed partial class WriteSession
 
         if (current is not null)
         {
-            _sessionErrors.Add(TabularError.Configuration(
-                "The passed context has an active transaction; set JoinExistingTransaction to join it."));
+            _sessionErrors.Add(
+                TabularError.Configuration(
+                    "The passed context has an active transaction; set JoinExistingTransaction to join it."));
 
             return;
         }
@@ -346,8 +349,9 @@ internal sealed partial class WriteSession
         {
             if (needsSavepoints && !probe.SupportsSavepoints)
             {
-                _sessionErrors.Add(TabularError.Configuration(
-                    "The provider does not support savepoints; use a partial import with CommitGroupSize 1."));
+                _sessionErrors.Add(
+                    TabularError.Configuration(
+                        "The provider does not support savepoints; use a partial import with CommitGroupSize 1."));
             }
 
             await probe

@@ -25,7 +25,8 @@ internal sealed class CheckedExcelFormat
         ExcelWorkbookExport sheets,
         Stream target,
         CancellationToken cancellationToken
-    ) => ExportChecks.Checked(await _format
+    ) => ExportChecks.Checked(
+        await _format
             .ExportAsync(sheets, target, cancellationToken)
             .ConfigureAwait(false),
         target,
@@ -36,7 +37,8 @@ internal sealed class CheckedExcelFormat
         Stream target,
         ExcelWorkbookExportOptions options,
         CancellationToken cancellationToken
-    ) => ExportChecks.Checked(await _format
+    ) => ExportChecks.Checked(
+        await _format
             .ExportAsync(sheets, target, options, cancellationToken)
             .ConfigureAwait(false),
         target,
@@ -45,7 +47,8 @@ internal sealed class CheckedExcelFormat
     public async Task<BufferedExportResult> ExportAsync(
         ExcelWorkbookExport sheets,
         CancellationToken cancellationToken
-    ) => ExportChecks.Checked(await _format
+    ) => ExportChecks.Checked(
+        await _format
             .ExportAsync(sheets, cancellationToken)
             .ConfigureAwait(false),
         true);
@@ -54,7 +57,8 @@ internal sealed class CheckedExcelFormat
         ExcelWorkbookExport sheets,
         string path,
         CancellationToken cancellationToken
-    ) => ExportChecks.CheckedPath(await _format
+    ) => ExportChecks.CheckedPath(
+        await _format
             .ExportAsync(sheets, path, cancellationToken)
             .ConfigureAwait(false),
         path,
@@ -65,7 +69,8 @@ internal sealed class CheckedExcelFormat
         TabularMap<T> map,
         Stream target,
         CancellationToken cancellationToken
-    ) => ExportChecks.Checked(await _format
+    ) => ExportChecks.Checked(
+        await _format
             .ExportAsync(rows, map, target, cancellationToken)
             .ConfigureAwait(false),
         target,
@@ -76,7 +81,8 @@ internal sealed class CheckedExcelFormat
         TabularMap<T> map,
         ExcelExportOptions options,
         CancellationToken cancellationToken
-    ) => ExportChecks.Checked(await _format
+    ) => ExportChecks.Checked(
+        await _format
             .ExportAsync(rows, map, options, cancellationToken)
             .ConfigureAwait(false),
         true);
@@ -87,7 +93,8 @@ internal sealed class CheckedExcelFormat
         Stream target,
         ExcelExportOptions options,
         CancellationToken cancellationToken
-    ) => ExportChecks.Checked(await _format
+    ) => ExportChecks.Checked(
+        await _format
             .ExportAsync(rows, map, target, options, cancellationToken)
             .ConfigureAwait(false),
         target,
@@ -98,7 +105,8 @@ internal sealed class CheckedExcelFormat
         TabularMap<T> map,
         Stream target,
         CancellationToken cancellationToken
-    ) => ExportChecks.Checked(await _format
+    ) => ExportChecks.Checked(
+        await _format
             .ExportAsync(rows, map, target, cancellationToken)
             .ConfigureAwait(false),
         target,
@@ -108,7 +116,8 @@ internal sealed class CheckedExcelFormat
         IEnumerable<T> rows,
         TabularMap<T> map,
         CancellationToken cancellationToken
-    ) => ExportChecks.Checked(await _format
+    ) => ExportChecks.Checked(
+        await _format
             .ExportAsync(rows, map, cancellationToken)
             .ConfigureAwait(false),
         true);
@@ -119,7 +128,8 @@ internal sealed class CheckedExcelFormat
         string path,
         ExcelExportOptions options,
         CancellationToken cancellationToken
-    ) => ExportChecks.CheckedPath(await _format
+    ) => ExportChecks.CheckedPath(
+        await _format
             .ExportAsync(rows, map, path, options, cancellationToken)
             .ConfigureAwait(false),
         path,
@@ -130,7 +140,8 @@ internal sealed class CheckedExcelFormat
         TabularMap<T> map,
         string path,
         CancellationToken cancellationToken
-    ) => ExportChecks.CheckedPath(await _format
+    ) => ExportChecks.CheckedPath(
+        await _format
             .ExportAsync(rows, map, path, cancellationToken)
             .ConfigureAwait(false),
         path,
@@ -173,7 +184,8 @@ internal sealed class CheckedTabularExport
         RowMap map,
         TabularType type,
         CancellationToken cancellationToken
-    ) => ExportChecks.Checked(await _export
+    ) => ExportChecks.Checked(
+        await _export
             .ExportAsync(rows, map, type, cancellationToken)
             .ConfigureAwait(false),
         type == TabularType.Excel);
@@ -184,7 +196,8 @@ internal sealed class CheckedTabularExport
         TabularType type,
         TabularExportOptions options,
         CancellationToken cancellationToken
-    ) => ExportChecks.Checked(await _export
+    ) => ExportChecks.Checked(
+        await _export
             .ExportAsync(rows, map, type, options, cancellationToken)
             .ConfigureAwait(false),
         type == TabularType.Excel);
@@ -195,7 +208,8 @@ internal sealed class CheckedTabularExport
         TabularType type,
         TabularExportOptions options,
         CancellationToken cancellationToken
-    ) => ExportChecks.Checked(await _export
+    ) => ExportChecks.Checked(
+        await _export
             .ExportAsync(rows, map, type, options, cancellationToken)
             .ConfigureAwait(false),
         type == TabularType.Excel);
@@ -205,7 +219,8 @@ internal sealed class CheckedTabularExport
         TabularMap<T> map,
         TabularType type,
         CancellationToken cancellationToken
-    ) => ExportChecks.Checked(await _export
+    ) => ExportChecks.Checked(
+        await _export
             .ExportAsync(rows, map, type, cancellationToken)
             .ConfigureAwait(false),
         type == TabularType.Excel);
@@ -217,7 +232,8 @@ internal sealed class CheckedTabularExport
         TabularType type,
         TabularExportOptions options,
         CancellationToken cancellationToken
-    ) => ExportChecks.Checked(await _export
+    ) => ExportChecks.Checked(
+        await _export
             .ExportAsync(rows, map, target, type, options, cancellationToken)
             .ConfigureAwait(false),
         target,

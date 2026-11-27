@@ -30,7 +30,8 @@ public sealed partial class ReferenceFileTests
     private static readonly TabularMap<ReportRow> s_reportRows = TabularMap
         .For<ReportRow>()
         .Column(x => x.Id, index: 0, configure: c => c.Header("Id"))
-        .Column(x => x.Name,
+        .Column(
+            x => x.Name,
             index: 1,
             configure: c => c
                 .Header("Name")
@@ -101,7 +102,8 @@ public sealed partial class ReferenceFileTests
         var path = ReferenceFiles.Path(set, "R04", "R04-two-sheets.xlsx");
 
         // Act
-        var report = await s_format.ImportAsync(path,
+        var report = await s_format.ImportAsync(
+            path,
             s_users,
             Partial with { SheetName = TabularSheetName.Create("Benutzer") },
             Token);
@@ -121,7 +123,8 @@ public sealed partial class ReferenceFileTests
         var path = ReferenceFiles.Path(set, "R04", "R04-two-sheets.xlsx");
 
         // Act
-        var report = await s_format.ImportAsync(path,
+        var report = await s_format.ImportAsync(
+            path,
             s_users,
             Partial with { SheetName = TabularSheetName.Create("Fehlt") },
             Token);
@@ -151,8 +154,9 @@ public sealed partial class ReferenceFileTests
         Assert.Contains(report.Errors, error => error.Location.RowNumber == 10);
         Assert.Contains(report.Errors, error => error.Location.RowNumber == 12);
         Assert.DoesNotContain(report.Errors, error => error.Location.RowNumber is 9 or 82);
-        Assert.Null(report.Items!.Single(item => item.Id == 4)
-            .Eintritt);
+        Assert.Null(
+            report.Items!.Single(item => item.Id == 4)
+                .Eintritt);
     }
 
     [Theory]
@@ -185,7 +189,8 @@ public sealed partial class ReferenceFileTests
         // Act
         // WHY: The equal result of both bindings is the checked contract, so both imports form one action.
         var byName = await s_format.ImportAsync(path, s_reportRows, RangeOptions(set) with { EndRow = 80 }, Token);
-        var byIndex = await s_format.ImportAsync(path,
+        var byIndex = await s_format.ImportAsync(
+            path,
             s_reportRows,
             RangeOptions(set) with
             {
@@ -195,7 +200,8 @@ public sealed partial class ReferenceFileTests
             Token);
 
         // Assert
-        Assert.Equal(byName.Errors.Select(error => error.Location.RowNumber),
+        Assert.Equal(
+            byName.Errors.Select(error => error.Location.RowNumber),
             byIndex.Errors.Select(error => error.Location.RowNumber));
     }
 
@@ -256,7 +262,8 @@ public sealed partial class ReferenceFileTests
         var path = ReferenceFiles.Path(set, "R06", "R06-visibility.xlsx");
 
         // Act
-        var report = await s_format.ImportAsync(path,
+        var report = await s_format.ImportAsync(
+            path,
             s_visibilityRows,
             Partial with
             {
@@ -310,7 +317,8 @@ public sealed partial class ReferenceFileTests
         var before = await File.ReadAllBytesAsync(path, Token);
 
         // Act
-        var report = await s_format.ImportAsync(path,
+        var report = await s_format.ImportAsync(
+            path,
             s_users,
             Partial with { SheetName = TabularSheetName.Create("Benutzer") },
             Token);
@@ -375,7 +383,8 @@ public sealed partial class ReferenceFileTests
         var report = await s_format.ImportAsync(input, s_users, Partial, Token);
 
         // Assert
-        Assert.Equal(TabularErrorCodes.Schema.UnsupportedFormat,
+        Assert.Equal(
+            TabularErrorCodes.Schema.UnsupportedFormat,
             Assert.Single(report.Errors)
                 .Code);
 
@@ -402,7 +411,8 @@ public sealed partial class ReferenceFileTests
         var report = await s_format.ImportAsync(path, s_users, Partial, Token);
 
         // Assert
-        Assert.Equal(TabularErrorCodes.Schema.UnsupportedFormat,
+        Assert.Equal(
+            TabularErrorCodes.Schema.UnsupportedFormat,
             Assert.Single(report.Errors)
                 .Code);
 

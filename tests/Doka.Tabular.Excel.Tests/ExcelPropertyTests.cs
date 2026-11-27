@@ -42,7 +42,8 @@ public sealed class ExcelPropertyTests
         // Assert
         Assert.Equal((ReportStatus.Succeeded, ReportStatus.Succeeded), (export.Status, import.Status));
         Assert.Empty(WorkbookProblems(file!));
-        Assert.Equal(lines.Select(line => PropertyText.Empty(line.Text)),
+        Assert.Equal(
+            lines.Select(line => PropertyText.Empty(line.Text)),
             import.Items!.Select(line => PropertyText.Empty(line.Text)));
     }
 
@@ -95,12 +96,14 @@ public sealed class ExcelPropertyTests
     )
     {
         // Act
-        var (export, _) = await s_format.ExportAsync(new[] { new NumberLine(0, value) },
+        var (export, _) = await s_format.ExportAsync(
+            new[] { new NumberLine(0, value) },
             s_numbers,
             TestContext.Current.CancellationToken);
 
         // Assert
-        Assert.Equal(TabularErrorCodes.Conversion.OutOfRange,
+        Assert.Equal(
+            TabularErrorCodes.Conversion.OutOfRange,
             Assert.Single(export.Errors)
                 .Code);
     }
@@ -116,13 +119,15 @@ public sealed class ExcelPropertyTests
     )
     {
         // Act
-        var (export, _) = await s_format.ExportAsync(new[] { new NumberLine(0, value) },
+        var (export, _) = await s_format.ExportAsync(
+            new[] { new NumberLine(0, value) },
             s_numbers,
             TestContext.Current.CancellationToken);
 
         // Assert
         Assert.Equal(ReportStatus.Failed, export.Status);
-        Assert.Equal(TabularErrorCodes.Conversion.PrecisionLoss,
+        Assert.Equal(
+            TabularErrorCodes.Conversion.PrecisionLoss,
             Assert.Single(export.Errors)
                 .Code);
     }

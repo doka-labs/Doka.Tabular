@@ -49,10 +49,12 @@ internal sealed partial class CsvRecordSource : IRecordSource
         {
             _ended = true;
 
-            return RecordReadResult.FatalError(TabularError.Create(TabularErrorCodes.Parsing.InvalidEncoding,
-                TabularErrorKind.Data,
-                "The input contains bytes that are invalid in the chosen encoding.",
-                new TabularErrorLocation { RowNumber = _line }));
+            return RecordReadResult.FatalError(
+                TabularError.Create(
+                    TabularErrorCodes.Parsing.InvalidEncoding,
+                    TabularErrorKind.Data,
+                    "The input contains bytes that are invalid in the chosen encoding.",
+                    new TabularErrorLocation { RowNumber = _line }));
         }
     }
 
@@ -105,11 +107,13 @@ internal sealed partial class CsvRecordSource : IRecordSource
         if (lineBreak is LineBreak.LoneCr
             || (lineBreak is LineBreak.LoneLf && _settings.RequireCrLf))
         {
-            return RecordReadResult.Broken(SyntaxError(recordLine,
-                null,
-                lineBreak == LineBreak.LoneCr
-                    ? "A carriage return without line feed is not a record separator."
-                    : "A single line feed is not allowed as record separator."));
+            return RecordReadResult.Broken(
+                SyntaxError(
+                    recordLine,
+                    null,
+                    lineBreak == LineBreak.LoneCr
+                        ? "A carriage return without line feed is not a record separator."
+                        : "A single line feed is not allowed as record separator."));
         }
 
         // WHY: A single trailing line break is consumed with its record, so every empty line seen here is a
@@ -129,12 +133,16 @@ internal sealed partial class CsvRecordSource : IRecordSource
 
         return lineBreak switch
         {
-            LineBreak.LoneCr => RecordReadResult.Broken(SyntaxError(recordLine,
-                null,
-                "A carriage return without line feed is not a record separator.")),
-            LineBreak.LoneLf when _settings.RequireCrLf => RecordReadResult.Broken(SyntaxError(recordLine,
-                null,
-                "A single line feed is not allowed as record separator.")),
+            LineBreak.LoneCr => RecordReadResult.Broken(
+                SyntaxError(
+                    recordLine,
+                    null,
+                    "A carriage return without line feed is not a record separator.")),
+            LineBreak.LoneLf when _settings.RequireCrLf => RecordReadResult.Broken(
+                SyntaxError(
+                    recordLine,
+                    null,
+                    "A single line feed is not allowed as record separator.")),
             LineBreak.CrLf or LineBreak.LoneLf => Record(recordLine),
             _ => throw new UnreachableException("The line break reader returns only declared values."),
         };
@@ -244,7 +252,8 @@ internal sealed partial class CsvRecordSource : IRecordSource
         long line,
         int? columnIndex,
         string message
-    ) => TabularError.Create(TabularErrorCodes.Parsing.InvalidSyntax,
+    ) => TabularError.Create(
+        TabularErrorCodes.Parsing.InvalidSyntax,
         TabularErrorKind.Data,
         message,
         new TabularErrorLocation

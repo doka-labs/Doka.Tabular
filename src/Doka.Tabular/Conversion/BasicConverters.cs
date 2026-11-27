@@ -170,7 +170,8 @@ internal sealed class RuneConverter : ValueConverter<Rune>
         out ConversionFailure failure
     ) => Rune.DecodeFromUtf16(text, out var rune, out var consumed) == OperationStatus.Done && consumed == text.Length
         ? Read(rune, out value, out failure)
-        : Fail(ConversionFailure.InvalidFormat("The text must be exactly one Unicode scalar value."),
+        : Fail(
+            ConversionFailure.InvalidFormat("The text must be exactly one Unicode scalar value."),
             out value,
             out failure);
 
@@ -225,7 +226,8 @@ internal sealed class GuidConverter : ValueConverter<Guid>
         if (!text.IsEmpty
             && (char.IsWhiteSpace(text[0]) || char.IsWhiteSpace(text[^1])))
         {
-            return Fail(ConversionFailure.InvalidFormat("The text is not a Guid in an accepted format."),
+            return Fail(
+                ConversionFailure.InvalidFormat("The text is not a Guid in an accepted format."),
                 out value,
                 out failure);
         }
@@ -239,7 +241,8 @@ internal sealed class GuidConverter : ValueConverter<Guid>
             }
         }
 
-        return Fail(ConversionFailure.InvalidFormat("The text is not a Guid in an accepted format."),
+        return Fail(
+            ConversionFailure.InvalidFormat("The text is not a Guid in an accepted format."),
             out value,
             out failure);
     }
@@ -361,7 +364,8 @@ internal sealed class BooleanConverter : ValueConverter<bool>
         .Select(text => trims
             ? text.Trim()
             : text)
-        .Intersect(falseTexts.Select(text => trims
+        .Intersect(
+            falseTexts.Select(text => trims
                 ? text.Trim()
                 : text),
             StringComparer.OrdinalIgnoreCase)
@@ -388,7 +392,8 @@ internal sealed class BooleanConverter : ValueConverter<bool>
             return Read(false, out value, out failure);
         }
 
-        return Fail(ConversionFailure.InvalidFormat("The text is not a Boolean value of this field."),
+        return Fail(
+            ConversionFailure.InvalidFormat("The text is not a Boolean value of this field."),
             out value,
             out failure);
     }
@@ -426,7 +431,8 @@ internal sealed class BooleanConverter : ValueConverter<bool>
         out ConversionFailure failure
     )
     {
-        if (!Translations.Resolve(value
+        if (!Translations.Resolve(
+            value
                 ? settings.TrueTranslationKey
                 : settings.FalseTranslationKey,
             value

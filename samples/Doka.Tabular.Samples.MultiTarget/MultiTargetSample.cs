@@ -172,7 +172,8 @@ public static class MultiTargetSample
 
     private static readonly TabularMap<AddressDto> s_addresses = TabularMap
         .For<AddressDto>()
-        .Column(x => x.PersonnelNumber,
+        .Column(
+            x => x.PersonnelNumber,
             index: 0,
             key: ColumnKey.Create("addressPersonnelNumber"),
             configure: c => c.ImportOnly())
@@ -185,7 +186,8 @@ public static class MultiTargetSample
     )
     {
         await using var database =
-            await SampleDatabase<AppDbContext>.StartAsync(options => new AppDbContext(options),
+            await SampleDatabase<AppDbContext>.StartAsync(
+                options => new AppDbContext(options),
                 null,
                 cancellationToken);
 
@@ -240,7 +242,8 @@ public static class MultiTargetSample
             .Build()
             .WithOptions(new TabularWriteOptions { ReturnItems = true });
 
-        var report = await csv.ImportAsync(Input("1,Ada,Dresden\n2,Grace,\n3,Linus,Bonn"),
+        var report = await csv.ImportAsync(
+            Input("1,Ada,Dresden\n2,Grace,\n3,Linus,Bonn"),
             rowMap,
             destination,
             new CsvImportOptions { Strategy = ImportStrategy.Partial },
@@ -274,7 +277,8 @@ public static class MultiTargetSample
         var aliasAddressMap = TabularMap
             .For<AliasAddressDto>()
             .Column(x => x.TenantId, index: 0, key: ColumnKey.Create("addressTenantId"), configure: c => c.ImportOnly())
-            .Column(x => x.ExternalId,
+            .Column(
+                x => x.ExternalId,
                 index: 1,
                 key: ColumnKey.Create("addressExternalId"),
                 configure: c => c.ImportOnly())
@@ -304,7 +308,8 @@ public static class MultiTargetSample
             create: (dto, values) => Address.Create(values.Get(aliasUserId), dto.City),
             update: (address, dto) => address.Move(dto.City));
 
-        var lookup = await csv.ImportAsync(Input("7,ext-ada,Leipzig\n7,ext-unknown,Essen"),
+        var lookup = await csv.ImportAsync(
+            Input("7,ext-ada,Leipzig\n7,ext-unknown,Essen"),
             lookupMap,
             TabularDestination
                 .For(lookupMap)

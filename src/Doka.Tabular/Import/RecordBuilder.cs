@@ -83,7 +83,8 @@ internal static class RecordBuilder
         }
         catch (Exception exception) when (Callbacks.Failed(exception, row.CallCancellation))
         {
-            Reject(exception,
+            Reject(
+                exception,
                 plan.Models,
                 row,
                 PathOf(plan, member.Member),
@@ -99,7 +100,8 @@ internal static class RecordBuilder
             return true;
         }
 
-        row.Fatal ??= TabularError.Create(TabularErrorCodes.Callback.InvalidResult,
+        row.Fatal ??= TabularError.Create(
+            TabularErrorCodes.Callback.InvalidResult,
             TabularErrorKind.Technical,
             $"The read function of {member.Member.Name} returned null for a property that is not nullable.",
             row.Location(path: PathOf(plan, member.Member)));
@@ -166,7 +168,8 @@ internal static class RecordBuilder
             }
             catch (Exception exception) when (Callbacks.Failed(exception, row.CallCancellation))
             {
-                row.Fatal ??= TabularError.Create(TabularErrorCodes.Callback.Failed,
+                row.Fatal ??= TabularError.Create(
+                    TabularErrorCodes.Callback.Failed,
                     TabularErrorKind.Technical,
                     "A rule over several fields threw an exception.",
                     row.Location(path: plan.Node.Path));
@@ -177,10 +180,12 @@ internal static class RecordBuilder
             if (!valid)
             {
                 violated[count++] = positions[0];
-                row.Errors.Add(TabularError.Create(rule.Code ?? TabularErrorCodes.Validation.Failed,
-                    TabularErrorKind.Data,
-                    "The values violate a rule over several fields.",
-                    row.Location(path: PathOf(plan, rule.Members[0]))));
+                row.Errors.Add(
+                    TabularError.Create(
+                        rule.Code ?? TabularErrorCodes.Validation.Failed,
+                        TabularErrorKind.Data,
+                        "The values violate a rule over several fields.",
+                        row.Location(path: PathOf(plan, rule.Members[0]))));
             }
         }
 
@@ -226,7 +231,8 @@ internal static class RecordBuilder
         catch (Exception exception) when (Callbacks.Failed(exception, row.CallCancellation))
         {
             value = null;
-            Reject(exception,
+            Reject(
+                exception,
                 plan.Models,
                 row,
                 plan.Node.Path,
@@ -243,7 +249,8 @@ internal static class RecordBuilder
         // record but an invalid callback result.
         if (value is null)
         {
-            row.Fatal ??= TabularError.Create(TabularErrorCodes.Callback.InvalidResult,
+            row.Fatal ??= TabularError.Create(
+                TabularErrorCodes.Callback.InvalidResult,
                 TabularErrorKind.Technical,
                 $"The factory of {model.Type.Name} returned null.",
                 row.Location(path: plan.Node.Path));
@@ -273,7 +280,8 @@ internal static class RecordBuilder
             }
         }
 
-        row.Fatal ??= TabularError.Create(TabularErrorCodes.Callback.Failed,
+        row.Fatal ??= TabularError.Create(
+            TabularErrorCodes.Callback.Failed,
             TabularErrorKind.Technical,
             technicalMessage,
             row.Location(path: path));

@@ -379,6 +379,8 @@ resharper_csharp_keep_existing_lambda_and_anonymous_function_parens_arrangement 
 resharper_csharp_wrap_arguments_style = chop_if_long
 # Intentionally higher than the declaration limit to avoid over-wrapping common invocations.
 resharper_csharp_max_invocation_arguments_on_line = 6
+# A wrapped invocation starts its arguments on the next line, like a declaration.
+resharper_csharp_wrap_after_invocation_lpar = true
 resharper_csharp_align_first_arg_by_paren = false
 resharper_csharp_align_multiline_argument = false
 resharper_csharp_wrap_after_dot_in_method_calls = false
@@ -439,6 +441,7 @@ resharper_csharp_place_simple_switch_expression_on_single_line = false
 resharper_csharp_wrap_switch_expression = chop_if_long
 resharper_csharp_keep_existing_switch_expression_arrangement = true
 resharper_csharp_int_align_switch_expressions = false
+resharper_csharp_int_align_switch_sections = false
 
 # Anonymous methods use next-line braces and avoid extra block indentation.
 resharper_csharp_anonymous_method_declaration_braces = next_line
@@ -450,6 +453,12 @@ resharper_csharp_place_expr_accessor_on_single_line = always
 
 # Empty bodies remain compact, including constructors that only call base.
 resharper_csharp_empty_block_style = together_same_line
+
+# --- Comments And Operators --------------------------------------------------
+# End comments on consecutive lines share one column.
+resharper_csharp_int_align_comments = true
+# Operator declarations read `operator ==(`, as in the .NET libraries.
+resharper_csharp_space_after_operator_keyword = true
 
 # --- Vertical Grouping -------------------------------------------------------
 # WHY: Add a visual boundary after multiline initializations even when their

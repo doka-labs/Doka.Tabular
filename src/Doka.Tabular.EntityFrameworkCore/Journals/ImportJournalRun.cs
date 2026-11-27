@@ -51,7 +51,8 @@ internal sealed partial class ImportJournalRun : IImportEvidence
         var claims = await JournalStore
             .Claim(context, Name, scope, hash)
             .Where(claim => claim.CurrentImportId == id)
-            .ExecuteUpdateAsync(setters => setters
+            .ExecuteUpdateAsync(
+                setters => setters
                     .SetProperty(claim => claim.State, ImportClaimState.Imported)
                     .SetProperty(claim => claim.UpdatedAt, _time.GetUtcNow())
                     .SetProperty(claim => EF.Property<Guid>(claim, "Version"), Guid.NewGuid()),
@@ -68,7 +69,8 @@ internal sealed partial class ImportJournalRun : IImportEvidence
         var logs = await context
             .Set<TabularImportLog>(JournalModel.ImportLog(Name))
             .Where(log => log.Id == id && log.CompletedAt == null)
-            .ExecuteUpdateAsync(setters => setters
+            .ExecuteUpdateAsync(
+                setters => setters
                     .SetProperty(log => log.RowsImported, rowsImported)
                     .SetProperty(log => EF.Property<Guid>(log, "Version"), Guid.NewGuid()),
                 cancellationToken)
@@ -151,13 +153,16 @@ internal sealed partial class ImportJournalRun : IImportEvidence
         {
             // WHY: Any failure of the own journal context, also of its release, is a technical error of the
             // journal; the completion function still runs once.
-            errors.Add(saved
-                ? TabularError.Create(TabularErrorCodes.Persistence.OperationFailed,
-                    TabularErrorKind.Technical,
-                    "The context of the import log could not be released after its end was written.")
-                : TabularError.Create(TabularErrorCodes.Persistence.WriteFailed,
-                    TabularErrorKind.Technical,
-                    "The end of the import log could not be written."));
+            errors.Add(
+                saved
+                    ? TabularError.Create(
+                        TabularErrorCodes.Persistence.OperationFailed,
+                        TabularErrorKind.Technical,
+                        "The context of the import log could not be released after its end was written.")
+                    : TabularError.Create(
+                        TabularErrorCodes.Persistence.WriteFailed,
+                        TabularErrorKind.Technical,
+                        "The end of the import log could not be written."));
         }
         finally
         {
@@ -211,7 +216,8 @@ internal sealed partial class ImportJournalRun : IImportEvidence
                 {
                     // WHY: Targets of other databases report no evidence here; their imported rows still mean that
                     // the file changed data, so the claim is not released.
-                    claim.Set(ClaimStateAfter(uncertain, _evidenceCommitted || report.RowsImported > 0, report.Status),
+                    claim.Set(
+                        ClaimStateAfter(uncertain, _evidenceCommitted || report.RowsImported > 0, report.Status),
                         now);
 
                     JournalStore.Touch(context, claim);
@@ -238,7 +244,9 @@ internal sealed partial class ImportJournalRun : IImportEvidence
 
         return await CompletionRunner
             .RunAsync(
-                token => completed(new TabularImportCompleted(_operationId,
+                token => completed(
+                    new TabularImportCompleted(
+                        _operationId,
                         started.Id,
                         _binding.Options.Scope,
                         _decision ?? ImportJournalDecision.Processed,

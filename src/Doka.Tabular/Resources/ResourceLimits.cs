@@ -55,9 +55,11 @@ internal sealed class TabularResourceException : Exception
     public static TabularResourceException Limit(
         string resource,
         long limit
-    ) => new(TabularError.Create(TabularErrorCodes.Resource.LimitExceeded,
-        TabularErrorKind.Technical,
-        $"The limit for {resource} ({limit.ToString(CultureInfo.InvariantCulture)}) was reached."));
+    ) => new(
+        TabularError.Create(
+            TabularErrorCodes.Resource.LimitExceeded,
+            TabularErrorKind.Technical,
+            $"The limit for {resource} ({limit.ToString(CultureInfo.InvariantCulture)}) was reached."));
 
     public static TabularResourceException Io(
         string message
@@ -88,7 +90,8 @@ internal sealed class TemporaryFiles
             var path = Path.Combine(folder, $"doka-tabular-{Guid.NewGuid():N}.tmp");
             try
             {
-                var stream = new FileStream(path,
+                var stream = new FileStream(
+                    path,
                     FileMode.CreateNew,
                     FileAccess.ReadWrite,
                     FileShare.None,

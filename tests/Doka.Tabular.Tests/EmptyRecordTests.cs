@@ -23,14 +23,16 @@ public sealed class EmptyRecordTests
     public async Task RecordWithOnlyEmptyFields_IsADataErrorOfTheExcelExport()
     {
         // Act
-        var report = await ExcelInstance.Format.ExportAsync(new[] { new Single(1), new Single(null) },
+        var report = await ExcelInstance.Format.ExportAsync(
+            new[] { new Single(1), new Single(null) },
             s_single,
             new MemoryStream(),
             Token);
 
         // Assert
         var error = Assert.Single(report.Errors);
-        Assert.Equal((ReportStatus.Failed, TabularErrorCodes.Conversion.MissingRepresentation, 2L),
+        Assert.Equal(
+            (ReportStatus.Failed, TabularErrorCodes.Conversion.MissingRepresentation, 2L),
             (report.Status, error.Code, error.Location.RecordNumber));
     }
 
@@ -45,7 +47,8 @@ public sealed class EmptyRecordTests
         var report = await ExcelInstance.Format.ExportAsync(sheets.Build(), new MemoryStream(), Token);
 
         // Assert
-        Assert.Equal(TabularErrorCodes.Conversion.MissingRepresentation,
+        Assert.Equal(
+            TabularErrorCodes.Conversion.MissingRepresentation,
             Assert.Single(report.Errors)
                 .Code);
     }
@@ -54,7 +57,8 @@ public sealed class EmptyRecordTests
     public async Task RecordWithOnlyEmptyFields_IsADataErrorOfTheFormatNeutralExportWithoutFile()
     {
         // Act
-        var (report, file) = await Export.ExportAsync(new[] { new Single(null) },
+        var (report, file) = await Export.ExportAsync(
+            new[] { new Single(null) },
             s_single,
             TabularType.Excel,
             new TabularExportOptions { WriteHeader = true },
@@ -62,7 +66,8 @@ public sealed class EmptyRecordTests
 
         // Assert
         Assert.Null(file);
-        Assert.Equal(TabularErrorCodes.Conversion.MissingRepresentation,
+        Assert.Equal(
+            TabularErrorCodes.Conversion.MissingRepresentation,
             Assert.Single(report.Errors)
                 .Code);
     }
@@ -72,7 +77,8 @@ public sealed class EmptyRecordTests
     {
         // Act
         // WHY: The round trip of the own output is the checked contract, so export and reimport form one action.
-        var (export, file) = await Export.ExportAsync(new[] { new Single(1), new Single(null) },
+        var (export, file) = await Export.ExportAsync(
+            new[] { new Single(1), new Single(null) },
             s_single,
             TabularType.Csv,
             Token);
@@ -88,7 +94,8 @@ public sealed class EmptyRecordTests
     public async Task EmptySource_ExportsToExcel()
     {
         // Act
-        var (report, file) = await Export.ExportAsync(Array.Empty<Single>(),
+        var (report, file) = await Export.ExportAsync(
+            Array.Empty<Single>(),
             s_single,
             TabularType.Excel,
             new TabularExportOptions { WriteHeader = true },

@@ -48,7 +48,8 @@ public sealed partial class ExcelExportTests
             .Build();
 
         // Act
-        var report = await ExcelInstance.ExportAsync(Array.Empty<Order>(),
+        var report = await ExcelInstance.ExportAsync(
+            Array.Empty<Order>(),
             map,
             new MemoryStream(),
             new ExcelExportOptions
@@ -65,7 +66,8 @@ public sealed partial class ExcelExportTests
             Token);
 
         // Assert
-        Assert.Equal((TabularErrorKind.Configuration, TabularErrorCodes.Schema.LimitExceeded),
+        Assert.Equal(
+            (TabularErrorKind.Configuration, TabularErrorCodes.Schema.LimitExceeded),
             (report.FatalError?.Kind, report.FatalError?.Code));
     }
 
@@ -80,23 +82,26 @@ public sealed partial class ExcelExportTests
         // Arrange
         // WHY: A workbook needs a seekable input; a forward-only input of exactly the buffer stays in memory.
         var file = await WorkbookAsync();
-        var format = new ExcelFormat(new ExcelFormatOptions
-        {
-            ImportBufferBytes = file.Length + bufferOffset,
-            AllowSpill = false,
-            TemporaryDirectory = _directory,
-        });
+        var format = new ExcelFormat(
+            new ExcelFormatOptions
+            {
+                ImportBufferBytes = file.Length + bufferOffset,
+                AllowSpill = false,
+                TemporaryDirectory = _directory,
+            });
 
         // Act
         var report = await format.ImportAsync(new ForwardOnlyStream(new MemoryStream(file)), OrderMap(), Token);
 
         // Assert
-        Assert.Equal(succeeds
+        Assert.Equal(
+            succeeds
                 ? null
                 : TabularErrorCodes.Resource.LimitExceeded,
             report.FatalError?.Code);
 
-        Assert.Equal(succeeds
+        Assert.Equal(
+            succeeds
                 ? 300
                 : 0,
             report.Items?.Count ?? 0);
@@ -114,23 +119,26 @@ public sealed partial class ExcelExportTests
     {
         // Arrange
         var file = await WorkbookAsync();
-        var format = new ExcelFormat(new ExcelFormatOptions
-        {
-            ImportBufferBytes = 0,
-            MaxTemporaryBytes = file.Length + limitOffset,
-            TemporaryDirectory = _directory,
-        });
+        var format = new ExcelFormat(
+            new ExcelFormatOptions
+            {
+                ImportBufferBytes = 0,
+                MaxTemporaryBytes = file.Length + limitOffset,
+                TemporaryDirectory = _directory,
+            });
 
         // Act
         var report = await format.ImportAsync(new ForwardOnlyStream(new MemoryStream(file)), OrderMap(), Token);
 
         // Assert
-        Assert.Equal(succeeds
+        Assert.Equal(
+            succeeds
                 ? null
                 : TabularErrorCodes.Resource.LimitExceeded,
             report.FatalError?.Code);
 
-        Assert.Equal(succeeds
+        Assert.Equal(
+            succeeds
                 ? 300
                 : 0,
             report.Items?.Count ?? 0);
@@ -146,7 +154,8 @@ public sealed partial class ExcelExportTests
     private static async Task<byte[]> WorkbookAsync()
     {
         using var file = new MemoryStream();
-        await new ExcelFormat(new ExcelFormatOptions()).ExportAsync(Enumerable
+        await new ExcelFormat(new ExcelFormatOptions()).ExportAsync(
+            Enumerable
                 .Range(1, 300)
                 .Select(number => new Counted(number)),
             OrderMap(),
@@ -201,7 +210,8 @@ public sealed partial class ExcelExportTests
             .Build();
 
         // Act
-        var report = await ExcelInstance.ExportAsync(new[] { new Order(1, 0) },
+        var report = await ExcelInstance.ExportAsync(
+            new[] { new Order(1, 0) },
             map,
             new MemoryStream(),
             new ExcelExportOptions
@@ -226,8 +236,9 @@ public sealed partial class ExcelExportTests
 
         // Assert
         using var document = OpenWorkbook(file!);
-        Assert.Empty(Single(document)
-            .Worksheet!.Descendants<CellFormula>());
+        Assert.Empty(
+            Single(document)
+                .Worksheet!.Descendants<CellFormula>());
 
         Assert.Equal("=1+1", Cells(TabularType.Excel, file!)[0][1]);
     }
@@ -236,7 +247,8 @@ public sealed partial class ExcelExportTests
     public async Task RowLimit_AllowsTheLastSheetRow()
     {
         // Act
-        var report = await ExcelInstance.ExportAsync(Orders(1_048_575),
+        var report = await ExcelInstance.ExportAsync(
+            Orders(1_048_575),
             s_numbers,
             Stream.Null,
             new ExcelExportOptions { WriteHeader = true },
@@ -253,7 +265,8 @@ public sealed partial class ExcelExportTests
         var path = Path.Combine(_directory, "large.xlsx");
 
         // Act
-        var report = await ExcelInstance.ExportAsync(Orders(1_048_576),
+        var report = await ExcelInstance.ExportAsync(
+            Orders(1_048_576),
             s_numbers,
             path,
             new ExcelExportOptions { WriteHeader = true },
@@ -276,7 +289,8 @@ public sealed partial class ExcelExportTests
             Token);
 
         // Assert
-        Assert.Equal((TabularErrorCodes.Schema.LimitExceeded, 2L),
+        Assert.Equal(
+            (TabularErrorCodes.Schema.LimitExceeded, 2L),
             (report.FatalError!.Code, report.FatalError.Location.RowNumber!.Value));
     }
 
@@ -331,11 +345,12 @@ public sealed partial class ExcelExportTests
         // WHY: Each sheet alone is far below the limit; only the whole workbook in its temporary file reaches it.
         using var measured = new MemoryStream();
         await ExcelInstance.ExportAsync(ThreeSheets(), measured, Token);
-        var format = new ExcelFormat(new ExcelFormatOptions
-        {
-            MaxTemporaryBytes = measured.Length + limitOffset,
-            TemporaryDirectory = _directory,
-        });
+        var format = new ExcelFormat(
+            new ExcelFormatOptions
+            {
+                MaxTemporaryBytes = measured.Length + limitOffset,
+                TemporaryDirectory = _directory,
+            });
 
         var path = Path.Combine(_directory, "book.xlsx");
 
@@ -343,12 +358,14 @@ public sealed partial class ExcelExportTests
         var report = await format.ExportAsync(ThreeSheets(), path, Token);
 
         // Assert
-        Assert.Equal(succeeds
+        Assert.Equal(
+            succeeds
                 ? null
                 : TabularErrorCodes.Resource.LimitExceeded,
             report.FatalError?.Code);
 
-        Assert.Equal(succeeds
+        Assert.Equal(
+            succeeds
                 ? [path]
                 : [],
             Directory.GetFiles(_directory));

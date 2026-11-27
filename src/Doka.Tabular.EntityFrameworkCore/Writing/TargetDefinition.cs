@@ -195,9 +195,11 @@ internal sealed class TargetDefinition<TContext, TDto, TEntity> : TargetDefiniti
 
         return (Kind, existing) switch
         {
-            (TargetKind.Lookup, null) => new TargetStep(null,
+            (TargetKind.Lookup, null) => new TargetStep(
+                null,
                 false,
-                TabularError.Create(TabularErrorCodes.Lookup.NotFound,
+                TabularError.Create(
+                    TabularErrorCodes.Lookup.NotFound,
                     TabularErrorKind.Data,
                     $"No {EntityType.Name} matches the row.",
                     location),
@@ -225,9 +227,11 @@ internal sealed class TargetDefinition<TContext, TDto, TEntity> : TargetDefiniti
             if (!Parts[index]
                 .Stage(dto, values, query.Holders[index]))
             {
-                return (null, new TargetStep(null,
+                return (null, new TargetStep(
+                    null,
                     false,
-                    TabularError.Create(TabularErrorCodes.Key.Incomplete,
+                    TabularError.Create(
+                        TabularErrorCodes.Key.Incomplete,
                         TabularErrorKind.Data,
                         $"A part of the match of {EntityType.Name} is empty.",
                         Located(location, TabularPropertyPath.Of(Parts[index].DtoProperty.Name))),
@@ -267,10 +271,12 @@ internal sealed class TargetDefinition<TContext, TDto, TEntity> : TargetDefiniti
         }
 
         return count > 1
-            ? (null, new TargetStep(null,
+            ? (null, new TargetStep(
+                null,
                 false,
                 null,
-                TabularError.Create(TabularErrorCodes.Lookup.NotUnique,
+                TabularError.Create(
+                    TabularErrorCodes.Lookup.NotUnique,
                     TabularErrorKind.Technical,
                     $"The match of {EntityType.Name} returned several records despite the key.",
                     location)))
@@ -329,10 +335,12 @@ internal sealed class TargetDefinition<TContext, TDto, TEntity> : TargetDefiniti
         // WHY: The create function belongs to the application; a null result is reported, not trusted.
         if (created is null)
         {
-            return new TargetStep(null,
+            return new TargetStep(
+                null,
                 false,
                 null,
-                TabularError.Create(TabularErrorCodes.Callback.InvalidResult,
+                TabularError.Create(
+                    TabularErrorCodes.Callback.InvalidResult,
                     TabularErrorKind.Technical,
                     $"The create function of {EntityType.Name} returned null.",
                     location));
@@ -374,9 +382,11 @@ internal sealed class TargetDefinition<TContext, TDto, TEntity> : TargetDefiniti
         string function,
         TabularErrorLocation location
     ) => Errors.Find(exception) is { } code
-        ? new TargetStep(null,
+        ? new TargetStep(
+            null,
             false,
-            TabularError.Create(code,
+            TabularError.Create(
+                code,
                 TabularErrorKind.Data,
                 $"The {function} function of {EntityType.Name} rejected the row.",
                 location),
@@ -386,10 +396,12 @@ internal sealed class TargetDefinition<TContext, TDto, TEntity> : TargetDefiniti
     private TargetStep Failed(
         string function,
         TabularErrorLocation location
-    ) => new(null,
+    ) => new(
+        null,
         false,
         null,
-        TabularError.Create(TabularErrorCodes.Callback.Failed,
+        TabularError.Create(
+            TabularErrorCodes.Callback.Failed,
             TabularErrorKind.Technical,
             $"The {function} function of {EntityType.Name} threw an unassigned exception.",
             location));

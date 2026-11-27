@@ -22,7 +22,8 @@ public sealed partial class TabularImport
         ArgumentNullException.ThrowIfNull(source);
         ArgumentNullException.ThrowIfNull(map);
 
-        return RunImportAsync(type,
+        return RunImportAsync(
+            type,
             new ImportInput(source, null),
             ImportShape<T>.ForMap(map),
             null,
@@ -53,7 +54,8 @@ public sealed partial class TabularImport
         ArgumentNullException.ThrowIfNull(map);
         ArgumentNullException.ThrowIfNull(options);
 
-        return RunImportAsync(type,
+        return RunImportAsync(
+            type,
             new ImportInput(source, null),
             ImportShape<T>.ForMap(map),
             null,
@@ -84,7 +86,8 @@ public sealed partial class TabularImport
         ArgumentNullException.ThrowIfNull(map);
         ArgumentNullException.ThrowIfNull(destination);
 
-        return RunImportAsync(type,
+        return RunImportAsync(
+            type,
             new ImportInput(source, null),
             ImportShape<T>.ForMap(map),
             destination,
@@ -118,7 +121,8 @@ public sealed partial class TabularImport
         ArgumentNullException.ThrowIfNull(destination);
         ArgumentNullException.ThrowIfNull(options);
 
-        return RunImportAsync(type,
+        return RunImportAsync(
+            type,
             new ImportInput(source, null),
             ImportShape<T>.ForMap(map),
             destination,
@@ -145,7 +149,8 @@ public sealed partial class TabularImport
         ArgumentNullException.ThrowIfNull(source);
         ArgumentNullException.ThrowIfNull(map);
 
-        return RunImportAsync(type,
+        return RunImportAsync(
+            type,
             new ImportInput(source, null),
             ImportShape<TabularRow>.ForRowMap(map),
             null,
@@ -175,7 +180,8 @@ public sealed partial class TabularImport
         ArgumentNullException.ThrowIfNull(map);
         ArgumentNullException.ThrowIfNull(options);
 
-        return RunImportAsync(type,
+        return RunImportAsync(
+            type,
             new ImportInput(source, null),
             ImportShape<TabularRow>.ForRowMap(map),
             null,
@@ -205,7 +211,8 @@ public sealed partial class TabularImport
         ArgumentNullException.ThrowIfNull(map);
         ArgumentNullException.ThrowIfNull(destination);
 
-        return RunImportAsync(type,
+        return RunImportAsync(
+            type,
             new ImportInput(source, null),
             ImportShape<TabularRow>.ForRowMap(map),
             destination,
@@ -238,7 +245,8 @@ public sealed partial class TabularImport
         ArgumentNullException.ThrowIfNull(destination);
         ArgumentNullException.ThrowIfNull(options);
 
-        return RunImportAsync(type,
+        return RunImportAsync(
+            type,
             new ImportInput(source, null),
             ImportShape<TabularRow>.ForRowMap(map),
             destination,

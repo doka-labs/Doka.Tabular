@@ -17,10 +17,11 @@ public sealed partial class BehaviorTests
         // Arrange
         var logger = new CapturingLoggerFactory();
         var format =
-            new CsvFormat(new CsvFormatOptions
-            {
-                Diagnostics = new TabularDiagnosticsOptions { LoggerFactory = logger },
-            });
+            new CsvFormat(
+                new CsvFormatOptions
+                {
+                    Diagnostics = new TabularDiagnosticsOptions { LoggerFactory = logger },
+                });
 
         var map = TabularMap
             .For<Pair>()
@@ -29,18 +30,22 @@ public sealed partial class BehaviorTests
             .Build();
 
         // Act
-        var report = await format.ImportAsync(TestInput.Utf8("a,secret1\nb,secret2\nc,3"),
+        var report = await format.ImportAsync(
+            TestInput.Utf8("a,secret1\nb,secret2\nc,3"),
             map,
             new CsvImportOptions { Strategy = ImportStrategy.Partial },
             Token);
 
         // Assert
-        Assert.Equal([TabularLogEvents.OperationStarted.Id, TabularLogEvents.OperationCompleted.Id],
+        Assert.Equal(
+            [TabularLogEvents.OperationStarted.Id, TabularLogEvents.OperationCompleted.Id],
             logger.Events.Select(entry => entry.Id.Id));
 
         Assert.Equal((LogLevel.Debug, LogLevel.Warning), (logger.Events[0].Level, logger.Events[1].Level));
-        Assert.All(logger.Events,
-            entry => Assert.Contains(entry.State,
+        Assert.All(
+            logger.Events,
+            entry => Assert.Contains(
+                entry.State,
                 pair => pair.Key == "OperationId" && Equals(pair.Value, report.Diagnostics.OperationId)));
 
         Assert.All(logger.Events, entry => Assert.DoesNotContain("secret", entry.Text, StringComparison.Ordinal));
@@ -59,16 +64,19 @@ public sealed partial class BehaviorTests
             .Build();
 
         // Act
-        await new CsvFormat(new CsvFormatOptions
-        {
-            Diagnostics = new TabularDiagnosticsOptions { LoggerFactory = logger },
-        }).ImportAsync(TestInput.Utf8("a,1"), map, Token);
+        await new CsvFormat(
+            new CsvFormatOptions
+            {
+                Diagnostics = new TabularDiagnosticsOptions { LoggerFactory = logger },
+            }).ImportAsync(TestInput.Utf8("a,1"), map, Token);
 
         // Assert
-        Assert.Contains(logger.Events,
+        Assert.Contains(
+            logger.Events,
             entry => entry.Id.Id == TabularLogEvents.OperationFailed.Id && entry.Level == LogLevel.Error);
 
-        Assert.Contains(logger.Events,
+        Assert.Contains(
+            logger.Events,
             entry => entry.Id.Id == TabularLogEvents.OperationCompleted.Id && entry.Level == LogLevel.Error);
     }
 
@@ -79,10 +87,11 @@ public sealed partial class BehaviorTests
         var throwing = new CapturingLoggerFactory(throwOnLog: true);
 
         // Act
-        var report = await new CsvFormat(new CsvFormatOptions
-        {
-            Diagnostics = new TabularDiagnosticsOptions { LoggerFactory = throwing },
-        }).ImportAsync(TestInput.Utf8("a"), s_mails, Token);
+        var report = await new CsvFormat(
+            new CsvFormatOptions
+            {
+                Diagnostics = new TabularDiagnosticsOptions { LoggerFactory = throwing },
+            }).ImportAsync(TestInput.Utf8("a"), s_mails, Token);
 
         // Assert
         Assert.Equal(ReportStatus.Succeeded, report.Status);
@@ -92,13 +101,15 @@ public sealed partial class BehaviorTests
     public async Task Logging_MissingLoggerFactory_IsAConfigurationError()
     {
         // Act
-        var report = await new CsvFormat(new CsvFormatOptions
-        {
-            Diagnostics = new TabularDiagnosticsOptions { LoggerFactory = null },
-        }).ImportAsync(TestInput.Utf8("a"), s_mails, Token);
+        var report = await new CsvFormat(
+            new CsvFormatOptions
+            {
+                Diagnostics = new TabularDiagnosticsOptions { LoggerFactory = null },
+            }).ImportAsync(TestInput.Utf8("a"), s_mails, Token);
 
         // Assert
-        Assert.Equal(TabularErrorCodes.Configuration.Invalid,
+        Assert.Equal(
+            TabularErrorCodes.Configuration.Invalid,
             Assert.Single(report.Errors)
                 .Code);
     }
@@ -140,18 +151,22 @@ public sealed partial class BehaviorTests
 
         // Assert
         var operation = during.Diagnostics.OperationId.ToString();
-        var activity = Assert.Single(activities,
+        var activity = Assert.Single(
+            activities,
             candidate => Equals(candidate.GetTagItem("doka.tabular.operation_id"), operation));
 
-        Assert.DoesNotContain(activities,
-            candidate => Equals(candidate.GetTagItem("doka.tabular.operation_id"),
+        Assert.DoesNotContain(
+            activities,
+            candidate => Equals(
+                candidate.GetTagItem("doka.tabular.operation_id"),
                 before.Diagnostics.OperationId.ToString()));
 
         Assert.Equal(("tabular.import", ActivityKind.Internal), (activity.OperationName, activity.Kind));
         Assert.Equal(ActivityStatusCode.Error, activity.Status);
         Assert.Equal(ReportStatus.Failed, before.Status);
         Assert.Contains(activity.Tags, tag => tag.Key == "doka.tabular.status");
-        Assert.All([
+        Assert.All(
+            [
                 "rows_read", "rows_imported", "rows_rejected", "rows_skipped", "rows_pending_commit",
                 "rows_uncertain", "rows_written",
             ],

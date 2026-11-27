@@ -71,7 +71,8 @@ public sealed partial class StructureTests
             "import-only twin" => TabularMap
                 .For<Located>()
                 .Column(x => x.City, index: 0, configure: c => c.Header("Name"))
-                .Column(x => x.PostalCode,
+                .Column(
+                    x => x.PostalCode,
                     index: 1,
                     configure: c => c
                         .Header("name")
@@ -100,7 +101,8 @@ public sealed partial class StructureTests
         var exception = Record.Exception(() => OrderWithPrefixes(billingPrefix, shippingPrefix));
 
         // Assert
-        Assert.Contains(Assert
+        Assert.Contains(
+            Assert
                 .IsType<TabularConfigurationException>(exception)
                 .Errors,
             error => error.Message.Contains("equal after trimming"));
@@ -122,7 +124,8 @@ public sealed partial class StructureTests
     ) => TabularMap
         .For<Order>()
         .Column(x => x.Number, index: 0, configure: c => c.Header("Nummer"))
-        .Nested(x => x.Billing,
+        .Nested(
+            x => x.Billing,
             s_address,
             e =>
             {
@@ -135,7 +138,8 @@ public sealed partial class StructureTests
                     e.HeaderPrefix(billingPrefix);
                 }
             })
-        .Nested(x => x.Shipping,
+        .Nested(
+            x => x.Shipping,
             s_address,
             e =>
             {
@@ -160,20 +164,23 @@ public sealed partial class StructureTests
     {
         // Arrange
         var rows = RowMap.Create();
-        rows.Add(s_fixedLocated,
+        rows.Add(
+            s_fixedLocated,
             e => e
                 .KeyPrefix(ColumnKey.Create("billing"))
                 .HeaderPrefix(first));
 
         // Act
-        rows.Add(s_fixedLocated,
+        rows.Add(
+            s_fixedLocated,
             e => e
                 .StartIndex(2)
                 .KeyPrefix(ColumnKey.Create("shipping"))
                 .HeaderPrefix(second));
 
         // Assert
-        Assert.Contains(Assert
+        Assert.Contains(
+            Assert
                 .Throws<TabularConfigurationException>(rows.Build)
                 .Errors,
             error => error.Message.Contains("equal after trimming"));
@@ -201,7 +208,8 @@ public sealed partial class StructureTests
         var exception = Record.Exception(rowMap.Build);
 
         // Assert
-        Assert.Contains(Assert
+        Assert.Contains(
+            Assert
                 .IsType<TabularConfigurationException>(exception)
                 .Errors,
             error => error.Message.Contains("PostalCode"));
@@ -212,7 +220,8 @@ public sealed partial class StructureTests
     {
         // Arrange
         var rowMap = RowMap.Create();
-        rowMap.Add(s_cityOnly,
+        rowMap.Add(
+            s_cityOnly,
             e => e
                 .ExportKey(x => x.City, ColumnKey.Create("town"))
                 .Header(x => x.City, "Ort"));
@@ -236,7 +245,8 @@ public sealed partial class StructureTests
         if (importOnly)
         {
             rowMap.Add(s_fixedLocated, e => e.KeyPrefix(ColumnKey.Create("billing")));
-            rowMap.Add(s_fixedLocated,
+            rowMap.Add(
+                s_fixedLocated,
                 e => e
                     .StartIndex(2)
                     .KeyPrefix(ColumnKey.Create("shipping"))
@@ -244,12 +254,14 @@ public sealed partial class StructureTests
         }
         else
         {
-            rowMap.Add(s_fixedLocated,
+            rowMap.Add(
+                s_fixedLocated,
                 e => e
                     .KeyPrefix(ColumnKey.Create("billing"))
                     .HeaderPrefix("Rechnung "));
 
-            rowMap.Add(s_fixedLocated,
+            rowMap.Add(
+                s_fixedLocated,
                 e => e
                     .StartIndex(2)
                     .KeyPrefix(ColumnKey.Create("shipping"))
@@ -275,7 +287,8 @@ public sealed partial class StructureTests
         // Arrange
         var rows = new[] { new Located("Bern", "3000") };
         var sheets = ExcelExport.Create();
-        sheets.Add(TabularSheetName.Create("Sheet1"),
+        sheets.Add(
+            TabularSheetName.Create("Sheet1"),
             rows,
             s_translatedHeaders,
             new ExcelSheetExportOptions { Translations = s_equalTranslations });
@@ -283,7 +296,8 @@ public sealed partial class StructureTests
         // Act
         var errors = entry switch
         {
-            "csv" => (await CsvInstance.ExportAsync(rows,
+            "csv" => (await CsvInstance.ExportAsync(
+                rows,
                 s_translatedHeaders,
                 new MemoryStream(),
                 new CsvExportOptions
@@ -292,7 +306,8 @@ public sealed partial class StructureTests
                     Translations = s_equalTranslations,
                 },
                 Token)).Errors,
-            "excel" => (await ExcelInstance.Format.ExportAsync(rows,
+            "excel" => (await ExcelInstance.Format.ExportAsync(
+                rows,
                 s_translatedHeaders,
                 new MemoryStream(),
                 new ExcelExportOptions
@@ -301,7 +316,8 @@ public sealed partial class StructureTests
                     Translations = s_equalTranslations,
                 },
                 Token)).Errors,
-            "workbook" => (await ExcelInstance.Format.ExportAsync(sheets.Build(),
+            "workbook" => (await ExcelInstance.Format.ExportAsync(
+                sheets.Build(),
                 new MemoryStream(),
                 new ExcelWorkbookExportOptions { WriteHeader = true },
                 Token)).Errors,
@@ -309,7 +325,8 @@ public sealed partial class StructureTests
         };
 
         // Assert
-        Assert.Contains("equal after trimming",
+        Assert.Contains(
+            "equal after trimming",
             Assert.Single(errors)
                 .Message);
     }
@@ -339,7 +356,8 @@ public sealed partial class StructureTests
     public async Task DistinctTranslatedHeaders_Export()
     {
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Located("Bern", "3000") },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Located("Bern", "3000") },
             s_translatedHeaders,
             new MemoryStream(),
             new CsvExportOptions
@@ -361,7 +379,8 @@ public sealed partial class StructureTests
     public async Task EqualTranslatedHeaders_ExportWithoutHeader()
     {
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Located("Bern", "3000") },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Located("Bern", "3000") },
             s_translatedHeaders,
             new MemoryStream(),
             new CsvExportOptions
@@ -382,13 +401,15 @@ public sealed partial class StructureTests
         var map = TabularMap
             .For<Shipment>()
             .Column(x => x.Id, index: 0, configure: c => c.Header("Id"))
-            .Nested(x => x.Billing,
+            .Nested(
+                x => x.Billing,
                 s_located,
                 e => e
                     .StartIndex(1)
                     .KeyPrefix(ColumnKey.Create("billing"))
                     .HeaderPrefixTranslationKey("billing"))
-            .Nested(x => x.Shipping,
+            .Nested(
+                x => x.Shipping,
                 s_located,
                 e => e
                     .StartIndex(3)

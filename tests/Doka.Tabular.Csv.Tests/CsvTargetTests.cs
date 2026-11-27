@@ -18,7 +18,8 @@ public sealed partial class CsvTargetTests
         var target = new InterruptingStream(cancellation, interruptWrite: false);
 
         // Act
-        var report = await new CsvFormat(new CsvFormatOptions()).ExportAsync(new[] { new Name("Ada") },
+        var report = await new CsvFormat(new CsvFormatOptions()).ExportAsync(
+            new[] { new Name("Ada") },
             s_map,
             target,
             cancellation.Token);
@@ -36,7 +37,8 @@ public sealed partial class CsvTargetTests
         var target = new InterruptingStream(cancellation, interruptWrite: true);
 
         // Act
-        var report = await new CsvFormat(new CsvFormatOptions()).ExportAsync(new[] { new Name("Ada") },
+        var report = await new CsvFormat(new CsvFormatOptions()).ExportAsync(
+            new[] { new Name("Ada") },
             s_map,
             target,
             cancellation.Token);
@@ -66,7 +68,8 @@ public sealed partial class CsvTargetTests
     public async Task DelimiterTheEncodingCannotWrite_IsAConfigurationError()
     {
         // Act
-        var report = await new CsvFormat(new CsvFormatOptions()).ExportAsync(new[] { new Name("Ada") },
+        var report = await new CsvFormat(new CsvFormatOptions()).ExportAsync(
+            new[] { new Name("Ada") },
             s_map,
             new MemoryStream(),
             new CsvExportOptions

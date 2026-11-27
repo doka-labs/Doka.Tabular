@@ -104,7 +104,8 @@ public sealed partial class ExcelOverloadTests : IDisposable
 
         // Assert
         Assert.Equal(ReportStatus.Succeeded, outcome.Report.Status);
-        Assert.Equal(call.WithOptions
+        Assert.Equal(
+            call.WithOptions
                 ? s_nameColumn
                 : s_bothColumns,
             TestFiles.Cells(TabularType.Excel, new MemoryStream(await arguments.WrittenAsync(call.Target, outcome))));
@@ -159,7 +160,8 @@ public sealed partial class ExcelOverloadTests : IDisposable
         var exception = await Record.ExceptionAsync(() => call.Run(arguments.Without(parameter)));
 
         // Assert
-        Assert.Equal(parameter,
+        Assert.Equal(
+            parameter,
             Assert.IsType<ArgumentNullException>(exception)
                 .ParamName);
     }
@@ -198,12 +200,14 @@ public sealed partial class ExcelOverloadTests : IDisposable
 
         // Assert
         Assert.Equal([MissingCity], outcome.Errors);
-        Assert.Equal(call.WithOptions
+        Assert.Equal(
+            call.WithOptions
                 ? ["Ada"]
                 : [],
             outcome.Names);
 
-        Assert.Equal(call.WithOptions
+        Assert.Equal(
+            call.WithOptions
                 ? 1
                 : 0,
             outcome.RowsImported);
@@ -245,7 +249,8 @@ public sealed partial class ExcelOverloadTests : IDisposable
         var exception = await Record.ExceptionAsync(() => call.Run(arguments.Without(parameter)));
 
         // Assert
-        Assert.Equal(parameter,
+        Assert.Equal(
+            parameter,
             Assert.IsType<ArgumentNullException>(exception)
                 .ParamName);
     }
@@ -264,13 +269,15 @@ public sealed partial class ExcelOverloadTests : IDisposable
         .ToArray();
 
     private Task<ExportArguments<ExcelExportOptions>> CreateExportAsync()
-        => ExportArguments<ExcelExportOptions>.CreateAsync(s_exportOptions,
+        => ExportArguments<ExcelExportOptions>.CreateAsync(
+            s_exportOptions,
             Path.Combine(_directory, "residents.xlsx"),
             Token);
 
     private Task<ImportArguments<ExcelImportOptions>> CreateImportAsync(
         byte[] input
-    ) => ImportArguments<ExcelImportOptions>.CreateAsync(s_importOptions,
+    ) => ImportArguments<ExcelImportOptions>.CreateAsync(
+        s_importOptions,
         input,
         Path.Combine(_directory, "residents.xlsx"),
         Token);

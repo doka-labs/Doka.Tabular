@@ -8,7 +8,8 @@ namespace Doka.Tabular.EntityFrameworkCore;
 // WHY: CA1708 reads the extension blocks as members differing only by case
 // (https://github.com/dotnet/sdk/issues/51716); the fix (https://github.com/dotnet/sdk/pull/51838) is not in
 // SDK 10.0.404. Remove the suppression once the pinned SDK contains it.
-[SuppressMessage("Naming",
+[SuppressMessage(
+    "Naming",
     "CA1708:Identifiers should differ by more than case",
     Justification = "Analyzer defect for extension blocks.")]
 [PublicAPI]
@@ -32,7 +33,8 @@ public static class TabularJournalModelExtensions
             configure?.Invoke(settings);
             if (settings is { ImportEnabled: false, ExportEnabled: false })
             {
-                throw new ArgumentException("At least one direction of the journal must be enabled.",
+                throw new ArgumentException(
+                    "At least one direction of the journal must be enabled.",
                     nameof(configure));
             }
 
@@ -43,17 +45,18 @@ public static class TabularJournalModelExtensions
                 && (existing.Prefix != settings.TablePrefix
                     || existing.Import != settings.ImportEnabled
                     || existing.Export != settings.ExportEnabled
-                    || existing.IgnoreScopeCase != settings.IgnoreScopeCase))
+                    || existing.IgnoreImportScopeCase != settings.IgnoreImportScopeCase))
             {
                 throw new InvalidOperationException(
                     "The standard journal is already registered on these options with other settings.");
             }
 
             ((IDbContextOptionsBuilderInfrastructure)options).AddOrUpdateExtension(
-                new TabularJournalOptionsExtension(settings.TablePrefix,
+                new TabularJournalOptionsExtension(
+                    settings.TablePrefix,
                     settings.ImportEnabled,
                     settings.ExportEnabled,
-                    settings.IgnoreScopeCase));
+                    settings.IgnoreImportScopeCase));
 
             return options;
         }
@@ -100,7 +103,7 @@ public static class TabularJournalModelExtensions
             var tables = new TabularJournalTables();
             configure?.Invoke(tables);
             JournalModel.CheckPrefix(tables.TablePrefix);
-            JournalModel.AddImport(modelBuilder, name, tables.TablePrefix, tables.IgnoreScopeCase);
+            JournalModel.AddImport(modelBuilder, name, tables.TablePrefix, tables.IgnoreImportScopeCase);
 
             return modelBuilder;
         }

@@ -95,9 +95,10 @@ internal sealed class NodePlan
                 continue;
             }
 
-            errors.Add(TabularError.Configuration(
-                $"The factory of {model.Type.Name} reads the property {member.Name}, which is not imported.",
-                new TabularErrorLocation { PropertyPath = TabularPropertyPath.Of(member.Name) }));
+            errors.Add(
+                TabularError.Configuration(
+                    $"The factory of {model.Type.Name} reads the property {member.Name}, which is not imported.",
+                    new TabularErrorLocation { PropertyPath = TabularPropertyPath.Of(member.Name) }));
 
             imported = false;
         }
@@ -140,11 +141,12 @@ internal sealed class NodePlan
 
         if (fitting is not [var (chosen, arguments)])
         {
-            errors.Add(TabularError.Configuration(
-                fitting.Count == 0
-                    ? $"No public constructor of {type.Name} fits the map; use a factory."
-                    : $"Several public constructors of {type.Name} fit the map; use a factory to choose one.",
-                location));
+            errors.Add(
+                TabularError.Configuration(
+                    fitting.Count == 0
+                        ? $"No public constructor of {type.Name} fits the map; use a factory."
+                        : $"Several public constructors of {type.Name} fit the map; use a factory to choose one.",
+                    location));
 
             return null;
         }
@@ -173,22 +175,24 @@ internal sealed class NodePlan
 
                     break;
                 case ComposeNode compose when compose.Parts.All(readers.ContainsKey):
-                    members.Add(new MemberPlan(member.Member,
-                        member.Member.Kind.CreateSlot(),
-                        null,
-                        compose
-                            .Parts
-                            .Select(part => readers[part])
-                            .ToArray(),
+                    members.Add(
+                        new MemberPlan(
+                            member.Member,
+                            member.Member.Kind.CreateSlot(),
+                            null,
+                            compose
+                                .Parts
+                                .Select(part => readers[part])
+                                .ToArray(),
 
-                        // WHY: Fluent materialization stays explicit as ToArray or ToList instead of a spread.
-                        // ReSharper disable once UseCollectionExpression
-                        compose
-                            .Compose
-                            .Parts
-                            .Select(part => part.Kind.CreateSlot())
-                            .ToArray(),
-                        null));
+                            // WHY: Fluent materialization stays explicit as ToArray or ToList instead of a spread.
+                            // ReSharper disable once UseCollectionExpression
+                            compose
+                                .Compose
+                                .Parts
+                                .Select(part => part.Kind.CreateSlot())
+                                .ToArray(),
+                            null));
 
                     break;
 
@@ -197,12 +201,14 @@ internal sealed class NodePlan
                 case NestedNode nested when Imports(nested.Node, readers):
                     if (Create(nested.Node, readers, errors, models) is { Members.Length: > 0 } inner)
                     {
-                        members.Add(new MemberPlan(member.Member,
-                            member.Member.Kind.CreateSlot(),
-                            null,
-                            null,
-                            null,
-                            inner));
+                        members.Add(
+                            new MemberPlan(
+                                member.Member,
+                                member.Member.Kind.CreateSlot(),
+                                null,
+                                null,
+                                null,
+                                inner));
                     }
 
                     break;
@@ -267,7 +273,8 @@ internal sealed class NodePlan
                     arguments[position] = new CreatorArgument(candidate, members[candidate].Member.Kind.Type, null);
                     break;
                 case [] when parameter.IsOptional:
-                    arguments[position] = new CreatorArgument(null,
+                    arguments[position] = new CreatorArgument(
+                        null,
                         null,
                         parameter.HasDefaultValue
                             ? parameter.DefaultValue
@@ -278,9 +285,10 @@ internal sealed class NodePlan
                     return null;
                 default:
                     var names = string.Join(" and ", candidates.Select(index => members[index].Member.Name));
-                    errors.Add(TabularError.Configuration(
-                        $"The constructor parameter {parameter.Name} of {type.Name} matches {names}; use a factory.",
-                        location));
+                    errors.Add(
+                        TabularError.Configuration(
+                            $"The constructor parameter {parameter.Name} of {type.Name} matches {names}; use a factory.",
+                            location));
 
                     return null;
             }
@@ -318,9 +326,10 @@ internal sealed class NodePlan
                 continue;
             }
 
-            errors.Add(TabularError.Configuration(
-                $"The property {member.Name} of {type.Name} is neither bound by the constructor nor publicly settable; use a factory.",
-                location));
+            errors.Add(
+                TabularError.Configuration(
+                    $"The property {member.Name} of {type.Name} is neither bound by the constructor nor publicly settable; use a factory.",
+                    location));
         }
 
         return setters;

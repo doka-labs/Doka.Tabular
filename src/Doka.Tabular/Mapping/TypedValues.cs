@@ -247,7 +247,8 @@ internal sealed class ComposeBinding<TValue, T1, T2, T3> : ComposeBinding
     public override void Read(
         ValueSlot[] parts,
         ValueSlot target
-    ) => ((ValueSlot<TValue>)target).Value = _read(((ValueSlot<T1>)parts[0]).Value,
+    ) => ((ValueSlot<TValue>)target).Value = _read(
+        ((ValueSlot<T1>)parts[0]).Value,
         ((ValueSlot<T2>)parts[1]).Value,
         ((ValueSlot<T3>)parts[2]).Value);
 
@@ -282,7 +283,8 @@ internal sealed class ComposeBinding<TValue, T1, T2, T3, T4> : ComposeBinding
     public override void Read(
         ValueSlot[] parts,
         ValueSlot target
-    ) => ((ValueSlot<TValue>)target).Value = _read(((ValueSlot<T1>)parts[0]).Value,
+    ) => ((ValueSlot<TValue>)target).Value = _read(
+        ((ValueSlot<T1>)parts[0]).Value,
         ((ValueSlot<T2>)parts[1]).Value,
         ((ValueSlot<T3>)parts[2]).Value,
         ((ValueSlot<T4>)parts[3]).Value);

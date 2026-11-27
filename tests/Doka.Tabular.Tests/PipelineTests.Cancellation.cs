@@ -17,9 +17,11 @@ public sealed partial class PipelineTests
         using var cancellation = new CancellationTokenSource();
         var map = TabularMap
             .For<Numbered>()
-            .Column(x => x.Number,
+            .Column(
+                x => x.Number,
                 index: 0,
-                configure: c => c.Convert(number => number,
+                configure: c => c.Convert(
+                    number => number,
                     number =>
                     {
                         if (canceled)
@@ -34,7 +36,8 @@ public sealed partial class PipelineTests
             .Build();
 
         // Act
-        var report = await CsvInstance.ExportAsync(new CancelingCleanupSource(cancellation),
+        var report = await CsvInstance.ExportAsync(
+            new CancelingCleanupSource(cancellation),
             map,
             new MemoryStream(),
             cancellation.Token);
@@ -80,7 +83,8 @@ public sealed partial class PipelineTests
         using var cancellation = new CancellationTokenSource();
 
         // Act
-        var report = await CsvInstance.ImportAsync(TestInput.Utf8("1\n2"),
+        var report = await CsvInstance.ImportAsync(
+            TestInput.Utf8("1\n2"),
             ImportMap(function, cancellation),
             new CsvImportOptions { Strategy = ImportStrategy.Partial },
             cancellation.Token);
@@ -101,9 +105,11 @@ public sealed partial class PipelineTests
                 .Build(),
             "read" => TabularMap
                 .For<Numbered>()
-                .Column(x => x.Number,
+                .Column(
+                    x => x.Number,
                     index: 0,
-                    configure: c => c.Convert<string, int>(_ => Cancel(source)
+                    configure: c => c.Convert<string, int>(
+                        _ => Cancel(source)
                             ? 1
                             : 0,
                         number => $"{number}"))
@@ -129,7 +135,8 @@ public sealed partial class PipelineTests
         using var cancellation = new CancellationTokenSource();
 
         // Act
-        var report = await CsvInstance.ExportAsync(new[] { new Numbered(1), new Numbered(2) },
+        var report = await CsvInstance.ExportAsync(
+            new[] { new Numbered(1), new Numbered(2) },
             ExportMap(rule, cancellation),
             new MemoryStream(),
             cancellation.Token);
@@ -144,7 +151,8 @@ public sealed partial class PipelineTests
             CancellationTokenSource source
         ) => TabularMap
             .For<Numbered>()
-            .Column(x => x.Number,
+            .Column(
+                x => x.Number,
                 index: 0,
                 configure: c =>
                 {
@@ -154,7 +162,8 @@ public sealed partial class PipelineTests
                     }
                     else
                     {
-                        c.Convert<string, int>(int.Parse,
+                        c.Convert<string, int>(
+                            int.Parse,
                             _ => Cancel(source)
                                 ? "1"
                                 : "0");

@@ -52,7 +52,8 @@ public sealed class CsvPropertyTests
         // Assert
         Assert.Equal(ReportStatus.Succeeded, export.Status);
         Assert.Equal(ReportStatus.Succeeded, import.Status);
-        Assert.Equal(lines.Select(line => PropertyText.Empty(line.Text)),
+        Assert.Equal(
+            lines.Select(line => PropertyText.Empty(line.Text)),
             import.Items!.Select(line => PropertyText.Empty(line.Text)));
     }
 
@@ -72,14 +73,16 @@ public sealed class CsvPropertyTests
 
         // Act
         // WHY: The round trip is the checked contract, so export and reimport form one action.
-        var export = await s_format.ExportAsync(lines,
+        var export = await s_format.ExportAsync(
+            lines,
             s_decimals,
             target,
             new CsvExportOptions { Culture = culture },
             TestContext.Current.CancellationToken);
 
         target.Position = 0;
-        var import = await s_format.ImportAsync(target,
+        var import = await s_format.ImportAsync(
+            target,
             s_decimals,
             new CsvImportOptions { Culture = culture },
             TestContext.Current.CancellationToken);

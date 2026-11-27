@@ -129,20 +129,23 @@ public static class JournalsSample
     {
         // The standard journal is registered through the context options; the tables come from the application's
         // migrations, here from EnsureCreated.
-        await using var database = await SampleDatabase<AppDbContext>.StartAsync(options => new AppDbContext(options),
+        await using var database = await SampleDatabase<AppDbContext>.StartAsync(
+            options => new AppDbContext(options),
             options => options.UseTabularJournal(journal => journal.TablePrefix = "App_"),
             cancellationToken);
 
         IDbContextFactory<AppDbContext> factory =
             new SampleContextFactory<AppDbContext>(database.Options, options => new AppDbContext(options));
 
-        var time = new FakeTimeProvider(new DateTimeOffset(2026,
-            11,
-            17,
-            8,
-            0,
-            0,
-            TimeSpan.Zero));
+        var time = new FakeTimeProvider(
+            new DateTimeOffset(
+                2026,
+                11,
+                17,
+                8,
+                0,
+                0,
+                TimeSpan.Zero));
 
         var csv = new CsvFormat(new CsvFormatOptions { TimeProvider = time });
         var journal = TabularJournal
@@ -168,13 +171,15 @@ public static class JournalsSample
         {
             var destination = TabularDatabase
                 .ForFactory(factory)
-                .PrepareInsert<CustomerDto, Customer>(set: context => context.Customers,
+                .PrepareInsert<CustomerDto, Customer>(
+                    set: context => context.Customers,
                     create: dto => new Customer
                     {
                         Number = dto.Number,
                         Name = dto.Name,
                     })
-                .WithImportLog(journal,
+                .WithImportLog(
+                    journal,
                     new TabularImportLogOptions
                     {
                         Scope = JournalScope.Create("customers"),
@@ -190,7 +195,8 @@ public static class JournalsSample
 
             // WHY: MemoryStream needs an array; the materialization stays explicit instead of a spread.
             // ReSharper disable once UseCollectionExpression
-            var report = await csv.ImportAsync(new MemoryStream("1,Ada\n2,Grace"u8.ToArray()),
+            var report = await csv.ImportAsync(
+                new MemoryStream("1,Ada\n2,Grace"u8.ToArray()),
                 s_map,
                 destination,
                 cancellationToken);
@@ -214,7 +220,8 @@ public static class JournalsSample
         CancellationToken cancellationToken
     )
     {
-        var lossy = new SampleContextFactory<AppDbContext>(new DbContextOptionsBuilder<AppDbContext>(options)
+        var lossy = new SampleContextFactory<AppDbContext>(
+            new DbContextOptionsBuilder<AppDbContext>(options)
                 .AddInterceptors(new LoseConnectionOnCommit())
                 .Options,
             created => new AppDbContext(created));
@@ -224,7 +231,8 @@ public static class JournalsSample
         var recovery = await journal.RecoverImportAsync(importId, cancellationToken);
         var factory = new SampleContextFactory<AppDbContext>(options, created => new AppDbContext(created));
         var blocked = await ImportAsync(csv, journal, factory, cancellationToken);
-        var resolution = await journal.ResolveImportAsync(importId,
+        var resolution = await journal.ResolveImportAsync(
+            importId,
             new ImportResolution
             {
                 Outcome = ImportResolutionOutcome.NoChanges,
@@ -242,11 +250,13 @@ public static class JournalsSample
         TabularJournal journal,
         IDbContextFactory<AppDbContext> factory,
         CancellationToken cancellationToken
-    ) => csv.ImportAsync(new MemoryStream("3,Linus"u8.ToArray()),
+    ) => csv.ImportAsync(
+        new MemoryStream("3,Linus"u8.ToArray()),
         s_map,
         TabularDatabase
             .ForFactory(factory)
-            .PrepareInsert<CustomerDto, Customer>(set: context => context.Customers,
+            .PrepareInsert<CustomerDto, Customer>(
+                set: context => context.Customers,
                 create: dto => new Customer
                 {
                     Number = dto.Number,
@@ -275,7 +285,8 @@ public static class JournalsSample
             var target = TabularFileTarget
                 .To(store, fileName: "Kunden.csv")
                 .WithRetention(TimeSpan.FromDays(7))
-                .WithExportLog(journal,
+                .WithExportLog(
+                    journal,
                     new TabularExportLogOptions
                     {
                         Scope = JournalScope.Create("customers"),
@@ -316,7 +327,8 @@ public static class JournalsSample
     )
     {
         await using var context = await factory.CreateDbContextAsync(cancellationToken);
-        var exported = await csv.ExportAsync(context
+        var exported = await csv.ExportAsync(
+            context
                 .Customers
                 .AsNoTracking()
                 .OrderBy(customer => customer.Number)

@@ -16,7 +16,8 @@ internal readonly record struct ParsedNumberText(
     bool HadExponent
 )
 {
-    public ExactDecimal Value => new(Negative,
+    public ExactDecimal Value => new(
+        Negative,
         IsSmall
             ? Small
             : Large,

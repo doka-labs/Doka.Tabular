@@ -139,7 +139,8 @@ internal sealed class EmbeddingContext
 
         overrides.Add((string.Empty, embedding));
 
-        return new EmbeddingContext(Offset + embedding.StartIndex,
+        return new EmbeddingContext(
+            Offset + embedding.StartIndex,
             keyPrefixes,
             headerPrefixes,
             ImportOnly || embedding.IsImportOnly,
@@ -177,21 +178,25 @@ internal static class MapFlattening
             switch (member)
             {
                 case ColumnMember column:
-                    members.Add(new ColumnNode(column,
-                        Leaf(fields,
-                            memberPath,
-                            member.Name,
-                            column.Key,
-                            column.Index,
-                            column.Settings,
-                            column.Codec,
-                            context)));
+                    members.Add(
+                        new ColumnNode(
+                            column,
+                            Leaf(
+                                fields,
+                                memberPath,
+                                member.Name,
+                                column.Key,
+                                column.Index,
+                                column.Settings,
+                                column.Codec,
+                                context)));
 
                     break;
                 case ComposeMember compose:
                     var parts = compose
                         .Parts
-                        .Select(part => Leaf(fields,
+                        .Select(part => Leaf(
+                            fields,
                             memberPath,
                             part.Key.Value,
                             part.Key,

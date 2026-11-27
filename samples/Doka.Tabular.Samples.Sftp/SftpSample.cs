@@ -55,15 +55,17 @@ public static class SftpSample
     )
     {
         ISftpService sftp = new InMemorySftpService();
-        await sftp.UploadAsync("/in/customers.csv",
+        await sftp.UploadAsync(
+            "/in/customers.csv",
             new MemoryStream(Encoding.Latin1.GetBytes("1;Müller;x;Köln\n0;Schmidt;x;Bonn\n3;Weber;x;Essen")),
             cancellationToken);
 
-        var csv = new CsvFormat(new CsvFormatOptions
-        {
-            Import = new CsvImportOptions { Delimiter = ';' },
-            Export = new CsvExportOptions { Delimiter = ';' },
-        });
+        var csv = new CsvFormat(
+            new CsvFormatOptions
+            {
+                Import = new CsvImportOptions { Delimiter = ';' },
+                Export = new CsvExportOptions { Delimiter = ';' },
+            });
 
         var import = await ImportAsync(sftp, csv, output, cancellationToken);
         await ExportBufferedAsync(sftp, csv, import.Items!, output, cancellationToken);
@@ -82,7 +84,8 @@ public static class SftpSample
         ImportReport<Customer> import;
         await using (var source = await sftp.OpenReadAsync("/in/customers.csv", cancellationToken))
         {
-            import = await csv.ImportAsync(source,
+            import = await csv.ImportAsync(
+                source,
                 s_map,
                 new CsvImportOptions
                 {
@@ -92,7 +95,8 @@ public static class SftpSample
                 cancellationToken);
         }
 
-        await sftp.MoveAsync("/in/customers.csv",
+        await sftp.MoveAsync(
+            "/in/customers.csv",
             import.Status == ReportStatus.Succeeded
                 ? "/done/customers.csv"
                 : "/review/customers.csv",

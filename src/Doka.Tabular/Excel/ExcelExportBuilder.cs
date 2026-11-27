@@ -65,10 +65,12 @@ public sealed class ExcelExportBuilder
     {
         ArgumentNullException.ThrowIfNull(name);
         ArgumentNullException.ThrowIfNull(map);
-        _sheets.Add(new WorkbookExportSheet<T>(name,
-            source,
-            ExportShape<T>.ForMap(map),
-            options ?? new ExcelSheetExportOptions()));
+        _sheets.Add(
+            new WorkbookExportSheet<T>(
+                name,
+                source,
+                ExportShape<T>.ForMap(map),
+                options ?? new ExcelSheetExportOptions()));
 
         return this;
     }

@@ -8,12 +8,14 @@ public sealed class SmokeTests
         .For<Contact>()
         .Column(x => x.Name, index: 0, configure: c => c.Header("Name"))
         .Column(x => x.Count, index: 1, configure: c => c.Header("Anzahl"))
-        .Column(x => x.Amount,
+        .Column(
+            x => x.Amount,
             index: 2,
             configure: c => c
                 .Header("Betrag")
                 .ExcelNumberFormat("#,##0.00"))
-        .Column(x => x.Since,
+        .Column(
+            x => x.Since,
             index: 3,
             configure: c => c
                 .Header("Seit")
@@ -52,14 +54,17 @@ public sealed class SmokeTests
         // WHY: The round trip of the own output is the checked contract, so export and reimport form one action.
         var (report, file) = await format.ExportAsync(s_rows, s_map, options, TestContext.Current.CancellationToken);
         await using var owned = file;
-        var reimport = await format.ImportAsync(file!,
+        var reimport = await format.ImportAsync(
+            file!,
             s_map,
             new ExcelImportOptions { Binding = ColumnBinding.ByHeaderName },
             TestContext.Current.CancellationToken);
 
         // Assert
-        Assert.True(report.Status == ReportStatus.Succeeded,
-            string.Join(" | ",
+        Assert.True(
+            report.Status == ReportStatus.Succeeded,
+            string.Join(
+                " | ",
                 report.Errors.Select(error => $"{error.Code}: {error.Message} {error.Location.ColumnKey}")));
 
         Assert.Empty(WorkbookProblems(file!));

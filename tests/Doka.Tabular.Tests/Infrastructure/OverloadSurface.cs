@@ -77,7 +77,8 @@ internal static class OverloadSurface
         if (overload.ReturnType == typeof(Task<BufferedExportResult>))
         {
             var options = parts.IndexOf("options");
-            parts.Insert(options < 0
+            parts.Insert(
+                options < 0
                     ? parts.Count
                     : options,
                 "Buffer");

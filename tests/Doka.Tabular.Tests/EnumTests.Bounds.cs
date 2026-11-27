@@ -152,26 +152,30 @@ public sealed partial class EnumTests
         ["Int16"] =
             new BaseType<BoundedInt16, HighBitInt16>("-32768", "32767", "-32769", "32768", "-32768", wide: false),
         ["UInt16"] = new BaseType<BoundedUInt16, HighBitUInt16>("0", "65535", "-1", "65536", "32768", wide: false),
-        ["Int32"] = new BaseType<BoundedInt32, HighBitInt32>("-2147483648",
+        ["Int32"] = new BaseType<BoundedInt32, HighBitInt32>(
+            "-2147483648",
             "2147483647",
             "-2147483649",
             "2147483648",
             "-2147483648",
             wide: false),
         ["UInt32"] =
-            new BaseType<BoundedUInt32, HighBitUInt32>("0",
+            new BaseType<BoundedUInt32, HighBitUInt32>(
+                "0",
                 "4294967295",
                 "-1",
                 "4294967296",
                 "2147483648",
                 wide: false),
-        ["Int64"] = new BaseType<BoundedInt64, HighBitInt64>("-9223372036854775808",
+        ["Int64"] = new BaseType<BoundedInt64, HighBitInt64>(
+            "-9223372036854775808",
             "9223372036854775807",
             "-9223372036854775809",
             "9223372036854775808",
             "-9223372036854775808",
             wide: true),
-        ["UInt64"] = new BaseType<BoundedUInt64, HighBitUInt64>("0",
+        ["UInt64"] = new BaseType<BoundedUInt64, HighBitUInt64>(
+            "0",
             "18446744073709551615",
             "-1",
             "18446744073709551616",
@@ -238,7 +242,8 @@ public sealed partial class EnumTests
         var outcome = await bounds.ReadAsync(type, bounds.Text(side));
 
         // Assert
-        Assert.Equal(TabularErrorCodes.Conversion.OutOfRange,
+        Assert.Equal(
+            TabularErrorCodes.Conversion.OutOfRange,
             Assert.Single(outcome.Errors)
                 .Code);
     }
@@ -309,7 +314,8 @@ public sealed partial class EnumTests
         var status = await bounds.ExportLimitsAsNumbersAsync(type);
 
         // Assert
-        Assert.Equal(type == TabularType.Excel && bounds.Wide
+        Assert.Equal(
+            type == TabularType.Excel && bounds.Wide
                 ? ReportStatus.Failed
                 : ReportStatus.Succeeded,
             status);
@@ -492,7 +498,8 @@ public sealed partial class EnumTests
 
         private static ReadOutcome Outcome<TValue>(
             ImportReport<Value<TValue>> report
-        ) => new(report.Status,
+        ) => new(
+            report.Status,
             report.Items is [var only]
                 ? only.Item
                 : null,

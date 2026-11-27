@@ -20,7 +20,8 @@ internal abstract class TimestampConverterBase<TValue> : TimeConverterBase<TValu
             return false;
         }
 
-        if (!DateOnly.TryParseExact(dateText,
+        if (!DateOnly.TryParseExact(
+            dateText,
             "yyyy-MM-dd",
             CultureInfo.InvariantCulture,
             DateTimeStyles.None,

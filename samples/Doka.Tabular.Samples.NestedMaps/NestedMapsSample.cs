@@ -50,14 +50,16 @@ public static class NestedMapsSample
 {
     private static readonly TabularMap<Address> s_address = TabularMap
         .For<Address>()
-        .Column(x => x.City,
+        .Column(
+            x => x.City,
             index: 0,
             key: ColumnKey.Create("city"),
             configure: c => c
                 .Header("Ort")
                 .HeaderTranslationKey("city")
                 .Required())
-        .Column(x => x.PostalCode,
+        .Column(
+            x => x.PostalCode,
             index: 1,
             key: ColumnKey.Create("postalCode"),
             configure: c => c
@@ -68,47 +70,56 @@ public static class NestedMapsSample
 
     private static readonly TabularMap<Order> s_map = TabularMap
         .For<Order>()
-        .Column(x => x.Number,
+        .Column(
+            x => x.Number,
             index: 0,
             key: ColumnKey.Create("number"),
             configure: c => c
                 .Header("Auftrag")
                 .HeaderTranslationKey("number"))
-        .Nested(x => x.Billing,
+        .Nested(
+            x => x.Billing,
             s_address,
             e => e
                 .StartIndex(1)
                 .KeyPrefix(ColumnKey.Create("billing"))
                 .HeaderPrefix("Rechnung ")
                 .HeaderPrefixTranslationKey("billingPrefix"))
-        .Nested(x => x.Shipping,
+        .Nested(
+            x => x.Shipping,
             s_address,
             e => e
                 .StartIndex(3)
                 .KeyPrefix(ColumnKey.Create("shipping"))
                 .HeaderPrefix("Lieferung ")
                 .HeaderPrefixTranslationKey("shippingPrefix"))
-        .Compose(x => x.Total,
-            c => c.Field<long>(index: 5,
+        .Compose(
+            x => x.Total,
+            c => c.Field<long>(
+                index: 5,
                 key: ColumnKey.Create("totalMinor"),
                 configure: f => f
                     .Header("Betrag (Cent)")
                     .HeaderTranslationKey("totalMinor")),
-            c => c.Field<string>(index: 6,
+            c => c.Field<string>(
+                index: 6,
                 key: ColumnKey.Create("currency"),
                 configure: f => f
                     .Header("Währung")
                     .HeaderTranslationKey("currency")),
             read: (minor, currency) => new Money(minor / 100m, currency),
             write: money => ((long)(money.Amount * 100), money.Currency))
-        .Compose(x => x.PlacedAt,
-            c => c.Field<DateTime>(index: 7,
+        .Compose(
+            x => x.PlacedAt,
+            c => c.Field<DateTime>(
+                index: 7,
                 key: ColumnKey.Create("placedUtc"),
                 configure: f => f
                     .Header("Bestellt (UTC)")
                     .HeaderTranslationKey("placedUtc")
                     .ExcelAsUtc()),
-            c => c.Field<int>(index: 8,
+            c => c.Field<int>(
+                index: 8,
                 key: ColumnKey.Create("offsetMinutes"),
                 configure: f => f
                     .Header("Versatz (Minuten)")
@@ -117,21 +128,24 @@ public static class NestedMapsSample
                 => new DateTimeOffset(DateTime.SpecifyKind(utc, DateTimeKind.Utc)).ToOffset(
                     TimeSpan.FromMinutes(minutes)),
             write: placed => (placed.UtcDateTime, (int)placed.Offset.TotalMinutes))
-        .Column(x => x.State,
+        .Column(
+            x => x.State,
             index: 9,
             key: ColumnKey.Create("state"),
             configure: c => c
                 .Header("Status")
                 .HeaderTranslationKey("state")
                 .TranslationKeys(state => $"state.{state}"))
-        .Column(x => x.Services,
+        .Column(
+            x => x.Services,
             index: 10,
             key: ColumnKey.Create("services"),
             configure: c => c
                 .Header("Leistungen")
                 .HeaderTranslationKey("services")
                 .FlagsSeparator('|'))
-        .Column(x => x.Paid,
+        .Column(
+            x => x.Paid,
             index: 11,
             key: ColumnKey.Create("paid"),
             configure: c => c
@@ -161,11 +175,13 @@ public static class NestedMapsSample
 
     private static IReadOnlyList<Order> Orders { get; } =
     [
-        new("A-1",
+        new(
+            "A-1",
             new Address("Dresden", "01067"),
             null,
             new Money(12.34m, "EUR"),
-            new DateTimeOffset(2024,
+            new DateTimeOffset(
+                2024,
                 4,
                 1,
                 14,
@@ -175,11 +191,13 @@ public static class NestedMapsSample
             OrderState.Open,
             Services.Gift | Services.Express,
             false),
-        new("A-2",
+        new(
+            "A-2",
             new Address("Bonn", "53111"),
             new Address("Köln", "50667"),
             new Money(99m, "USD"),
-            new DateTimeOffset(2024,
+            new DateTimeOffset(
+                2024,
                 4,
                 1,
                 8,
@@ -196,10 +214,12 @@ public static class NestedMapsSample
         CancellationToken cancellationToken
     )
     {
-        var export = new TabularExport(new CsvFormat(new CsvFormatOptions()),
+        var export = new TabularExport(
+            new CsvFormat(new CsvFormatOptions()),
             new ExcelFormat(new ExcelFormatOptions()));
 
-        var import = new TabularImport(new CsvFormat(new CsvFormatOptions()),
+        var import = new TabularImport(
+            new CsvFormat(new CsvFormatOptions()),
             new ExcelFormat(new ExcelFormatOptions()));
 
         foreach (var type in new[] { TabularType.Csv, TabularType.Excel })
@@ -223,7 +243,8 @@ public static class NestedMapsSample
         CancellationToken cancellationToken
     )
     {
-        var (report, file) = await export.ExportAsync(Orders,
+        var (report, file) = await export.ExportAsync(
+            Orders,
             s_map,
             type,
             new TabularExportOptions
@@ -244,7 +265,8 @@ public static class NestedMapsSample
             }
 
             // Header-name import finds the columns through the same headers the export wrote, in the same language.
-            var reimport = await import.ImportAsync(file!,
+            var reimport = await import.ImportAsync(
+                file!,
                 type,
                 s_map,
                 new TabularImportOptions
@@ -266,7 +288,8 @@ public static class NestedMapsSample
         CancellationToken cancellationToken
     )
     {
-        var (selected, selection) = await export.ExportAsync(Orders,
+        var (selected, selection) = await export.ExportAsync(
+            Orders,
             s_map,
             TabularType.Csv,
             new TabularExportOptions

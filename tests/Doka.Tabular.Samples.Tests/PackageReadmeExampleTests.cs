@@ -15,7 +15,8 @@ public sealed class PackageReadmeExampleTests
 
         // Assert
         Assert.True(target.Length > 0);
-        Assert.Equal("PK"u8.ToArray(),
+        Assert.Equal(
+            "PK"u8.ToArray(),
             target
                 .ToArray()[..2]);
     }
