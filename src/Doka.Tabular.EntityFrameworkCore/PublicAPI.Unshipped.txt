@@ -1,1 +1,2 @@
 #nullable enable
+static Doka.Tabular.EntityFrameworkCore.TabularDatabase.ForFactory<TContext>(System.Func<System.Threading.CancellationToken, System.Threading.Tasks.Task<TContext!>!>! factory) -> Doka.Tabular.EntityFrameworkCore.TabularDatabase<TContext!>!

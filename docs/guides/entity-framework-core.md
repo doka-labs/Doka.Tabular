@@ -3,6 +3,11 @@
 ## Targets
 
 A database description creates targets; preparing does not touch the database.
+`TabularDatabase.ForFactory` and `TabularJournal.ForFactory` take an
+`IDbContextFactory<TContext>` or a function
+`Func<CancellationToken, Task<TContext>>`; every call creates its own contexts
+with it and disposes them. `ForContext` uses the passed context and never
+disposes it.
 
 ```csharp
 var database = TabularDatabase.ForFactory(contextFactory); // or TabularDatabase.ForContext(context)

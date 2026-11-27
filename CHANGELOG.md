@@ -4,6 +4,10 @@ All notable changes to this project are documented in this file. The format foll
 
 ## [Unreleased]
 
+### Added
+
+- `Doka.Tabular.EntityFrameworkCore`: `TabularDatabase.ForFactory` also takes a function `Func<CancellationToken, Task<TContext>>`, like `TabularJournal.ForFactory`.
+
 ## [1.0.0-rc.1] - 2026-11-26
 
 ### Added
