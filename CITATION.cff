@@ -5,6 +5,6 @@ authors:
   - given-names: Dominic
     family-names: Kalkbrenner
 version: 1.0.0
-date-released: 2026-11-27
+date-released: 2026-11-28
 license: MIT
 repository-code: https://github.com/doka-labs/Doka.Tabular
