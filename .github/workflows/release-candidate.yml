@@ -25,7 +25,7 @@ jobs:
     permissions:
       contents: write
       attestations: read
-    uses: doka-labs/workflows/.github/workflows/release-preflight.yml@abbb17a2390d9bd58f23aa2495ebc481964e5cb4 # v0.5.1
+    uses: doka-labs/workflows/.github/workflows/release-preflight.yml@15567daa9c4c37ffa6477f7562995e9ef861fe0b # v0.6.1
     with:
       version: ${{ inputs.version }}
       qualification-only: ${{ inputs.qualification-only }}
@@ -50,7 +50,7 @@ jobs:
       actions: read
       id-token: write
       attestations: write
-    uses: doka-labs/workflows/.github/workflows/release-qualification.yml@abbb17a2390d9bd58f23aa2495ebc481964e5cb4 # v0.5.1
+    uses: doka-labs/workflows/.github/workflows/release-qualification.yml@15567daa9c4c37ffa6477f7562995e9ef861fe0b # v0.6.1
     with:
       version: ${{ inputs.version }}
       qualification-only: ${{ inputs.qualification-only }}
@@ -64,7 +64,7 @@ jobs:
       actions: read
       id-token: write
       attestations: write
-    uses: doka-labs/workflows/.github/workflows/release-candidate.yml@abbb17a2390d9bd58f23aa2495ebc481964e5cb4 # v0.5.1
+    uses: doka-labs/workflows/.github/workflows/release-candidate.yml@15567daa9c4c37ffa6477f7562995e9ef861fe0b # v0.6.1
     with:
       version: ${{ inputs.version }}
       packages-artifact: packages
@@ -101,17 +101,21 @@ jobs:
     timeout-minutes: 180
     steps:
       - name: Publish the approved candidate
-        uses: doka-labs/workflows/.github/actions/release-publish@abbb17a2390d9bd58f23aa2495ebc481964e5cb4 # v0.5.1
+        uses: doka-labs/workflows/.github/actions/release-publish@15567daa9c4c37ffa6477f7562995e9ef861fe0b # v0.6.1
         with:
           tag: ${{ needs.preflight.outputs.tag }}
           nuget-user: ${{ secrets.NUGET_USER }}
 
+  # WHY: A resumed run skips candidate, and a skip passes to every job that needs it unless the job has its own
+  # condition; run 45908860276 skipped the site that way. The shared workflow deploys only a published release.
+  # https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#jobsjob_idneeds
   api-reference:
     needs: [preflight, publish]
+    if: ${{ !cancelled() && needs.publish.result == 'success' }}
     permissions:
       contents: read
       pages: write
       id-token: write
-    uses: doka-labs/workflows/.github/workflows/api-reference.yml@abbb17a2390d9bd58f23aa2495ebc481964e5cb4 # v0.5.1
+    uses: doka-labs/workflows/.github/workflows/api-reference.yml@15567daa9c4c37ffa6477f7562995e9ef861fe0b # v0.6.1
     with:
       tag: ${{ needs.preflight.outputs.tag }}

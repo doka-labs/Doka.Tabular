@@ -16,6 +16,6 @@ jobs:
     permissions:
       contents: read
       actions: write
-    uses: doka-labs/workflows/.github/workflows/release-lines-coordinator.yml@abbb17a2390d9bd58f23aa2495ebc481964e5cb4 # v0.5.1
+    uses: doka-labs/workflows/.github/workflows/release-lines-coordinator.yml@15567daa9c4c37ffa6477f7562995e9ef861fe0b # v0.6.1
     with:
       workload: audit

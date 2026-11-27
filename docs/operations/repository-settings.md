@@ -75,6 +75,7 @@
 | Setting | Value | Reason |
 | --- | --- | --- |
 | Source | GitHub Actions | `api-reference.yml` deploys the API reference site from the release workflow |
+| Environment `github-pages`, deployment branches | selected branches, exactly `main` | the release workflow runs on `main`; no other branch can deploy the site |
 
 ## Read-only confirmation
 
@@ -118,9 +119,11 @@ branch policy `main` of type `branch`, and `["NUGET_USER"]`.
 ```sh
 gh api repos/doka-labs/Doka.Tabular/immutable-releases --jq .
 gh api repos/doka-labs/Doka.Tabular/pages --jq .build_type
+gh api repos/doka-labs/Doka.Tabular/environments/github-pages/deployment-branch-policies --jq '[.branch_policies[] | {name, type}]'
 ```
 
-Expected: `{"enabled":true,"enforced_by_owner":true}` and `workflow`.
+Expected: `{"enabled":true,"enforced_by_owner":true}`, `workflow`, and the
+branch policy `main` of type `branch`.
 
 The Trusted Publishing policy is shown on nuget.org under **Trusted
 Publishing** of the account, with its scopes and whether it is active or only
@@ -132,7 +135,8 @@ temporarily active; it has no public API.
 - [x] Immutable releases are enforced.
 - [x] The environment `nuget` has the reviewer, exactly the branch `main` and
       the secret `NUGET_USER`.
-- [x] GitHub Pages uses GitHub Actions as its source.
+- [x] GitHub Pages uses GitHub Actions as its source, and the environment
+      `github-pages` allows exactly the branch `main`.
 - [x] The Trusted Publishing policy on nuget.org names `doka-labs`,
       `Doka.Tabular`, `release-candidate.yml` and `nuget`, allows publishing
       new packages, and is active when the release run starts.
